@@ -2,3 +2,4 @@
 
 [Original repository for Dll](https://github.com/guided-hacking/GH_D3D11_Hook)
 
+[Recommended process explorer](https://kb.froglogic.com/misc/getting-list-of-loaded-dlls/)
