@@ -1,13 +1,14 @@
 #define WIN32_LEAN_AND_MEAN             // Exclude rarely-used stuff from Windows headers
 // Windows Header Files
 #include <Windows.h>
-#include <TlHelp32.h> 
-
+#include <TlHelp32.h>
 #include <d3d11.h>
 #include <d3dcompiler.h>
 #include <directxmath.h>
 #include <iostream>
-#include<fstream>
+#include <fstream>
+#include <sstream> //for std::stringstream 
+#include <string>  //for std::string
 
 #pragma comment(lib, "d3d11.lib")
 #pragma comment(lib, "d3dcompiler.lib")
@@ -442,8 +443,7 @@ void log(std::string msg) {
 	std::ofstream fs("D:\\mylogs.txt", std::fstream::in | std::fstream::out | std::fstream::app);
 	fs << msg.c_str() << std::endl;
 }
-#include <sstream> //for std::stringstream 
-#include <string>  //for std::string
+
 void Render()
 {	
 	// Make sure our render target is set.
