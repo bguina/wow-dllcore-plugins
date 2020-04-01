@@ -1,13 +1,20 @@
 #define WIN32_LEAN_AND_MEAN             // Exclude rarely-used stuff from Windows headers
 // Windows Header Files
 #include <Windows.h>
+#include <TlHelp32.h> 
+
 #include <d3d11.h>
 #include <d3dcompiler.h>
 #include <directxmath.h>
 #include <iostream>
+#include<fstream>
+
 #pragma comment(lib, "d3d11.lib")
 #pragma comment(lib, "d3dcompiler.lib")
 #pragma comment(lib, "winmm.lib")
+
+#include <psapi.h> 
+#pragma comment(lib, "psapi" )
 
 #define safe_release(p) if (p) { p->Release(); p = nullptr; } 
 
@@ -400,6 +407,43 @@ void CleanupD3D()
 	safe_release( pVertexLayout );
 }
 
+DWORD_PTR findBaseAddress(HANDLE hProc)
+{
+	HMODULE *hModules = NULL;
+	wchar_t szBuf[50];
+	DWORD cModules;
+	DWORD_PTR dwBase = 0x0;
+
+	EnumProcessModules(hProc, hModules, 0, &cModules);
+	hModules = new HMODULE[cModules / sizeof(HMODULE)];
+
+	if (EnumProcessModules(hProc, hModules, cModules / sizeof(HMODULE), &cModules)) {
+		for (int i = 0; i < cModules / sizeof(HMODULE); i++) {
+			if (GetModuleBaseName(hProc, hModules[i], szBuf, sizeof(szBuf))) {
+				if (std::wstring(L"WowClassic.exe").compare(std::wstring(szBuf)) == 0) {
+					dwBase = (DWORD)hModules[i];
+					break;
+				}
+			}
+		}
+	}
+
+	delete[] hModules;
+
+	return dwBase;
+}
+
+void clearLogs() {
+	std::ofstream fs("D:\\mylogs.txt");
+}
+
+void log(std::string msg) {
+
+	std::ofstream fs("D:\\mylogs.txt", std::fstream::in | std::fstream::out | std::fstream::app);
+	fs << msg.c_str() << std::endl;
+}
+#include <sstream> //for std::stringstream 
+#include <string>  //for std::string
 void Render()
 {	
 	// Make sure our render target is set.
@@ -428,6 +472,55 @@ void Render()
 
 	// Draw our triangle
 	pContext->DrawIndexed( 3, 0, 0 );
+
+	// try to log something
+	log("triangle drawn!");
+
+	// find real WowClassic.exe base address and log it
+	std::stringstream ss;
+	
+	HANDLE ExeBaseAddress = GetModuleHandleA(0);
+	ss << "found base address with pid 0 ";
+	ss << ExeBaseAddress;
+
+	DWORD_PTR baseWow = findBaseAddress(GetCurrentProcess());
+	ss << "found base address with pid ";
+	ss << GetCurrentProcess();
+	ss << baseWow;
+
+	log(ss.str());
+
+	//log("found base address " + baseWow);
+	//if (false && baseWow == 0x0) {
+		// could not find base address
+	//	*((char*)0) = 0;
+	//}
+
+	//if (baseWow != (DWORD_PTR)ExeBaseAddress) {
+		// which to choose?
+	//}
+
+	//printf("found base=%p", baseWow);
+
+
+	//HANDLE hProcess = OpenProcess(PROCESS_VM_READ, 0, GetProcessId(GetCurrentProcess()));
+
+
+	//char buffer[256];
+	//char* gameBuild = (char*)baseWow + 0x1c46f0c;
+
+	//ReadProcessMemory(hProcess, gameBuild, &buffer, sizeof(buffer), 0);
+	//log("found buildVersion= " + std::string(buffer));
+
+
+	//printf("found buildVersion=%8s", buffer);
+
+
+	//DWORD playerBaseOffset = 0x00E29D28; // offset back from 02-15-2019 (retail>?) needs an update
+	//DWORD playerBase = baseWow + playerBaseOffset;
+
+	//int hp = *((int*)playerBase);
+
 }
 
 HRESULT __stdcall hkPresent( IDXGISwapChain * pThis, UINT SyncInterval, UINT Flags )
@@ -440,6 +533,7 @@ HRESULT __stdcall hkPresent( IDXGISwapChain * pThis, UINT SyncInterval, UINT Fla
 			return false;
 	}
 
+	clearLogs();
 	Render();
 	return ogPresentTramp( pThis, SyncInterval, Flags );
 }
