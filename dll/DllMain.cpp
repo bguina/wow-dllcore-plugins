@@ -5,10 +5,11 @@
 #include <d3d11.h>
 #include <d3dcompiler.h>
 #include <directxmath.h>
-#include <iostream>
 #include <fstream>
 #include <sstream> //for std::stringstream 
 #include <string>  //for std::string
+#include <iomanip>
+#include <iostream>
 
 #pragma comment(lib, "d3d11.lib")
 #pragma comment(lib, "d3dcompiler.lib")
@@ -450,56 +451,130 @@ void Render()
 	// find WowClassic.exe base address and log stuff
 	{
 		std::stringstream ss;
-		HANDLE pBaseAddr = GetModuleHandleA(0);
+		PUINT8 pBaseAddr = (PUINT8)GetModuleHandleA(0);
 
 		// BuildVerion
 		{
 			char* pGameBuild = (char*)pBaseAddr + 0x1c46f0c;
-			char buf[8];
-
-			memset(buf, 0, sizeof(buf));
-			memcpy(&buf, pGameBuild,  8); // OK
 
 			ss << "Build";
-			ss << buf;
+			ss << pGameBuild;
 			ss << ":";
 		}
 
 		// GameState?
 		{
-			char* pIngameState = (char*)pBaseAddr + 0x25A9E60;
-			PUINT16 ingameState = nullptr;
-
-			memcpy(&ingameState, pIngameState, sizeof(ingameState));
 			ss << " GameState ";
-			ss << (int)*pIngameState;
+			ss << *(PUINT16*)(pBaseAddr + 0x25A9E60);
+			// fun fact: we see boolean bit "isFalling"
 		}
 
 		// Realm name
 		{
-			char* ppRealmObj = (char*)pBaseAddr + 0x2688058;
-			PINT8 pRealmObj = nullptr;
+			PUINT8* pRealm = *(PUINT8**)(pBaseAddr + 0x2688058);
 
-			memcpy(&pRealmObj, ppRealmObj,  sizeof(pRealmObj));
-			if (nullptr != pRealmObj) {
+			if (nullptr != pRealm) {
 				ss << " Realm ";
-				ss << ((char*)pRealmObj + 0x420); // realm name at RealmObj+0x420
-			}
+				ss << ((char*)pRealm + 0x420); // realm name at RealmObj+0x420
+			}	
+		}
 
-			long InGame = 0x25A9E60; // good	
+		// Zone name
+		{
+			char* pZoneText = *(char**)(pBaseAddr + 0x25A8C40);
+
+			if (nullptr != pZoneText) {
+				ss << " Zone ";
+				ss << pZoneText;
+			}
 		}
 
 		// Player name
 		{
-			char* pPlayerName = (char*)pBaseAddr + 0x02688828;
+			char* pPlayerName = (char*)(pBaseAddr + 0x2688828);
+
 			if (*pPlayerName != '\0') {
 				ss << " Player ";
-				ss << (char*)pPlayerName;
+				ss << pPlayerName;
+			}
+		}
+
+		// Player GUID
+		{
+			PULONG64 pLocalPlayerGuid = (PULONG64)(pBaseAddr + 0x2688810);
+
+			ss << " LocalGuid=";
+			ss << *pLocalPlayerGuid;
+		}
+
+		// Mouse-over object GUID
+		//{
+			PULONG64 pMouseoverGuid = (PULONG64)(pBaseAddr + 0x25A9E68);
+
+			ss << " MouseOverGUID=";
+			ss << *pMouseoverGuid;
+		//}
+
+		//{
+			PULONG64 pTargetGuid = (PULONG64)(pBaseAddr + 0x21E28A0);
+
+			ss << " TargetGUID=";
+			ss << *pTargetGuid;
+		//}
+
+		// Object Manager
+		{
+			PUINT8 pObjMgr = pBaseAddr + 0x2387C88;
+
+			// iterate WowObjects
+			{
+				PULONG64 pObj = *(PULONG64*)(pObjMgr + 0x18); // first obj
+
+				//		StorageField = 0x10,//good-33526
+				//		ObjectType = 0x20,//good-33526
+				//		NextObject = 0x70,//good-33526
+				//		FirstObject = 0x18,//good-33526
+				//		LocalGUID = 0x58, //good-33526
+
+				while (nullptr != pObj && !((ULONG64)pObj & 1)) {
+					ss << " chaining ";
+					ss << pObj;
+
+					pObj = *(PULONG64*)((PUINT8)pObj + 0x70);
+				}
+			}
+
+			// ObjMgr.localGUID
+			{
+				// unsure if [pLocalGUID] is the localGuid or a ptr to the localGuid (I doubt it's a ptr)
+				PULONG64 pLocalGUID = (PULONG64)(pObjMgr + 0x58);
+
+				ss << " ObjMgr.localGUID=";
+				ss << *pLocalGUID;
+			}
+
+			// HEX dump of ObjMgr..ObjMgr + 256
+			if (false) {
+				ss << std::endl;
+				ss << "ObjMgr=";
+				ss << (PULONG64)pObjMgr;
+				ss << std::endl;
+
+				auto *ptr = reinterpret_cast<unsigned char *>(pObjMgr);
+
+				for (int i = 0; i < 256; i++, ptr++) 
+					ss << std::hex << std::setw(2) << static_cast<unsigned>(*ptr) << " ";
+			}
+
+			ss << std::endl;
+
+			if (false) {
+				ss << "first obj=";
+				ss << *(PULONG64*)(pObjMgr + 0xac);
 			}
 		}
 
 		dllLog(ss.str());
-
 	}
 }
 
