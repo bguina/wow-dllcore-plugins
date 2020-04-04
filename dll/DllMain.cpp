@@ -6,10 +6,12 @@
 #include <d3dcompiler.h>
 #include <directxmath.h>
 #include <fstream>
-#include <sstream> //for std::stringstream 
-#include <string>  //for std::string
+#include <sstream>
+#include <string>
 #include <iomanip>
 #include <iostream>
+#include "include/Hexdump.hpp"
+#include "include/Hexsearch.hpp"
 
 #pragma comment(lib, "d3d11.lib")
 #pragma comment(lib, "d3dcompiler.lib")
@@ -69,6 +71,20 @@ bool CompileShader(const char* szShader, const char * szEntrypoint, const char *
 bool InitD3DHook(IDXGISwapChain* pSwapchain);
 void CleanupD3D();
 void Render();
+
+enum WowObjectType {
+	Object = 0,
+	Item = 1,
+	Container = 2,
+	Unit = 3,
+	Player = 4,
+	GameObject = 5,
+	DynamicObject = 6,
+	Corpse = 7,
+	AreaTrigger = 8,
+	SceneObject = 9,
+	Conversation = 10
+};
 
 // adding this code ripped off SO to find the "main window" as a fallback to RSGetViewports
 struct HandleData
@@ -453,8 +469,11 @@ void Render()
 		std::stringstream ss;
 		PUINT8 pBaseAddr = (PUINT8)GetModuleHandleA(0);
 
+		LPVOID 	ClickToMovePointer = (LPVOID)0x25A99F0; //good
+		LPVOID ClickToMoveOffset = (LPVOID)0x5C;
+
 		// BuildVerion
-		{
+		if (false) {
 			char* pGameBuild = (char*)pBaseAddr + 0x1c46f0c;
 
 			ss << "Build";
@@ -463,7 +482,7 @@ void Render()
 		}
 
 		// GameState?
-		{
+		if (false) {
 			ss << " GameState ";
 			ss << *(PUINT16*)(pBaseAddr + 0x25A9E60);
 			// fun fact: we see boolean bit "isFalling"
@@ -476,7 +495,7 @@ void Render()
 			if (nullptr != pRealm) {
 				ss << " Realm ";
 				ss << ((char*)pRealm + 0x420); // realm name at RealmObj+0x420
-			}	
+			}
 		}
 
 		// Zone name
@@ -500,83 +519,68 @@ void Render()
 		}
 
 		// Player GUID
-		{
-			PULONG64 pLocalPlayerGuid = (PULONG64)(pBaseAddr + 0x2688810);
-
-			ss << " LocalGuid=";
-			ss << *pLocalPlayerGuid;
-		}
+		PULONG64 pLocalPlayerGuid = (PULONG64)(pBaseAddr + 0x2688810);
+		ss << " LocalGuid=";
+		ss << std::hex << pLocalPlayerGuid[0] << pLocalPlayerGuid[1];
 
 		// Mouse-over object GUID
-		//{
-			PULONG64 pMouseoverGuid = (PULONG64)(pBaseAddr + 0x25A9E68);
+		PULONG64 pMouseoverGuid = (PULONG64)(pBaseAddr + 0x25A9E68);
 
-			ss << " MouseOverGUID=";
-			ss << *pMouseoverGuid;
-		//}
+		ss << " MouseOverGUID=";
+		ss << std::hex << pMouseoverGuid[0] << pMouseoverGuid[1];
 
-		//{
-			PULONG64 pTargetGuid = (PULONG64)(pBaseAddr + 0x21E28A0);
+		PULONG64 pTargetGuid = (PULONG64)(pBaseAddr + 0x21E28A0);
 
-			ss << " TargetGUID=";
-			ss << *pTargetGuid;
-		//}
+		ss << " TargetGUID=";
+		ss << std::hex << pTargetGuid[0] << pTargetGuid[1] << std::endl;
 
 		// Object Manager
-		{
-			PUINT8 pObjMgr = pBaseAddr + 0x2387C88;
+		PUINT8 pObjMgr = *(PUINT8*)(pBaseAddr + 0x2387C88);
 
+		if (nullptr != pObjMgr) {
 			// iterate WowObjects
-			{
-				PULONG64 pObj = *(PULONG64*)(pObjMgr + 0x18); // first obj
+			PULONG64 pObj = *(PULONG64*)(pObjMgr + 0x18); // first obj
 
-				//		StorageField = 0x10,//good-33526
-				//		ObjectType = 0x20,//good-33526
-				//		NextObject = 0x70,//good-33526
-				//		FirstObject = 0x18,//good-33526
-				//		LocalGUID = 0x58, //good-33526
+			//		StorageField = 0x10,//good-33526
+			//		ObjectType = 0x20,//good-33526
+			//		NextObject = 0x70,//good-33526
+			//		FirstObject = 0x18,//good-33526
+			//		LocalGUID = 0x58, //good-33526
 
-				while (nullptr != pObj && !((ULONG64)pObj & 1)) {
-					ss << " chaining ";
-					ss << pObj;
+			while (nullptr != pObj && !((ULONG64)pObj & 1)) {
 
-					pObj = *(PULONG64*)((PUINT8)pObj + 0x70);
+
+				//ss << "WowObject[" << (int)*((PUINT8)pObj + 0x20) << "]"<< std::endl; // type
+				WowObjectType* type = nullptr;
+
+				// search self in memory
+				//ss << Hexsearch<ULONG64>((PUINT8)pObj, pLocalPlayerGuid[0], 256) << std::endl;
+
+				PULONG64 pObjGuid = (PULONG64)((PUINT8)pObj + 0x58);
+				if (pObjGuid[0] == pLocalPlayerGuid[0] && pObjGuid[1] == pLocalPlayerGuid[1]) {
+					// found self!
+
+					//ss << "found self: " << std::endl;
+					//ss << Hexdump((PUINT8)pObj + 0x1600, 128) << std::endl;
+					ss << " X " << *(PFLOAT)((PUINT8)pObj + 0x1600);
+					ss << " Y " << *(PFLOAT)((PUINT8)pObj + 0x1604);
+					ss << " Z " << *(PFLOAT)((PUINT8)pObj + 0x1608);
+
+					ss << std::endl;
 				}
-			}
 
-			// ObjMgr.localGUID
-			{
-				// unsure if [pLocalGUID] is the localGuid or a ptr to the localGuid (I doubt it's a ptr)
-				PULONG64 pLocalGUID = (PULONG64)(pObjMgr + 0x58);
 
-				ss << " ObjMgr.localGUID=";
-				ss << *pLocalGUID;
-			}
-
-			// HEX dump of ObjMgr..ObjMgr + 256
-			if (false) {
-				ss << std::endl;
-				ss << "ObjMgr=";
-				ss << (PULONG64)pObjMgr;
-				ss << std::endl;
-
-				auto *ptr = reinterpret_cast<unsigned char *>(pObjMgr);
-
-				for (int i = 0; i < 256; i++, ptr++) 
-					ss << std::hex << std::setw(2) << static_cast<unsigned>(*ptr) << " ";
+				pObj = *(PULONG64*)((PUINT8)pObj + 0x70);
 			}
 
 			ss << std::endl;
-
-			if (false) {
-				ss << "first obj=";
-				ss << *(PULONG64*)(pObjMgr + 0xac);
-			}
 		}
 
 		dllLog(ss.str());
 	}
 }
+
+
 
 HRESULT __stdcall hkPresent(IDXGISwapChain * pThis, UINT SyncInterval, UINT Flags)
 {
