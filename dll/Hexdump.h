@@ -8,8 +8,8 @@
 template <unsigned RowSize, bool ShowAscii>
 struct CustomHexdump
 {
-	CustomHexdump(void* address, unsigned length) :
-		mAddress(static_cast<unsigned char*>(address)), mLength(length) { }
+	CustomHexdump(const void* address, unsigned length) :
+		mAddress(static_cast<const unsigned char*>(address)), mLength(length) { }
 	const unsigned char* mAddress;
 	const unsigned mLength;
 };

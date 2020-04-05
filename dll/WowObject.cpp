@@ -1,0 +1,1 @@
+#include "WowObject.h"

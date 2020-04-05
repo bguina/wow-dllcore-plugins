@@ -1,6 +1,8 @@
 #define WIN32_LEAN_AND_MEAN             // Exclude rarely-used stuff from Windows headers
-// Windows Header Files
 #include <Windows.h>
+
+#include <cstdint>
+
 #include <TlHelp32.h>
 #include <d3d11.h>
 #include <d3dcompiler.h>
@@ -10,8 +12,10 @@
 #include <string>
 #include <iomanip>
 #include <iostream>
-#include "include/Hexdump.hpp"
-#include "include/Hexsearch.hpp"
+#include "Hexdump.h"
+#include "Hexsearch.h"
+#include "ObjectManager.h"
+#include "WowObject.h"
 
 #pragma comment(lib, "d3d11.lib")
 #pragma comment(lib, "d3dcompiler.lib")
@@ -72,20 +76,6 @@ bool InitD3DHook(IDXGISwapChain* pSwapchain);
 void CleanupD3D();
 void Render();
 
-enum WowObjectType {
-	Object = 0,
-	Item = 1,
-	Container = 2,
-	Unit = 3,
-	Player = 4,
-	GameObject = 5,
-	DynamicObject = 6,
-	Corpse = 7,
-	AreaTrigger = 8,
-	SceneObject = 9,
-	Conversation = 10
-};
-
 // adding this code ripped off SO to find the "main window" as a fallback to RSGetViewports
 struct HandleData
 {
@@ -94,7 +84,7 @@ struct HandleData
 };
 HWND FindMainWindow(DWORD dwPID);
 
-const char* g_logfilePath = "D:\\mylogs.txt";
+const char* g_logfilePath = "D:\\nvtest.log";
 
 void dllResetLogs() {
 	//std::ofstream(g_logfilePath, std::fstream::in | std::fstream::out);
@@ -107,12 +97,11 @@ void dllLog(
 	std::ofstream(g_logfilePath, std::fstream::in | std::fstream::out | std::fstream::app) << msg << std::endl;
 }
 
-void MainThread(void* pHandle)
-{
+void MainThread(
+	void* pHandle
+) {
 	// Hook d3d
-	if (HookD3D())
-	{
-
+	if (HookD3D()) {
 		// END key to unload
 		while (!GetAsyncKeyState(VK_END));
 	}
@@ -124,8 +113,11 @@ void MainThread(void* pHandle)
 	CreateThread(0, 0, (LPTHREAD_START_ROUTINE)FreeLibrary, pHandle, 0, 0);
 }
 
-bool Hook(void* pSrc, void* pDst, size_t size)
-{
+bool Hook(
+	void* pSrc,
+	void* pDst,
+	size_t size
+) {
 	DWORD dwOld;
 	uintptr_t src = (uintptr_t)pSrc;
 	uintptr_t dst = (uintptr_t)pDst;
@@ -142,8 +134,11 @@ bool Hook(void* pSrc, void* pDst, size_t size)
 	return true;
 }
 
-bool WriteMem(void* pDst, char* pBytes, size_t size)
-{
+bool WriteMem(
+	void* pDst,
+	char* pBytes,
+	size_t size
+) {
 	DWORD dwOld;
 	if (!VirtualProtect(pDst, size, PAGE_EXECUTE_READWRITE, &dwOld)) {
 		dllLog("VirtualProtect Write failure");
@@ -230,8 +225,12 @@ bool HookD3D()
 	return Hook(ogPresent, pTrampoline, PRESENT_STUB_SIZE);
 }
 
-bool CompileShader(const char* szShader, const char * szEntrypoint, const char * szTarget, ID3D10Blob ** pBlob)
-{
+bool CompileShader(
+	const char* szShader,
+	const char * szEntrypoint,
+	const char * szTarget,
+	ID3D10Blob ** pBlob
+) {
 	ID3D10Blob* pErrorBlob = nullptr;
 
 	auto hr = D3DCompile(szShader, strlen(szShader), 0, nullptr, nullptr, szEntrypoint, szTarget, D3DCOMPILE_ENABLE_STRICTNESS, 0, pBlob, &pErrorBlob);
@@ -248,8 +247,9 @@ bool CompileShader(const char* szShader, const char * szEntrypoint, const char *
 	return true;
 }
 
-bool InitD3DHook(IDXGISwapChain * pSwapchain)
-{
+bool InitD3DHook(
+	IDXGISwapChain * pSwapchain
+) {
 	HRESULT hr = pSwapchain->GetDevice(__uuidof(ID3D11Device), (void**)&pDevice);
 	if (FAILED(hr))
 		return false;
@@ -467,14 +467,14 @@ void Render()
 	// find WowClassic.exe base address and log stuff
 	{
 		std::stringstream ss;
-		PUINT8 pBaseAddr = (PUINT8)GetModuleHandleA(0);
+		uint8_t* pModuleBaseAddr = (uint8_t*)GetModuleHandleA(0);
 
-		LPVOID 	ClickToMovePointer = (LPVOID)0x25A99F0; //good
+		LPVOID ClickToMovePointer = (LPVOID)0x25A99F0; //good
 		LPVOID ClickToMoveOffset = (LPVOID)0x5C;
 
 		// BuildVerion
 		if (false) {
-			char* pGameBuild = (char*)pBaseAddr + 0x1c46f0c;
+			char* pGameBuild = (char*)pModuleBaseAddr + 0x1c46f0c;
 
 			ss << "Build";
 			ss << pGameBuild;
@@ -484,13 +484,13 @@ void Render()
 		// GameState?
 		if (false) {
 			ss << " GameState ";
-			ss << *(PUINT16*)(pBaseAddr + 0x25A9E60);
+			ss << *(PUINT16*)(pModuleBaseAddr + 0x25A9E60);
 			// fun fact: we see boolean bit "isFalling"
 		}
 
 		// Realm name
 		{
-			PUINT8* pRealm = *(PUINT8**)(pBaseAddr + 0x2688058);
+			uint8_t** pRealm = *(uint8_t***)(pModuleBaseAddr + 0x2688058);
 
 			if (nullptr != pRealm) {
 				ss << " Realm ";
@@ -500,7 +500,7 @@ void Render()
 
 		// Zone name
 		{
-			char* pZoneText = *(char**)(pBaseAddr + 0x25A8C40);
+			char* pZoneText = *(char**)(pModuleBaseAddr + 0x25A8C40);
 
 			if (nullptr != pZoneText) {
 				ss << " Zone ";
@@ -510,7 +510,7 @@ void Render()
 
 		// Player name
 		{
-			char* pPlayerName = (char*)(pBaseAddr + 0x2688828);
+			char* pPlayerName = (char*)(pModuleBaseAddr + 0x2688828);
 
 			if (*pPlayerName != '\0') {
 				ss << " Player ";
@@ -519,58 +519,34 @@ void Render()
 		}
 
 		// Player GUID
-		PULONG64 pLocalPlayerGuid = (PULONG64)(pBaseAddr + 0x2688810);
+		uint64_t* pLocalPlayerGuid = (uint64_t*)(pModuleBaseAddr + 0x2688810);
 		ss << " LocalGuid=";
 		ss << std::hex << pLocalPlayerGuid[0] << pLocalPlayerGuid[1];
 
 		// Mouse-over object GUID
-		PULONG64 pMouseoverGuid = (PULONG64)(pBaseAddr + 0x25A9E68);
+		uint64_t* pMouseoverGuid = (uint64_t*)(pModuleBaseAddr + 0x25A9E68);
 
 		ss << " MouseOverGUID=";
 		ss << std::hex << pMouseoverGuid[0] << pMouseoverGuid[1];
 
-		PULONG64 pTargetGuid = (PULONG64)(pBaseAddr + 0x21E28A0);
+		uint64_t* pTargetGuid = (uint64_t*)(pModuleBaseAddr + 0x21E28A0);
 
 		ss << " TargetGUID=";
 		ss << std::hex << pTargetGuid[0] << pTargetGuid[1] << std::endl;
 
 		// Object Manager
-		PUINT8 pObjMgr = *(PUINT8*)(pBaseAddr + 0x2387C88);
+		uint8_t* pObjMgr = *(uint8_t**)(pModuleBaseAddr + 0x2387C88);
 
-		if (nullptr != pObjMgr) {
-			// iterate WowObjects
-			PULONG64 pObj = *(PULONG64*)(pObjMgr + 0x18); // first obj
+		if (NULL != pObjMgr) {
+			ObjectManager objMgr(pObjMgr);
 
-			//		StorageField = 0x10,//good-33526
-			//		ObjectType = 0x20,//good-33526
-			//		NextObject = 0x70,//good-33526
-			//		FirstObject = 0x18,//good-33526
-			//		LocalGUID = 0x58, //good-33526
+			ss << objMgr << std::endl;
 
-			while (nullptr != pObj && !((ULONG64)pObj & 1)) {
+			// iterate ObjectManger linked list
+			for (auto pObj = objMgr.firstObject(); NULL != pObj && !((ULONG64)pObj & 1); pObj = objMgr.nextObject(pObj)) {
+				WowObject obj(pObj);
 
-
-				//ss << "WowObject[" << (int)*((PUINT8)pObj + 0x20) << "]"<< std::endl; // type
-				WowObjectType* type = nullptr;
-
-				// search self in memory
-				//ss << Hexsearch<ULONG64>((PUINT8)pObj, pLocalPlayerGuid[0], 256) << std::endl;
-
-				PULONG64 pObjGuid = (PULONG64)((PUINT8)pObj + 0x58);
-				if (pObjGuid[0] == pLocalPlayerGuid[0] && pObjGuid[1] == pLocalPlayerGuid[1]) {
-					// found self!
-
-					//ss << "found self: " << std::endl;
-					//ss << Hexdump((PUINT8)pObj + 0x1600, 128) << std::endl;
-					ss << " X " << *(PFLOAT)((PUINT8)pObj + 0x1600);
-					ss << " Y " << *(PFLOAT)((PUINT8)pObj + 0x1604);
-					ss << " Z " << *(PFLOAT)((PUINT8)pObj + 0x1608);
-
-					ss << std::endl;
-				}
-
-
-				pObj = *(PULONG64*)((PUINT8)pObj + 0x70);
+				ss << obj << std::endl;
 			}
 
 			ss << std::endl;
@@ -582,8 +558,11 @@ void Render()
 
 
 
-HRESULT __stdcall hkPresent(IDXGISwapChain * pThis, UINT SyncInterval, UINT Flags)
-{
+HRESULT __stdcall hkPresent(
+	IDXGISwapChain * pThis, 
+	UINT SyncInterval, 
+	UINT Flags
+) {
 	pSwapchain = pThis;
 
 	if (!pDevice)
@@ -598,8 +577,10 @@ HRESULT __stdcall hkPresent(IDXGISwapChain * pThis, UINT SyncInterval, UINT Flag
 	return ogPresentTramp(pThis, SyncInterval, Flags);
 }
 
-BOOL CALLBACK EnumWindowsCallback(HWND hWnd, LPARAM lParam)
-{
+BOOL CALLBACK EnumWindowsCallback(
+	HWND hWnd, 
+	LPARAM lParam
+) {
 	HandleData& data = *(HandleData*)lParam;
 	DWORD pid = 0;
 	GetWindowThreadProcessId(hWnd, &pid);

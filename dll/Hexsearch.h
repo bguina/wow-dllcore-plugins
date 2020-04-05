@@ -1,5 +1,4 @@
-#ifndef HEXSEARCH_HPP
-#define HEXSEARCH_HPP
+#pragma once
 
 #include <cctype>
 #include <iomanip>
@@ -8,7 +7,7 @@
 template <class T>
 struct Hexsearch
 {
-	Hexsearch(void * address, const T& data, unsigned length) :
+	Hexsearch(const void * address, const T& data, unsigned length) :
 		mAddress((static_cast<char const*>(address))), mData(reinterpret_cast<char const*>(&data)), mSz(sizeof(data)), mLength(length) { }
 	const char const* mAddress;
 	const char const* mData;
@@ -26,6 +25,3 @@ std::ostream& operator<<(std::ostream& out, const Hexsearch<T>& dump)
 	out << std::endl;
 	return out;
 }
-
-
-#endif // HEXDUMP_HPP

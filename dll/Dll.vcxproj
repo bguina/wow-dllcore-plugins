@@ -117,10 +117,18 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="DllMain.cpp" />
+    <ClCompile Include="MemoryObject.cpp" />
+    <ClCompile Include="ObjectManager.cpp" />
+    <ClCompile Include="WowObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="D3D_VMT_Indices.h" />
+    <ClInclude Include="Hexdump.h" />
+    <ClInclude Include="Hexsearch.h" />
+    <ClInclude Include="MemoryObject.h" />
+    <ClInclude Include="ObjectManager.h" />
     <ClInclude Include="shadez.h" />
+    <ClInclude Include="WowObject.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
