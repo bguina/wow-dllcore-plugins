@@ -31,7 +31,7 @@ inline std::ostream& operator<<(
 	const ObjectManager& objMgr
 	)
 {
-	out << "found ObjectManager at 0x" << std::hex << (uint64_t)objMgr.baseAddress() << std::endl;
+	out << "found ObjectManager at " << (void*)objMgr.baseAddress() << std::endl;
 
 	// iterate ObjectManger linked list
 	for (
@@ -60,6 +60,8 @@ inline std::ostream& operator<<(
 		case WowObject::Invalid:  out << obj; break;
 		default:  out << obj; break;
 		}
+
+		out << std::endl;
 	}
 
 	return out;

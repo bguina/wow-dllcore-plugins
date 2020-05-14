@@ -24,24 +24,52 @@ public:
 		Druid = 11
 	};
 
-	const uint8_t* getUnitDescriptor() const {
-		return baseAddress() + 0x10;
+	WoWUnitClass getUnitClass() const {
+		return static_cast<WoWUnitClass>(*(getDescriptor() + 0xD1));
 	}
 
-	const WoWUnitClass getUnitClass() const {
-		return static_cast<WoWUnitClass>(*(getUnitDescriptor() + 0xD1));
+	std::string getUnitClassLabel() const {
+		switch (getUnitClass()) {
+		case Warrior: return "Warrior";
+		case Paladin: return "Paladin";
+		case Hunter: return "Hunter";
+		case Rogue: return "Rogue";
+		case Priest: return "Priest";
+		case DeathKnight: return "DeathKnight";
+		case Shaman: return "Shaman";
+		case Mage: return "Mage";
+		case Warlock: return "Warlock";
+		case Druid: return "Druid";
+		default: return "Unit";
+		}
 	}
 
-	const int getUnitRace() const {
-		return *(getUnitDescriptor() + 0x158);
+	int getUnitRace() const {
+		return *(getDescriptor() + 0x158);
 	}
 
-	const int getUnitLevel() const {
-		return *(getUnitDescriptor() + 0x134);
+	int getUnitLevel() const {
+		return *(getDescriptor() + 0x134);
 	}
 
-	const uint64_t getTargetGuid() const {
-		return *(getUnitDescriptor() + 0x9C);
+	int getUnitHealth() const {
+		return *reinterpret_cast<const uint32_t*>(getDescriptor() + 0xDC);
+	}
+
+	int getUnitMaxHealth() const {
+		return *reinterpret_cast<const uint32_t*>(getDescriptor() + 0xFC);
+	}
+
+	int getUnitEnergy() const {
+		return *reinterpret_cast<const uint32_t*>(getDescriptor() + 0xE4);
+	}
+
+	int getUnitMaxEnergy() const {
+		return *reinterpret_cast<const uint32_t*>((getDescriptor() + 0x104));
+	}
+
+	uint64_t getTargetGuid() const {
+		return *reinterpret_cast<const uint32_t*>(getDescriptor() + 0x00);
 	}
 };
 
@@ -50,7 +78,10 @@ inline std::ostream& operator<<(
 	const WowUnitObject& obj
 	)
 {
-	out << "Object ["<< (void*)obj.baseAddress() << "] descriptor at [" << (void*)obj.getUnitDescriptor() << "] is unit with level=" << obj.getUnitLevel() << " class=" << obj.getUnitClass() << /*" race=" << obj.getUnitRace() << " target=" << obj.getTargetGuid() << */std::endl;
+	out << (WowObject)obj
+		<< ": [LVL" << obj.getUnitLevel() << "]" << obj.getUnitClassLabel()
+		<< " health=" << obj.getUnitHealth() << "/" << obj.getUnitMaxHealth()
+		<< " energy=" << obj.getUnitEnergy() << "/" << obj.getUnitMaxEnergy();
 	return out;
 }
 

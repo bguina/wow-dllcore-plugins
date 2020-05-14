@@ -15,7 +15,7 @@ public:
 	) : MemoryObject(baseAddr)
 	{}
 
-	enum Type {
+	enum Type : uint8_t {
 		Object = 0,
 		Item = 1,
 		Container = 2,
@@ -36,16 +36,12 @@ public:
 		Invalid = 17
 	};
 
+	const uint8_t* getDescriptor() const {
+		return *(uint8_t**)(baseAddress() + 0x10);
+	}
+
 	uint64_t getGuid() const {
-		return *(uint64_t*)(baseAddress() + 0x04);
-	}
-
-	uint64_t getGuid2() const {
 		return *(uint64_t*)(baseAddress() + 0x58);
-	}
-
-	uint64_t getGuid3() const {
-		return *(uint64_t*)(baseAddress() + 0x5C);
 	}
 
 	//		StorageField = 0x10,//good-33526
@@ -55,7 +51,7 @@ public:
 	//		LocalGUID = 0x58, //good-33526
 
 	Type getType() const {
-		return static_cast<WowObject::Type>(*(baseAddress() + 0x20));
+		return (WowObject::Type)(*(baseAddress() + 0x20));
 	}
 
 	std::string getTypeLabel() const {
@@ -94,6 +90,10 @@ public:
 		return *(float*)(baseAddress() + 0x1608);
 	}
 
+	float getFacing() const {
+		return *(float*)(baseAddress() + 0x160C);
+	}
+
 	void* vtableAt(unsigned index) {
 		return ((void**)baseAddress())[index];
 	}
@@ -106,12 +106,12 @@ inline std::ostream& operator<<(
 	const WowObject& obj
 	)
 {
-	out << obj.getTypeLabel() << "@" << obj.getX() << "," << obj.getY() << "," << obj.getZ() << "GUIDs: " << obj.getGuid2() << std::endl;
+	out << obj.getTypeLabel() << "[GUID " << obj.getGuid() << "]@" << obj.getX() << "," << obj.getY();
 
-	if (false && WowObject::Type::ActivePlayer == obj.getType()) {
-		out << Hexdump(*reinterpret_cast<const void* const*>(obj.baseAddress()), 16 * 5) << std::endl;
-		//out << Hexsearch<uint64_t>(*reinterpret_cast<const void* const*>(obj.baseAddress()), 0x8CAE30, 16 * 5) << std::endl;
-	}
+	//if (false && WowObject::Type::ActivePlayer == obj.getType()) {
+	//	out << Hexdump(*reinterpret_cast<const void* const*>(obj.baseAddress()), 16 * 5) << std::endl;
+	//	//out << Hexsearch<uint64_t>(*reinterpret_cast<const void* const*>(obj.baseAddress()), 0x8CAE30, 16 * 5) << std::endl;
+	//}
 
 	return out;
 }
