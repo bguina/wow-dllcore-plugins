@@ -41,6 +41,21 @@ public:
 		}
 		return NULL;
 	}
+
+
+	const uint8_t* getSomeBoar() const {
+		for (
+			auto pObj = firstObject();
+			NULL != pObj;
+			pObj = nextObject(pObj)
+			) {
+			WowObject obj(pObj);
+
+			if (obj.getType() == WowObject::Unit)
+				return pObj;
+		}
+		return NULL;
+	}
 };
 
 inline std::ostream& operator<<(

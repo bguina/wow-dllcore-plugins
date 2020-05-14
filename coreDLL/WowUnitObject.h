@@ -71,6 +71,7 @@ public:
 	uint64_t getTargetGuid() const {
 		return *reinterpret_cast<const uint32_t*>(getDescriptor() + 0x00);
 	}
+
 };
 
 inline std::ostream& operator<<(

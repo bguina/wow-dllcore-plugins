@@ -44,6 +44,10 @@ public:
 		return *(uint64_t*)(baseAddress() + 0x58);
 	}
 
+	const uint32_t*getGuidPointer() const {
+		return (uint32_t*)(baseAddress() + 0x58);
+	}
+
 	//		StorageField = 0x10,//good-33526
 	//		ObjectType = 0x20,//good-33526
 	//		NextObject = 0x70,//good-33526
