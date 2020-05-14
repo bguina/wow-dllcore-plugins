@@ -15,13 +15,13 @@
 #include <string>
 #include <iomanip>
 #include <iostream>
-#include "Hexdump.h"
-#include "Hexsearch.h"
-#include "ObjectManager.h"
-#include "WowObject.h"
 
 #include "ServerSDK.h"
 #include "MessageManager.h"
+
+#include "Hexdump.h"
+#include "Hexsearch.h"
+#include "WowGame.h"
 
 #pragma comment(lib, "d3d11.lib")
 #pragma comment(lib, "d3dcompiler.lib")
@@ -461,133 +461,54 @@ void CleanupD3D()
 ULONG64 bootTime = 0;
 ULONG64 lastPulse = 0;
 
+void drawSomeTriangle() {
+	// Make sure our render target is set.
+	pContext->OMSetRenderTargets(1, &pRenderTargetView, nullptr);
+
+	// Update view
+	ConstantBuffer cb;
+	cb.mProjection = XMMatrixTranspose(mOrtho);
+	pContext->UpdateSubresource(pConstantBuffer, 0, nullptr, &cb, 0, 0);
+	pContext->VSSetConstantBuffers(0, 1, &pConstantBuffer);
+
+	// Make sure the input assembler knows how to process our verts/indices
+	UINT stride = sizeof(Vertex);
+	UINT offset = 0;
+	pContext->IASetVertexBuffers(0, 1, &pVertexBuffer, &stride, &offset);
+	pContext->IASetInputLayout(pVertexLayout);
+	pContext->IASetIndexBuffer(pIndexBuffer, DXGI_FORMAT_R32_UINT, 0);
+	pContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+	// Set the shaders we need to render our triangle
+	pContext->VSSetShader(pVertexShader, nullptr, 0);
+	pContext->PSSetShader(pPixelShader, nullptr, 0);
+
+	// Set viewport to context
+	pContext->RSSetViewports(1, pViewports);
+
+	pContext->DrawIndexed(3, 0, 0);
+}
+
+void gamePulse() {
+	std::stringstream ss;
+	uint8_t* pModuleBaseAddr = (uint8_t*)GetModuleHandleA(0);
+	WowGame game(pModuleBaseAddr);
+
+	ss << game << std::endl;
+	dllLog(ss.str());
+}
+
 void Render()
 {
+	drawSomeTriangle();
+
 	auto uptime = GetTickCount64();
 	if (lastPulse + 500 < uptime) {
 		lastPulse = uptime;
 	}
 	else return;
 
-	// Draw our triangle
-	{
-		// Make sure our render target is set.
-		pContext->OMSetRenderTargets(1, &pRenderTargetView, nullptr);
-
-		// Update view
-		ConstantBuffer cb;
-		cb.mProjection = XMMatrixTranspose(mOrtho);
-		pContext->UpdateSubresource(pConstantBuffer, 0, nullptr, &cb, 0, 0);
-		pContext->VSSetConstantBuffers(0, 1, &pConstantBuffer);
-
-		// Make sure the input assembler knows how to process our verts/indices
-		UINT stride = sizeof(Vertex);
-		UINT offset = 0;
-		pContext->IASetVertexBuffers(0, 1, &pVertexBuffer, &stride, &offset);
-		pContext->IASetInputLayout(pVertexLayout);
-		pContext->IASetIndexBuffer(pIndexBuffer, DXGI_FORMAT_R32_UINT, 0);
-		pContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
-		// Set the shaders we need to render our triangle
-		pContext->VSSetShader(pVertexShader, nullptr, 0);
-		pContext->PSSetShader(pPixelShader, nullptr, 0);
-
-		// Set viewport to context
-		pContext->RSSetViewports(1, pViewports);
-
-		pContext->DrawIndexed(3, 0, 0);
-	}
-
-	// find WowClassic.exe base address and log stuff
-	{
-		std::stringstream ss;
-		uint8_t* pModuleBaseAddr = (uint8_t*)GetModuleHandleA(0);
-
-		LPVOID ClickToMovePointer = (LPVOID)0x25A99F0; //good
-		LPVOID ClickToMoveOffset = (LPVOID)0x5C;
-
-		// BuildVerion
-		if (false) {
-			char* pGameBuild = (char*)pModuleBaseAddr + 0x1c46f0c;
-
-			ss << "Build";
-			ss << pGameBuild;
-			ss << ":";
-		}
-
-		// GameState?
-		if (false) {
-			ss << " GameState ";
-			ss << *(PUINT16*)(pModuleBaseAddr + 0x25A9E60);
-			// fun fact: we see boolean bit "isFalling"
-		}
-
-		// Realm name
-		{
-			uint8_t** pRealm = *(uint8_t***)(pModuleBaseAddr + 0x2688058);
-
-			if (nullptr != pRealm) {
-				ss << " Realm ";
-				ss << ((char*)pRealm + 0x420); // realm name at RealmObj+0x420
-			}
-		}
-
-		// Zone name
-		{
-			char* pZoneText = *(char**)(pModuleBaseAddr + 0x25A8C40);
-
-			if (nullptr != pZoneText) {
-				ss << " Zone ";
-				ss << pZoneText;
-			}
-		}
-
-		// Player name
-		{
-			char* pPlayerName = (char*)(pModuleBaseAddr + 0x2688828);
-
-			if (*pPlayerName != '\0') {
-				ss << " Player ";
-				ss << pPlayerName;
-			}
-		}
-
-		// Player GUID
-		uint64_t* pLocalPlayerGuid = (uint64_t*)(pModuleBaseAddr + 0x2688810);
-		ss << " LocalGuid=";
-		ss << std::hex << pLocalPlayerGuid[0] << pLocalPlayerGuid[1];
-
-		// Mouse-over object GUID
-		uint64_t* pMouseoverGuid = (uint64_t*)(pModuleBaseAddr + 0x25A9E68);
-
-		ss << " MouseOverGUID=";
-		ss << std::hex << pMouseoverGuid[0] << pMouseoverGuid[1];
-
-		uint64_t* pTargetGuid = (uint64_t*)(pModuleBaseAddr + 0x21E28A0);
-
-		ss << " TargetGUID=";
-		ss << std::hex << pTargetGuid[0] << pTargetGuid[1] << std::endl;
-
-		// Object Manager
-		uint8_t* pObjMgr = *(uint8_t**)(pModuleBaseAddr + 0x2372D48);
-
-		if (NULL != pObjMgr) {
-			ObjectManager objMgr(pObjMgr);
-
-			ss << objMgr << std::endl;
-
-			// iterate ObjectManger linked list
-			for (auto pObj = objMgr.firstObject(); NULL != pObj && !((ULONG64)pObj & 1); pObj = objMgr.nextObject(pObj)) {
-				WowObject obj(pObj);
-
-				ss << obj << std::endl;
-			}
-
-			ss << std::endl;
-		}
-
-		dllLog(ss.str());
-	}
+	gamePulse();
 }
 
 HRESULT __stdcall hkPresent(

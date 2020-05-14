@@ -10,7 +10,6 @@ public:
 	) : mBaseAddr(baseAddr) {
 	}
 
-
 	void rebase(
 		const uint8_t* baseAddr
 	) {

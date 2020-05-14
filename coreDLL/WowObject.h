@@ -58,22 +58,6 @@ public:
 		return static_cast<WowObject::Type>(*(baseAddress() + 0x20));
 	}
 
-	const uint8_t* getUnitDescriptor() const {
-		return baseAddress() + 0x10;
-	}
-
-	const int getUnitClass() const {
-		return *(getUnitDescriptor() + 0xD1);
-	}
-
-	const int getUnitRace() const {
-		return *(getUnitDescriptor() + 0x158);
-	}
-
-	const uint64_t getTargetGuid() const {
-		return *(getUnitDescriptor() + 0x9C);
-	}
-
 	std::string getTypeLabel() const {
 		switch (getType()) {
 		case Object:return  "Object";
@@ -123,10 +107,6 @@ inline std::ostream& operator<<(
 	)
 {
 	out << obj.getTypeLabel() << "@" << obj.getX() << "," << obj.getY() << "," << obj.getZ() << "GUIDs: " << obj.getGuid() << "  " << obj.getGuid2() << "  " << obj.getGuid3() << std::endl;
-
-	if (WowObject::Type::Unit == obj.getType() || WowObject::Type::ActivePlayer == obj.getType()) {
-		out << "Object is unit with class=" << obj.getUnitClass() << " race=" << obj.getUnitRace() << " target=" << obj.getTargetGuid() << std::endl;
-	}
 
 	if (false && WowObject::Type::ActivePlayer == obj.getType()) {
 		out << Hexdump(*reinterpret_cast<const void* const*>(obj.baseAddress()), 16 * 5) << std::endl;

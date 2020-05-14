@@ -42,6 +42,12 @@
     <ClInclude Include="MemoryObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="WowUnitObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WowGame.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
