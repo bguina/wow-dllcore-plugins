@@ -13,10 +13,6 @@ public:
 		const uint8_t* baseAddr
 	) : MemoryObject(baseAddr) {}
 
-	const HWND getWindowHandle() const {
-		return FindWindow(NULL, _T("World of Warcraft"));
-	}
-
 	const ObjectManager getObjectManager() const {
 		return ObjectManager(*(const uint8_t**)(baseAddress() + 0x2372D48));
 	}
@@ -94,6 +90,7 @@ inline std::ostream& operator<<(
 {
 	ObjectManager objMgr = obj.getObjectManager();
 
+	out << "[WowGame@" << (void*)objMgr.baseAddress() << "]" << std::endl;
 	out << objMgr << std::endl;
 
 	return out;

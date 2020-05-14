@@ -90,7 +90,7 @@ public:
 		return *(float*)(baseAddress() + 0x1608);
 	}
 
-	float getFacing() const {
+	float getFacingRadians() const {
 		return *(float*)(baseAddress() + 0x1610);
 	}
 
@@ -106,7 +106,8 @@ inline std::ostream& operator<<(
 	const WowObject& obj
 	)
 {
-	out << obj.getTypeLabel() << "[GUID " << obj.getGuid() << "]@" << obj.getX() << "," << obj.getY() << " facing " << obj.getFacing();
+	out << "[WowObject@" << (void*)obj.baseAddress() << "]" << std::endl;
+	out << obj.getTypeLabel() << "[GUID 0x" << (void*)obj.getGuid() << "]@" << obj.getX() << "," << obj.getY() << " facing " << obj.getFacingRadians();
 
 	//if (false && WowObject::Type::ActivePlayer == obj.getType()) {
 	//	out << Hexdump(*reinterpret_cast<const void* const*>(obj.baseAddress()), 16 * 5) << std::endl;

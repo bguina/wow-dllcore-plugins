@@ -497,7 +497,7 @@ void gamePulse() {
 
 	ss << game << std::endl;
 
-	WowNavigator bot = WowNavigator(game);
+	WowNavigator bot = WowNavigator(FindMainWindow(GetCurrentProcessId()), game);
 
 	bot.run();
 

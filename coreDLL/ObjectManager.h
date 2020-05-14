@@ -48,7 +48,7 @@ inline std::ostream& operator<<(
 	const ObjectManager& objMgr
 	)
 {
-	out << "found ObjectManager at " << (void*)objMgr.baseAddress() << std::endl;
+	out << "[ObjectManager@" << (void*)objMgr.baseAddress() << "]" << std::endl;
 
 	// iterate ObjectManger linked list
 	for (

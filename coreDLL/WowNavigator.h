@@ -8,42 +8,50 @@ class WowNavigator
 {
 public:
 	WowNavigator(
+		HWND window,
 		WowGame game
-	) : mGame(game), mForward(false) {}
+	) : mWindow(window), mGame(game), mForward(false) {}
 
 	void run() {
-		WowUnitObject self = mGame.getObjectManager().getSelf();
+		WowUnitObject self = WowUnitObject(mGame.getObjectManager().getSelf());
 
-		moveForward(self.getFacing() > 3.0);
+		moveForward(self.getFacingRadians() > 3.0);
 	}
 
 	bool isMovingForward() {
 		return mForward;
 	}
 
+	const WowGame& getGame() const {
+		return mGame;
+	}
+
+	HWND getWindowHandle() const {
+		return mWindow;
+	}
+
 protected:
+	HWND mWindow;
 	WowGame& mGame;
 	bool mForward;
 
 private:
 	void moveForward(boolean doMove) {
-		HWND windowHandle = mGame.getWindowHandle();
-
-		// Keycodes found at http:// ...
-		int forwardKey = 0x57; // 'Z'
-		int leftKey = 0x51; // 'Q'
-		int rightKey = 0x41; // 'A'
+		// Keycodes found at https://docs.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes
+		int forwardKey = 0x57; // 'W'
+		int strafeLeft = 0x51; // 'Q'
+		int leftKey = 0x41; // 'A'
 
 		// Flags found with Spy++
 		int keyDownFlags = 0x00110001;
 		int keyUpFlags = 0xC0110001;
 
 		if (doMove) {
-			PostMessage(windowHandle, WM_KEYDOWN, forwardKey, keyDownFlags);
+			PostMessage(mWindow, WM_KEYDOWN, forwardKey, keyDownFlags);
 			mForward = true;
 		}
 		else {
-			PostMessage(windowHandle, WM_KEYUP, forwardKey, keyUpFlags);
+			PostMessage(mWindow, WM_KEYUP, forwardKey, keyUpFlags);
 			mForward = false;
 		}
 	}
@@ -54,6 +62,7 @@ inline std::ostream& operator<<(
 	const class WowNavigator& obj
 	)
 {
+	out << "[WowNavigator] found window handle " << obj.getWindowHandle();
 	// TODO print navigator state
 	return out;
 }
