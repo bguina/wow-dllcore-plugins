@@ -29,11 +29,15 @@ public:
 	}
 
 	const WoWUnitClass getUnitClass() const {
-		return (WoWUnitClass)*(getUnitDescriptor() + 0xD1);
+		return static_cast<WoWUnitClass>(*(getUnitDescriptor() + 0xD1));
 	}
 
 	const int getUnitRace() const {
 		return *(getUnitDescriptor() + 0x158);
+	}
+
+	const int getUnitLevel() const {
+		return *(getUnitDescriptor() + 0x134);
 	}
 
 	const uint64_t getTargetGuid() const {
@@ -46,8 +50,7 @@ inline std::ostream& operator<<(
 	const WowUnitObject& obj
 	)
 {
-	out << (WowObject)obj;
-	out << "Object is unit with class=" << obj.getUnitClass() << " race=" << obj.getUnitRace() << " target=" << obj.getTargetGuid() << std::endl;
+	out << "Object is unit with level=" << obj.getUnitLevel() << " class=" << obj.getUnitClass() << /*" race=" << obj.getUnitRace() << " target=" << obj.getTargetGuid() << */std::endl;
 	return out;
 }
 

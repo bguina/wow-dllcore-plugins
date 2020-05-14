@@ -106,7 +106,7 @@ inline std::ostream& operator<<(
 	const WowObject& obj
 	)
 {
-	out << obj.getTypeLabel() << "@" << obj.getX() << "," << obj.getY() << "," << obj.getZ() << "GUIDs: " << obj.getGuid() << "  " << obj.getGuid2() << "  " << obj.getGuid3() << std::endl;
+	out << obj.getTypeLabel() << "@" << obj.getX() << "," << obj.getY() << "," << obj.getZ() << "GUIDs: " << obj.getGuid2() << std::endl;
 
 	if (false && WowObject::Type::ActivePlayer == obj.getType()) {
 		out << Hexdump(*reinterpret_cast<const void* const*>(obj.baseAddress()), 16 * 5) << std::endl;

@@ -42,23 +42,23 @@ inline std::ostream& operator<<(
 		WowObject obj(pObj);
 
 		switch (obj.getType()) {
-		case WowObject::Object: out << obj;
-		case WowObject::Item: out << obj;
-		case WowObject::Container: out << obj;
-		case WowObject::Unit: out << WowUnitObject(pObj);
-		case WowObject::Player:  out << obj;
-		case WowObject::ActivePlayer:   out << obj;
-		case WowObject::GameObject:  out << obj;
-		case WowObject::DynamicObject:   out << obj;
-		case WowObject::Corpse: out << obj;
-		case WowObject::AreaTrigger:  out << obj;
-		case WowObject::Scene:  out << obj;
-		case WowObject::Conversation:  out << obj;
-		case WowObject::AiGroup:   out << obj;
-		case WowObject::Scenario:  out << obj;
-		case WowObject::Loot:  out << obj;
-		case WowObject::Invalid:  out << obj;
-		default:  out << obj;
+		case WowObject::Object: out << obj; break;
+		case WowObject::Item: out << obj; break;
+		case WowObject::Container: out << obj; break;
+		case WowObject::Unit: out << WowUnitObject(pObj); break;
+		case WowObject::Player:  out << WowUnitObject(pObj); break;
+		case WowObject::ActivePlayer:   out << WowUnitObject(pObj); break;
+		case WowObject::GameObject:  out << obj; break;
+		case WowObject::DynamicObject:   out << obj; break;
+		case WowObject::Corpse: out << obj; break;
+		case WowObject::AreaTrigger:  out << obj; break;
+		case WowObject::Scene:  out << obj; break;
+		case WowObject::Conversation:  out << obj; break;
+		case WowObject::AiGroup:   out << obj; break;
+		case WowObject::Scenario:  out << obj; break;
+		case WowObject::Loot:  out << obj; break;
+		case WowObject::Invalid:  out << obj; break;
+		default:  out << obj; break;
 		}
 	}
 
