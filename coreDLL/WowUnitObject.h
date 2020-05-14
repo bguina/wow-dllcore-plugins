@@ -50,7 +50,7 @@ inline std::ostream& operator<<(
 	const WowUnitObject& obj
 	)
 {
-	out << "Object is unit with level=" << obj.getUnitLevel() << " class=" << obj.getUnitClass() << /*" race=" << obj.getUnitRace() << " target=" << obj.getTargetGuid() << */std::endl;
+	out << "Object ["<< obj.baseAddress() << "] descriptor at [" << obj.getUnitDescriptor() << "] is unit with level=" << obj.getUnitLevel() << " class=" << obj.getUnitClass() << /*" race=" << obj.getUnitRace() << " target=" << obj.getTargetGuid() << */std::endl;
 	return out;
 }
 
