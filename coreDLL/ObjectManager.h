@@ -22,7 +22,24 @@ public:
 	}
 
 	const uint8_t* nextObject(const uint8_t* currentObject) const {
-		return *(uint8_t**)(currentObject + 0x70);
+		uint8_t* next = *(uint8_t**)(currentObject + 0x70);
+
+		if (((uint64_t)next & 1)) return NULL;
+		return next;
+	}
+
+	const uint8_t* getSelf() const {
+		for (
+			auto pObj = firstObject();
+			NULL != pObj;
+			pObj = nextObject(pObj)
+			) {
+			WowObject obj(pObj);
+
+			if (obj.getType() == WowObject::ActivePlayer) 
+				return pObj;
+		}
+		return NULL;
 	}
 };
 
@@ -36,7 +53,7 @@ inline std::ostream& operator<<(
 	// iterate ObjectManger linked list
 	for (
 		auto pObj = objMgr.firstObject();
-		NULL != pObj && !((uint64_t)pObj & 1);
+		NULL != pObj;
 		pObj = objMgr.nextObject(pObj)
 		) {
 		WowObject obj(pObj);

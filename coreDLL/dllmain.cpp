@@ -22,6 +22,7 @@
 #include "Hexdump.h"
 #include "Hexsearch.h"
 #include "WowGame.h"
+#include "WowNavigator.h"
 
 #pragma comment(lib, "d3d11.lib")
 #pragma comment(lib, "d3dcompiler.lib")
@@ -495,6 +496,11 @@ void gamePulse() {
 	WowGame game(pModuleBaseAddr);
 
 	ss << game << std::endl;
+
+	WowNavigator bot = WowNavigator(game);
+
+	bot.run();
+
 	dllLog(ss.str());
 }
 

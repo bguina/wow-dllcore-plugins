@@ -1,6 +1,8 @@
 #pragma once
 
 #include <iostream>
+#include <tchar.h>
+#include <Windows.h>
 #include "ObjectManager.h"
 #include "MemoryObject.h"
 
@@ -10,6 +12,10 @@ public:
 	WowGame(
 		const uint8_t* baseAddr
 	) : MemoryObject(baseAddr) {}
+
+	const HWND getWindowHandle() const {
+		return FindWindow(NULL, _T("World of Warcraft"));
+	}
 
 	const ObjectManager getObjectManager() const {
 		return ObjectManager(*(const uint8_t**)(baseAddress() + 0x2372D48));

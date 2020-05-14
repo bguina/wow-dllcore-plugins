@@ -2,34 +2,51 @@
 
 #include <iostream>
 #include "WowGame.h"
+#include "Windows.h"
 
 class WowNavigator
 {
 public:
 	WowNavigator(
 		WowGame game
-	){}
+	) : mGame(game), mForward(false) {}
+
+	void run() {
+		WowUnitObject self = mGame.getObjectManager().getSelf();
+
+		moveForward(self.getFacing() > 3.0);
+	}
+
+	bool isMovingForward() {
+		return mForward;
+	}
 
 protected:
-    /*HWND wowWindow = FindWindow(NULL, _T("World of Warcraft"));
+	WowGame& mGame;
+	bool mForward;
 
-            //0x57 -> W
-            //0x51 -> Q
-            //0x41 -> A
+private:
+	void moveForward(boolean doMove) {
+		HWND windowHandle = mGame.getWindowHandle();
 
-            //PostMessage(wowWindow, WM_KEYDOWN, 0x41, 0x00110001); //Flags found with spy++
-            //PostMessage(notepad, WM_CHAR, 'w', 0);
-            //Sleep(2000);
-            //PostMessage(wowWindow, WM_KEYUP, 0x41, 0xC0110001);  //Flags found with spy++
+		// Keycodes found at http:// ...
+		int forwardKey = 0x57; // 'Z'
+		int leftKey = 0x51; // 'Q'
+		int rightKey = 0x41; // 'A'
 
+		// Flags found with Spy++
+		int keyDownFlags = 0x00110001;
+		int keyUpFlags = 0xC0110001;
 
-
-            //SendMessage(notepad, WM_KEYDOWN, 'w', 0);
-            //Sleep(3000);
-
-            //PostMessage(notepad, WM_CHAR, 'w', 0);
-    */
-
+		if (doMove) {
+			PostMessage(windowHandle, WM_KEYDOWN, forwardKey, keyDownFlags);
+			mForward = true;
+		}
+		else {
+			PostMessage(windowHandle, WM_KEYUP, forwardKey, keyUpFlags);
+			mForward = false;
+		}
+	}
 };
 
 inline std::ostream& operator<<(

@@ -91,7 +91,7 @@ public:
 	}
 
 	float getFacing() const {
-		return *(float*)(baseAddress() + 0x160C);
+		return *(float*)(baseAddress() + 0x1610);
 	}
 
 	void* vtableAt(unsigned index) {
@@ -106,7 +106,7 @@ inline std::ostream& operator<<(
 	const WowObject& obj
 	)
 {
-	out << obj.getTypeLabel() << "[GUID " << obj.getGuid() << "]@" << obj.getX() << "," << obj.getY();
+	out << obj.getTypeLabel() << "[GUID " << obj.getGuid() << "]@" << obj.getX() << "," << obj.getY() << " facing " << obj.getFacing();
 
 	//if (false && WowObject::Type::ActivePlayer == obj.getType()) {
 	//	out << Hexdump(*reinterpret_cast<const void* const*>(obj.baseAddress()), 16 * 5) << std::endl;

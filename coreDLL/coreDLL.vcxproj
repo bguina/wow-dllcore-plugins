@@ -164,6 +164,7 @@
     <ClInclude Include="pch.h" />
     <ClInclude Include="shadez.h" />
     <ClInclude Include="WowGame.h" />
+    <ClInclude Include="WowNavigator.h" />
     <ClInclude Include="WowObject.h" />
     <ClInclude Include="WowUnitObject.h" />
   </ItemGroup>
