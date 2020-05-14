@@ -585,7 +585,7 @@ void Render()
 
 				//int64 fastcall Unit_GetFacing(__int64 a1) //0x89F5E0
 
-				if (WowObject::Type::Unit == obj.getType())
+				if (WowObject::Type::ActivePlayer == obj.getType())
 				{
 					ss << "Address pObj = " << pObj << std::endl;
 
@@ -599,20 +599,24 @@ void Render()
 
 
 
-					/*
 
-					Seems like we need to pass the GUID as a 2nd parameter
 
-					uint64_t testGuid = obj.getGuid();
-					ss << "GUID = " << *(uint64_t*)(obj.baseAddress() + 0x04) << std::endl;
+					//Seems like we need to pass the GUID as a 2nd parameter
 
+					int testGuid = obj.getGuid();
+					//uint64_t* guidPTR = obj.getGuidPtr();
+					//ss << "GUID = " << testGuid << std::endl;
+
+					uint64_t* guidPTR = (uint64_t*)malloc(sizeof(uint64_t*));
+					guidPTR[0] = testGuid;
 
 
 					ss << " GetPosition";
 					//_int64 fastcall sub_16D3C0(int64 a1, __int64 a2)
 					uint64_t* (__thiscall * getPosition)(uint64_t*, uint64_t*) = (uint64_t * (__thiscall*)(uint64_t*, uint64_t*))((uint64_t*)(pModuleBaseAddr + 0x16D3C0));
-					uint64_t* resultPTR = getPosition((uint64_t*)pObj, &testGuid);
+					uint64_t* resultPTR = getPosition((uint64_t*)pObj, guidPTR);
 
+					free(guidPTR);
 
 
 
@@ -621,7 +625,7 @@ void Render()
 					ss << " x == " << position[0] << std::endl;
 					ss << " y == " << position[1] << std::endl;
 					ss << " z == " << position[2] << std::endl;
-					*/
+
 
 
 					//ss << obj << std::endl;

@@ -40,6 +40,10 @@ public:
 		return *(uint64_t*)(baseAddress() + 0x04);
 	}
 
+	uint64_t* getGuidPtr() {
+		return (uint64_t*)(baseAddress() + 0x04);
+	}
+
 	//		StorageField = 0x10,//good-33526
 	//		ObjectType = 0x20,//good-33526
 	//		NextObject = 0x70,//good-33526
