@@ -11,7 +11,7 @@ class WowObject : public MemoryObject
 {
 public:
 	WowObject(
-		const uint8_t * baseAddr
+		const uint8_t* baseAddr
 	) : MemoryObject(baseAddr)
 	{}
 
@@ -37,7 +37,11 @@ public:
 	};
 
 	uint64_t getGuid() {
-		return *(uint64_t*)(baseAddress() + 0x58);
+		return *(uint64_t*)(baseAddress() + 0x04);
+	}
+
+	uint64_t* getGuidPtr() {
+		return (uint64_t*)(baseAddress() + 0x04);
 	}
 
 	//		StorageField = 0x10,//good-33526
@@ -104,7 +108,7 @@ inline std::ostream& operator<<(
 	)
 {
 	out << obj.getTypeLabel() << "@" << obj.getX() << "," << obj.getY() << "," << obj.getZ() << std::endl;
-	if (WowObject::Type::ActivePlayer == obj.getType()) {
+	if (false && WowObject::Type::ActivePlayer == obj.getType()) {
 		out << Hexdump(*reinterpret_cast<const void* const*>(obj.baseAddress()), 16 * 5) << std::endl;
 		//out << Hexsearch<uint64_t>(*reinterpret_cast<const void* const*>(obj.baseAddress()), 0x8CAE30, 16 * 5) << std::endl;
 	}

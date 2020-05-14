@@ -27,7 +27,6 @@ inline std::ostream& operator<<(
 	const ObjectManager& obj
 	)
 {
-	//TODO: what to print out?
 	out << "found ObjectManager at 0x" << std::hex << (uint64_t)obj.baseAddress() << std::endl;
 	return out;
 }

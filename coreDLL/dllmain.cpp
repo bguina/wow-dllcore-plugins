@@ -569,7 +569,7 @@ void Render()
 		ss << std::hex << pTargetGuid[0] << pTargetGuid[1] << std::endl;
 
 		// Object Manager
-		uint8_t* pObjMgr = *(uint8_t**)(pModuleBaseAddr + 0x236BD18);
+		uint8_t* pObjMgr = *(uint8_t**)(pModuleBaseAddr + 0x2372D48);
 
 		if (NULL != pObjMgr) {
 			ObjectManager objMgr(pObjMgr);
@@ -580,60 +580,7 @@ void Render()
 			for (auto pObj = objMgr.firstObject(); NULL != pObj && !((ULONG64)pObj & 1); pObj = objMgr.nextObject(pObj)) {
 				WowObject obj(pObj);
 
-				ss << " TYPE = ";
-				ss << obj.getTypeLabel() << std::endl;
-
-				//int64 fastcall Unit_GetFacing(__int64 a1) //0x89F5E0
-
-				if (WowObject::Type::ActivePlayer == obj.getType())
-				{
-					ss << "Address pObj = " << pObj << std::endl;
-
-					/*
-					ss << " ME FACING == ";
-					float(__thiscall * getFacing)(uint64_t*) = (float(__thiscall*)(uint64_t*))((uint64_t*)(pModuleBaseAddr + 0x89F5E0));
-					float facingValue = getFacing((uint64_t*)pObj);
-					*/
-
-					//ss << facingValue << " == " << std::endl;
-
-
-
-
-
-					//Seems like we need to pass the GUID as a 2nd parameter
-
-					int testGuid = obj.getGuid();
-					//uint64_t* guidPTR = obj.getGuidPtr();
-					//ss << "GUID = " << testGuid << std::endl;
-
-					uint64_t* guidPTR = (uint64_t*)malloc(sizeof(uint64_t*));
-					guidPTR[0] = testGuid;
-
-
-					ss << " GetPosition";
-					//_int64 fastcall sub_16D3C0(int64 a1, __int64 a2)
-					uint64_t* (__thiscall * getPosition)(uint64_t*, uint64_t*) = (uint64_t * (__thiscall*)(uint64_t*, uint64_t*))((uint64_t*)(pModuleBaseAddr + 0x16D3C0));
-					uint64_t* resultPTR = getPosition((uint64_t*)pObj, guidPTR);
-
-					free(guidPTR);
-
-
-
-
-					float* position = (float*)resultPTR;
-					ss << " x == " << position[0] << std::endl;
-					ss << " y == " << position[1] << std::endl;
-					ss << " z == " << position[2] << std::endl;
-
-
-
-					//ss << obj << std::endl;
-
-
-
-				}
-
+				ss << obj << std::endl;
 			}
 
 			ss << std::endl;
@@ -642,8 +589,6 @@ void Render()
 		dllLog(ss.str());
 	}
 }
-
-
 
 HRESULT __stdcall hkPresent(
 	IDXGISwapChain* pThis,
