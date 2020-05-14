@@ -1,6 +1,8 @@
 #pragma once
 
+#include "../Vector3f.h"
 #include "WowObject.h"
+#include "WowUnitObject.h"
 
 class WowUnitObject : public WowObject
 {
@@ -71,6 +73,10 @@ public:
 	uint64_t getTargetGuid() const {
 		return *reinterpret_cast<const uint32_t*>(getDescriptor() + 0x00);
 	}
+
+	//bool canSee(const WowGame& game, const Vector3f& position) {
+	//	return game.traceLine(position, getPosition(), 0x100151);
+//	}
 
 };
 

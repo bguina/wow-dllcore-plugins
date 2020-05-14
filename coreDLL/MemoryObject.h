@@ -16,10 +16,10 @@ public:
 		this->mBaseAddr = baseAddr;
 	}
 
-	const uint8_t* const baseAddress() const {
+	const uint8_t* const getBaseAddress() const {
 		return mBaseAddr;
 	}
 
 private:
-	const uint8_t const* mBaseAddr;
+	const uint8_t* mBaseAddr;
 };

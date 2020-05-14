@@ -155,29 +155,39 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="D3D_VMT_Indices.h" />
+    <ClInclude Include="d3d\d3d.h" />
+    <ClInclude Include="d3d\D3D_VMT_Indices.h" />
+    <ClInclude Include="d3d\shadez.h" />
     <ClInclude Include="framework.h" />
-    <ClInclude Include="Hexdump.h" />
-    <ClInclude Include="Hexsearch.h" />
+    <ClInclude Include="Logger.h" />
     <ClInclude Include="MemoryObject.h" />
-    <ClInclude Include="ObjectManager.h" />
+    <ClInclude Include="memutils\Hexdump.h" />
+    <ClInclude Include="memutils\Hexsearch.h" />
+    <ClInclude Include="objectmanager\ObjectManager.h" />
+    <ClInclude Include="objectmanager\WowActivePlayerObject.h" />
+    <ClInclude Include="objectmanager\WowObject.h" />
+    <ClInclude Include="objectmanager\WowPlayerObject.h" />
+    <ClInclude Include="objectmanager\WowUnitObject.h" />
     <ClInclude Include="pch.h" />
-    <ClInclude Include="shadez.h" />
+    <ClInclude Include="Vector3f.h" />
     <ClInclude Include="WowGame.h" />
     <ClInclude Include="WowNavigator.h" />
-    <ClInclude Include="WowObject.h" />
-    <ClInclude Include="WowUnitObject.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="dllmain.cpp" />
-    <ClCompile Include="MemoryObject.cpp" />
-    <ClCompile Include="ObjectManager.cpp" />
-    <ClCompile Include="pch.cpp">
+    <ClCompile Include="d3d\d3d.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="dllmain.cpp" />
+    <ClCompile Include="Logger.cpp" />
+    <ClCompile Include="MemoryObject.cpp" />
+    <ClCompile Include="objectmanager\ObjectManager.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="objectmanager\WowActivePlayerObject.cpp" />
+    <ClCompile Include="objectmanager\WowObject.cpp" />
+    <ClCompile Include="objectmanager\WowPlayerObject.cpp" />
+    <ClCompile Include="objectmanager\WowUnitObject.cpp" />
+    <ClCompile Include="pch.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MessageManager\MessageManager.vcxproj">

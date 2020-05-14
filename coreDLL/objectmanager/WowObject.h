@@ -3,9 +3,10 @@
 #include <cstdint>
 #include <string>
 #include <iostream>
-#include "Hexdump.h"
-#include "Hexsearch.h"
-#include "MemoryObject.h"
+#include "../memutils/Hexdump.h"
+#include "../memutils/Hexsearch.h"
+#include "../MemoryObject.h"
+#include "../Vector3f.h"
 
 class WowObject : public MemoryObject
 {
@@ -37,15 +38,15 @@ public:
 	};
 
 	const uint8_t* getDescriptor() const {
-		return *(uint8_t**)(baseAddress() + 0x10);
+		return *(uint8_t**)(getBaseAddress() + 0x10);
 	}
 
 	uint64_t getGuid() const {
-		return *(uint64_t*)(baseAddress() + 0x58);
+		return *(uint64_t*)(getBaseAddress() + 0x58);
 	}
 
 	const uint32_t*getGuidPointer() const {
-		return (uint32_t*)(baseAddress() + 0x58);
+		return (uint32_t*)(getBaseAddress() + 0x58);
 	}
 
 	//		StorageField = 0x10,//good-33526
@@ -55,7 +56,7 @@ public:
 	//		LocalGUID = 0x58, //good-33526
 
 	Type getType() const {
-		return (WowObject::Type)(*(baseAddress() + 0x20));
+		return (WowObject::Type)(*(getBaseAddress() + 0x20));
 	}
 
 	std::string getTypeLabel() const {
@@ -82,24 +83,29 @@ public:
 		}
 	}
 
+	const Vector3f& getPosition() const {
+		return *((Vector3f*)(getBaseAddress() + 0x1600));
+	}
+
 	float getX() const {
-		return *(float*)(baseAddress() + 0x1600);
+		return ((Vector3f*)(getBaseAddress() + 0x1600))->x;
 	}
 
 	float getY() const {
-		return *(float*)(baseAddress() + 0x1604);
+		return ((Vector3f*)(getBaseAddress() + 0x1600))->y;
 	}
 
 	float getZ() const {
-		return *(float*)(baseAddress() + 0x1608);
+		return ((Vector3f*)(getBaseAddress() + 0x1600))->z;
 	}
 
 	float getFacingRadians() const {
-		return *(float*)(baseAddress() + 0x1610);
+		return *(float*)(getBaseAddress() + 0x1610);
 	}
 
+private:
 	void* vtableAt(unsigned index) {
-		return ((void**)baseAddress())[index];
+		return ((void**)getBaseAddress())[index];
 	}
 };
 
@@ -110,12 +116,12 @@ inline std::ostream& operator<<(
 	const WowObject& obj
 	)
 {
-	out << "[WowObject@" << (void*)obj.baseAddress() << "]" << std::endl;
+	out << "[WowObject@" << (void*)obj.getBaseAddress() << "]" << std::endl;
 	out << obj.getTypeLabel() << "[GUID 0x" << (void*)obj.getGuid() << "]@" << obj.getX() << "," << obj.getY() << " facing " << obj.getFacingRadians();
 
 	//if (false && WowObject::Type::ActivePlayer == obj.getType()) {
-	//	out << Hexdump(*reinterpret_cast<const void* const*>(obj.baseAddress()), 16 * 5) << std::endl;
-	//	//out << Hexsearch<uint64_t>(*reinterpret_cast<const void* const*>(obj.baseAddress()), 0x8CAE30, 16 * 5) << std::endl;
+	//	out << Hexdump(*reinterpret_cast<const void* const*>(obj.getBaseAddress()), 16 * 5) << std::endl;
+	//	//out << Hexsearch<uint64_t>(*reinterpret_cast<const void* const*>(obj.getBaseAddress()), 0x8CAE30, 16 * 5) << std::endl;
 	//}
 
 	return out;

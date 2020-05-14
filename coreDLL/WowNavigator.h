@@ -13,9 +13,9 @@ public:
 	) : mWindow(window), mGame(game), mForward(false) {}
 
 	__int64 interact(const uint32_t* targetGuid) {
+		__int64(__fastcall * sub_D65D60)(const uint32_t*) = (__int64(__fastcall*)(const uint32_t*))(mGame.getBaseAddress() + 0xD65D60);
 
-		__int64(__fastcall * sub_D65D60)(const uint32_t*) = (__int64(__fastcall*)(const uint32_t*))0xD65D60;
-		// d65d60
+		// 0xd65d60
 		return sub_D65D60(targetGuid);
 	}
 
@@ -23,13 +23,7 @@ public:
 		WowUnitObject self = WowUnitObject(mGame.getObjectManager().getSelf());
 		const uint32_t* initialGuid = WowUnitObject(mGame.getObjectManager().getSomeBoar()).getGuidPointer();
 
-		uint32_t* copy = new uint32_t[4];
-		copy[0] = initialGuid[0];
-		copy[1] = initialGuid[1];
-		copy[2] = initialGuid[2];
-		copy[3] = initialGuid[3];
-
-		interact(copy);
+		interact(initialGuid);
 		//moveForward(self.getFacingRadians() > 3.0);
 	}
 

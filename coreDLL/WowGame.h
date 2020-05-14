@@ -1,10 +1,9 @@
 #pragma once
 
 #include <iostream>
-#include <tchar.h>
 #include <Windows.h>
-#include "ObjectManager.h"
 #include "MemoryObject.h"
+#include "objectmanager/ObjectManager.h"
 
 class WowGame : public MemoryObject
 {
@@ -14,73 +13,35 @@ public:
 	) : MemoryObject(baseAddr) {}
 
 	const ObjectManager getObjectManager() const {
-		return ObjectManager(*(const uint8_t**)(baseAddress() + 0x2372D48));
+		return ObjectManager(*(const uint8_t**)(getBaseAddress() + 0x2372D48));
 	}
 
-	/*
+	const char* getVersionBuild() const {
+		return (const char*)(getBaseAddress() + 0x1C3531C);
+	}
 
-		// BuildVerion
-		if (false) {
-			char* pGameBuild = (char*)pModuleBaseAddr + 0x1c46f0c;
+	const char* getReleaseDate() const {
+		return (const char*)(getBaseAddress() + 0x1C3531C);
+	}
 
-			ss << "Build";
-			ss << pGameBuild;
-			ss << ":";
-		}
+	const char* getVersion() const {
+		return (const char*)(getBaseAddress() + 0x1C35314);
+	}
 
-		// GameState?
-		if (false) {
-			ss << " GameState ";
-			ss << *(PUINT16*)(pModuleBaseAddr + 0x25A9E60);
-			// fun fact: we see boolean bit "isFalling"
-		}
+	int getInGameFlags() const {
+		return *(int*)(getBaseAddress() + 0x2594F40);
+	}
 
-		// Realm name
-		{
-			uint8_t** pRealm = *(uint8_t***)(pModuleBaseAddr + 0x2688058);
+	int getIsLoadingOrConnecting() const {
+		return *(int*)(getBaseAddress() + 0x2260D50);
+	}
 
-			if (nullptr != pRealm) {
-				ss << " Realm ";
-				ss << ((char*)pRealm + 0x420); // realm name at RealmObj+0x420
-			}
-		}
-
-		// Zone name
-		{
-			char* pZoneText = *(char**)(pModuleBaseAddr + 0x25A8C40);
-
-			if (nullptr != pZoneText) {
-				ss << " Zone ";
-				ss << pZoneText;
-			}
-		}
-
-		// Player name
-		{
-			char* pPlayerName = (char*)(pModuleBaseAddr + 0x2688828);
-
-			if (*pPlayerName != '\0') {
-				ss << " Player ";
-				ss << pPlayerName;
-			}
-		}
-
-		// Player GUID
-		uint64_t* pLocalPlayerGuid = (uint64_t*)(pModuleBaseAddr + 0x2688810);
-		ss << " LocalGuid=";
-		ss << std::hex << pLocalPlayerGuid[0] << pLocalPlayerGuid[1];
-
-		// Mouse-over object GUID
-		uint64_t* pMouseoverGuid = (uint64_t*)(pModuleBaseAddr + 0x25A9E68);
-
-		ss << " MouseOverGUID=";
-		ss << std::hex << pMouseoverGuid[0] << pMouseoverGuid[1];
-
-		uint64_t* pTargetGuid = (uint64_t*)(pModuleBaseAddr + 0x21E28A0);
-
-		ss << " TargetGUID=";
-		ss << std::hex << pTargetGuid[0] << pTargetGuid[1] << std::endl;
-	*/
+	//bool traceLine(const Vector3f& from, const Vector3f& to, uint64_t flags) const {
+	//	Vector3f collision = Vector3f();
+	//	char(__fastcall * intersect) (const Vector3f*, const Vector3f*, Vector3f*, __int64, int) = (char(__fastcall*) (const Vector3f * to, const Vector3f * from, Vector3f * collision, __int64 flags, int uiOptional))(getBaseAddress() + 0x114AC10);
+//
+	//	return intersect(&to, &from, &collision, flags, 0);
+	//}
 };
 
 inline std::ostream& operator<<(
@@ -90,7 +51,7 @@ inline std::ostream& operator<<(
 {
 	ObjectManager objMgr = obj.getObjectManager();
 
-	out << "[WowGame@" << (void*)objMgr.baseAddress() << "]" << std::endl;
+	out << "[WowGame@" << (void*)objMgr.getBaseAddress() << "]" << std::endl;
 	out << objMgr << std::endl;
 
 	return out;

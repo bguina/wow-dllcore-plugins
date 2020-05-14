@@ -3,9 +3,9 @@
 #include <cstdint>
 #include <iostream>
 
-#include "MemoryObject.h"
-#include "WowObject.h"
-#include "WowUnitObject.h"
+#include "../MemoryObject.h"
+#include "./WowObject.h"
+#include "./WowUnitObject.h"
 
 class ObjectManager : public  MemoryObject
 {
@@ -16,9 +16,9 @@ public:
 	{}
 
 	const uint8_t* firstObject() const {
-		if (baseAddress() == NULL) return NULL;
+		if (getBaseAddress() == NULL) return NULL;
 
-		return *(const uint8_t**)(baseAddress() + 0x18);
+		return *(const uint8_t**)(getBaseAddress() + 0x18);
 	}
 
 	const uint8_t* nextObject(const uint8_t* currentObject) const {
@@ -36,12 +36,11 @@ public:
 			) {
 			WowObject obj(pObj);
 
-			if (obj.getType() == WowObject::ActivePlayer) 
+			if (obj.getType() == WowObject::ActivePlayer)
 				return pObj;
 		}
 		return NULL;
 	}
-
 
 	const uint8_t* getSomeBoar() const {
 		for (
@@ -63,7 +62,7 @@ inline std::ostream& operator<<(
 	const ObjectManager& objMgr
 	)
 {
-	out << "[ObjectManager@" << (void*)objMgr.baseAddress() << "]" << std::endl;
+	out << "[ObjectManager@" << (void*)objMgr.getBaseAddress() << "]" << std::endl;
 
 	// iterate ObjectManger linked list
 	for (
