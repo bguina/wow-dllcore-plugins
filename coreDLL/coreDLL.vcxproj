@@ -172,6 +172,7 @@
     <ClInclude Include="Sandbox.h" />
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="Vector3f.h" />
+    <ClInclude Include="WinVirtualKey.h" />
     <ClInclude Include="WowGame.h" />
     <ClInclude Include="WowNavigator.h" />
   </ItemGroup>

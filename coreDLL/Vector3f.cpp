@@ -5,12 +5,11 @@
 
 const double PI = 3.141592653589793;
 
-
 int getVectorFacingDegrees(
 	const Vector3f& from,
 	const Vector3f& to
 ) {
-	return atan2(from.y - to.y, to.x - from.x) * 180 / PI;
+	return atan2(to.y - from.y, to.x - from.x) * 180 / PI;
 }
 
 int getVectorFacingDeltaDegrees(
@@ -23,8 +22,9 @@ int getVectorFacingDeltaDegrees(
 
 	if (delta < -180)
 		return delta + 360;
-	else if (delta > 180)
+
+	if (delta > 180)
 		return delta - 360;
-	
+
 	return delta;
 }

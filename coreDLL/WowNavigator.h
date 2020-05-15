@@ -5,7 +5,7 @@
 
 #include "Logger.h"
 #include "WowGame.h"
-#include "Windows.h"
+#include "WinVirtualKey.h"
 
 class WowNavigator
 {
@@ -19,9 +19,9 @@ public:
 	{
 		// fixme: dirty way of releasing any remaining Keydown
 		// todo: persist current state as std::map<Keycode, State>
-		turnLeft(false);
-		turnRight(false);
-		moveForward(false);
+		pressLeftTurn(false);
+		pressRightTurn(false);
+		pressForward(false);
 	}
 
 	void run() {
@@ -31,32 +31,30 @@ public:
 		WowUnitObject self = WowUnitObject(mGame.getObjectManager().getActivePlayer());
 		const Vector3f& pos = self.getPosition();
 
+		auto pSomeBoar = mGame.getObjectManager().getSomeBoar();
+		if (NULL == pSomeBoar)
+			return;
+
+		WowUnitObject someBoar(pSomeBoar);
+
 		if (false) {
 			// Say hi to boar
-			auto someBoar = mGame.getObjectManager().getSomeBoar();
-			if (NULL == someBoar)
-				return;
-
-			const uint32_t* boarGuid = WowUnitObject(someBoar).getGuidPointer();
+			const uint32_t* boarGuid = someBoar.getGuidPointer();
 
 			interactWith(boarGuid);
 		}
 
 		if (true) {
 			// Face given position
-			Vector3f point;
-
-			point.x = pos.x;
-			point.y = pos.y - 500.00f;
-			point.z = pos.z;
+			const Vector3f& point = someBoar.getPosition();
 
 			int angle = getVectorFacingDegrees(WowObject(mGame.getObjectManager().getActivePlayer()).getPosition(), point);
 			int delta = deltaAngleDegrees(point);
 			int anglePrecision = 10;
 
-			turnLeft(delta > anglePrecision);
-			turnRight(delta < -anglePrecision);
-			moveForward(abs(delta) < anglePrecision * 2);
+			pressLeftTurn(delta > anglePrecision);
+			pressRightTurn(delta < -anglePrecision);
+			pressForward(abs(delta) < anglePrecision * 2);
 
 			if (true) {
 				std::stringstream ss;
@@ -88,34 +86,33 @@ protected:
 	WowGame& mGame;
 
 private:
-	void turnLeft(bool doMove) {
-		pushKey(0x41, doMove); // 'A'
+	void pressLeftTurn(bool doMove) {
+		pushKey(WinVirtualKey::WVK_A, doMove);
 	}
 
-	void turnRight(bool doMove) {
-		pushKey(0x44, doMove); // 'D'
+	void pressRightTurn(bool doMove) {
+		pushKey(WinVirtualKey::WVK_D, doMove);
 	}
 
-	void moveForward(bool doMove) {
-		pushKey(0x57, doMove); // 'W'
+	void pressForward(bool doMove) {
+		pushKey(WinVirtualKey::WVK_W, doMove);
 	}
 
-	void pushKey(int keycode, bool doPush) {
-		// Keycodes found at https://docs.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes
-		int action;
-		int flags;	// Flags found with Spy++
+	void pushKey(WinVirtualKey keycode, bool keyDown) {
+		int action = WM_KEYUP;
+		int flags = SENDMESSAGE_KEYUP_FLAGS;	
 
-		if (doPush) {
+		if (keyDown) {
 			action = WM_KEYDOWN;
-			flags = 0x00110001;
-		}
-		else {
-			action = WM_KEYUP;
-			flags = 0xC0110001;
+			flags = SENDMESSAGE_KEYDOWN_FLAGS;
 		}
 
 		PostMessage(mGame.getWindow(), action, keycode, flags);
 	}
+
+	// Observed SendMessage "legit" flags found with Spy++ app
+	const int SENDMESSAGE_KEYUP_FLAGS = 0x00110001;
+	const int SENDMESSAGE_KEYDOWN_FLAGS = 0x00110001;
 };
 
 inline std::ostream& operator<<(
