@@ -9,6 +9,7 @@
 #include "logger.h"
 #include "WowGame.h"
 #include "WowNavigator.h"
+#include "Sandbox.h"
 
 bool readMessageAvailable(ServerSDK* serverSDK, MessageManager* messageManager) {
 	std::list<std::string> messages = serverSDK->getMessageAvailable();
@@ -61,19 +62,7 @@ void Render()
 		return;
 
 	lastPulse = uptime;
-
-	{
-		uint8_t* pModuleBaseAddr = (uint8_t*)GetModuleHandleA(0);
-		WowGame game(pModuleBaseAddr);
-		WowNavigator bot = WowNavigator(FindMainWindow(GetCurrentProcessId()), game);
-		std::stringstream ss;
-		Logger logger("D:\\nvtest.log");
-
-		bot.run();
-		ss << game << std::endl;
-
-		logger.log(ss.str());
-	}
+	Sandbox::getInstance().run();
 }
 
 BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpReserved)

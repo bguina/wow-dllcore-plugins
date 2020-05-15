@@ -1,7 +1,5 @@
 #pragma once
 
-#include <cstdint>
-
 struct Vector3f {
 	union {
 		struct {

@@ -10,10 +10,16 @@ class WowGame : public MemoryObject
 public:
 	WowGame(
 		const uint8_t* baseAddr
-	) : MemoryObject(baseAddr) {}
+	) : MemoryObject(baseAddr),
+		mObjMgr((const uint8_t**)(getBaseAddress() + 0x2372D48))
+	{}
 
 	const ObjectManager getObjectManager() const {
-		return ObjectManager(*(const uint8_t**)(getBaseAddress() + 0x2372D48));
+		return mObjMgr;
+	}
+
+	bool isObjectManagerActive() const {
+		return NULL != mObjMgr.getBaseAddress();
 	}
 
 	const char* getVersionBuild() const {
@@ -42,6 +48,9 @@ public:
 //
 	//	return intersect(&to, &from, &collision, flags, 0);
 	//}
+
+private:
+	ObjectManager mObjMgr;
 };
 
 inline std::ostream& operator<<(
@@ -49,10 +58,12 @@ inline std::ostream& operator<<(
 	const class WowGame& obj
 	)
 {
-	ObjectManager objMgr = obj.getObjectManager();
+	out << "[WowGame@" << (void*)obj.getBaseAddress() << "]" << std::endl;
 
-	out << "[WowGame@" << (void*)objMgr.getBaseAddress() << "]" << std::endl;
-	out << objMgr << std::endl;
+	if (obj.isObjectManagerActive()) {
+		ObjectManager objMgr = obj.getObjectManager();
+		out << objMgr << std::endl;
+	}
 
 	return out;
 }

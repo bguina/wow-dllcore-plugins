@@ -7,16 +7,20 @@
 #include "./WowObject.h"
 #include "./WowUnitObject.h"
 
-class ObjectManager : public  MemoryObject
+class ObjectManager
 {
 public:
 	ObjectManager(
-		const uint8_t* baseAddr
-	) : MemoryObject(baseAddr)
+		const uint8_t** baseAddr
+	) : mPointerAddr(baseAddr)
 	{}
 
+	const uint8_t* getBaseAddress() const {
+		return *mPointerAddr;
+	}
+
 	const uint8_t* firstObject() const {
-		if (getBaseAddress() == NULL) return NULL;
+		if (NULL == getBaseAddress()) return NULL;
 
 		return *(const uint8_t**)(getBaseAddress() + 0x18);
 	}
@@ -29,6 +33,8 @@ public:
 	}
 
 	const uint8_t* getSelf() const {
+		if (getBaseAddress() == NULL) return NULL;
+
 		for (
 			auto pObj = firstObject();
 			NULL != pObj;
@@ -43,6 +49,8 @@ public:
 	}
 
 	const uint8_t* getSomeBoar() const {
+		if (getBaseAddress() == NULL) return NULL;
+
 		for (
 			auto pObj = firstObject();
 			NULL != pObj;
@@ -55,6 +63,9 @@ public:
 		}
 		return NULL;
 	}
+
+private:
+	const uint8_t** mPointerAddr;
 };
 
 inline std::ostream& operator<<(
@@ -63,6 +74,8 @@ inline std::ostream& operator<<(
 	)
 {
 	out << "[ObjectManager@" << (void*)objMgr.getBaseAddress() << "]" << std::endl;
+
+	if (objMgr.getBaseAddress() == NULL) return out;
 
 	// iterate ObjectManger linked list
 	for (

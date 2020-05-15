@@ -169,6 +169,7 @@
     <ClInclude Include="objectmanager\WowPlayerObject.h" />
     <ClInclude Include="objectmanager\WowUnitObject.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="Sandbox.h" />
     <ClInclude Include="Vector3f.h" />
     <ClInclude Include="WowGame.h" />
     <ClInclude Include="WowNavigator.h" />
