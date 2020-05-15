@@ -10,59 +10,17 @@
 class ObjectManager
 {
 public:
-	ObjectManager(
-		const uint8_t** baseAddr
-	) : mPointerAddr(baseAddr)
-	{}
+	ObjectManager(const uint8_t** baseAddr);
 
-	const uint8_t* getBaseAddress() const {
-		return *mPointerAddr;
-	}
+	const uint8_t* getBaseAddress() const;
 
-	const uint8_t* firstObject() const {
-		if (NULL == getBaseAddress()) return NULL;
+	const uint8_t* firstObject() const;
 
-		return *(const uint8_t**)(getBaseAddress() + 0x18);
-	}
+	const uint8_t* nextObject(const uint8_t* currentObject) const;
 
-	const uint8_t* nextObject(const uint8_t* currentObject) const {
-		uint8_t* next = *(uint8_t**)(currentObject + 0x70);
+	const uint8_t* getActivePlayer() const;
 
-		if (((uint64_t)next & 1)) return NULL;
-		return next;
-	}
-
-	const uint8_t* getSelf() const {
-		if (getBaseAddress() == NULL) return NULL;
-
-		for (
-			auto pObj = firstObject();
-			NULL != pObj;
-			pObj = nextObject(pObj)
-			) {
-			WowObject obj(pObj);
-
-			if (obj.getType() == WowObject::ActivePlayer)
-				return pObj;
-		}
-		return NULL;
-	}
-
-	const uint8_t* getSomeBoar() const {
-		if (getBaseAddress() == NULL) return NULL;
-
-		for (
-			auto pObj = firstObject();
-			NULL != pObj;
-			pObj = nextObject(pObj)
-			) {
-			WowObject obj(pObj);
-
-			if (obj.getType() == WowObject::Unit)
-				return pObj;
-		}
-		return NULL;
-	}
+	const uint8_t* getSomeBoar() const;
 
 private:
 	const uint8_t** mPointerAddr;

@@ -103,6 +103,11 @@ public:
 		return *(float*)(getBaseAddress() + 0x1610);
 	}
 
+	int getFacingDegrees() const {
+		const double PI = 3.141592653589793;
+		return (int)(getFacingRadians() * 180 / PI);
+	}
+
 private:
 	void* vtableAt(unsigned index) {
 		return ((void**)getBaseAddress())[index];

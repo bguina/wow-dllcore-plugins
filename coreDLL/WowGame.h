@@ -1,55 +1,38 @@
 #pragma once
 
-#include <iostream>
-#include <Windows.h>
+#include "framework.h"
+
 #include "MemoryObject.h"
 #include "objectmanager/ObjectManager.h"
 
 class WowGame : public MemoryObject
 {
 public:
-	WowGame(
-		const uint8_t* baseAddr
-	) : MemoryObject(baseAddr),
-		mObjMgr((const uint8_t**)(getBaseAddress() + 0x2372D48))
-	{}
+	WowGame(const uint8_t* baseAddr);
 
-	const ObjectManager getObjectManager() const {
-		return mObjMgr;
-	}
+	long getPid() const;
 
-	bool isObjectManagerActive() const {
-		return NULL != mObjMgr.getBaseAddress();
-	}
+	HWND getWindow() const;
 
-	const char* getVersionBuild() const {
-		return (const char*)(getBaseAddress() + 0x1C3531C);
-	}
+	const ObjectManager getObjectManager() const;
 
-	const char* getReleaseDate() const {
-		return (const char*)(getBaseAddress() + 0x1C3531C);
-	}
+	bool isObjectManagerActive() const;
 
-	const char* getVersion() const {
-		return (const char*)(getBaseAddress() + 0x1C35314);
-	}
+	const char* getVersionBuild() const;
 
-	int getInGameFlags() const {
-		return *(int*)(getBaseAddress() + 0x2594F40);
-	}
+	const char* getReleaseDate() const;
 
-	int getIsLoadingOrConnecting() const {
-		return *(int*)(getBaseAddress() + 0x2260D50);
-	}
+	const char* getVersion() const;
 
-	//bool traceLine(const Vector3f& from, const Vector3f& to, uint64_t flags) const {
-	//	Vector3f collision = Vector3f();
-	//	char(__fastcall * intersect) (const Vector3f*, const Vector3f*, Vector3f*, __int64, int) = (char(__fastcall*) (const Vector3f * to, const Vector3f * from, Vector3f * collision, __int64 flags, int uiOptional))(getBaseAddress() + 0x114AC10);
-//
-	//	return intersect(&to, &from, &collision, flags, 0);
-	//}
+	int getInGameFlags() const;
+
+	int getIsLoadingOrConnecting() const;
+
+	bool traceLine(const Vector3f& from, const Vector3f& to, uint64_t flags) const;
 
 private:
+	long mPid;
+	HWND mWindow;
 	ObjectManager mObjMgr;
 };
 

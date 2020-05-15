@@ -46,23 +46,18 @@ void MainThread(void* pHandle) {
 	else {
 		//SERVER NOT RUNNING DEINJECT
 	}
-	deinject(pHandle);
 
+	deinject(pHandle);
 }
 
 void Render()
 {
-	static ULONG64 bootTime = 0;
-	static ULONG64 lastPulse = 0;
-
 	drawSomeTriangle();
+	
+	Sandbox& sandbox = Sandbox::getInstance();
 
-	auto uptime = GetTickCount64();
-	if (lastPulse + 500 > uptime)
-		return;
-
-	lastPulse = uptime;
-	Sandbox::getInstance().run();
+	if (!sandbox.isOverHeating()) 
+		sandbox.run();
 }
 
 BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpReserved)

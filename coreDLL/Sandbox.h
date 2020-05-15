@@ -1,38 +1,25 @@
 #pragma once
 
-class Sandbox
+#include "WowGame.h"
+#include "WowNavigator.h"
+#include "Logger.h"
+#include "Singleton.h"
+
+class Sandbox : public Singleton<Sandbox>
 {
 public:
-	static class Sandbox& getInstance()
-	{
-		static Sandbox instance;
-		return instance;
-	}
+	Sandbox(madeSingleton);
 
-	Sandbox(Sandbox const&) = delete;
-	void operator=(Sandbox const&) = delete;
+	bool isOverHeating() const;
 
-	void run() {
+	void run();
 
-		std::stringstream ss;
-
-		ss << mGame << std::endl;
-		ss << mBot << std::endl;
-		mBot.run();
-
-		mLogger.log(ss.str());
-	}
-
-private:
-	Sandbox()
-		: mModuleBaseAddr((uint8_t*)GetModuleHandleA(0)),
-		mGame(mModuleBaseAddr),
-		mBot(WowNavigator(FindMainWindow(GetCurrentProcessId()), mGame)),
-		mLogger("D:\\nvtest.log")
-	{}
-
-	uint8_t* mModuleBaseAddr;
+private: 
+	HMODULE mModuleBaseAddr;
 	WowGame mGame;
 	WowNavigator mBot;
-	Logger mLogger;
+
+public:
+	Sandbox(Sandbox const&) = delete;
+	void operator=(Sandbox const&) = delete;
 };

@@ -1,14 +1,18 @@
 #pragma once
 
-#include <string>
+#include "Singleton.h"
 
-class Logger {
+class Logger : public Singleton<Logger> {
 public:
-	Logger(const std::string& outputFile);
+	Logger(madeSingleton);
 
-	void reset();
-	void log(std::string msg);
+	void clear();
+	void log(const char* msg);
 
 private:
-	std::string mOutputFile;
+	const char* mOutputFile;
+
+public:
+	Logger(Logger const&) = delete;
+	void operator=(Logger const&) = delete;
 };

@@ -5,20 +5,11 @@
 class MemoryObject
 {
 public:
-	MemoryObject(
-		const uint8_t* baseAddr
-	) : mBaseAddr(baseAddr) {
-	}
+	MemoryObject(const uint8_t* baseAddr);
 
-	void rebase(
-		const uint8_t* baseAddr
-	) {
-		this->mBaseAddr = baseAddr;
-	}
+	const uint8_t* const getBaseAddress() const;
 
-	const uint8_t* const getBaseAddress() const {
-		return mBaseAddr;
-	}
+	void rebase(const uint8_t* baseAddr);
 
 private:
 	const uint8_t* mBaseAddr;

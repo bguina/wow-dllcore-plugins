@@ -1,23 +1,25 @@
-// pch.cpp: source file corresponding to the pre-compiled header
 #include "pch.h"
 
 #include <fstream>
 #include <sstream>
+
 #include "logger.h"
 
-Logger::Logger(
-	const std::string& outputFile
-) : mOutputFile(outputFile) {
-
+Logger::Logger(madeSingleton)
+	:
+	Singleton<Logger>(),
+	mOutputFile("D:\\nvtest.log")
+{
+	clear();
 }
 
-void Logger::reset() {
+void Logger::clear() {
 	//std::ofstream(g_logfilePath, std::fstream::in | std::fstream::out);
 	std::ofstream(mOutputFile, std::fstream::in | std::fstream::out);
 }
 
 void Logger::log(
-	std::string msg
+	const char* msg
 ) {
 	std::ofstream(mOutputFile, std::fstream::in | std::fstream::out | std::fstream::app) << msg << std::endl;
 }
