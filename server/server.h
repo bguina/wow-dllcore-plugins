@@ -16,7 +16,7 @@ private:
 	const char* SERVER_HOST = "127.0.0.1";
 	int SERVER_PORT = 27015;
 
-	std::list<PeerClient> listPeers;
+	std::list<PeerClient*> listPeers;
 
 	std::list<ClientConnection> listConnections;
 

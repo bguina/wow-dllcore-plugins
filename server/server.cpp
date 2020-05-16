@@ -133,8 +133,8 @@ BOOL Server::ReadData(ClientConnection& client)
 			{
 				//Push this client to PEER list for later
 				if (checkIfClientExistInPeerList(client.getSocket()) == NULL) {
-					PeerClient peer;
-					peer.setClient1(&client);
+					PeerClient* peer = new PeerClient();
+					peer->setClient1(&client);
 					listPeers.push_back(peer);
 					std::cout << "Adding window for Peer..." << std::endl;
 				}
@@ -280,17 +280,17 @@ bool WriteData(ClientConnection& client)
 }
 
 PeerClient* Server::checkIfClientExistInPeerList(SOCKET socket) {
-	for (std::list<PeerClient>::iterator it = listPeers.begin(); it != listPeers.end(); it++) {
-		if ((*it).getClient1()->getSocket() == socket || (*it).getClient2()->getSocket() == socket)
-			return &(*it);
+	for (std::list<PeerClient*>::iterator it = listPeers.begin(); it != listPeers.end(); it++) {
+		if (((*it)->getClient1() && (*it)->getClient1()->getSocket() == socket) || ((*it)->getClient2() && (*it)->getClient2()->getSocket() == socket))
+			return (*it);
 	}
 	return NULL;
 }
 
 PeerClient* Server::checkIfClientExistInPeerList(int pid) {
-	for (std::list<PeerClient>::iterator it = listPeers.begin(); it != listPeers.end(); it++) {
-		if ((*it).getPID() == pid)
-			return &(*it);
+	for (std::list<PeerClient*>::iterator it = listPeers.begin(); it != listPeers.end(); it++) {
+		if ((*it)->getPID() == pid)
+			return (*it);
 	}
 	return NULL;
 }
@@ -386,15 +386,24 @@ void Server::acceptConnections()
 					{
 						if (peerClient->getClient1() != NULL && peerClient->getClient1()->getSocket() == it->getSocket()) {
 							std::cout << "Client QT Disconnect !" << std::endl;
-
+							if (peerClient->getClient2() != NULL) {
+								peerClient->getClient2()->getListMessageToSend()->push_back(messageManager.builRequestdDeinjecteMessage());
+							}
+							peerClient->setClient1(NULL);
 						}
 						else if (peerClient->getClient2() != NULL && peerClient->getClient2()->getSocket() == it->getSocket()) {
 							std::cout << "Client DLL Disconnect !" << std::endl;
 							if (peerClient->getClient1() != NULL) {
 								//SEND DISCONNECT TO WINDOWS
 								peerClient->getClient1()->getListMessageToSend()->push_back(messageManager.builRequestdDeinjecteMessage());
-								peerClient->setClient2(NULL);
 							}
+							peerClient->setClient2(NULL);
+						}
+						if (peerClient->getClient1() == NULL && peerClient->getClient2() == NULL)
+						{
+							std::cout << "ALL PEER DISCONNECTED -> delete this pair element size list == " << listPeers.size() << std::endl;
+							listPeers.remove(peerClient);
+							std::cout << "After Delete -> size == " << listPeers.size() << std::endl;
 						}
 					}
 
