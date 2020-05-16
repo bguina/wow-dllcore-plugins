@@ -200,12 +200,23 @@ BOOL Server::ReadData(ClientConnection& client)
 				}
 
 			}
-			else if (messageManager.getMessageType(client.getTmpMessage()) == MessageType::DEINJECT)
+			else if (messageManager.getMessageType(client.getTmpMessage()) == MessageType::DEINJECT ||
+				messageManager.getMessageType(client.getTmpMessage()) == MessageType::SUBSCRIBE)
 			{
 				PeerClient* peerClient = checkIfClientExistInPeerList(client.getSocket());
-				if (peerClient != NULL)
+				if (peerClient != NULL && peerClient->getClient2())
 				{
 					peerClient->getClient2()->getListMessageToSend()->push_back(client.getTmpMessage());
+				}
+				else {
+					std::cout << "[ERROR] CANNOT FOUND PEER with SOCKET..........." << std::endl;
+				}
+			}
+			else if (messageManager.getMessageType(client.getTmpMessage()) == MessageType::INFO) {
+				PeerClient* peerClient = checkIfClientExistInPeerList(client.getSocket());
+				if (peerClient != NULL && peerClient->getClient1())
+				{
+					peerClient->getClient1()->getListMessageToSend()->push_back(client.getTmpMessage());
 				}
 				else {
 					std::cout << "[ERROR] CANNOT FOUND PEER with SOCKET..........." << std::endl;
@@ -403,7 +414,6 @@ void Server::acceptConnections()
 						{
 							std::cout << "ALL PEER DISCONNECTED -> delete this pair element size list == " << listPeers.size() << std::endl;
 							listPeers.remove(peerClient);
-							std::cout << "After Delete -> size == " << listPeers.size() << std::endl;
 						}
 					}
 

@@ -20,6 +20,8 @@ enum class MessageType {
 	INJECT,
 	DEINJECT,
 	DLL_INJECTED,
+	INFO,
+	SUBSCRIBE,
 };
 
 class MessageManager
@@ -41,6 +43,7 @@ public:
 	int getDLLInjectedObject(std::string message);
 
 	//BUILDER MESSAGE REQUEST
+	std::string builRequestSubcribe(std::list<std::string> toSubscribe);
 	std::string builRequestdAvailableConfigationMessage();
 	std::string builRequestdInjectMessage(int pid, std::string module);
 	std::string builRequestdDLLInjectedMessage(int pid);
@@ -48,6 +51,7 @@ public:
 
 	//BUILDER MESSAGE RESPONSE
 	std::string builResponseAvailableConfigationMessage(std::string pids, std::string modules);
+	std::string builResponseInfo(std::string name, std::string value);
 
 };
 #endif // !MESSAGE_MANAGER_H

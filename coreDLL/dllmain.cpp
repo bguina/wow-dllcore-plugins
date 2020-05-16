@@ -15,8 +15,18 @@ bool readMessageAvailable(ServerSDK* serverSDK, MessageManager* messageManager) 
 	std::list<std::string> messages = serverSDK->getMessageAvailable();
 	for (std::list<std::string>::iterator it = messages.begin(); it != messages.end(); it++)
 	{
-		if (messageManager->getMessageType((*it)) == MessageType::DEINJECT) {
+		switch (messageManager->getMessageType((*it)))
+		{
+		case MessageType::SUBSCRIBE: {
+			serverSDK->sendMessage(messageManager->builResponseInfo("position", "X,Y,Z"));
+			break;
+		}
+		case MessageType::DEINJECT: {
 			return false;
+			break;
+		}
+		default:
+			break;
 		}
 	}
 	return true;
@@ -31,7 +41,6 @@ void MainThread(void* pHandle) {
 	{
 		serverSDK.sendMessage(messageManager.builRequestdDLLInjectedMessage(GetCurrentProcessId()));
 		if (HookD3D()) {
-			//isConnected(-1) &&
 			while (serverSDK.getConnectionStatus() && !GetAsyncKeyState(VK_END)) {
 
 				if (!readMessageAvailable(&serverSDK, &messageManager))
@@ -53,10 +62,10 @@ void MainThread(void* pHandle) {
 void Render()
 {
 	drawSomeTriangle();
-	
+
 	Sandbox& sandbox = Sandbox::getInstance();
 
-	if (!sandbox.isOverHeating()) 
+	if (!sandbox.isOverHeating())
 		sandbox.run();
 }
 

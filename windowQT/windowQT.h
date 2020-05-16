@@ -27,5 +27,6 @@ private slots:
 	void exit();
 	void inject();
 	void deinject();
+	void recordPath();
 	void tick();
 };

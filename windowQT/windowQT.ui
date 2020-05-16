@@ -167,8 +167,8 @@
      <rect>
       <x>360</x>
       <y>170</y>
-      <width>120</width>
-      <height>80</height>
+      <width>211</width>
+      <height>191</height>
      </rect>
     </property>
     <property name="title">
@@ -185,6 +185,22 @@
      </property>
      <property name="text">
       <string>deinject</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="recordPathButton">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>70</y>
+       <width>75</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Record Path</string>
      </property>
     </widget>
    </widget>

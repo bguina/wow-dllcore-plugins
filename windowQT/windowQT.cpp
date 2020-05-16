@@ -6,6 +6,7 @@ windowQT::windowQT(QWidget* parent) : QMainWindow(parent)
 	connect(ui.exit, SIGNAL(clicked()), this, SLOT(exit()));
 	connect(ui.injectButton, SIGNAL(clicked()), this, SLOT(inject()));
 	connect(ui.deinjectButton, SIGNAL(clicked()), this, SLOT(deinject()));
+	connect(ui.recordPathButton, SIGNAL(clicked()), this, SLOT(recordPath()));
 
 	ui.dllStatusIndicator->setStyleSheet("background-color: rgb(255,0,0)");
 
@@ -68,6 +69,9 @@ void windowQT::tick() {
 				ui.containerInjector->setVisible(true);
 				ui.containerDeinject->setVisible(false);
 			}
+			else if (messageManager.getMessageType((*it)) == MessageType::INFO) {
+				std::cout << "TYPE == INFO ! " << std::endl;
+			}
 			else {
 				std::cout << "TYPE == UNKNOWN TYPE ! " << std::endl;
 			}
@@ -95,6 +99,13 @@ void windowQT::exit() {
 void windowQT::deinject() {
 	std::cout << "Click deinject !" << std::endl;
 	serverSDK.sendMessage(messageManager.builRequestdDeinjecteMessage());
+}
+
+void  windowQT::recordPath() {
+	std::cout << "Click recordPath !" << std::endl;
+	std::list<std::string> toSubscribe;
+	toSubscribe.push_back("position");
+	serverSDK.sendMessage(messageManager.builRequestSubcribe(toSubscribe));
 }
 
 void windowQT::inject() {

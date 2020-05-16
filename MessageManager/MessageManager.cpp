@@ -4,6 +4,31 @@
 #include "pch.h"
 #include "MessageManager.h"
 
+//INFO
+std::string MessageManager::builResponseInfo(std::string name, std::string value) {
+	picojson::value rootJSON = picojson::value(picojson::object());
+	rootJSON.get<picojson::object>()[getMessageTypeString(MessageType::MESSAGE_TYPE)] = picojson::value(getMessageTypeString(MessageType::INFO));
+	rootJSON.get<picojson::object>()["data"] = picojson::value(picojson::object());
+	rootJSON.get<picojson::object>()["data"].get<picojson::object>()[name] = picojson::value(value);
+	return rootJSON.serialize();
+}
+
+//SUBSCRIBE
+std::string MessageManager::builRequestSubcribe(std::list<std::string> toSubscribe) {
+	picojson::value rootJSON = picojson::value(picojson::object());
+	rootJSON.get<picojson::object>()[getMessageTypeString(MessageType::MESSAGE_TYPE)] = picojson::value(getMessageTypeString(MessageType::SUBSCRIBE));
+	rootJSON.get<picojson::object>()["data"] = picojson::value(picojson::object());
+	std::string to("");
+	for (std::list<std::string>::iterator it = toSubscribe.begin(); it != toSubscribe.end(); it++)
+	{
+		if (!to.empty())
+			to += ",";
+		to += (*it);
+	}
+	rootJSON.get<picojson::object>()["data"].get<picojson::object>()["to"] = picojson::value(to);
+	return rootJSON.serialize();
+}
+
 //DEINJECT
 std::string MessageManager::builRequestdDeinjecteMessage() {
 	picojson::value rootJSON = picojson::value(picojson::object());
@@ -159,6 +184,14 @@ MessageType MessageManager::getMessageTypeFromString(std::string type) {
 	{
 		return MessageType::DLL_INJECTED;
 	}
+	else if (type == "INFO")
+	{
+		return MessageType::INFO;
+	}
+	else if (type == "SUBSCRIBE")
+	{
+		return MessageType::SUBSCRIBE;
+	}
 	else {
 		std::cout << "Unknown type..." << std::endl;
 		return MessageType::UNKNOWN;
@@ -168,34 +201,14 @@ MessageType MessageManager::getMessageTypeFromString(std::string type) {
 std::string MessageManager::getMessageTypeString(MessageType type) {
 	switch (type)
 	{
-	case MessageType::UNKNOWN:
-	{
-		return("UNKNOWN");
-	}
-	break;
-	case MessageType::MESSAGE_TYPE:
-	{
-		return("MESSAGE_TYPE");
-	}
-	break;
-	case MessageType::AVAILABLE_CONFIGURATION:
-	{
-		return("AVAILABLE_CONFIGURATION");
-	}
-	break;
-	case MessageType::INJECT:
-	{
-		return ("INJECT");
-	}
-	case MessageType::DEINJECT:
-	{
-		return ("DEINJECT");
-	}
-	case MessageType::DLL_INJECTED:
-	{
-		return ("DLL_INJECTED");
-	}
-	break;
+	case MessageType::UNKNOWN: { return("UNKNOWN"); } break;
+	case MessageType::MESSAGE_TYPE: { return("MESSAGE_TYPE"); } break;
+	case MessageType::AVAILABLE_CONFIGURATION: { return("AVAILABLE_CONFIGURATION"); } break;
+	case MessageType::INJECT: { return ("INJECT"); } break;
+	case MessageType::DEINJECT: { return ("DEINJECT"); } break;
+	case MessageType::DLL_INJECTED: { return ("DLL_INJECTED"); } break;
+	case MessageType::INFO: { return ("INFO"); } break;
+	case MessageType::SUBSCRIBE: { return ("SUBSCRIBE"); } break;
 	default:
 		std::cout << "Unknown type..." << std::endl;
 		return NULL;
