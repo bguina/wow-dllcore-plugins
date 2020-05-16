@@ -14,9 +14,9 @@ std::string MessageManager::builResponseInfo(std::string name, std::string value
 }
 
 //SUBSCRIBE
-std::string MessageManager::builRequestSubcribe(std::list<std::string> toSubscribe) {
+std::string MessageManager::builRequestStartSubcribe(std::list<std::string> toSubscribe) {
 	picojson::value rootJSON = picojson::value(picojson::object());
-	rootJSON.get<picojson::object>()[getMessageTypeString(MessageType::MESSAGE_TYPE)] = picojson::value(getMessageTypeString(MessageType::SUBSCRIBE));
+	rootJSON.get<picojson::object>()[getMessageTypeString(MessageType::MESSAGE_TYPE)] = picojson::value(getMessageTypeString(MessageType::START_SUBSCRIBE));
 	rootJSON.get<picojson::object>()["data"] = picojson::value(picojson::object());
 	std::string to("");
 	for (std::list<std::string>::iterator it = toSubscribe.begin(); it != toSubscribe.end(); it++)
@@ -27,6 +27,27 @@ std::string MessageManager::builRequestSubcribe(std::list<std::string> toSubscri
 	}
 	rootJSON.get<picojson::object>()["data"].get<picojson::object>()["to"] = picojson::value(to);
 	return rootJSON.serialize();
+}
+
+
+std::list<std::string> MessageManager::getStartSubcribeObject(std::string message) {
+	picojson::value rootJSON;
+	std::list<std::string> toSubscribe;
+	std::string err = picojson::parse(rootJSON, message);
+	if (!err.empty()) {
+		std::cerr << err << std::endl;
+	}
+	else if (getMessageType(message) == MessageType::START_SUBSCRIBE) {
+		if (rootJSON.get("data").is<picojson::object>()
+			&& rootJSON.get("data").get("to").is<std::string>())
+		{
+			std::string to = rootJSON.get("data").get("to").to_str();
+
+			toSubscribe = splitByDelimiter(to, ",");
+			return toSubscribe;
+		}
+	}
+	return toSubscribe;
 }
 
 //DEINJECT
@@ -188,9 +209,21 @@ MessageType MessageManager::getMessageTypeFromString(std::string type) {
 	{
 		return MessageType::INFO;
 	}
-	else if (type == "SUBSCRIBE")
+	else if (type == "START_SUBSCRIBE")
 	{
-		return MessageType::SUBSCRIBE;
+		return MessageType::START_SUBSCRIBE;
+	}
+	else if (type == "STOP_SUBSCRIBE")
+	{
+		return MessageType::STOP_SUBSCRIBE;
+	}
+	else if (type == "START_BOT")
+	{
+		return MessageType::START_BOT;
+	}
+	else if (type == "STOP_BOT")
+	{
+		return MessageType::STOP_BOT;
 	}
 	else {
 		std::cout << "Unknown type..." << std::endl;
@@ -208,7 +241,10 @@ std::string MessageManager::getMessageTypeString(MessageType type) {
 	case MessageType::DEINJECT: { return ("DEINJECT"); } break;
 	case MessageType::DLL_INJECTED: { return ("DLL_INJECTED"); } break;
 	case MessageType::INFO: { return ("INFO"); } break;
-	case MessageType::SUBSCRIBE: { return ("SUBSCRIBE"); } break;
+	case MessageType::START_SUBSCRIBE: { return ("START_SUBSCRIBE"); } break;
+	case MessageType::STOP_SUBSCRIBE: { return ("STOP_SUBSCRIBE"); } break;
+	case MessageType::START_BOT: { return ("START_BOT"); } break;
+	case MessageType::STOP_BOT: { return ("STOP_BOT"); } break;
 	default:
 		std::cout << "Unknown type..." << std::endl;
 		return NULL;

@@ -105,7 +105,7 @@ void  windowQT::recordPath() {
 	std::cout << "Click recordPath !" << std::endl;
 	std::list<std::string> toSubscribe;
 	toSubscribe.push_back("position");
-	serverSDK.sendMessage(messageManager.builRequestSubcribe(toSubscribe));
+	serverSDK.sendMessage(messageManager.builRequestStartSubcribe(toSubscribe));
 }
 
 void windowQT::inject() {

@@ -17,8 +17,17 @@ bool readMessageAvailable(ServerSDK* serverSDK, MessageManager* messageManager) 
 	{
 		switch (messageManager->getMessageType((*it)))
 		{
-		case MessageType::SUBSCRIBE: {
-			serverSDK->sendMessage(messageManager->builResponseInfo("position", "X,Y,Z"));
+		case MessageType::START_SUBSCRIBE: {
+
+			std::list<std::string> toSubscribe = messageManager->getStartSubcribeObject(*it);
+			bool found = (std::find(toSubscribe.begin(), toSubscribe.end(), "position") != toSubscribe.end());
+			if (found)
+				serverSDK->sendMessage(messageManager->builResponseInfo("position", "X,Y,Z"));
+
+			break;
+		}
+		case MessageType::STOP_SUBSCRIBE: {
+			//serverSDK->sendMessage(messageManager->builResponseInfo("position", "X,Y,Z"));
 			break;
 		}
 		case MessageType::DEINJECT: {

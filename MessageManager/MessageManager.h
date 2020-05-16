@@ -21,7 +21,10 @@ enum class MessageType {
 	DEINJECT,
 	DLL_INJECTED,
 	INFO,
-	SUBSCRIBE,
+	START_SUBSCRIBE,
+	STOP_SUBSCRIBE,
+	START_BOT,
+	STOP_BOT
 };
 
 class MessageManager
@@ -41,9 +44,10 @@ public:
 	AvailableConfigurationObject* getAvailableConfigurationObject(std::string message);
 	InjectObject* getInjectObject(std::string message);
 	int getDLLInjectedObject(std::string message);
+	std::list<std::string> getStartSubcribeObject(std::string message);
 
 	//BUILDER MESSAGE REQUEST
-	std::string builRequestSubcribe(std::list<std::string> toSubscribe);
+	std::string builRequestStartSubcribe(std::list<std::string> toSubscribe);
 	std::string builRequestdAvailableConfigationMessage();
 	std::string builRequestdInjectMessage(int pid, std::string module);
 	std::string builRequestdDLLInjectedMessage(int pid);
