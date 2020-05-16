@@ -22,6 +22,10 @@ const ObjectManager WowGame::getObjectManager() const {
 	return mObjMgr;
 }
 
+ObjectManager WowGame::getObjectManager()  {
+	return mObjMgr;
+}
+
 bool WowGame::isObjectManagerActive() const {
 	return NULL != mObjMgr.getBaseAddress();
 }

@@ -1,6 +1,15 @@
 #include "pch.h"
 
 #include "ObjectManager.h"
+#include "WowObject.h"
+#include "WowContainerObject.h"
+#include "WowItemObject.h"
+#include "WowLootObject.h"
+#include "WowCorpseObject.h"
+#include "WowUnitObject.h"
+#include "WowPlayerObject.h"
+#include "WowActivePlayerObject.h"
+#include "WowUnimplementedObject.h"
 
 ObjectManager::ObjectManager(
 	const uint8_t** baseAddr
@@ -8,54 +17,99 @@ ObjectManager::ObjectManager(
 	mPointerAddr(baseAddr)
 {}
 
+bool ObjectManager::isEnabled() const {
+	return NULL != getBaseAddress();
+}
+
+void ObjectManager::scan() {
+	if (isEnabled()) {
+		std::vector<WowGuid64> oldGuids;
+
+		// Manually walk through the native ObjectManager linked list
+		for (auto pObj = *(uint8_t**)(getBaseAddress() + 0x18);
+			NULL != pObj && !((long)pObj & 1);
+			pObj = *(uint8_t**)(pObj + 0x70))
+		{
+			WowObject thisObj = WowObject(pObj);
+			std::map<WowGuid64, std::shared_ptr<WowObject>>::iterator oldObjInstance = mObjects.find(thisObj.getGuid());
+
+			if (oldObjInstance == mObjects.end()) {
+				std::shared_ptr<WowObject> finalObj = nullptr;
+
+				switch (thisObj.getType()) {
+				case WowObject::Object:
+					finalObj = std::make_shared<WowObject>(pObj);
+					break;
+				case WowObject::Item:
+					finalObj = std::make_shared<WowItemObject>(pObj);
+					break;
+				case WowObject::Container:
+					finalObj = std::make_shared<WowContainerObject>(pObj);
+					break;
+				case WowObject::Unit:
+					finalObj = std::make_shared<WowUnitObject>(pObj);
+					break;
+				case WowObject::Player:
+					finalObj = std::make_shared<WowPlayerObject>(pObj);
+					break;
+				case WowObject::ActivePlayer:
+					finalObj = std::make_shared<WowActivePlayerObject>(pObj);
+					break;
+				case WowObject::Corpse:
+					finalObj = std::make_shared<WowCorpseObject>(pObj);
+					break;
+				case WowObject::Loot:
+				case WowObject::GameObject:
+				case WowObject::DynamicObject:
+				case WowObject::Conversation:
+				case WowObject::Invalid: // Type "Invalid"? based on which wtf Blizzard
+					finalObj = std::make_shared<WowUnimplementedObject>(pObj);
+					break;
+				default:
+					// Invalid WowObject enum value!!
+					break;
+				}
+
+				if (nullptr != finalObj)
+					mObjects.insert(std::pair<WowGuid64, std::shared_ptr<WowObject>>(thisObj.getGuid(), finalObj));
+			}
+			else {
+				// WowObject still present in memory, rebase to found address
+				// TODO: Define WHEN/HOW a same object would be rebase, when we immediately clear any missing previous object?
+				// in current implementation, we don't persist objects went missing so this currently has no real purpose.
+				oldObjInstance->second->rebase(pObj);
+			}
+		}
+	}
+	else {
+		mObjects.clear();
+	}
+}
+
 const uint8_t* ObjectManager::getBaseAddress() const {
 	return *mPointerAddr;
 }
 
-const uint8_t* ObjectManager::firstObject() const {
-	if (NULL == getBaseAddress()) return NULL;
-	
-	uint8_t* first = *(uint8_t**)(getBaseAddress() + 0x18);
-
-	if (((uint64_t)first & 1)) return NULL;
-	return *(const uint8_t**)(getBaseAddress() + 0x18);
+std::map<uint64_t, std::shared_ptr<WowObject>>::const_iterator ObjectManager::begin() const {
+	return mObjects.begin();
 }
 
-const uint8_t* ObjectManager::nextObject(const uint8_t* currentObject) const {
-	uint8_t* next = *(uint8_t**)(currentObject + 0x70);
-
-	if (((uint64_t)next & 1)) return NULL;
-	return next;
+std::map<uint64_t, std::shared_ptr<WowObject>>::iterator ObjectManager::begin() {
+	return mObjects.begin();
 }
 
-const uint8_t* ObjectManager::getActivePlayer() const {
-	if (getBaseAddress() == NULL) return NULL;
-
-	for (
-		auto pObj = firstObject();
-		NULL != pObj;
-		pObj = nextObject(pObj)
-		) {
-		WowObject obj(pObj);
-
-		if (obj.getType() == WowObject::ActivePlayer)
-			return pObj;
-	}
-	return NULL;
+std::map<uint64_t, std::shared_ptr<WowObject>>::const_iterator ObjectManager::end() const {
+	return mObjects.end();
 }
 
-const uint8_t* ObjectManager::getSomeBoar() const {
-	if (getBaseAddress() == NULL) return NULL;
+std::map<uint64_t, std::shared_ptr<WowObject>>::iterator ObjectManager::end() {
+	return mObjects.end();
+}
 
-	for (
-		auto pObj = firstObject();
-		NULL != pObj;
-		pObj = nextObject(pObj)
-		) {
-		WowObject obj(pObj);
+const WowActivePlayerObject* ObjectManager::getActivePlayer() const {
+	return anyOfType<const WowActivePlayerObject>(WowObject::ActivePlayer);
+}
 
-		if (obj.getType() == WowObject::Unit)
-			return pObj;
-	}
-	return NULL;
+WowActivePlayerObject* ObjectManager::getActivePlayer() {
+	return const_cast<WowActivePlayerObject*>(std::as_const(*this).getActivePlayer());
 }

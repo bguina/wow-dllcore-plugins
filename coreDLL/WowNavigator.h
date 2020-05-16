@@ -3,7 +3,7 @@
 #include <cmath>
 #include <iostream>
 
-#include "Logger.h"
+#include "Debugger.h"
 #include "WowGame.h"
 #include "WinVirtualKey.h"
 
@@ -25,30 +25,30 @@ public:
 	}
 
 	void run() {
-		if (!mGame.isObjectManagerActive())
+		WowActivePlayerObject* self = mGame.getObjectManager().getActivePlayer();
+
+		if (NULL == self)
 			return;
 
-		WowUnitObject self = WowUnitObject(mGame.getObjectManager().getActivePlayer());
-		const Vector3f& pos = self.getPosition();
+		const Vector3f& pos = self->getPosition();
 
-		auto pSomeBoar = mGame.getObjectManager().getSomeBoar();
-		if (NULL == pSomeBoar)
+		WowUnitObject* someBoar = mGame.getObjectManager().anyOfType<WowUnitObject>(WowObject::Unit);
+		if (NULL == someBoar)
 			return;
 
-		WowUnitObject someBoar(pSomeBoar);
 
 		if (false) {
 			// Say hi to boar
-			const uint32_t* boarGuid = someBoar.getGuidPointer();
+			const uint32_t* boarGuid = someBoar->getGuidPointer();
 
 			interactWith(boarGuid);
 		}
 
 		if (true) {
 			// Face given position
-			const Vector3f& point = someBoar.getPosition();
+			const Vector3f& point = someBoar->getPosition();
 
-			int angle = getVectorFacingDegrees(WowObject(mGame.getObjectManager().getActivePlayer()).getPosition(), point);
+			int angle = getVectorFacingDegrees(self->getPosition(), point);
 			int delta = deltaAngleDegrees(point);
 			int anglePrecision = 10;
 
@@ -58,16 +58,17 @@ public:
 
 			if (true) {
 				std::stringstream ss;
-				ss << "facing " << WowObject(mGame.getObjectManager().getActivePlayer()).getFacingDegrees() << ", target angle is " << angle << std::endl;
+
+				ss << "facing " << self->getFacingDegrees() << ", target angle is " << angle << std::endl;
 				ss << "delta " << delta << std::endl;
-				Logger::getInstance().log(ss.str().c_str());
+				Debugger::getInstance().log(ss.str().c_str());
 			}
 		}
 	}
 
 	int deltaAngleDegrees(const Vector3f& to) {
-		auto self = WowObject(mGame.getObjectManager().getActivePlayer());
-		int delta = getVectorFacingDeltaDegrees(self.getPosition(), self.getFacingDegrees(), to);
+		auto self = mGame.getObjectManager().getActivePlayer();
+		int delta = getVectorFacingDeltaDegrees(self->getPosition(), self->getFacingDegrees(), to);
 
 		return delta;
 	}

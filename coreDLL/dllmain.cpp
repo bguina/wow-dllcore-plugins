@@ -6,7 +6,7 @@
 #include "ServerSDK.h"
 #include "MessageManager.h"
 #include "d3d/d3d.h"
-#include "logger.h"
+#include "Debugger.h"
 #include "WowGame.h"
 #include "WowNavigator.h"
 #include "Sandbox.h"

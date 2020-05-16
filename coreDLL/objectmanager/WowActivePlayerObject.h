@@ -1,6 +1,5 @@
 #pragma once
 
-#include "../Vector3f.h"
 #include "WowPlayerObject.h"
 
 class WowActivePlayerObject : public WowPlayerObject

@@ -1,8 +1,6 @@
 #pragma once
 
-#include "../Vector3f.h"
 #include "WowObject.h"
-#include "WowUnitObject.h"
 
 class WowUnitObject : public WowObject
 {

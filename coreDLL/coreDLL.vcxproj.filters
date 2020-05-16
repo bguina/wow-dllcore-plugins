@@ -63,9 +63,6 @@
     <ClInclude Include="framework.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Logger.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Sandbox.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -73,6 +70,24 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="WinVirtualKey.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Debugger.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="objectmanager\WowItemObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="objectmanager\WowContainerObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="objectmanager\WowCorpseObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="objectmanager\WowLootObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="objectmanager\WowUnimplementedObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -104,9 +119,6 @@
     <ClCompile Include="pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Logger.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="WowGame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -114,6 +126,24 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Vector3f.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Debugger.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="objectmanager\WowItemObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="objectmanager\WowContainerObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="objectmanager\WowCorpseObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="objectmanager\WowLootObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="objectmanager\WowUnimplementedObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

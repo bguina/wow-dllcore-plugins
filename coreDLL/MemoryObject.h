@@ -11,6 +11,8 @@ public:
 
 	void rebase(const uint8_t* baseAddr);
 
+	bool isPresent() const;
+
 private:
 	const uint8_t* mBaseAddr;
 };

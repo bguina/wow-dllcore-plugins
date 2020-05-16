@@ -3,10 +3,10 @@
 #include <cstdint>
 #include <string>
 #include <iostream>
-#include "../memutils/Hexdump.h"
-#include "../memutils/Hexsearch.h"
 #include "../MemoryObject.h"
 #include "../Vector3f.h"
+
+typedef uint64_t WowGuid64;
 
 class WowObject : public MemoryObject
 {
@@ -37,12 +37,23 @@ public:
 		Invalid = 17
 	};
 
+
+	template<class T>
+	const T& downcast() const {
+		return static_cast<const T&>(*this);
+	}
+
+	template<class T>
+	T& downcast() {
+		return static_cast<T&>(*this);
+	}
+
 	const uint8_t* getDescriptor() const {
 		return *(uint8_t**)(getBaseAddress() + 0x10);
 	}
 
-	uint64_t getGuid() const {
-		return *(uint64_t*)(getBaseAddress() + 0x58);
+	WowGuid64 getGuid() const {
+		return *(WowGuid64*)(getBaseAddress() + 0x58);
 	}
 
 	const uint32_t*getGuidPointer() const {

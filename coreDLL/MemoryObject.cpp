@@ -17,3 +17,7 @@ void MemoryObject::rebase(
 ) {
 	mBaseAddr = baseAddr;
 }
+
+bool MemoryObject::isPresent() const {
+	return NULL != mBaseAddr;
+}

@@ -1,9 +1,8 @@
 #pragma once
 
+#include "Singleton.h"
 #include "WowGame.h"
 #include "WowNavigator.h"
-#include "Logger.h"
-#include "Singleton.h"
 
 class Sandbox : public Singleton<Sandbox>
 {

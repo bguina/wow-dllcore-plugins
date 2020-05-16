@@ -16,6 +16,8 @@ public:
 
 	const ObjectManager getObjectManager() const;
 
+	ObjectManager getObjectManager();
+
 	bool isObjectManagerActive() const;
 
 	const char* getVersionBuild() const;

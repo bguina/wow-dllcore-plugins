@@ -15,7 +15,6 @@ bool Sandbox::isOverHeating() const {
 	static ULONG64 bootTime = 0;
 	static ULONG64 lastPulse = 0;
 
-
 	auto uptime = GetTickCount64();
 	if (lastPulse + 120 > uptime)
 		return true;
@@ -32,5 +31,5 @@ void Sandbox::run() {
 	ss << mBot << std::endl;
 	mBot.run();
 
-	Logger::getInstance().log(ss.str().c_str());
+	Debugger::getInstance().log(ss.str().c_str());
 }

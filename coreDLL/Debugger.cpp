@@ -3,22 +3,22 @@
 #include <fstream>
 #include <sstream>
 
-#include "logger.h"
+#include "Debugger.h"
 
-Logger::Logger(madeSingleton)
+Debugger::Debugger(madeSingleton)
 	:
-	Singleton<Logger>(),
+	Singleton<Debugger>(),
 	mOutputFile("D:\\nvtest.log")
 {
 	clear();
 }
 
-void Logger::clear() {
+void Debugger::clear() {
 	//std::ofstream(g_logfilePath, std::fstream::in | std::fstream::out);
 	std::ofstream(mOutputFile, std::fstream::in | std::fstream::out);
 }
 
-void Logger::log(
+void Debugger::log(
 	const char* msg
 ) {
 	std::ofstream(mOutputFile, std::fstream::in | std::fstream::out | std::fstream::app) << msg << std::endl;
