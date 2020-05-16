@@ -13,6 +13,8 @@ windowQT::windowQT(QWidget* parent) : QMainWindow(parent)
 	{
 		std::cout << "Connected ! = " << std::endl;
 		ui.serverStatusIndicator->setStyleSheet("background-color: rgb(50,205,50)");
+		ui.containerInjector->setVisible(false);
+		ui.containerDeinject->setVisible(false);
 		serverSDK.sendMessage(messageManager.builRequestdAvailableConfigationMessage());
 	}
 	else {
@@ -46,6 +48,9 @@ void windowQT::tick() {
 						ui.modulePicker->addItem(QString::fromStdString(*itList), QVariant(QString::fromStdString(*itList)));
 					}
 
+					ui.containerInjector->setVisible(true);
+					ui.containerDeinject->setVisible(false);
+
 					free(object);
 				}
 			}
@@ -53,6 +58,15 @@ void windowQT::tick() {
 			{
 				std::cout << "TYPE == DLL_INJECTED ! " << std::endl;
 				ui.dllStatusIndicator->setStyleSheet("background-color: rgb(50,205,50)");
+				ui.containerInjector->setVisible(false);
+				ui.containerDeinject->setVisible(true);
+			}
+			else if (messageManager.getMessageType((*it)) == MessageType::DEINJECT)
+			{
+				std::cout << "TYPE == DEINJECT ! " << std::endl;
+				ui.dllStatusIndicator->setStyleSheet("background-color: rgb(255,0,0)");
+				ui.containerInjector->setVisible(true);
+				ui.containerDeinject->setVisible(false);
 			}
 			else {
 				std::cout << "TYPE == UNKNOWN TYPE ! " << std::endl;
@@ -76,7 +90,6 @@ void windowQT::closeEvent(QCloseEvent* event)
 void windowQT::exit() {
 	//QApplication::exit();
 	std::cout << "Click !" << std::endl;
-	serverSDK.sendMessage("TESTTTTT");
 }
 
 void windowQT::deinject() {

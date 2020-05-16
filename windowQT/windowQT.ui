@@ -116,51 +116,77 @@
      </property>
     </widget>
    </widget>
-   <widget class="QComboBox" name="processPicker">
+   <widget class="QGroupBox" name="containerInjector">
     <property name="geometry">
      <rect>
-      <x>50</x>
-      <y>200</y>
-      <width>69</width>
-      <height>22</height>
+      <x>30</x>
+      <y>170</y>
+      <width>261</width>
+      <height>80</height>
      </rect>
     </property>
+    <property name="title">
+     <string>Injector</string>
+    </property>
+    <widget class="QComboBox" name="processPicker">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>30</y>
+       <width>69</width>
+       <height>22</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="modulePicker">
+     <property name="geometry">
+      <rect>
+       <x>90</x>
+       <y>30</y>
+       <width>69</width>
+       <height>22</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="injectButton">
+     <property name="geometry">
+      <rect>
+       <x>170</x>
+       <y>30</y>
+       <width>75</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>inject</string>
+     </property>
+    </widget>
    </widget>
-   <widget class="QComboBox" name="modulePicker">
+   <widget class="QGroupBox" name="containerDeinject">
     <property name="geometry">
      <rect>
-      <x>170</x>
-      <y>200</y>
-      <width>69</width>
-      <height>22</height>
+      <x>360</x>
+      <y>170</y>
+      <width>120</width>
+      <height>80</height>
      </rect>
     </property>
-   </widget>
-   <widget class="QPushButton" name="injectButton">
-    <property name="geometry">
-     <rect>
-      <x>280</x>
-      <y>200</y>
-      <width>75</width>
-      <height>23</height>
-     </rect>
+    <property name="title">
+     <string>Deinject</string>
     </property>
-    <property name="text">
-     <string>inject</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="deinjectButton">
-    <property name="geometry">
-     <rect>
-      <x>500</x>
-      <y>200</y>
-      <width>75</width>
-      <height>23</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>deinject</string>
-    </property>
+    <widget class="QPushButton" name="deinjectButton">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>30</y>
+       <width>75</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>deinject</string>
+     </property>
+    </widget>
    </widget>
   </widget>
   <widget class="QToolBar" name="mainToolBar">

@@ -136,6 +136,7 @@ BOOL Server::ReadData(ClientConnection& client)
 					PeerClient peer;
 					peer.setClient1(&client);
 					listPeers.push_back(peer);
+					std::cout << "Adding window for Peer..." << std::endl;
 				}
 
 				std::list<std::string> listPID = getAllProcessIdFromProcessName(L"WowClassic.exe");
@@ -201,7 +202,6 @@ BOOL Server::ReadData(ClientConnection& client)
 			}
 			else if (messageManager.getMessageType(client.getTmpMessage()) == MessageType::DEINJECT)
 			{
-				//std::cout << ".........UNKNWON......." << std::endl;
 				PeerClient* peerClient = checkIfClientExistInPeerList(client.getSocket());
 				if (peerClient != NULL)
 				{
@@ -227,6 +227,7 @@ BOOL Server::ReadData(ClientConnection& client)
 BOOL Server::checkReadStatus(int totalRead, ClientConnection& client) {
 	if (totalRead <= 0) {
 		std::cout << "Socket " << client.getSocket() << " was closed by the client. Shutting down." << std::endl;
+		//Check is peer exist
 		return false;
 	}
 	else if (totalRead == SOCKET_ERROR) {
@@ -379,6 +380,24 @@ void Server::acceptConnections()
 					if (err != NO_ERROR) {
 						std::cerr << WSAGetLastErrorMessage(pcErrorType, err) << std::endl;
 					}
+
+					PeerClient* peerClient = checkIfClientExistInPeerList(it->getSocket());
+					if (peerClient != NULL)
+					{
+						if (peerClient->getClient1() != NULL && peerClient->getClient1()->getSocket() == it->getSocket()) {
+							std::cout << "Client QT Disconnect !" << std::endl;
+
+						}
+						else if (peerClient->getClient2() != NULL && peerClient->getClient2()->getSocket() == it->getSocket()) {
+							std::cout << "Client DLL Disconnect !" << std::endl;
+							if (peerClient->getClient1() != NULL) {
+								//SEND DISCONNECT TO WINDOWS
+								peerClient->getClient1()->getListMessageToSend()->push_back(messageManager.builRequestdDeinjecteMessage());
+								peerClient->setClient2(NULL);
+							}
+						}
+					}
+
 					ShutdownConnection(it->getSocket());
 					listConnections.erase(it);
 					it = listConnections.begin();
