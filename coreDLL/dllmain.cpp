@@ -11,6 +11,8 @@
 #include "WowNavigator.h"
 #include "Sandbox.h"
 
+static int testVar = 1;
+
 bool readMessageAvailable(ServerSDK* serverSDK, MessageManager* messageManager) {
 	std::list<std::string> messages = serverSDK->getMessageAvailable();
 	for (std::list<std::string>::iterator it = messages.begin(); it != messages.end(); it++)
@@ -23,6 +25,9 @@ bool readMessageAvailable(ServerSDK* serverSDK, MessageManager* messageManager) 
 			bool found = (std::find(toSubscribe.begin(), toSubscribe.end(), "position") != toSubscribe.end());
 			if (found)
 				serverSDK->sendMessage(messageManager->builResponseInfo("position", "X,Y,Z"));
+
+			//mutex
+			testVar += 1;
 
 			break;
 		}
@@ -70,6 +75,9 @@ void MainThread(void* pHandle) {
 
 void Render()
 {
+	//mutex
+	testVar -= 1;
+
 	drawSomeTriangle();
 
 	Sandbox& sandbox = Sandbox::getInstance();
