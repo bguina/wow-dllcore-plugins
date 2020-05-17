@@ -12,6 +12,8 @@
 #include <mutex>
 #include <iostream>
 
+#include "MessageManager.h"
+
 // Need to link with Ws2_32.lib, Mswsock.lib, and Advapi32.lib
 #pragma comment (lib, "Ws2_32.lib")
 #pragma comment (lib, "Mswsock.lib")
@@ -24,6 +26,8 @@ private:
 	PCSTR serverPort = "27015";
 	SOCKET activeSocket = NULL;
 	HANDLE activeThread = NULL;
+
+	MessageManager messageManager;
 
 	fd_set read_fds;
 	fd_set write_fds;
@@ -71,6 +75,7 @@ public:
 
 	//GETTERS
 	BOOL getConnectionStatus();
+	MessageManager getMessageManager() { return messageManager; };
 };
 
 #endif

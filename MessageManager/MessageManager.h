@@ -44,7 +44,7 @@ public:
 	AvailableConfigurationObject* getAvailableConfigurationObject(std::string message);
 	InjectObject* getInjectObject(std::string message);
 	int getDLLInjectedObject(std::string message);
-	std::list<std::string> getStartSubcribeObject(std::string message);
+	std::list<std::string> getSubcribeObject(std::string message);
 
 	//BUILDER MESSAGE REQUEST
 	std::string builRequestStartSubcribe(std::list<std::string> toSubscribe);

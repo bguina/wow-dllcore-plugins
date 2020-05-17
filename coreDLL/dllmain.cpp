@@ -4,35 +4,31 @@
 #include <sstream>
 
 #include "ServerSDK.h"
-#include "MessageManager.h"
 #include "d3d/d3d.h"
 #include "Debugger.h"
 #include "WowGame.h"
 #include "WowNavigator.h"
 #include "Sandbox.h"
 
-static int testVar = 1;
+static BOOL shouldStop = false;
 
-bool readMessageAvailable(ServerSDK* serverSDK, MessageManager* messageManager) {
+bool readMessageAvailable(ServerSDK* serverSDK) {
 	std::list<std::string> messages = serverSDK->getMessageAvailable();
 	for (std::list<std::string>::iterator it = messages.begin(); it != messages.end(); it++)
 	{
-		switch (messageManager->getMessageType((*it)))
+		switch (serverSDK->getMessageManager().getMessageType((*it)))
 		{
 		case MessageType::START_SUBSCRIBE: {
 
-			std::list<std::string> toSubscribe = messageManager->getStartSubcribeObject(*it);
+			std::list<std::string> toSubscribe = serverSDK->getMessageManager().getSubcribeObject(*it);
 			bool found = (std::find(toSubscribe.begin(), toSubscribe.end(), "position") != toSubscribe.end());
 			if (found)
-				serverSDK->sendMessage(messageManager->builResponseInfo("position", "X,Y,Z"));
-
-			//mutex
-			testVar += 1;
+				serverSDK->sendMessage(serverSDK->getMessageManager().builResponseInfo("position", "X,Y,Z"));
 
 			break;
 		}
 		case MessageType::STOP_SUBSCRIBE: {
-			//serverSDK->sendMessage(messageManager->builResponseInfo("position", "X,Y,Z"));
+			std::list<std::string> toSubscribe = serverSDK->getMessageManager().getSubcribeObject(*it);
 			break;
 		}
 		case MessageType::DEINJECT: {
@@ -48,26 +44,12 @@ bool readMessageAvailable(ServerSDK* serverSDK, MessageManager* messageManager) 
 
 void MainThread(void* pHandle) {
 
-	ServerSDK serverSDK;
-	MessageManager messageManager;
 
-	if (serverSDK.connectToServer())
-	{
-		serverSDK.sendMessage(messageManager.builRequestdDLLInjectedMessage(GetCurrentProcessId()));
-		if (HookD3D()) {
-			while (serverSDK.getConnectionStatus() && !GetAsyncKeyState(VK_END)) {
+	if (HookD3D()) {
+		while (!shouldStop && !GetAsyncKeyState(VK_END)) {
 
-				if (!readMessageAvailable(&serverSDK, &messageManager))
-				{
-					break;
-				}
-
-			}
-			serverSDK.disconnect();
 		}
-	}
-	else {
-		//SERVER NOT RUNNING DEINJECT
+
 	}
 
 	deinject(pHandle);
@@ -75,15 +57,29 @@ void MainThread(void* pHandle) {
 
 void Render()
 {
-	//mutex
-	testVar -= 1;
+	static ServerSDK* serverSDK = NULL;
+	if (serverSDK == NULL)
+	{
+		serverSDK = new ServerSDK();
+		if (serverSDK->connectToServer())
+			serverSDK->sendMessage(serverSDK->getMessageManager().builRequestdDLLInjectedMessage(GetCurrentProcessId()));
+	}
 
-	drawSomeTriangle();
+	if (serverSDK->getConnectionStatus() && readMessageAvailable(serverSDK)) {
+		drawSomeTriangle();
 
-	Sandbox& sandbox = Sandbox::getInstance();
+		Sandbox& sandbox = Sandbox::getInstance();
 
-	if (!sandbox.isOverHeating())
-		sandbox.run();
+		if (!sandbox.isOverHeating())
+			sandbox.run();
+	}
+	else {
+		serverSDK->disconnect();
+		delete serverSDK;
+		shouldStop = true;
+	}
+
+
 }
 
 BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpReserved)

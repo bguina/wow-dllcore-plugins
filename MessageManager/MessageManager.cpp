@@ -30,14 +30,15 @@ std::string MessageManager::builRequestStartSubcribe(std::list<std::string> toSu
 }
 
 
-std::list<std::string> MessageManager::getStartSubcribeObject(std::string message) {
+std::list<std::string> MessageManager::getSubcribeObject(std::string message) {
 	picojson::value rootJSON;
 	std::list<std::string> toSubscribe;
 	std::string err = picojson::parse(rootJSON, message);
 	if (!err.empty()) {
 		std::cerr << err << std::endl;
 	}
-	else if (getMessageType(message) == MessageType::START_SUBSCRIBE) {
+	else if (getMessageType(message) == MessageType::START_SUBSCRIBE ||
+			getMessageType(message) == MessageType::STOP_SUBSCRIBE) {
 		if (rootJSON.get("data").is<picojson::object>()
 			&& rootJSON.get("data").get("to").is<std::string>())
 		{
