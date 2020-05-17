@@ -31,14 +31,23 @@
     <ClCompile Include="windowQT.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="recordWaypointsWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="windowQT.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <QtMoc Include="recordWaypointsWindow.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="windowQT.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="recordWaypointsWindow.ui">
       <Filter>Form Files</Filter>
     </QtUic>
   </ItemGroup>

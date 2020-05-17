@@ -71,6 +71,12 @@ void windowQT::tick() {
 			}
 			else if (messageManager.getMessageType((*it)) == MessageType::INFO) {
 				std::cout << "TYPE == INFO ! " << std::endl;
+				std::pair<std::string, std::string> infoObject = messageManager.getInfoObject(*it);
+
+				if (infoObject.first == "position" && recordWaypointsWindow)
+				{
+					recordWaypointsWindow->addNewRecordedWaypoints(infoObject.second);
+				}
 			}
 			else {
 				std::cout << "TYPE == UNKNOWN TYPE ! " << std::endl;
@@ -91,6 +97,8 @@ void windowQT::closeEvent(QCloseEvent* event)
 	serverSDK.disconnect();
 }
 
+#include "recordwaypointswindow.h"
+
 void windowQT::exit() {
 	//QApplication::exit();
 	std::cout << "Click !" << std::endl;
@@ -103,9 +111,19 @@ void windowQT::deinject() {
 
 void  windowQT::recordPath() {
 	std::cout << "Click recordPath !" << std::endl;
-	std::list<std::string> toSubscribe;
-	toSubscribe.push_back("position");
-	serverSDK.sendMessage(messageManager.builRequestStartSubcribe(toSubscribe));
+
+	recordWaypointsWindow = new RecordWaypointsWindow(nullptr, &serverSDK);
+	//this if used if need to receive event from the created window
+	//QObject::connect(recordWaypointsWindow, SIGNAL(exitPressed()), this, SLOT(deleteRecordWindow()));
+	recordWaypointsWindow->exec();
+	std::cout << "CLOSED RecordWaypointsWindow" << std::endl;
+	delete recordWaypointsWindow;
+	recordWaypointsWindow = NULL;
+}
+
+void windowQT::deleteRecordWindow() {
+	std::cout << "deleteRecordWindow !" << std::endl;
+	//delete recordWaypointsWindow;
 }
 
 void windowQT::inject() {

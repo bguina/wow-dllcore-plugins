@@ -29,6 +29,12 @@ bool readMessageAvailable(ServerSDK* serverSDK) {
 		}
 		case MessageType::STOP_SUBSCRIBE: {
 			std::list<std::string> toSubscribe = serverSDK->getMessageManager().getSubcribeObject(*it);
+			/*
+			To be removed, just for testing purpose...
+			bool found = (std::find(toSubscribe.begin(), toSubscribe.end(), "position") != toSubscribe.end());
+			if (found)
+				serverSDK->sendMessage(serverSDK->getMessageManager().builResponseInfo("position", "NONONO"));
+			*/
 			break;
 		}
 		case MessageType::DEINJECT: {

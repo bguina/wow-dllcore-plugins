@@ -4,6 +4,7 @@
 #include "MessageManager.h"
 #include <QtWidgets/QMainWindow>
 #include "ui_windowQT.h"
+#include "recordWaypointsWindow.h"
 
 
 class windowQT : public QMainWindow
@@ -23,10 +24,12 @@ private:
 	void windowQT::closeEvent(QCloseEvent* event);
 	ServerSDK serverSDK;
 	MessageManager messageManager;
+	RecordWaypointsWindow* recordWaypointsWindow = NULL;
 private slots:
 	void exit();
 	void inject();
 	void deinject();
 	void recordPath();
+	void deleteRecordWindow();
 	void tick();
 };

@@ -4,22 +4,61 @@
 #include "pch.h"
 #include "MessageManager.h"
 
+std::pair<std::string, std::string> MessageManager::getInfoObject(std::string message) {
+	picojson::value rootJSON;
+	std::pair<std::string, std::string> infoObject;
+	std::string err = picojson::parse(rootJSON, message);
+	if (!err.empty()) {
+		std::cerr << err << std::endl;
+	}
+	else if (getMessageType(message) == MessageType::INFO) {
+		if (rootJSON.get("data").is<picojson::object>()
+			&& rootJSON.get("data").get("name").is<std::string>()
+			&& rootJSON.get("data").get("value").is<std::string>())
+		{
+			std::string name = rootJSON.get("data").get("name").to_str();
+			std::string value = rootJSON.get("data").get("value").to_str();
+
+			infoObject = std::pair<std::string, std::string>(name, value);
+			return infoObject;
+		}
+	}
+	return infoObject;
+}
+
 //INFO
 std::string MessageManager::builResponseInfo(std::string name, std::string value) {
 	picojson::value rootJSON = picojson::value(picojson::object());
 	rootJSON.get<picojson::object>()[getMessageTypeString(MessageType::MESSAGE_TYPE)] = picojson::value(getMessageTypeString(MessageType::INFO));
 	rootJSON.get<picojson::object>()["data"] = picojson::value(picojson::object());
-	rootJSON.get<picojson::object>()["data"].get<picojson::object>()[name] = picojson::value(value);
+	rootJSON.get<picojson::object>()["data"].get<picojson::object>()["name"] = picojson::value(name);
+	rootJSON.get<picojson::object>()["data"].get<picojson::object>()["value"] = picojson::value(value);
 	return rootJSON.serialize();
 }
 
-//SUBSCRIBE
+//START_SUBSCRIBE
 std::string MessageManager::builRequestStartSubcribe(std::list<std::string> toSubscribe) {
 	picojson::value rootJSON = picojson::value(picojson::object());
 	rootJSON.get<picojson::object>()[getMessageTypeString(MessageType::MESSAGE_TYPE)] = picojson::value(getMessageTypeString(MessageType::START_SUBSCRIBE));
 	rootJSON.get<picojson::object>()["data"] = picojson::value(picojson::object());
 	std::string to("");
 	for (std::list<std::string>::iterator it = toSubscribe.begin(); it != toSubscribe.end(); it++)
+	{
+		if (!to.empty())
+			to += ",";
+		to += (*it);
+	}
+	rootJSON.get<picojson::object>()["data"].get<picojson::object>()["to"] = picojson::value(to);
+	return rootJSON.serialize();
+}
+
+//STOP_SUBSCRIBE
+std::string MessageManager::builRequestStopSubcribe(std::list<std::string> stopSubscribe) {
+	picojson::value rootJSON = picojson::value(picojson::object());
+	rootJSON.get<picojson::object>()[getMessageTypeString(MessageType::MESSAGE_TYPE)] = picojson::value(getMessageTypeString(MessageType::STOP_SUBSCRIBE));
+	rootJSON.get<picojson::object>()["data"] = picojson::value(picojson::object());
+	std::string to("");
+	for (std::list<std::string>::iterator it = stopSubscribe.begin(); it != stopSubscribe.end(); it++)
 	{
 		if (!to.empty())
 			to += ",";

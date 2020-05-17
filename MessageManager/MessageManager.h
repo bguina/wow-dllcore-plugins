@@ -45,9 +45,11 @@ public:
 	InjectObject* getInjectObject(std::string message);
 	int getDLLInjectedObject(std::string message);
 	std::list<std::string> getSubcribeObject(std::string message);
+	std::pair<std::string, std::string> getInfoObject(std::string message);
 
 	//BUILDER MESSAGE REQUEST
 	std::string builRequestStartSubcribe(std::list<std::string> toSubscribe);
+	std::string builRequestStopSubcribe(std::list<std::string> stopSubscribe);
 	std::string builRequestdAvailableConfigationMessage();
 	std::string builRequestdInjectMessage(int pid, std::string module);
 	std::string builRequestdDLLInjectedMessage(int pid);

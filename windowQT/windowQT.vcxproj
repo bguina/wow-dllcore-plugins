@@ -86,12 +86,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="recordWaypointsWindow.cpp" />
     <ClCompile Include="windowQT.cpp" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="windowQT.h" />
   </ItemGroup>
   <ItemGroup>
+    <QtUic Include="recordWaypointsWindow.ui" />
     <QtUic Include="windowQT.ui" />
   </ItemGroup>
   <ItemGroup>
@@ -104,6 +106,9 @@
     <ProjectReference Include="..\serverSDK\serverSDK.vcxproj">
       <Project>{62c3f70f-f814-426d-96d1-f3c6751b750d}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="recordWaypointsWindow.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
