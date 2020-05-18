@@ -4,6 +4,40 @@
 #include "pch.h"
 #include "MessageManager.h"
 
+std::list<std::string> MessageManager::getWaypoinsObject(std::string message) {
+	picojson::value rootJSON;
+	std::list<std::string> listWaypoint;
+	std::string err = picojson::parse(rootJSON, message);
+	if (!err.empty()) {
+		std::cerr << err << std::endl;
+	}
+	else if (getMessageType(message) == MessageType::WAYPOINTS) {
+		if (rootJSON.get("data").is<picojson::array>())
+		{
+			picojson::array arr = rootJSON.get("data").get<picojson::array>;
+			picojson::array::iterator it;
+			for (it = arr.begin(); it != arr.end(); it++) {
+				listWaypoint.push_back(it->get<std::string>());
+			}
+			return listWaypoint;
+		}
+	}
+	return listWaypoint;
+}
+
+std::string MessageManager::buildWaypoinsFile(std::list<std::string> listWaypoint) {
+	picojson::value rootJSON = picojson::value(picojson::object());
+	rootJSON.get<picojson::object>()[getMessageTypeString(MessageType::MESSAGE_TYPE)] = picojson::value(getMessageTypeString(MessageType::WAYPOINTS));
+	picojson::array arr;
+	for (std::list<std::string>::iterator it = listWaypoint.begin(); it != listWaypoint.end(); it++)
+	{
+		arr.push_back(picojson::value(*it));
+	}
+	rootJSON.get<picojson::object>()["data"] = picojson::value(arr);
+	return rootJSON.serialize();
+}
+
+//INFO
 std::pair<std::string, std::string> MessageManager::getInfoObject(std::string message) {
 	picojson::value rootJSON;
 	std::pair<std::string, std::string> infoObject;
@@ -26,7 +60,7 @@ std::pair<std::string, std::string> MessageManager::getInfoObject(std::string me
 	return infoObject;
 }
 
-//INFO
+
 std::string MessageManager::builResponseInfo(std::string name, std::string value) {
 	picojson::value rootJSON = picojson::value(picojson::object());
 	rootJSON.get<picojson::object>()[getMessageTypeString(MessageType::MESSAGE_TYPE)] = picojson::value(getMessageTypeString(MessageType::INFO));
@@ -77,7 +111,7 @@ std::list<std::string> MessageManager::getSubcribeObject(std::string message) {
 		std::cerr << err << std::endl;
 	}
 	else if (getMessageType(message) == MessageType::START_SUBSCRIBE ||
-			getMessageType(message) == MessageType::STOP_SUBSCRIBE) {
+		getMessageType(message) == MessageType::STOP_SUBSCRIBE) {
 		if (rootJSON.get("data").is<picojson::object>()
 			&& rootJSON.get("data").get("to").is<std::string>())
 		{
@@ -265,6 +299,10 @@ MessageType MessageManager::getMessageTypeFromString(std::string type) {
 	{
 		return MessageType::STOP_BOT;
 	}
+	else if (type == "WAYPOINTS")
+	{
+		return MessageType::WAYPOINTS;
+	}
 	else {
 		std::cout << "Unknown type..." << std::endl;
 		return MessageType::UNKNOWN;
@@ -285,6 +323,7 @@ std::string MessageManager::getMessageTypeString(MessageType type) {
 	case MessageType::STOP_SUBSCRIBE: { return ("STOP_SUBSCRIBE"); } break;
 	case MessageType::START_BOT: { return ("START_BOT"); } break;
 	case MessageType::STOP_BOT: { return ("STOP_BOT"); } break;
+	case MessageType::WAYPOINTS: { return ("WAYPOINTS"); } break;
 	default:
 		std::cout << "Unknown type..." << std::endl;
 		return NULL;

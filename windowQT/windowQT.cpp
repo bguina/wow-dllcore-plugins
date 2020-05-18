@@ -101,7 +101,7 @@ void windowQT::closeEvent(QCloseEvent* event)
 
 void windowQT::exit() {
 	//QApplication::exit();
-	std::cout << "Click !" << std::endl;
+	std::cout << "Click exit !" << std::endl;
 }
 
 void windowQT::deinject() {

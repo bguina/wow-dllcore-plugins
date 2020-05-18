@@ -24,7 +24,8 @@ enum class MessageType {
 	START_SUBSCRIBE,
 	STOP_SUBSCRIBE,
 	START_BOT,
-	STOP_BOT
+	STOP_BOT,
+	WAYPOINTS,
 };
 
 class MessageManager
@@ -46,6 +47,7 @@ public:
 	int getDLLInjectedObject(std::string message);
 	std::list<std::string> getSubcribeObject(std::string message);
 	std::pair<std::string, std::string> getInfoObject(std::string message);
+	std::list<std::string> getWaypoinsObject(std::string message);
 
 	//BUILDER MESSAGE REQUEST
 	std::string builRequestStartSubcribe(std::list<std::string> toSubscribe);
@@ -59,6 +61,8 @@ public:
 	std::string builResponseAvailableConfigationMessage(std::string pids, std::string modules);
 	std::string builResponseInfo(std::string name, std::string value);
 
+	//WAYPOINS FILE
+	std::string buildWaypoinsFile(std::list<std::string> listWaypoint);
 };
 #endif // !MESSAGE_MANAGER_H
 

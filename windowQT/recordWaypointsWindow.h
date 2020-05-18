@@ -3,6 +3,8 @@
 
 #include <QDialog>
 #include <QStringListModel>
+#include <QFileDialog>
+#include <QMessageBox>
 #include "ServerSDK.h"
 
 namespace Ui {
@@ -27,10 +29,11 @@ private:
 	ServerSDK* serverSDK;
 	QStringListModel* model;
 	void closeEvent(QCloseEvent* event);
-	
+
 private slots:
 	void startRecord();
 	void stopRecord();
+	void saveFile();
 };
 
 #endif // RECORDWAYPOINTSWINDOW_H
