@@ -30,6 +30,7 @@ private slots:
 	void inject();
 	void deinject();
 	void recordPath();
+	void loadWaypointsFile();
 	void deleteRecordWindow();
 	void tick();
 };

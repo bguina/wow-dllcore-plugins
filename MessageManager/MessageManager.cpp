@@ -14,7 +14,7 @@ std::list<std::string> MessageManager::getWaypoinsObject(std::string message) {
 	else if (getMessageType(message) == MessageType::WAYPOINTS) {
 		if (rootJSON.get("data").is<picojson::array>())
 		{
-			picojson::array arr = rootJSON.get("data").get<picojson::array>;
+			picojson::array arr = rootJSON.get("data").get<picojson::array>();
 			picojson::array::iterator it;
 			for (it = arr.begin(); it != arr.end(); it++) {
 				listWaypoint.push_back(it->get<std::string>());
@@ -33,7 +33,7 @@ std::string MessageManager::buildWaypoinsFile(std::list<std::string> listWaypoin
 	{
 		arr.push_back(picojson::value(*it));
 	}
-	rootJSON.get<picojson::object>()["data"] = picojson::value(arr);
+	rootJSON.get<picojson::object>()["waypoints"] = picojson::value(arr);
 	return rootJSON.serialize();
 }
 

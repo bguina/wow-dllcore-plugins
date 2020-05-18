@@ -7,6 +7,7 @@ windowQT::windowQT(QWidget* parent) : QMainWindow(parent)
 	connect(ui.injectButton, SIGNAL(clicked()), this, SLOT(inject()));
 	connect(ui.deinjectButton, SIGNAL(clicked()), this, SLOT(deinject()));
 	connect(ui.recordPathButton, SIGNAL(clicked()), this, SLOT(recordPath()));
+	connect(ui.loadWaypointsFile, SIGNAL(clicked()), this, SLOT(loadWaypointsFile()));
 
 	ui.dllStatusIndicator->setStyleSheet("background-color: rgb(255,0,0)");
 
@@ -119,6 +120,35 @@ void  windowQT::recordPath() {
 	std::cout << "CLOSED RecordWaypointsWindow" << std::endl;
 	delete recordWaypointsWindow;
 	recordWaypointsWindow = NULL;
+}
+
+void windowQT::loadWaypointsFile() {
+	std::cout << "Click loadWaypointsFile !" << std::endl;
+	QString fileName = QFileDialog::getOpenFileName(this, tr("Load Path File"), "", tr("JSON (*.json)"));
+	if (fileName.isEmpty())
+		return;
+	else {
+
+		QFile file(fileName);
+		if (!file.open(QIODevice::ReadOnly)) {
+			QMessageBox::information(this, tr("Unable to open file"), file.errorString());
+			return;
+		}
+		QDataStream in(&file);
+		QString fileContentQstring = file.readAll();
+		std::string filecontent = fileContentQstring.toStdString();
+		std::cout << "content is =  " << filecontent << std::endl;
+
+		std::list<std::string> listWaypoint = messageManager.getWaypoinsObject(filecontent);
+		std::cout << "listWaypoint is =  " << listWaypoint.size() << std::endl;
+		if (listWaypoint.size() > 0)
+		{
+			serverSDK.sendMessage(filecontent);
+		}
+		else {
+			QMessageBox::information(this, tr("Unable to use this file"), "Please save this file wit record path function");
+		}
+	}
 }
 
 void windowQT::deleteRecordWindow() {

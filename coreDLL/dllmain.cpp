@@ -37,6 +37,10 @@ bool readMessageAvailable(ServerSDK* serverSDK) {
 			*/
 			break;
 		}
+		case MessageType::WAYPOINTS: {
+			std::list<std::string> listWaypoint = serverSDK->getMessageManager().getWaypoinsObject(*it);
+			break;
+		}
 		case MessageType::DEINJECT: {
 			return false;
 			break;
