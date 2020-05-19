@@ -42,7 +42,7 @@ void ObjectManager::scan() {
 			pObj = *(uint8_t**)(pObj + 0x70))
 		{
 			WowObject thisObj = WowObject(pObj);
-			std::map<WowGuid64, std::shared_ptr<WowObject>>::const_iterator oldObjInstance = mObjects.find(thisObj.getGuid2());
+			std::map<WowGuid64, std::shared_ptr<WowObject>>::const_iterator oldObjInstance = mObjects.find(thisObj.getGuid());
 
 			if (oldObjInstance == mObjects.end()) {
 				std::shared_ptr<WowObject> finalObj = nullptr;
@@ -82,14 +82,14 @@ void ObjectManager::scan() {
 				}
 
 				if (nullptr != finalObj)
-					mObjects.insert(std::pair<WowGuid64, std::shared_ptr<WowObject>>(thisObj.getGuid2(), finalObj));
+					mObjects.insert(std::pair<WowGuid64, std::shared_ptr<WowObject>>(thisObj.getGuid(), finalObj));
 			}
 			else {
 				// WowObject still present in memory, rebase to found address
 				// TODO: Define WHEN/HOW a same object would be rebase, when we immediately clear any missing previous object?
 				// in current implementation, we don't persist objects went missing so this currently has no real purpose.
 				oldObjInstance->second->rebase(pObj);
-				oldGuids.erase(oldObjInstance->second->getGuid2());
+				oldGuids.erase(oldObjInstance->second->getGuid());
 			}
 		}
 

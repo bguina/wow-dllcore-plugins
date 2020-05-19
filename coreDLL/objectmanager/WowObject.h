@@ -55,12 +55,12 @@ public:
 	WowGuid64 getGuid() const {
 		return ((WowGuid64*)(getBaseAddress() + 0x58))[0];
 	}
-	
+
 	WowGuid64 getGuid2() const {
 		return ((WowGuid64*)(getBaseAddress() + 0x58))[1];
 	}
 
-	const uint32_t*getGuidPointer() const {
+	const uint32_t* getGuidPointer() const {
 		return (uint32_t*)(getBaseAddress() + 0x58);
 	}
 
@@ -137,7 +137,7 @@ inline std::ostream& operator<<(
 	)
 {
 	out << "[WowObject@" << (void*)obj.getBaseAddress() << "]" << std::endl;
-	out << obj.getTypeLabel() << "[GUID 0x" << (void*)obj.getGuid() << (void*)obj.getGuid2() << "]@" << obj.getX() << "," << obj.getY() << " facing " << obj.getFacingRadians();
+	out << obj.getTypeLabel() << "[GUID 0x" << (void*)obj.getGuid() << " | " << (void*)obj.getGuid2() << "]@" << obj.getX() << "," << obj.getY() << " facing " << obj.getFacingRadians();
 	return out;
 }
 

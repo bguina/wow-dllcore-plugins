@@ -33,8 +33,8 @@ public:
 		if (NULL == self) {
 			dbg.log("null == self");
 
-		return;
-	}
+			return;
+		}
 
 		const Vector3f& pos = self->getPosition();
 
@@ -44,11 +44,25 @@ public:
 			return;
 		}
 
-		if (false) {
+		if (true) {
 			// Say hi to boar
 			const uint32_t* boarGuid = someBoar->getGuidPointer();
 
 			interactWith(boarGuid);
+		}
+
+		if (true) {
+			std::stringstream ss;
+			bool result = isFriendly((uint8_t*)self->getBaseAddress(), (uint8_t*)someBoar->getBaseAddress());
+			ss << "isFriendly[" << result << "]" << std::endl;
+			dbg.log(ss.str().c_str());
+		}
+
+		if (true) {
+			std::stringstream ss;
+			int result = canAttack((uint8_t*)self->getBaseAddress(), (uint8_t*)someBoar->getBaseAddress(), 0);
+			ss << "canAttack[" << result << "]" << std::endl;
+			dbg.log(ss.str().c_str());
 		}
 
 		if (true) {
@@ -85,6 +99,18 @@ public:
 		uint64_t(__fastcall * UnitInteract)(const uint32_t*) = (uint64_t(__fastcall*)(const uint32_t*))(mGame.getBaseAddress() + 0xD65D60);
 
 		return UnitInteract(targetGuid);
+	}
+
+	//char __fastcall sub_8831E0(__int64 a1, __int64 a2, char a3) //Unit_CanAttack = 0x8831E0 char seems like 0
+	char canAttack(uint8_t* self, uint8_t* target, char unknown) {
+		char(__fastcall * CanAttack)(uint8_t * self, uint8_t * target, char unknown) = (char(__fastcall*)(uint8_t * self, uint8_t * target, char unknown))(mGame.getBaseAddress() + 0x8831E0);
+		return CanAttack(self, target, unknown);
+	}
+
+	//bool __fastcall sub_8A0FF0(__int64 a1, __int64 a2) Unit_IsFriendly = 0x8A0FF0
+	bool isFriendly(uint8_t* self, uint8_t* target) {
+		bool(__fastcall * isFriendly)(uint8_t * self, uint8_t * target) = (bool(__fastcall*)(uint8_t * self, uint8_t * target))(mGame.getBaseAddress() + 0x8A0FF0);
+		return isFriendly(self, target);
 	}
 
 	const WowGame& getGame() const {
