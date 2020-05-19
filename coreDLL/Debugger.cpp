@@ -5,21 +5,23 @@
 
 #include "Debugger.h"
 
-Debugger::Debugger(madeSingleton)
-	:
-	Singleton<Debugger>(),
-	mOutputFile("D:\\nvtest.log")
+Debugger::Debugger(const char* logPath)
+	: mOutputFile(logPath)
 {
-	clear();
 }
 
+// clear previous file content
 void Debugger::clear() {
-	//std::ofstream(g_logfilePath, std::fstream::in | std::fstream::out);
 	std::ofstream(mOutputFile, std::fstream::in | std::fstream::out);
 }
 
-void Debugger::log(
-	const char* msg
-) {
-	std::ofstream(mOutputFile, std::fstream::in | std::fstream::out | std::fstream::app) << msg << std::endl;
+// add output for next file flush
+void Debugger::log(const char* msg) {
+	mBuff << msg;
+}
+
+// flush buffer to the log file
+void Debugger::flush() {
+	std::ofstream(mOutputFile, std::fstream::in | std::fstream::out | std::fstream::app) << mBuff.str() << std::endl << std::endl;
+	mBuff.str(std::string());
 }

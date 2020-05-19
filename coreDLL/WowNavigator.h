@@ -5,14 +5,17 @@
 
 #include "Debugger.h"
 #include "WowGame.h"
-#include "WinVirtualKey.h"
+#include "WindowController.h"
 
 class WowNavigator
 {
 public:
 	WowNavigator(
+		WindowController& ctrl,
 		WowGame& game
-	) : mGame(game)
+	) :
+		mCtrl(ctrl),
+		mGame(game)
 	{}
 
 	~WowNavigator()
@@ -24,18 +27,22 @@ public:
 		pressForward(false);
 	}
 
-	void run() {
+	void run(Debugger& dbg) {
 		WowActivePlayerObject* self = mGame.getObjectManager().getActivePlayer();
 
-		if (NULL == self)
-			return;
+		if (NULL == self) {
+			dbg.log("null == self");
+
+		return;
+	}
 
 		const Vector3f& pos = self->getPosition();
 
 		WowUnitObject* someBoar = mGame.getObjectManager().anyOfType<WowUnitObject>(WowObject::Unit);
-		if (NULL == someBoar)
+		if (NULL == someBoar) {
+			dbg.log("null == someBoar");
 			return;
-
+		}
 
 		if (false) {
 			// Say hi to boar
@@ -61,8 +68,9 @@ public:
 
 				ss << "facing " << self->getFacingDegrees() << ", target angle is " << angle << std::endl;
 				ss << "delta " << delta << std::endl;
-				Debugger::getInstance().log(ss.str().c_str());
+				dbg.log(ss.str().c_str());
 			}
+
 		}
 	}
 
@@ -84,36 +92,22 @@ public:
 	}
 
 protected:
+	WindowController& mCtrl;
 	WowGame& mGame;
 
 private:
 	void pressLeftTurn(bool doMove) {
-		pushKey(WinVirtualKey::WVK_A, doMove);
+		mCtrl.press(WinVirtualKey::WVK_A, doMove);
 	}
 
 	void pressRightTurn(bool doMove) {
-		pushKey(WinVirtualKey::WVK_D, doMove);
+		mCtrl.press(WinVirtualKey::WVK_D, doMove);
 	}
 
 	void pressForward(bool doMove) {
-		pushKey(WinVirtualKey::WVK_W, doMove);
+		mCtrl.press(WinVirtualKey::WVK_W, doMove);
 	}
 
-	void pushKey(WinVirtualKey keycode, bool keyDown) {
-		int action = WM_KEYUP;
-		int flags = SENDMESSAGE_KEYUP_FLAGS;	
-
-		if (keyDown) {
-			action = WM_KEYDOWN;
-			flags = SENDMESSAGE_KEYDOWN_FLAGS;
-		}
-
-		PostMessage(mGame.getWindow(), action, keycode, flags);
-	}
-
-	// Observed SendMessage "legit" flags found with Spy++ app
-	const int SENDMESSAGE_KEYUP_FLAGS = 0x00110001;
-	const int SENDMESSAGE_KEYDOWN_FLAGS = 0x00110001;
 };
 
 inline std::ostream& operator<<(

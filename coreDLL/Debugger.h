@@ -1,15 +1,17 @@
 #pragma once
 
-#include "Singleton.h"
+#include <sstream>
 
-class Debugger : public Singleton<Debugger> {
+class Debugger  {
 public:
-	Debugger(madeSingleton);
+	Debugger(const char* logPath);
 
 	void clear();
 	void log(const char* msg);
+	void flush();
 
 private:
+	std::stringstream mBuff;
 	const char* mOutputFile;
 
 public:

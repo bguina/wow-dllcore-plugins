@@ -65,11 +65,17 @@ void MainThread(void* pHandle) {
 	deinject(pHandle);
 }
 
+Sandbox* sandbox = NULL;
+
 void Render()
 {
 	static ServerSDK* serverSDK = NULL;
+
+	if (shouldStop) return;
+
 	if (serverSDK == NULL)
 	{
+		sandbox = new Sandbox();
 		serverSDK = new ServerSDK();
 		if (serverSDK->connectToServer())
 			serverSDK->sendMessage(serverSDK->getMessageManager().builRequestdDLLInjectedMessage(GetCurrentProcessId()));
@@ -78,18 +84,15 @@ void Render()
 	if (serverSDK->getConnectionStatus() && readMessageAvailable(serverSDK)) {
 		drawSomeTriangle();
 
-		Sandbox& sandbox = Sandbox::getInstance();
-
-		if (!sandbox.isOverHeating())
-			sandbox.run();
+		if (!sandbox->isOverHeating())
+			sandbox->run();
 	}
 	else {
 		serverSDK->disconnect();
 		delete serverSDK;
+		delete sandbox;
 		shouldStop = true;
 	}
-
-
 }
 
 BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpReserved)

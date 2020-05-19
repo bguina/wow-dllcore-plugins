@@ -16,7 +16,7 @@ public:
 	) : MemoryObject(baseAddr)
 	{}
 
-	enum Type : uint8_t {
+	enum Type : int32_t {
 		Object = 0,
 		Item = 1,
 		Container = 2,
@@ -53,7 +53,11 @@ public:
 	}
 
 	WowGuid64 getGuid() const {
-		return *(WowGuid64*)(getBaseAddress() + 0x58);
+		return ((WowGuid64*)(getBaseAddress() + 0x58))[0];
+	}
+	
+	WowGuid64 getGuid2() const {
+		return ((WowGuid64*)(getBaseAddress() + 0x58))[1];
 	}
 
 	const uint32_t*getGuidPointer() const {
@@ -133,13 +137,7 @@ inline std::ostream& operator<<(
 	)
 {
 	out << "[WowObject@" << (void*)obj.getBaseAddress() << "]" << std::endl;
-	out << obj.getTypeLabel() << "[GUID 0x" << (void*)obj.getGuid() << "]@" << obj.getX() << "," << obj.getY() << " facing " << obj.getFacingRadians();
-
-	//if (false && WowObject::Type::ActivePlayer == obj.getType()) {
-	//	out << Hexdump(*reinterpret_cast<const void* const*>(obj.getBaseAddress()), 16 * 5) << std::endl;
-	//	//out << Hexsearch<uint64_t>(*reinterpret_cast<const void* const*>(obj.getBaseAddress()), 0x8CAE30, 16 * 5) << std::endl;
-	//}
-
+	out << obj.getTypeLabel() << "[GUID 0x" << (void*)obj.getGuid() << (void*)obj.getGuid2() << "]@" << obj.getX() << "," << obj.getY() << " facing " << obj.getFacingRadians();
 	return out;
 }
 
