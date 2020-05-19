@@ -12,13 +12,13 @@ public:
 
 	long getPid() const;
 
-	HWND getWindow() const;
-
 	const ObjectManager getObjectManager() const;
 
 	ObjectManager getObjectManager();
 
 	bool isObjectManagerActive() const;
+
+	void update();
 
 	const char* getVersionBuild() const;
 
@@ -34,7 +34,6 @@ public:
 
 private:
 	long mPid;
-	HWND mWindow;
 	ObjectManager mObjMgr;
 };
 
@@ -47,6 +46,7 @@ inline std::ostream& operator<<(
 
 	if (obj.isObjectManagerActive()) {
 		ObjectManager objMgr = obj.getObjectManager();
+
 		out << objMgr << std::endl;
 	}
 

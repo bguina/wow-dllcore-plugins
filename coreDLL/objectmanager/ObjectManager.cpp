@@ -1,5 +1,6 @@
 #include "pch.h"
 
+#include <set>
 #include "ObjectManager.h"
 #include "WowObject.h"
 #include "WowContainerObject.h"
@@ -21,17 +22,27 @@ bool ObjectManager::isEnabled() const {
 	return NULL != getBaseAddress();
 }
 
+#include "../Debugger.h"
+
 void ObjectManager::scan() {
 	if (isEnabled()) {
-		std::vector<WowGuid64> oldGuids;
+		std::set<WowGuid64> oldGuids;
+
+		for (std::map<WowGuid64, std::shared_ptr<WowObject>>::const_iterator it = mObjects.begin();
+			it != mObjects.end(); ++it) {
+			oldGuids.insert(it->first);
+		}
+
+		std::stringstream ss;
+		Debugger dbg("D:\\mtlog.txt");
 
 		// Manually walk through the native ObjectManager linked list
 		for (auto pObj = *(uint8_t**)(getBaseAddress() + 0x18);
-			NULL != pObj && !((long)pObj & 1);
+			NULL != pObj && !((uint64_t)pObj & 1);
 			pObj = *(uint8_t**)(pObj + 0x70))
 		{
 			WowObject thisObj = WowObject(pObj);
-			std::map<WowGuid64, std::shared_ptr<WowObject>>::iterator oldObjInstance = mObjects.find(thisObj.getGuid());
+			std::map<WowGuid64, std::shared_ptr<WowObject>>::const_iterator oldObjInstance = mObjects.find(thisObj.getGuid2());
 
 			if (oldObjInstance == mObjects.end()) {
 				std::shared_ptr<WowObject> finalObj = nullptr;
@@ -71,15 +82,23 @@ void ObjectManager::scan() {
 				}
 
 				if (nullptr != finalObj)
-					mObjects.insert(std::pair<WowGuid64, std::shared_ptr<WowObject>>(thisObj.getGuid(), finalObj));
+					mObjects.insert(std::pair<WowGuid64, std::shared_ptr<WowObject>>(thisObj.getGuid2(), finalObj));
 			}
 			else {
 				// WowObject still present in memory, rebase to found address
 				// TODO: Define WHEN/HOW a same object would be rebase, when we immediately clear any missing previous object?
 				// in current implementation, we don't persist objects went missing so this currently has no real purpose.
 				oldObjInstance->second->rebase(pObj);
+				oldGuids.erase(oldObjInstance->second->getGuid2());
 			}
 		}
+
+		for (std::set<WowGuid64>::const_iterator it = oldGuids.begin(); it != oldGuids.end(); ++it) {
+			mObjects.erase(*it);
+		}
+
+		dbg.log(ss.str().c_str());
+		dbg.flush();
 	}
 	else {
 		mObjects.clear();

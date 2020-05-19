@@ -175,8 +175,8 @@
     <ClInclude Include="objectmanager\WowUnitObject.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Sandbox.h" />
-    <ClInclude Include="Singleton.h" />
     <ClInclude Include="Vector3f.h" />
+    <ClInclude Include="WindowController.h" />
     <ClInclude Include="WinVirtualKey.h" />
     <ClInclude Include="WowGame.h" />
     <ClInclude Include="WowNavigator.h" />

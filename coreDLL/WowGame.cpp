@@ -6,16 +6,15 @@
 WowGame::WowGame(const uint8_t* baseAddr) :
 	MemoryObject(baseAddr),
 	mPid(GetCurrentProcessId()),
-	mWindow(FindMainWindow(mPid)),
 	mObjMgr((const uint8_t**)(getBaseAddress() + 0x2372D48))
 {}
 
-long WowGame::getPid() const {
-	return mPid;
+void WowGame::update() {
+	mObjMgr.scan();
 }
 
-HWND WowGame::getWindow() const {
-	return mWindow;
+long WowGame::getPid() const {
+	return mPid;
 }
 
 const ObjectManager WowGame::getObjectManager() const {
