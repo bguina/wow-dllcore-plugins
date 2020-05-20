@@ -42,6 +42,17 @@ public:
 				return;
 			}
 
+			if (waypointsPath.size() > 0)
+			{
+				std::stringstream ss;
+				ss << "waypointsPath ==  " << waypointsPath.size() << std::endl;
+
+				ss << "waypoint 2 ==  " << waypointsPath[5] << std::endl;
+				dbg.log(ss.str().c_str());
+			}
+
+
+			/*
 			if (true) {
 				// Say hi to boar
 				const uint32_t* boarGuid = someBoar->getGuidPointer();
@@ -73,6 +84,7 @@ public:
 				}
 
 			}
+			*/
 		}
 	}
 
@@ -86,10 +98,14 @@ public:
 	}
 
 	//GETTER
+	std::vector<Vector3f>& getWaypointsPath() {
+		return waypointsPath;
+	}
 
 protected:
 	WowGame& mGame;
 	bool botStarted = false;
+	std::vector<Vector3f> waypointsPath;
 
 private:
 	void pressLeftTurn(bool doMove) {

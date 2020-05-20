@@ -6,6 +6,8 @@
 #include "Sandbox.h"
 #include "observers/ActivePlayerPositionObserver.h"
 
+#include "Utils.h"
+
 bool readMessageAvailable(ServerSDK& server, WowGame& game, WowNavigator& navigator) {
 	std::list<std::string> messages = server.getMessageAvailable();
 	for (std::list<std::string>::iterator it = messages.begin(); it != messages.end(); it++)
@@ -33,8 +35,17 @@ bool readMessageAvailable(ServerSDK& server, WowGame& game, WowNavigator& naviga
 			break;
 		}
 		case MessageType::WAYPOINTS: {
+			navigator.getWaypointsPath().clear();
 			std::list<std::string> listWaypoint = server.getMessageManager().getWaypoinsObject(*it);
-
+			for (std::list<std::string>::iterator waytpointsIterator = listWaypoint.begin(); waytpointsIterator != listWaypoint.end(); waytpointsIterator++)
+			{
+				std::vector<std::string> pointsList = splitByDelimiter(*waytpointsIterator, ",");
+				if (pointsList.size() == 3)
+				{
+					Vector3f point(std::stof(pointsList[0]), std::stof(pointsList[1]), std::stof(pointsList[2]));
+					navigator.getWaypointsPath().push_back(point);
+				}
+			}
 			// load Navigator with a waypoints profile
 			break;
 		}
