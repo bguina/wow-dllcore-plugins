@@ -49,13 +49,13 @@ void Render()
 			}
 		}
 
-		shouldStop = true;
 
 		if (server->getConnectionStatus()) {
 			drawSomeTriangle();
 
 			shouldStop = !sandbox->run(*server);
-		}
+		} else
+			shouldStop = true;
 	}
 }
 
