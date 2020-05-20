@@ -4,41 +4,46 @@
 #include <sstream>
 
 #include "Sandbox.h"
+#include "observers/ActivePlayerPositionObserver.h"
 #include "d3d/d3d.h"
 
-bool stackServerMessages(ServerSDK& serverSDK, MessageManager* messageManager) {
-	std::list<std::string> messages = serverSDK.getMessageAvailable();
-
-	for (std::list<std::string>::const_iterator it = messages.begin(); it != messages.end(); it++)
+bool readMessageAvailable(ServerSDK& server, WowGame& game) {
+	std::list<std::string> messages = server.getMessageAvailable();
+	for (std::list<std::string>::iterator it = messages.begin(); it != messages.end(); it++)
 	{
-		switch (messageManager->getMessageType((*it))) {
+		switch (server.getMessageManager().getMessageType((*it)))
+		{
 		case MessageType::START_SUBSCRIBE: {
-			std::list<std::string> toSubscribe = serverSDK.getMessageManager().getSubcribeObject(*it);
-			bool subToPosition = std::find(toSubscribe.begin(), toSubscribe.end(), "position") != toSubscribe.end();
+			std::list<std::string> toSubscribe = server.getMessageManager().getSubcribeObject(*it);
 
-			if (subToPosition) {
-				// fake a position response, just for temporary debug
-				serverSDK.sendMessage(messageManager->builResponseInfo("position", "X,Y,Z"));
+			bool found = (std::find(toSubscribe.begin(), toSubscribe.end(), "position") != toSubscribe.end());
+
+			if (found) {
+				game.addObserver("position", new ActivePlayerPositionObserver(server, 1));
 			}
 
 			break;
 		}
 		case MessageType::STOP_SUBSCRIBE: {
-			std::list<std::string> toSubscribe = serverSDK.getMessageManager().getSubcribeObject(*it);
-			/*
-			To be removed, just for testing purpose...
+			std::list<std::string> toSubscribe = server.getMessageManager().getSubcribeObject(*it);
 			bool found = (std::find(toSubscribe.begin(), toSubscribe.end(), "position") != toSubscribe.end());
-			if (found)
-				serverSDK.sendMessage(serverSDK.getMessageManager().builResponseInfo("position", "NONONO"));
-			*/
+			if (found) {
+				game.removeObserver("position");
+			}
+
 			break;
 		}
-		case MessageType::DEINJECT:
+		case MessageType::WAYPOINTS: {
+			std::list<std::string> listWaypoint = server.getMessageManager().getWaypoinsObject(*it);
+
+			// load Navigator with a waypoints profile
+			break;
+		}
+		case MessageType::DEINJECT: {
 			return false;
+			break;
+		}
 		default:
-			// Error, unknown MessageType? what are you mumbling chief?!
-			// should I return false and shoot myself?
-			// TODO: return false;
 			break;
 		}
 	}
@@ -75,8 +80,8 @@ bool Sandbox::isOverHeating() const {
 	return lastPulse + 120 > GetTickCount64();
 }
 
-void Sandbox::run() {
-	if (isOverHeating()) return;
+bool Sandbox::run(ServerSDK& server) {
+	if (isOverHeating()) return true;
 
 	bool abort = false;
 	std::stringstream ss;
@@ -86,7 +91,10 @@ void Sandbox::run() {
 
 	mBot.run(mDebugger);
 
+	if (!readMessageAvailable(server, mGame)) return false;
+
 	mDebugger.log(ss.str().c_str());
 	mDebugger.flush();
 	lastPulse = GetTickCount64();
+	return true;
 }

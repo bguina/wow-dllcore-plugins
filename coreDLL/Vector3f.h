@@ -13,18 +13,19 @@ struct Vector3f {
 		};
 		float coord[3];
 	};
+
+	Vector3f() : x(0), y(0), z(0) {}
+	Vector3f(float x1, float y1, float z1) : x(x1), y(y1), z(z1) {}
+	Vector3f(const Vector3f& copy) : x(copy.x), y(copy.y), z(copy.z) {}
+
+	bool isOrigin() const;
+
+	float getDistanceTo(const Vector3f& to) const;
+	float getFlightDistanceTo(const Vector3f& to) const;
+
+	int getFacingDegreesTo(const Vector3f& to) const;
+	int getFacingDeltaDegrees(int angle, const Vector3f& to) const;
 };
-
-int getVectorFacingDegrees(
-	const Vector3f& from,
-	const Vector3f& to
-);
-
-int getVectorFacingDeltaDegrees(
-	const Vector3f& from,
-	int angle,
-	const Vector3f& to
-);
 
 inline std::ostream& operator<<(
 	std::ostream& out,

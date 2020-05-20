@@ -27,7 +27,7 @@ public:
 	ULONG64 getBootTime() const { return bootTime; }
 	ULONG64 getLastPulse() const { return lastPulse; }
 
-	void run();
+	bool run(ServerSDK& server);
 
 private:
 	HMODULE mModuleBaseAddr;

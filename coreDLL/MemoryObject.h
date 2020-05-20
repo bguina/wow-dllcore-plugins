@@ -7,7 +7,7 @@ class MemoryObject
 public:
 	MemoryObject(const uint8_t* baseAddr);
 
-	const uint8_t* const getBaseAddress() const;
+	const uint8_t* getAddress() const;
 
 	void rebase(const uint8_t* baseAddr);
 

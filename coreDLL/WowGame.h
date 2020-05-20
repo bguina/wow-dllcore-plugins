@@ -1,16 +1,13 @@
 #pragma once
 
-#include "framework.h"
-
-#include "MemoryObject.h"
+#include "AGame.h"
+#include "observers/IGameObserver.h"
 #include "objectmanager/ObjectManager.h"
 
-class WowGame : public MemoryObject
+class WowGame : public AGame
 {
 public:
 	WowGame(const uint8_t* baseAddr);
-
-	long getPid() const;
 
 	const ObjectManager getObjectManager() const;
 
@@ -32,8 +29,15 @@ public:
 
 	bool traceLine(const Vector3f& from, const Vector3f& to, uint64_t flags) const;
 
+	/**
+		Give WowGame ownership of an observer object.
+		Observer gets freed upon removal.
+	*/
+	void addObserver(const std::string& name, IGameObserver<WowGame>* observer);
+	void removeObserver(const std::string& name);
+
 private:
-	long mPid;
+	std::map<std::string, IGameObserver<WowGame>*> mObservers;
 	ObjectManager mObjMgr;
 };
 
@@ -42,8 +46,7 @@ inline std::ostream& operator<<(
 	const class WowGame& obj
 	)
 {
-	out << "[WowGame@" << (void*)obj.getBaseAddress() << "]" << std::endl;
-
+	out << "[WowGame@" << (void*)obj.getAddress() << "]" << std::endl;
 	if (obj.isObjectManagerActive()) {
 		ObjectManager objMgr = obj.getObjectManager();
 

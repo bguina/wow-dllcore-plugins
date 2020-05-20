@@ -2,6 +2,8 @@
 
 #include "WowPlayerObject.h"
 
+class WowGame;
+
 class WowActivePlayerObject : public WowPlayerObject
 {
 public:
@@ -10,6 +12,9 @@ public:
 	) : WowPlayerObject(baseAddr)
 	{}
 
+	char canAttack(const WowGame& game, const WowUnitObject& target) const;
+
+	bool isFriendly(const WowGame& game, const WowUnitObject& target) const;
 
 };
 

@@ -49,19 +49,19 @@ public:
 	}
 
 	const uint8_t* getDescriptor() const {
-		return *(uint8_t**)(getBaseAddress() + 0x10);
+		return *(uint8_t**)(getAddress() + 0x10);
 	}
 
 	WowGuid64 getGuid() const {
-		return ((WowGuid64*)(getBaseAddress() + 0x58))[0];
+		return ((WowGuid64*)(getAddress() + 0x58))[0];
 	}
 
 	WowGuid64 getGuid2() const {
-		return ((WowGuid64*)(getBaseAddress() + 0x58))[1];
+		return ((WowGuid64*)(getAddress() + 0x58))[1];
 	}
 
 	const uint32_t* getGuidPointer() const {
-		return (uint32_t*)(getBaseAddress() + 0x58);
+		return (uint32_t*)(getAddress() + 0x58);
 	}
 
 	//		StorageField = 0x10,//good-33526
@@ -71,7 +71,7 @@ public:
 	//		LocalGUID = 0x58, //good-33526
 
 	Type getType() const {
-		return (WowObject::Type)(*(getBaseAddress() + 0x20));
+		return (WowObject::Type)(*(getAddress() + 0x20));
 	}
 
 	std::string getTypeLabel() const {
@@ -99,23 +99,23 @@ public:
 	}
 
 	const Vector3f& getPosition() const {
-		return *((Vector3f*)(getBaseAddress() + 0x1600));
+		return *((Vector3f*)(getAddress() + 0x1600));
 	}
 
 	float getX() const {
-		return ((Vector3f*)(getBaseAddress() + 0x1600))->x;
+		return ((Vector3f*)(getAddress() + 0x1600))->x;
 	}
 
 	float getY() const {
-		return ((Vector3f*)(getBaseAddress() + 0x1600))->y;
+		return ((Vector3f*)(getAddress() + 0x1600))->y;
 	}
 
 	float getZ() const {
-		return ((Vector3f*)(getBaseAddress() + 0x1600))->z;
+		return ((Vector3f*)(getAddress() + 0x1600))->z;
 	}
 
 	float getFacingRadians() const {
-		return *(float*)(getBaseAddress() + 0x1610);
+		return *(float*)(getAddress() + 0x1610);
 	}
 
 	int getFacingDegrees() const {
@@ -125,7 +125,7 @@ public:
 
 private:
 	void* vtableAt(unsigned index) {
-		return ((void**)getBaseAddress())[index];
+		return ((void**)getAddress())[index];
 	}
 };
 
@@ -136,7 +136,7 @@ inline std::ostream& operator<<(
 	const WowObject& obj
 	)
 {
-	out << "[WowObject@" << (void*)obj.getBaseAddress() << "]" << std::endl;
+	out << "[WowObject@" << (void*)obj.getAddress() << "]" << std::endl;
 	out << obj.getTypeLabel() << "[GUID 0x" << (void*)obj.getGuid() << " | " << (void*)obj.getGuid2() << "]@" << obj.getX() << "," << obj.getY() << " facing " << obj.getFacingRadians();
 	return out;
 }

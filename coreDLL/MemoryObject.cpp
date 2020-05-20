@@ -8,7 +8,7 @@ MemoryObject::MemoryObject(
 	mBaseAddr(baseAddr)
 {}
 
-const uint8_t* const MemoryObject::getBaseAddress() const {
+const uint8_t* MemoryObject::getAddress() const {
 	return mBaseAddr;
 }
 

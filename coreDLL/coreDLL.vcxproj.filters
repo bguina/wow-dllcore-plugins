@@ -90,6 +90,18 @@
     <ClInclude Include="WindowController.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="AGame.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="observers\ActivePlayerPositionObserver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="observers\AWowGameObserver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="observers\AGameObserver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -144,6 +156,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="d3d\d3d.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AGame.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="observers\ActivePlayerPositionObserver.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="observers\AWowGameObserver.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

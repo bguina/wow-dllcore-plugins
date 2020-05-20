@@ -12,86 +12,54 @@
 
 static BOOL shouldStop = false;
 
-bool readMessageAvailable(ServerSDK* serverSDK) {
-	std::list<std::string> messages = serverSDK->getMessageAvailable();
-	for (std::list<std::string>::iterator it = messages.begin(); it != messages.end(); it++)
-	{
-		switch (serverSDK->getMessageManager().getMessageType((*it)))
-		{
-		case MessageType::START_SUBSCRIBE: {
-
-			std::list<std::string> toSubscribe = serverSDK->getMessageManager().getSubcribeObject(*it);
-			bool found = (std::find(toSubscribe.begin(), toSubscribe.end(), "position") != toSubscribe.end());
-			if (found)
-				serverSDK->sendMessage(serverSDK->getMessageManager().builResponseInfo("position", "X,Y,Z"));
-
-			break;
-		}
-		case MessageType::STOP_SUBSCRIBE: {
-			std::list<std::string> toSubscribe = serverSDK->getMessageManager().getSubcribeObject(*it);
-			/*
-			To be removed, just for testing purpose...
-			bool found = (std::find(toSubscribe.begin(), toSubscribe.end(), "position") != toSubscribe.end());
-			if (found)
-				serverSDK->sendMessage(serverSDK->getMessageManager().builResponseInfo("position", "NONONO"));
-			*/
-			break;
-		}
-		case MessageType::WAYPOINTS: {
-			std::list<std::string> listWaypoint = serverSDK->getMessageManager().getWaypoinsObject(*it);
-			break;
-		}
-		case MessageType::DEINJECT: {
-			return false;
-			break;
-		}
-		default:
-			break;
-		}
-	}
-	return true;
-}
-
 void MainThread(void* pHandle) {
-
 
 	if (HookD3D()) {
 		while (!shouldStop && !GetAsyncKeyState(VK_END)) {
-
 		}
-
 	}
 
 	deinject(pHandle);
 }
 
-Sandbox* sandbox = NULL;
 
 void Render()
 {
-	static ServerSDK* serverSDK = NULL;
+	static Sandbox* sandbox = nullptr;
+	static ServerSDK* server = nullptr;
 
-	if (shouldStop) return;
+	if (shouldStop) {
 
-	if (serverSDK == NULL)
-	{
-		sandbox = new Sandbox();
-		serverSDK = new ServerSDK();
-		if (serverSDK->connectToServer())
-			serverSDK->sendMessage(serverSDK->getMessageManager().builRequestdDLLInjectedMessage(GetCurrentProcessId()));
-	}
+		if (nullptr != server) {
+			server->disconnect();
+			delete server;
+			delete sandbox;
+			server = nullptr;
+			sandbox = nullptr;
+		}
 
-	if (serverSDK->getConnectionStatus() && readMessageAvailable(serverSDK)) {
-		drawSomeTriangle();
-
-		if (!sandbox->isOverHeating())
-			sandbox->run();
 	}
 	else {
-		serverSDK->disconnect();
-		delete serverSDK;
-		delete sandbox;
-		shouldStop = true;
+		if (nullptr == server)
+		{
+			sandbox = new Sandbox();
+			server = new ServerSDK();
+			if (server->connectToServer())
+				server->sendMessage(server->getMessageManager().builRequestdDLLInjectedMessage(GetCurrentProcessId()));
+		}
+
+
+		if (server->getConnectionStatus()) {
+			drawSomeTriangle();
+
+			if (!sandbox->isOverHeating()) {
+				if (!sandbox->run(*server))
+					shouldStop = true;
+			}
+		}
+		else {
+			shouldStop = true;
+		}
 	}
 }
 
