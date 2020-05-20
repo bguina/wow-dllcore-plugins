@@ -12,9 +12,9 @@ std::list<std::string> MessageManager::getWaypoinsObject(std::string message) {
 		std::cerr << err << std::endl;
 	}
 	else if (getMessageType(message) == MessageType::WAYPOINTS) {
-		if (rootJSON.get("data").is<picojson::array>())
+		if (rootJSON.get("waypoints").is<picojson::array>())
 		{
-			picojson::array arr = rootJSON.get("data").get<picojson::array>();
+			picojson::array arr = rootJSON.get("waypoints").get<picojson::array>();
 			picojson::array::iterator it;
 			for (it = arr.begin(); it != arr.end(); it++) {
 				listWaypoint.push_back(it->get<std::string>());
