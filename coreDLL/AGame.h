@@ -1,6 +1,7 @@
 #pragma once
 
 #include "MemoryObject.h"
+#include "WindowController.h"
 
 class AGame : public MemoryObject
 {
@@ -9,6 +10,8 @@ public:
 
 	long getPid() const;
 
+	const WindowController& getWindowController() const;
+	WindowController& getWindowController();
 
 	template<typename T>
 	const T* get(uint64_t offset) const {
@@ -19,4 +22,5 @@ public:
 
 protected:
 	long mPid;
+	WindowController mWindowController;
 };

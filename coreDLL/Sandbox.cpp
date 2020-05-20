@@ -5,7 +5,6 @@
 
 #include "Sandbox.h"
 #include "observers/ActivePlayerPositionObserver.h"
-#include "d3d/d3d.h"
 
 bool readMessageAvailable(ServerSDK& server, WowGame& game) {
 	std::list<std::string> messages = server.getMessageAvailable();
@@ -50,51 +49,46 @@ bool readMessageAvailable(ServerSDK& server, WowGame& game) {
 	return true;
 }
 
-Sandbox::Sandbox()
-	:
-	mModuleBaseAddr(GetModuleHandleA(0)),
+Sandbox::Sandbox() :
 	mDebugger("D:\\nvtest.log"),
-	mPid(GetCurrentProcessId()),
-	bootTime(0), lastPulse(0),
-	mWindowController(FindMainWindow(mPid)),
-	mGame((const uint8_t*)mModuleBaseAddr),
-	mBot(mWindowController, mGame)
+	mBootTime(GetTickCount64()), mLastPulse(0),
+	mGame((const uint8_t*)GetModuleHandleA(0)),
+	mBot(mGame)
 {
+	// TODO connect to server from here
 
 }
 
 Sandbox::~Sandbox() {
-	// disconnect from server in case we are still connected
+	// TODO disconnect from server in case we are still connected
+
 	mDebugger.log("~Sandbox");
+	mDebugger.flush();
 }
 
-const WindowController& Sandbox::getWindowController() const {
-	return mWindowController;
-}
+ULONG64 Sandbox::getBootTime() const { return mBootTime; }
+ULONG64 Sandbox::getLastPulse() const { return mLastPulse; }
+WowGame Sandbox::getGame() const { return mGame; }
 
-WindowController& Sandbox::getWindowController() {
-	return mWindowController;
-}
-
-bool Sandbox::isOverHeating() const {
-	return lastPulse + 120 > GetTickCount64();
+bool Sandbox::throttle() const {
+	return mLastPulse + 120 > GetTickCount64();
 }
 
 bool Sandbox::run(ServerSDK& server) {
-	if (isOverHeating()) return true;
+	if (throttle()) return true;
 
-	bool abort = false;
-	std::stringstream ss;
+	bool abort = !readMessageAvailable(server, mGame);
 
 	mGame.update();
-	ss << mGame << std::endl;
-
 	mBot.run(mDebugger);
 
-	if (!readMessageAvailable(server, mGame)) return false;
+	if (true) {
+		std::stringstream ss;
+		ss << mGame << std::endl;
+		mDebugger.log(ss.str().c_str());
+	}
 
-	mDebugger.log(ss.str().c_str());
 	mDebugger.flush();
-	lastPulse = GetTickCount64();
-	return true;
+	mLastPulse = GetTickCount64();
+	return !abort;
 }

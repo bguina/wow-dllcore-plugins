@@ -4,7 +4,6 @@
 
 #include "WowGame.h"
 #include "WowNavigator.h"
-#include "WindowController.h"
 #include "ServerSDK.h"
 #include "MessageManager.h"
 #include "Debugger.h"
@@ -15,27 +14,22 @@ public:
 	Sandbox();
 	~Sandbox();
 
-	const WindowController& getWindowController() const;
-	WindowController& getWindowController();
-
-	bool isOverHeating() const;
+	bool throttle() const;
 
 	const void* id() const {
 		return this;
 	}
 
-	ULONG64 getBootTime() const { return bootTime; }
-	ULONG64 getLastPulse() const { return lastPulse; }
+	ULONG64 getBootTime() const;
+	ULONG64 getLastPulse() const;
+	WowGame getGame() const;
 
 	bool run(ServerSDK& server);
 
 private:
-	HMODULE mModuleBaseAddr;
-	long mPid;
-	ULONG64 bootTime;
-	ULONG64 lastPulse;
+	ULONG64 mBootTime;
+	ULONG64 mLastPulse;
 	Debugger mDebugger;
-	WindowController mWindowController;
 	WowGame mGame;
 	WowNavigator mBot;
 

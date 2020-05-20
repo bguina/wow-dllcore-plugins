@@ -11,11 +11,8 @@ class WowNavigator
 {
 public:
 	WowNavigator(
-		WindowController& ctrl,
 		WowGame& game
-	) :
-		mCtrl(ctrl),
-		mGame(game)
+	) : mGame(game)
 	{}
 
 	~WowNavigator()
@@ -48,7 +45,7 @@ public:
 			// Say hi to boar
 			const uint32_t* boarGuid = someBoar->getGuidPointer();
 
-			interactWith(boarGuid);
+			self->interactWith(mGame, boarGuid);
 		}
 
 		if (true) {
@@ -56,11 +53,12 @@ public:
 			const Vector3f& point = someBoar->getPosition();
 
 			int angle = self->getPosition().getFacingDegreesTo(point);
-			int delta = deltaAngleDegrees(point);
+			int delta = self->getPosition().getFacingDeltaDegrees(self->getFacingDegrees(), point);
 			int anglePrecision = 10;
 
 			pressLeftTurn(delta > anglePrecision);
 			pressRightTurn(delta < -anglePrecision);
+			// move forward if approximately on the right facing
 			pressForward(abs(delta) < anglePrecision * 2);
 
 			if (true) {
@@ -76,40 +74,25 @@ public:
 		}
 	}
 
-	int deltaAngleDegrees(const Vector3f& to) {
-		auto self = mGame.getObjectManager().getActivePlayer();
-		int delta = self->getPosition().getFacingDeltaDegrees(self->getFacingDegrees(), to);
-
-		return delta;
-	}
-
-	uint64_t  interactWith(const uint32_t* targetGuid) {
-		uint64_t(__fastcall * UnitInteract)(const uint32_t*) = (uint64_t(__fastcall*)(const uint32_t*))(mGame.getAddress() + 0xD65D60);
-
-		return UnitInteract(targetGuid);
-	}
-
 	const WowGame& getGame() const {
 		return mGame;
 	}
 
 protected:
-	WindowController& mCtrl;
 	WowGame& mGame;
 
 private:
 	void pressLeftTurn(bool doMove) {
-		mCtrl.press(WinVirtualKey::WVK_A, doMove);
+		mGame.getWindowController().press(WinVirtualKey::WVK_A, doMove);
 	}
 
 	void pressRightTurn(bool doMove) {
-		mCtrl.press(WinVirtualKey::WVK_D, doMove);
+		mGame.getWindowController().press(WinVirtualKey::WVK_D, doMove);
 	}
 
 	void pressForward(bool doMove) {
-		mCtrl.press(WinVirtualKey::WVK_W, doMove);
+		mGame.getWindowController().press(WinVirtualKey::WVK_W, doMove);
 	}
-
 };
 
 inline std::ostream& operator<<(

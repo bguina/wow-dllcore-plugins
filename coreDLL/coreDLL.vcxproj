@@ -177,6 +177,7 @@
     <ClInclude Include="observers\ActivePlayerPositionObserver.h" />
     <ClInclude Include="observers\AGameObserver.h" />
     <ClInclude Include="observers\AWowGameObserver.h" />
+    <ClInclude Include="observers\IGameObserver.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Sandbox.h" />
     <ClInclude Include="Vector3f.h" />

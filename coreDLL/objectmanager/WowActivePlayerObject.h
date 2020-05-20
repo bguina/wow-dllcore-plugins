@@ -16,6 +16,7 @@ public:
 
 	bool isFriendly(const WowGame& game, const WowUnitObject& target) const;
 
+	uint64_t  interactWith(const WowGame& game, const uint32_t* targetGuid);
 };
 
 inline std::ostream& operator<<(

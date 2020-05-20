@@ -10,18 +10,17 @@
 #include "WowNavigator.h"
 #include "Sandbox.h"
 
-static BOOL shouldStop = false;
+static boolean shouldStop = false;
 
 void MainThread(void* pHandle) {
-
 	if (HookD3D()) {
 		while (!shouldStop && !GetAsyncKeyState(VK_END)) {
+
 		}
 	}
 
 	deinject(pHandle);
 }
-
 
 void Render()
 {
@@ -44,21 +43,18 @@ void Render()
 		{
 			sandbox = new Sandbox();
 			server = new ServerSDK();
-			if (server->connectToServer())
-				server->sendMessage(server->getMessageManager().builRequestdDLLInjectedMessage(GetCurrentProcessId()));
+
+			if (server->connectToServer()) {
+				server->sendMessage(server->getMessageManager().builRequestdDLLInjectedMessage(sandbox->getGame().getPid()));
+			}
 		}
 
+		shouldStop = true;
 
 		if (server->getConnectionStatus()) {
 			drawSomeTriangle();
 
-			if (!sandbox->isOverHeating()) {
-				if (!sandbox->run(*server))
-					shouldStop = true;
-			}
-		}
-		else {
-			shouldStop = true;
+			shouldStop = !sandbox->run(*server);
 		}
 	}
 }
