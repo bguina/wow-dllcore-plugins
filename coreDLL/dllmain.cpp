@@ -22,23 +22,18 @@ void MainThread(void* pHandle) {
 	deinject(pHandle);
 }
 
+void releaseSandbox(Sandbox* sandbox, ServerSDK* server) {
+
+}
+
 void Render()
 {
 	static Sandbox* sandbox = nullptr;
 	static ServerSDK* server = nullptr;
 
-	if (shouldStop) {
+	if (!shouldStop)  {
+		boolean stopSandbox = true;
 
-		if (nullptr != server) {
-			server->disconnect();
-			delete server;
-			delete sandbox;
-			server = nullptr;
-			sandbox = nullptr;
-		}
-
-	}
-	else {
 		if (nullptr == server)
 		{
 			sandbox = new Sandbox();
@@ -49,13 +44,26 @@ void Render()
 			}
 		}
 
-
 		if (server->getConnectionStatus()) {
 			drawSomeTriangle();
+		
+			stopSandbox = !sandbox->run(*server);
+		}
+		else 
+			stopSandbox = true;
 
-			shouldStop = !sandbox->run(*server);
-		} else
+		if (stopSandbox) {
+
+			if (nullptr != server) {
+				server->disconnect();
+				delete server;
+				delete sandbox;
+				sandbox = nullptr;
+				server = nullptr;
+			}
+
 			shouldStop = true;
+		}
 	}
 }
 
