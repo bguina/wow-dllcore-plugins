@@ -20,7 +20,7 @@ bool readMessageAvailable(ServerSDK& server, WowGame& game, WowNavigator& naviga
 			bool found = (std::find(toSubscribe.begin(), toSubscribe.end(), "position") != toSubscribe.end());
 
 			if (found) {
-				game.addObserver("position", new ActivePlayerPositionObserver(server, 1));
+				game.addObserver("position", new ActivePlayerPositionObserver(server, 10));
 			}
 
 			break;
@@ -35,17 +35,19 @@ bool readMessageAvailable(ServerSDK& server, WowGame& game, WowNavigator& naviga
 			break;
 		}
 		case MessageType::WAYPOINTS: {
-			navigator.getWaypointsPath().clear();
 			std::list<std::string> listWaypoint = server.getMessageManager().getWaypoinsObject(*it);
+			std::vector<Vector3f> waypoints;
 			for (std::list<std::string>::iterator waytpointsIterator = listWaypoint.begin(); waytpointsIterator != listWaypoint.end(); waytpointsIterator++)
 			{
 				std::vector<std::string> pointsList = splitByDelimiter(*waytpointsIterator, ",");
+
 				if (pointsList.size() == 3)
 				{
 					Vector3f point(std::stof(pointsList[0]), std::stof(pointsList[1]), std::stof(pointsList[2]));
-					navigator.getWaypointsPath().push_back(point);
+					waypoints.push_back(point);
 				}
 			}
+			navigator.setWaypointsProfile(waypoints);
 			// load Navigator with a waypoints profile
 			break;
 		}
