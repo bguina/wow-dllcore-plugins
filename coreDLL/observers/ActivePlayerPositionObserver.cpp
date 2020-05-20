@@ -6,7 +6,7 @@
 #include "../WowGame.h"
 
 ActivePlayerPositionObserver::ActivePlayerPositionObserver(ServerSDK& server, float maxDelta)
-	: AWowGameObserver(server, 250), mMaxDistanceDelta(maxDelta)
+	: AWowGameObserver(server, 800), mMaxDistanceDelta(maxDelta)
 {}
 
 void ActivePlayerPositionObserver::makeCapture(const WowGame& game) {
