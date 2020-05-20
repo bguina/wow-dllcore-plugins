@@ -55,6 +55,7 @@ bool readMessageAvailable(ServerSDK& server, WowGame& game, WowNavigator& naviga
 		}
 		case MessageType::STOP_BOT: {
 			navigator.setBotStarted(false);
+			game.getWindowController().clearKeyPressed();
 			break;
 		}
 		case MessageType::DEINJECT: {

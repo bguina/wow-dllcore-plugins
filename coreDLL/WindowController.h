@@ -4,6 +4,7 @@
 
 #include <cmath>
 #include <iostream>
+#include <map>
 
 #include "Debugger.h"
 #include "WinVirtualKey.h"
@@ -25,13 +26,32 @@ public:
 	// Attempt to push down or unpush a key.
 	// Return true if key is in expected final state.
 	bool press(WinVirtualKey key, bool keyDown) {
-		bool keyAlreadyPushed = false;
+		bool keyAlreadyPushed = mKeyPressedStatus[key];
+		if ((keyAlreadyPushed != 0) != keyDown)
+		{
+			if (postKeyEvent(key, keyDown)) {
+				mKeyPressedStatus[key] = keyDown;
+				return true;
+			}
+			else {
+				return false;
+			}
+				
+		}
+		return true;
+	}
 
-		return postKeyEvent(key, keyDown);
+	void clearKeyPressed() {
+		for (std::map<WinVirtualKey, int>::iterator it = mKeyPressedStatus.begin(); it != mKeyPressedStatus.end(); it++)
+		{
+			if (it->second != 0 && postKeyEvent(it->first, false))
+				it->second = 0;
+		}
 	}
 
 protected:
 	HWND mWindow;
+	std::map<WinVirtualKey, int> mKeyPressedStatus;
 
 private:
 	// Return true if key event is sent.

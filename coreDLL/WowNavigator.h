@@ -17,11 +17,7 @@ public:
 
 	~WowNavigator()
 	{
-		// fixme: dirty way of releasing any remaining Keydown
-		// todo: persist current state as std::map<Keycode, State>
-		pressLeftTurn(false);
-		pressRightTurn(false);
-		pressForward(false);
+		mGame.getWindowController().clearKeyPressed();
 	}
 
 	void run(Debugger& dbg) {
@@ -42,6 +38,8 @@ public:
 				return;
 			}
 
+
+			/*
 			if (waypointsPath.size() > 0)
 			{
 				std::stringstream ss;
@@ -50,9 +48,10 @@ public:
 				ss << "waypoint 2 ==  " << waypointsPath[5] << std::endl;
 				dbg.log(ss.str().c_str());
 			}
+			*/
 
 
-			/*
+
 			if (true) {
 				// Say hi to boar
 				const uint32_t* boarGuid = someBoar->getGuidPointer();
@@ -64,27 +63,21 @@ public:
 				// Face given position
 				const Vector3f& point = someBoar->getPosition();
 
-				int angle = self->getPosition().getFacingDegreesTo(point);
-				int delta = self->getPosition().getFacingDeltaDegrees(self->getFacingDegrees(), point);
-				int anglePrecision = 10;
-
-				pressLeftTurn(delta > anglePrecision);
-				pressRightTurn(delta < -anglePrecision);
-				// move forward if approximately on the right facing
-				pressForward(abs(delta) < anglePrecision * 2);
+				self->moveTo(mGame, point);
 
 				if (true) {
 					std::stringstream ss;
 
 					ss << "canAttack " << self->canAttack(mGame, someBoar->getAddress()) << std::endl;
 					ss << "isFriendly " << self->isFriendly(mGame, someBoar->getAddress()) << std::endl;
-					ss << "facing " << self->getFacingDegrees() << ", target angle is " << angle << std::endl;
-					ss << "delta " << delta << std::endl;
+					//ss << "facing " << self->getFacingDegrees() << ", target angle is " << angle << std::endl;
+					//ss << "delta " << delta << std::endl;
 					dbg.log(ss.str().c_str());
 				}
 
 			}
-			*/
+
+
 		}
 	}
 
@@ -95,6 +88,11 @@ public:
 	//SETTER
 	void setBotStarted(bool status) {
 		botStarted = status;
+		if (!botStarted)
+		{
+			//clearKeys
+			//mGame.getWindowController()
+		}
 	}
 
 	//GETTER
@@ -108,17 +106,6 @@ protected:
 	std::vector<Vector3f> waypointsPath;
 
 private:
-	void pressLeftTurn(bool doMove) {
-		mGame.getWindowController().press(WinVirtualKey::WVK_A, doMove);
-	}
-
-	void pressRightTurn(bool doMove) {
-		mGame.getWindowController().press(WinVirtualKey::WVK_D, doMove);
-	}
-
-	void pressForward(bool doMove) {
-		mGame.getWindowController().press(WinVirtualKey::WVK_W, doMove);
-	}
 };
 
 inline std::ostream& operator<<(

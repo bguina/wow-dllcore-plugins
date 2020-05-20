@@ -2,6 +2,8 @@
 
 #include "WowObject.h"
 
+class WowGame;
+
 class WowUnitObject : public WowObject
 {
 public:
@@ -76,6 +78,7 @@ public:
 	//	return game.traceLine(position, getPosition(), 0x100151);
 //	}
 
+	void moveTo(WowGame& game, Vector3f destination);
 };
 
 inline std::ostream& operator<<(
