@@ -50,10 +50,19 @@ public:
 
 				if (mNextWaypoint != mWaypointsPath.end())
 				{
-					if (self->getPosition().getDistanceTo(*mNextWaypoint) < 3)
+					if (self->getPosition().getDistanceTo(*mNextWaypoint) < 10)
 					{
 						mNextWaypoint++;
 						ss << "Go to next Waypoint ==  " << std::distance(mWaypointsPath.begin(), mNextWaypoint) << std::endl;
+						if (mNextWaypoint == mWaypointsPath.end())
+						{
+							if (self->getPosition().getDistanceTo(*mWaypointsPath.begin()) > 30)
+							{
+								mWaypointsPath.reverse();
+							}
+							mNextWaypoint = mWaypointsPath.begin();
+
+						}
 					}
 					else {
 						self->moveTo(mGame, *mNextWaypoint);
