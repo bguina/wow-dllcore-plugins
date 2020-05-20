@@ -21,6 +21,7 @@ void ActivePlayerPositionObserver::makeCapture(const WowGame& game) {
 
 			ss << currentPosition.x << ',' << currentPosition.y << ',' << currentPosition.z;
 			mServer.sendMessage(mServer.getMessageManager().builResponseInfo("position", ss.str()));
+			mLastPosition = self->getPosition();
 		}
 	}
 	else {
