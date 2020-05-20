@@ -14,7 +14,7 @@ void ActivePlayerPositionObserver::makeCapture(const WowGame& game) {
 
 	if (nullptr != self) {
 		auto currentPosition = self->getPosition();
-		auto distanceDelta = mLastPosition.getFlightDistanceTo(mLastPosition);
+		auto distanceDelta = currentPosition.getFlightDistanceTo(mLastPosition);
 
 		if (distanceDelta >= mMaxDistanceDelta || mLastPosition.isOrigin()) {
 			std::stringstream ss;
