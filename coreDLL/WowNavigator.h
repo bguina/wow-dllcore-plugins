@@ -2,6 +2,7 @@
 
 #include <cmath>
 #include <iostream>
+#include <list>
 
 #include "Debugger.h"
 #include "WowGame.h"
@@ -12,8 +13,9 @@ class WowNavigator
 public:
 	WowNavigator(
 		WowGame& game
-	) : mGame(game)
-	{}
+	) : mGame(game), mNextWaypoint(mWaypointsPath.end())
+	{
+	}
 
 	~WowNavigator()
 	{
@@ -29,7 +31,7 @@ public:
 			return;
 		}
 
-		if (botStarted) {
+		if (mBotStarted) {
 			const Vector3f& pos = self->getPosition();
 			WowUnitObject* someBoar = mGame.getObjectManager().anyOfType<WowUnitObject>(WowObject::Unit);
 
@@ -39,19 +41,46 @@ public:
 			}
 
 
-			/*
-			if (waypointsPath.size() > 0)
+
+			if (mWaypointsPath.size() > 0)
 			{
 				std::stringstream ss;
-				ss << "waypointsPath ==  " << waypointsPath.size() << std::endl;
+				ss << "waypointsPath ==  " << mWaypointsPath.size() << std::endl;
 
-				ss << "waypoint 2 ==  " << waypointsPath[5] << std::endl;
+
+				if (mNextWaypoint != mWaypointsPath.end())
+				{
+					if (self->getPosition().getDistanceTo(*mNextWaypoint) < 3)
+					{
+						mNextWaypoint++;
+						ss << "Go to next Waypoint ==  " << std::distance(mWaypointsPath.begin(), mNextWaypoint) << std::endl;
+					}
+					else {
+						self->moveTo(mGame, *mNextWaypoint);
+						//ss << "moveTo ==  " << *mNextWaypoint << std::endl;
+					}
+				}
+				else {
+					float distance = FLT_MAX;
+					for (std::list<Vector3f>::iterator it = mWaypointsPath.begin(); it != mWaypointsPath.end(); it++)
+					{
+						float distanceTmp = it->getDistanceTo(self->getPosition());
+						if (distanceTmp < distance)
+						{
+							distance = distanceTmp;
+							mNextWaypoint = it;
+							self->moveTo(mGame, *it);
+						}
+					}
+				}
+
 				dbg.log(ss.str().c_str());
+
 			}
-			*/
 
 
 
+			/*
 			if (true) {
 				// Say hi to boar
 				const uint32_t* boarGuid = someBoar->getGuidPointer();
@@ -76,6 +105,7 @@ public:
 				}
 
 			}
+			*/
 
 
 		}
@@ -87,23 +117,25 @@ public:
 
 	//SETTER
 	void setBotStarted(bool status) {
-		botStarted = status;
-		if (!botStarted)
+		mBotStarted = status;
+		if (!mBotStarted)
 		{
 			//clearKeys
 			//mGame.getWindowController()
 		}
 	}
 
-	//GETTER
-	std::vector<Vector3f>& getWaypointsPath() {
-		return waypointsPath;
+	void setWaypointsProfile(const std::vector<Vector3f>& waypoints) {
+		mWaypointsPath.clear();
+		mWaypointsPath.assign(waypoints.begin(), waypoints.end());
+		mNextWaypoint = mWaypointsPath.end();
 	}
 
 protected:
 	WowGame& mGame;
-	bool botStarted = false;
-	std::vector<Vector3f> waypointsPath;
+	bool mBotStarted = false;
+	std::list<Vector3f> mWaypointsPath;
+	std::list<Vector3f>::iterator mNextWaypoint;
 
 private:
 };
