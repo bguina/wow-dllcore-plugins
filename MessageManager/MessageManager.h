@@ -56,6 +56,8 @@ public:
 	std::string builRequestdInjectMessage(int pid, std::string module);
 	std::string builRequestdDLLInjectedMessage(int pid);
 	std::string builRequestdDeinjecteMessage();
+	std::string builRequestdStartBotMessage();
+	std::string builRequestdStopBotMessage();
 
 	//BUILDER MESSAGE RESPONSE
 	std::string builResponseAvailableConfigationMessage(std::string pids, std::string modules);

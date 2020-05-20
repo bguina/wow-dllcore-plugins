@@ -203,7 +203,9 @@ BOOL Server::ReadData(ClientConnection& client)
 			else if (messageManager.getMessageType(client.getTmpMessage()) == MessageType::DEINJECT ||
 				messageManager.getMessageType(client.getTmpMessage()) == MessageType::START_SUBSCRIBE ||
 				messageManager.getMessageType(client.getTmpMessage()) == MessageType::STOP_SUBSCRIBE ||
-				messageManager.getMessageType(client.getTmpMessage()) == MessageType::WAYPOINTS)
+				messageManager.getMessageType(client.getTmpMessage()) == MessageType::WAYPOINTS ||
+				messageManager.getMessageType(client.getTmpMessage()) == MessageType::START_BOT ||
+				messageManager.getMessageType(client.getTmpMessage()) == MessageType::STOP_BOT)
 			{
 				PeerClient* peerClient = checkIfClientExistInPeerList(client.getSocket());
 				if (peerClient != NULL && peerClient->getClient2())

@@ -8,6 +8,8 @@ windowQT::windowQT(QWidget* parent) : QMainWindow(parent)
 	connect(ui.deinjectButton, SIGNAL(clicked()), this, SLOT(deinject()));
 	connect(ui.recordPathButton, SIGNAL(clicked()), this, SLOT(recordPath()));
 	connect(ui.loadWaypointsFile, SIGNAL(clicked()), this, SLOT(loadWaypointsFile()));
+	connect(ui.startBotButton, SIGNAL(clicked()), this, SLOT(startBot()));
+	connect(ui.stopBotButton, SIGNAL(clicked()), this, SLOT(stopBot()));
 
 	ui.dllStatusIndicator->setStyleSheet("background-color: rgb(255,0,0)");
 
@@ -109,6 +111,16 @@ void windowQT::deinject() {
 	std::cout << "Click deinject !" << std::endl;
 	serverSDK.sendMessage(messageManager.builRequestdDeinjecteMessage());
 }
+void windowQT::startBot() {
+	std::cout << "Click startBot !" << std::endl;
+	serverSDK.sendMessage(messageManager.builRequestdStartBotMessage());
+}
+
+void windowQT::stopBot() {
+	std::cout << "Click stopBot !" << std::endl;
+	serverSDK.sendMessage(messageManager.builRequestdStopBotMessage());
+}
+
 
 void  windowQT::recordPath() {
 	std::cout << "Click recordPath !" << std::endl;

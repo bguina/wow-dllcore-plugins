@@ -6,7 +6,7 @@
 #include "Sandbox.h"
 #include "observers/ActivePlayerPositionObserver.h"
 
-bool readMessageAvailable(ServerSDK& server, WowGame& game) {
+bool readMessageAvailable(ServerSDK& server, WowGame& game, WowNavigator& navigator) {
 	std::list<std::string> messages = server.getMessageAvailable();
 	for (std::list<std::string>::iterator it = messages.begin(); it != messages.end(); it++)
 	{
@@ -36,6 +36,14 @@ bool readMessageAvailable(ServerSDK& server, WowGame& game) {
 			std::list<std::string> listWaypoint = server.getMessageManager().getWaypoinsObject(*it);
 
 			// load Navigator with a waypoints profile
+			break;
+		}
+		case MessageType::START_BOT: {
+			navigator.setBotStarted(true);
+			break;
+		}
+		case MessageType::STOP_BOT: {
+			navigator.setBotStarted(false);
 			break;
 		}
 		case MessageType::DEINJECT: {
@@ -77,7 +85,7 @@ bool Sandbox::throttle() const {
 bool Sandbox::run(ServerSDK& server) {
 	if (throttle()) return true;
 
-	bool abort = !readMessageAvailable(server, mGame);
+	bool abort = !readMessageAvailable(server, mGame, mBot);
 
 	mGame.update();
 	mBot.run(mDebugger);

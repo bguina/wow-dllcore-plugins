@@ -131,6 +131,18 @@ std::string MessageManager::builRequestdDeinjecteMessage() {
 	return rootJSON.serialize();
 }
 
+std::string MessageManager::builRequestdStartBotMessage() {
+	picojson::value rootJSON = picojson::value(picojson::object());
+	rootJSON.get<picojson::object>()[getMessageTypeString(MessageType::MESSAGE_TYPE)] = picojson::value(getMessageTypeString(MessageType::START_BOT));
+	return rootJSON.serialize();
+}
+
+std::string MessageManager::builRequestdStopBotMessage() {
+	picojson::value rootJSON = picojson::value(picojson::object());
+	rootJSON.get<picojson::object>()[getMessageTypeString(MessageType::MESSAGE_TYPE)] = picojson::value(getMessageTypeString(MessageType::STOP_BOT));
+	return rootJSON.serialize();
+}
+
 int MessageManager::getDLLInjectedObject(std::string message) {
 	picojson::value rootJSON;
 	int pid = -1;
