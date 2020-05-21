@@ -21,9 +21,6 @@
     <ClInclude Include="WowGame.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="WowNavigator.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Vector3f.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -105,7 +102,19 @@
     <ClInclude Include="observers\IGameObserver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Utils.h">
+    <ClInclude Include="pathfinder\IPathFinder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pathfinder\LinearPathFinder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pathfinder\APathFinder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WowBot.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NetworkParsing.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -173,7 +182,13 @@
     <ClCompile Include="observers\AWowGameObserver.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Utils.cpp">
+    <ClCompile Include="pathfinder\APathFinder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="pathfinder\LinearPathFinder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="NetworkParsing.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

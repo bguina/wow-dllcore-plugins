@@ -164,6 +164,9 @@
     <ClInclude Include="MemoryObject.h" />
     <ClInclude Include="memutils\Hexdump.h" />
     <ClInclude Include="memutils\Hexsearch.h" />
+    <ClInclude Include="pathfinder\APathFinder.h" />
+    <ClInclude Include="pathfinder\IPathFinder.h" />
+    <ClInclude Include="pathfinder\LinearPathFinder.h" />
     <ClInclude Include="objectmanager\ObjectManager.h" />
     <ClInclude Include="objectmanager\WowActivePlayerObject.h" />
     <ClInclude Include="objectmanager\WowContainerObject.h" />
@@ -180,12 +183,12 @@
     <ClInclude Include="observers\IGameObserver.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Sandbox.h" />
-    <ClInclude Include="Utils.h" />
+    <ClInclude Include="NetworkParsing.h" />
     <ClInclude Include="Vector3f.h" />
     <ClInclude Include="WindowController.h" />
     <ClInclude Include="WinVirtualKey.h" />
     <ClInclude Include="WowGame.h" />
-    <ClInclude Include="WowNavigator.h" />
+    <ClInclude Include="WowBot.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AGame.cpp" />
@@ -209,9 +212,11 @@
     <ClCompile Include="objectmanager\WowUnitObject.cpp" />
     <ClCompile Include="observers\ActivePlayerPositionObserver.cpp" />
     <ClCompile Include="observers\AWowGameObserver.cpp" />
+    <ClCompile Include="pathfinder\APathFinder.cpp" />
+    <ClCompile Include="pathfinder\LinearPathFinder.cpp" />
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="Sandbox.cpp" />
-    <ClCompile Include="Utils.cpp" />
+    <ClCompile Include="NetworkParsing.cpp" />
     <ClCompile Include="Vector3f.cpp" />
     <ClCompile Include="WowGame.cpp" />
   </ItemGroup>

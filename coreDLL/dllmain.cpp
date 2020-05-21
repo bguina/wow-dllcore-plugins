@@ -7,7 +7,7 @@
 #include "d3d/d3d.h"
 #include "Debugger.h"
 #include "WowGame.h"
-#include "WowNavigator.h"
+#include "WowBot.h"
 #include "Sandbox.h"
 
 static boolean shouldStop = false;

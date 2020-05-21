@@ -47,7 +47,7 @@ public:
 	int getDLLInjectedObject(std::string message);
 	std::list<std::string> getSubcribeObject(std::string message);
 	std::pair<std::string, std::string> getInfoObject(std::string message);
-	std::list<std::string> getWaypoinsObject(std::string message);
+	std::list<std::string> getWaypointsObject(std::string message);
 
 	//BUILDER MESSAGE REQUEST
 	std::string builRequestStartSubcribe(std::list<std::string> toSubscribe);

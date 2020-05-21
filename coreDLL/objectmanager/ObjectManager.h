@@ -36,40 +36,40 @@ public:
 	std::map<uint64_t, std::shared_ptr<WowObject>>::iterator end();
 
 	template<class T >
-	const T* anyOfType(WowObject::Type type) const {
+	const std::shared_ptr<const T> anyOfType(WowObject::Type type) const {
 		for (auto it = begin(); it != end(); ++it) {
 			if (type == it->second->getType())
-				return &it->second->downcast<const T>();
+				return std::static_pointer_cast<T>(it->second);
 		}
 
-		return NULL;
+		return nullptr;
 	}
 
 	template<class T >
-	T* anyOfType(WowObject::Type type) {
-		return const_cast<T*>(std::as_const(*this).anyOfType<T>(type));
+	std::shared_ptr<T> anyOfType(WowObject::Type type) {
+		return std::const_pointer_cast<T>(std::as_const(*this).anyOfType<T>(type));
 	}
 
 	template<class T >
-	std::vector<const T&>& allOfType(WowObject::Type type) const {
+	std::vector<const std::shared_ptr<T>>& allOfType(WowObject::Type type) const {
 		std::vector<const T&> results;
 
 		for (auto it = begin(); it != end(); ++it) {
 			if (type == it->second->getType())
-				results.push_back(it->second->downcast<const T>());
+				results.push_back(std::static_pointer_cast<T>(it->second));
 		}
 
 		return results;
 	}
 
 	template<class T >
-	std::vector<T&>& allOfType(WowObject::Type type) {
-		return const_cast<std::vector<T&>&>(allOfType<T>(type));
+	std::vector<std::shared_ptr<T>>& allOfType(WowObject::Type type) {
+		return const_cast<std::vector<std::shared_ptr<T>>>(allOfType<T>(type));
 	}
 
-	const WowActivePlayerObject* getActivePlayer() const;
+	const std::shared_ptr<const WowActivePlayerObject> getActivePlayer() const;
 
-	WowActivePlayerObject* getActivePlayer();
+	std::shared_ptr<WowActivePlayerObject> getActivePlayer();
 
 private:
 	const uint8_t** mPointerAddr;

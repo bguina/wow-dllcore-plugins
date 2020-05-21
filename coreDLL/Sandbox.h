@@ -3,7 +3,7 @@
 #include <iostream>
 
 #include "WowGame.h"
-#include "WowNavigator.h"
+#include "WowBot.h"
 #include "ServerSDK.h"
 #include "MessageManager.h"
 #include "Debugger.h"
@@ -31,7 +31,7 @@ private:
 	ULONG64 mLastPulse;
 	Debugger mDebugger;
 	WowGame mGame;
-	WowNavigator mBot;
+	WowBot mBot;
 
 public:
 	Sandbox(Sandbox const&) = delete;

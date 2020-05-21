@@ -4,7 +4,7 @@
 #include "pch.h"
 #include "MessageManager.h"
 
-std::list<std::string> MessageManager::getWaypoinsObject(std::string message) {
+std::list<std::string> MessageManager::getWaypointsObject(std::string message) {
 	picojson::value rootJSON;
 	std::list<std::string> listWaypoint;
 	std::string err = picojson::parse(rootJSON, message);

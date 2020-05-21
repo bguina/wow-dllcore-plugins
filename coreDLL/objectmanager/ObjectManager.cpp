@@ -81,8 +81,9 @@ void ObjectManager::scan() {
 					break;
 				}
 
-				if (nullptr != finalObj)
+				if (nullptr != finalObj) {
 					mObjects.insert(std::pair<WowGuid64, std::shared_ptr<WowObject>>(thisObj.getGuid(), finalObj));
+				}
 			}
 			else {
 				// WowObject still present in memory, rebase to found address
@@ -94,11 +95,11 @@ void ObjectManager::scan() {
 		}
 
 		for (std::set<WowGuid64>::const_iterator it = oldGuids.begin(); it != oldGuids.end(); ++it) {
+			mObjects.find(*it)->second->rebase(0);
 			mObjects.erase(*it);
 		}
 
-		dbg.log(ss.str().c_str());
-		dbg.flush();
+		dbg.log(ss.str());
 	}
 	else {
 		mObjects.clear();
@@ -125,10 +126,10 @@ std::map<uint64_t, std::shared_ptr<WowObject>>::iterator ObjectManager::end() {
 	return mObjects.end();
 }
 
-const WowActivePlayerObject* ObjectManager::getActivePlayer() const {
+const std::shared_ptr<const WowActivePlayerObject> ObjectManager::getActivePlayer() const {
 	return anyOfType<const WowActivePlayerObject>(WowObject::ActivePlayer);
 }
 
-WowActivePlayerObject* ObjectManager::getActivePlayer() {
-	return const_cast<WowActivePlayerObject*>(std::as_const(*this).getActivePlayer());
+std::shared_ptr<WowActivePlayerObject> ObjectManager::getActivePlayer() {
+	return anyOfType<WowActivePlayerObject>(WowObject::ActivePlayer);
 }

@@ -41,7 +41,7 @@ public:
 		return true;
 	}
 
-	void clearKeyPressed() {
+	void releaseAllKeys() {
 		for (std::map<WinVirtualKey, int>::iterator it = mKeyPressedStatus.begin(); it != mKeyPressedStatus.end(); it++)
 		{
 			if (it->second != 0 && postKeyEvent(it->first, false))

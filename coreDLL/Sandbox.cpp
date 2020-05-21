@@ -6,9 +6,9 @@
 #include "Sandbox.h"
 #include "observers/ActivePlayerPositionObserver.h"
 
-#include "Utils.h"
+#include "NetworkParsing.h"
 
-bool readMessageAvailable(ServerSDK& server, WowGame& game, WowNavigator& navigator) {
+bool readMessageAvailable(ServerSDK& server, WowGame& game, WowBot& bot) {
 	std::list<std::string> messages = server.getMessageAvailable();
 	for (std::list<std::string>::iterator it = messages.begin(); it != messages.end(); it++)
 	{
@@ -35,29 +35,24 @@ bool readMessageAvailable(ServerSDK& server, WowGame& game, WowNavigator& naviga
 			break;
 		}
 		case MessageType::WAYPOINTS: {
-			std::list<std::string> listWaypoint = server.getMessageManager().getWaypoinsObject(*it);
+			std::list<std::string> rawWaypoints = server.getMessageManager().getWaypointsObject(*it);
 			std::vector<Vector3f> waypoints;
-			for (std::list<std::string>::iterator waytpointsIterator = listWaypoint.begin(); waytpointsIterator != listWaypoint.end(); waytpointsIterator++)
-			{
-				std::vector<std::string> pointsList = splitByDelimiter(*waytpointsIterator, ",");
 
-				if (pointsList.size() == 3)
-				{
-					Vector3f point(std::stof(pointsList[0]), std::stof(pointsList[1]), std::stof(pointsList[2]));
-					waypoints.push_back(point);
-				}
+			for (std::list<std::string>::iterator it = rawWaypoints.begin(); it != rawWaypoints.end(); it++) {
+				std::vector<std::string> rawVector3f;
+
+				if (splitByDelimiter(*it, ",", rawVector3f) == 3)
+					waypoints.push_back(Vector3f(std::stof(rawVector3f[0]), std::stof(rawVector3f[1]), std::stof(rawVector3f[2])));
 			}
-			navigator.setWaypointsProfile(waypoints);
-			// load Navigator with a waypoints profile
+			bot.loadLinearWaypoints(waypoints);
 			break;
 		}
 		case MessageType::START_BOT: {
-			navigator.setBotStarted(true);
+			bot.setBotStarted(true);
 			break;
 		}
 		case MessageType::STOP_BOT: {
-			navigator.setBotStarted(false);
-			game.getWindowController().clearKeyPressed();
+			bot.setBotStarted(false);
 			break;
 		}
 		case MessageType::DEINJECT: {
@@ -107,7 +102,7 @@ bool Sandbox::run(ServerSDK& server) {
 	if (true) {
 		std::stringstream ss;
 		ss << mGame << std::endl;
-		mDebugger.log(ss.str().c_str());
+		mDebugger.log(ss.str());
 	}
 
 	mDebugger.flush();

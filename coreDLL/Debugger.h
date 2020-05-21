@@ -6,8 +6,14 @@ class Debugger  {
 public:
 	Debugger(const char* logPath);
 
+	// clear previous file content
 	void clear();
+
+	// add output for next file flush
 	void log(const char* msg);
+	void log(const std::string& msg);
+
+	// flush buffer to the log file
 	void flush();
 
 private:

@@ -151,7 +151,7 @@ void windowQT::loadWaypointsFile() {
 		std::string filecontent = fileContentQstring.toStdString();
 		std::cout << "content is =  " << filecontent << std::endl;
 
-		std::list<std::string> listWaypoint = messageManager.getWaypoinsObject(filecontent);
+		std::list<std::string> listWaypoint = messageManager.getWaypointsObject(filecontent);
 		std::cout << "listWaypoint is =  " << listWaypoint.size() << std::endl;
 		if (listWaypoint.size() > 0)
 		{
