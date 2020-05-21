@@ -22,7 +22,7 @@ public:
 
 	ULONG64 getBootTime() const;
 	ULONG64 getLastPulse() const;
-	WowGame getGame() const;
+	const WowGame& getGame() const;
 
 	bool run(ServerSDK& server);
 

@@ -1,15 +1,13 @@
 #include "pch.h"
+
 #include "framework.h"
 #include "ServerSDK.h"
 
-
 int ServerSDK::connectToServer() {
 	WSADATA wsaData;
-
 	struct addrinfo* result = NULL, * ptr = NULL, hints;
 	//const char* sendbuf = "this is a test";
 	int iResult;
-
 
 	// Initialize Winsock
 	iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
@@ -32,11 +30,9 @@ int ServerSDK::connectToServer() {
 	}
 
 	// Attempt to connect to an address until one succeeds
-	for (ptr = result; ptr != NULL;ptr = ptr->ai_next) {
-
+	for (ptr = result; ptr != NULL; ptr = ptr->ai_next) {
 		// Create a SOCKET for connecting to server
-		activeSocket = socket(ptr->ai_family, ptr->ai_socktype,
-			ptr->ai_protocol);
+		activeSocket = socket(ptr->ai_family, ptr->ai_socktype, ptr->ai_protocol);
 		if (activeSocket == INVALID_SOCKET) {
 			std::cout << "socket failed with error: " << WSAGetLastError() << std::endl;
 			WSACleanup();
@@ -62,8 +58,7 @@ int ServerSDK::connectToServer() {
 	}
 
 
-	DWORD   dwThreadID;
-
+	DWORD dwThreadID;
 
 	activeThread = CreateThread(
 		NULL,                   // default security attributes
@@ -74,7 +69,6 @@ int ServerSDK::connectToServer() {
 		&dwThreadID);   // returns the thread identifier 
 
 	updateIsConnected(true);
-
 
 	return getConnectionStatus();
 }
@@ -115,7 +109,7 @@ int ServerSDK::mainLoopClient() {
 			}
 		}
 	}
-	return true;
+	return isConnected;
 }
 
 int ServerSDK::readMessageFromServer() {
@@ -144,8 +138,6 @@ int ServerSDK::readMessageFromServer() {
 			setTmpMessage("");
 		}
 	}
-
-
 
 	return 0;
 }

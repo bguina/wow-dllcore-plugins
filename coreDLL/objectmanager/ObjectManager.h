@@ -6,6 +6,7 @@
 #include <memory>
 #include <iostream>
 
+#include "../Debugger.h"
 #include "../MemoryObject.h"
 #include "WowObject.h"
 #include "WowActivePlayerObject.h"
@@ -76,46 +77,47 @@ private:
 	std::map<WowGuid64, std::shared_ptr<WowObject>> mObjects;
 };
 
-inline std::ostream& operator<<(
-	std::ostream& out,
+inline Debugger& operator<<(
+	Debugger& dbg,
 	const ObjectManager& objMgr
 	)
 {
+	std::stringstream out;
 	out << "[ObjectManager@" << (void*)objMgr.getBaseAddress() << ":" << (objMgr.isEnabled() ? "ENABLED" : "DISABLED") << "]" << std::endl;
 
-	if (objMgr.getBaseAddress() == NULL)
-		return out;
+	if (NULL != objMgr.getBaseAddress()) {
+		// iterate ObjectManger linked list
+		for (
+			auto it = objMgr.begin();
+			it != objMgr.end();
+			++it
+			) {
+			const std::shared_ptr<WowObject> obj(it->second);
 
-	// iterate ObjectManger linked list
-	for (
-		auto it = objMgr.begin();
-		it != objMgr.end();
-		++it
-		) {
-		const std::shared_ptr<WowObject> obj(it->second);
+			switch (obj->getType()) {
+			case WowObject::Object: out << *obj; break;
+			case WowObject::Item: out << *obj; break;
+			case WowObject::Container: out << *obj; break;
+			case WowObject::Unit: out << obj->downcast<WowUnitObject>(); break;
+			case WowObject::Player:  out << obj->downcast<WowPlayerObject>(); break;
+			case WowObject::ActivePlayer:   out << obj->downcast<WowActivePlayerObject>(); break;
+			case WowObject::GameObject:  out << *obj; break;
+			case WowObject::DynamicObject:   out << *obj; break;
+			case WowObject::Corpse: out << *obj; break;
+			case WowObject::AreaTrigger:  out << *obj; break;
+			case WowObject::Scene:  out << *obj; break;
+			case WowObject::Conversation:  out << *obj; break;
+			case WowObject::AiGroup:   out << *obj; break;
+			case WowObject::Scenario:  out << *obj; break;
+			case WowObject::Loot:  out << *obj; break;
+			case WowObject::Invalid:  out << *obj; break;
+			default:  out << *obj; break;
+			}
 
-		switch (obj->getType()) {
-		case WowObject::Object: out << *obj; break;
-		case WowObject::Item: out << *obj; break;
-		case WowObject::Container: out << *obj; break;
-		case WowObject::Unit: out << obj->downcast<WowUnitObject>(); break;
-		case WowObject::Player:  out << obj->downcast<WowPlayerObject>(); break;
-		case WowObject::ActivePlayer:   out << obj->downcast<WowActivePlayerObject>(); break;
-		case WowObject::GameObject:  out << *obj; break;
-		case WowObject::DynamicObject:   out << *obj; break;
-		case WowObject::Corpse: out << *obj; break;
-		case WowObject::AreaTrigger:  out << *obj; break;
-		case WowObject::Scene:  out << *obj; break;
-		case WowObject::Conversation:  out << *obj; break;
-		case WowObject::AiGroup:   out << *obj; break;
-		case WowObject::Scenario:  out << *obj; break;
-		case WowObject::Loot:  out << *obj; break;
-		case WowObject::Invalid:  out << *obj; break;
-		default:  out << *obj; break;
+			out << std::endl;
 		}
-
-		out << std::endl;
 	}
 
-	return out;
+	dbg.i(out);
+	return dbg;
 }

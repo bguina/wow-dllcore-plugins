@@ -1,6 +1,6 @@
 #pragma once
 
-#include <vector>
 #include <string>
+#include <vector>
 
-int splitByDelimiter(const std::string input, const std::string delimiter, std::vector<std::string>& result);
+size_t splitByDelimiter(const std::string input, const std::string delimiter, std::vector<std::string>& result);

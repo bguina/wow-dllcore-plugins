@@ -3,19 +3,28 @@
 #include "WowGame.h"
 #include "d3d/d3d.h"
 
-WowGame::WowGame(const uint8_t* baseAddr) : AGame(baseAddr),
-mObjMgr((const uint8_t**)(getAddress() + 0x2372D48)), mSpellBookMgr((const uint8_t*)(getAddress() + 0x2595D78))
+WowGame::WowGame(const uint8_t* baseAddr) :
+	AGame(baseAddr),
+	mDbg("WowGame"),
+	mObjMgr((const uint8_t**)(getAddress() + 0x2372D48)),
+	mSpellBookMgr((const uint8_t*)(getAddress() + 0x2595D78))
 {}
 
 void WowGame::update() {
+	std::stringstream ss;
 
 	mObjMgr.scan();
-	mSpellBookMgr.scan();
+	mDbg << mObjMgr << "\n\n";
 
-	for (std::map<std::string, IGameObserver<WowGame>*>::iterator it = mObservers.begin(); it != mObservers.end(); ++it) {
+	mSpellBookMgr.scan();
+	mDbg << mSpellBookMgr << "\n\n";
+
+	for (auto it = mObservers.begin(); it != mObservers.end(); ++it) {
 		it->second->capture(*this);
+		mDbg.i("[i] GameObserver: capture of " + it->first);
 	}
 
+	mDbg.flush();
 }
 
 const ObjectManager WowGame::getObjectManager() const {
@@ -63,15 +72,28 @@ bool WowGame::traceLine(const Vector3f& from, const Vector3f& to, uint64_t flags
 	return intersect(&to, &from, &collision, flags, 0);
 }
 
-void WowGame::addObserver(const std::string& name, IGameObserver<WowGame>* observer) {
-	mObservers.insert(std::pair<std::string, IGameObserver<WowGame>*>(name, observer));
+bool WowGame::addObserver(const std::string& name, const std::shared_ptr<IGameObserver<WowGame>>& observer) {
+	auto result = mObservers.find(name);
+
+	if (result == mObservers.end()) {
+		mDbg << "[i] added observer " << name;
+		mObservers.insert(std::pair<std::string, std::shared_ptr<IGameObserver<WowGame>>>(name, observer));
+		return true;
+	}
+	mDbg << "[w] could not add observer " << name;
+	return false;
 }
 
-void WowGame::removeObserver(const std::string& name) {
+bool WowGame::removeObserver(const std::string& name) {
 	auto result = mObservers.find(name);
 
 	if (result != mObservers.end()) {
-		delete result->second;
 		mObservers.erase(result);
+		mDbg << "[i] removed observer " << name;
+		return true;
+	}
+	else {
+		mDbg << "[w] could not find observer " << name << " for removal";
+		return false;
 	}
 }

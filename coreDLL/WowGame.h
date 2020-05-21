@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Debugger.h"
 #include "AGame.h"
 #include "observers/IGameObserver.h"
 #include "objectmanager/ObjectManager.h"
@@ -36,28 +37,32 @@ public:
 		Give WowGame ownership of an observer object.
 		Observer gets freed upon removal.
 	*/
-	void addObserver(const std::string& name, IGameObserver<WowGame>* observer);
-	void removeObserver(const std::string& name);
+	bool addObserver(const std::string& name, const std::shared_ptr<IGameObserver<WowGame>>& observer);
+	bool removeObserver(const std::string& name);
 
 private:
-	std::map<std::string, IGameObserver<WowGame>*> mObservers;
+	Debugger mDbg;
+	std::map<std::string, std::shared_ptr<IGameObserver<WowGame>>> mObservers;
 	ObjectManager mObjMgr;
 	SpellBookManager mSpellBookMgr;
 };
 
-inline std::ostream& operator<<(
-	std::ostream& out,
+inline Debugger& operator<<(
+	Debugger& dbg,
 	const class WowGame& obj
 	)
 {
+	std::stringstream out;
+
 	out << "[WowGame@" << (void*)obj.getAddress() << "]" << std::endl;
+
+	dbg.i(out.str());
+	ObjectManager objMgr = obj.getObjectManager();
+	dbg << objMgr;
+
 	if (obj.isObjectManagerActive()) {
-		ObjectManager objMgr = obj.getObjectManager();
-		out << objMgr << std::endl;
-
 		SpellBookManager spellBookMgr = obj.getSpellBookManager();
-		out << spellBookMgr << std::endl;
+		dbg << spellBookMgr;
 	}
-
-	return out;
+	return dbg;
 }

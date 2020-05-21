@@ -10,20 +10,19 @@
 #include "WowBot.h"
 #include "Sandbox.h"
 
-static boolean shouldStop = false;
+static boolean gShouldStop = false;
 
 void MainThread(void* pHandle) {
+	Debugger dbg("MainThread");
+
 	if (HookD3D()) {
-		while (!shouldStop && !GetAsyncKeyState(VK_END)) {
+		while (!gShouldStop && !GetAsyncKeyState(VK_END)) {
 
 		}
 	}
 
+	dbg << "deinject\n";
 	deinject(pHandle);
-}
-
-void releaseSandbox(Sandbox* sandbox, ServerSDK* server) {
-
 }
 
 void Render()
@@ -31,8 +30,8 @@ void Render()
 	static Sandbox* sandbox = nullptr;
 	static ServerSDK* server = nullptr;
 
-	if (!shouldStop)  {
-		boolean stopSandbox = true;
+	if (!gShouldStop)  {
+		boolean stopSandbox = false;
 
 		if (nullptr == server)
 		{
@@ -42,9 +41,12 @@ void Render()
 			if (server->connectToServer()) {
 				server->sendMessage(server->getMessageManager().builRequestdDLLInjectedMessage(sandbox->getGame().getPid()));
 			}
+			else {
+				stopSandbox = true;
+			}
 		}
 
-		if (server->getConnectionStatus()) {
+		if (!stopSandbox && server->getConnectionStatus()) {
 			drawSomeTriangle();
 		
 			stopSandbox = !sandbox->run(*server);
@@ -62,7 +64,7 @@ void Render()
 				server = nullptr;
 			}
 
-			shouldStop = true;
+			gShouldStop = true;
 		}
 	}
 }

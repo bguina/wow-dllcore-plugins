@@ -10,6 +10,7 @@
 
 bool readMessageAvailable(ServerSDK& server, WowGame& game, WowBot& bot) {
 	std::list<std::string> messages = server.getMessageAvailable();
+
 	for (std::list<std::string>::iterator it = messages.begin(); it != messages.end(); it++)
 	{
 		switch (server.getMessageManager().getMessageType((*it)))
@@ -20,7 +21,7 @@ bool readMessageAvailable(ServerSDK& server, WowGame& game, WowBot& bot) {
 			bool found = (std::find(toSubscribe.begin(), toSubscribe.end(), "position") != toSubscribe.end());
 
 			if (found) {
-				game.addObserver("position", new ActivePlayerPositionObserver(server, 10));
+				game.addObserver("position", std::make_shared<ActivePlayerPositionObserver>(server, 10.0f));
 			}
 
 			break;
@@ -46,6 +47,7 @@ bool readMessageAvailable(ServerSDK& server, WowGame& game, WowBot& bot) {
 				}
 				else throw "Bad split!";
 			}
+
 			bot.loadLinearWaypoints(waypoints);
 			break;
 		}
@@ -69,13 +71,13 @@ bool readMessageAvailable(ServerSDK& server, WowGame& game, WowBot& bot) {
 }
 
 Sandbox::Sandbox() :
-	mDebugger("D:\\nvtest.log"),
+	mDebugger("Sandbox"),
 	mBootTime(GetTickCount64()), mLastPulse(0),
 	mGame((const uint8_t*)GetModuleHandleA(0)),
 	mBot(mGame)
 {
 	// TODO connect to server from here
-
+	// TODO clear log files?
 }
 
 Sandbox::~Sandbox() {
@@ -86,7 +88,7 @@ Sandbox::~Sandbox() {
 
 ULONG64 Sandbox::getBootTime() const { return mBootTime; }
 ULONG64 Sandbox::getLastPulse() const { return mLastPulse; }
-WowGame Sandbox::getGame() const { return mGame; }
+const WowGame& Sandbox::getGame() const { return mGame; }
 
 bool Sandbox::throttle() const {
 	return mLastPulse + 120 > GetTickCount64();
@@ -95,11 +97,17 @@ bool Sandbox::throttle() const {
 bool Sandbox::run(ServerSDK& server) {
 	if (throttle()) return true;
 
+	std::stringstream ss;
+
 	bool abort = !readMessageAvailable(server, mGame, mBot);
+	ss << "abort? " << abort << std::endl;
 
 	mGame.update();
 	mBot.run();
-	mDebugger.flush();
+
 	mLastPulse = GetTickCount64();
+
+	mDebugger << ss.str();
+	mDebugger.flush();
 	return !abort;
 }

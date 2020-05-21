@@ -2,7 +2,7 @@
 
 #include "NetworkParsing.h"
 
-int splitByDelimiter(
+size_t splitByDelimiter(
 	const std::string input, 
 	const std::string delimiter,
 	std::vector<std::string>& result

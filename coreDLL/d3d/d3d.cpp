@@ -341,6 +341,7 @@ void CleanupD3D()
 	safe_release(pPixelShader);
 	safe_release(pVertexShader);
 	safe_release(pVertexLayout);
+	pDevice = NULL;
 }
 
 void drawSomeTriangle() {
@@ -394,13 +395,13 @@ BOOL CALLBACK EnumWindowsCallback(
 ) {
 	HandleData& data = *(HandleData*)lParam;
 	DWORD pid = 0;
+
 	GetWindowThreadProcessId(hWnd, &pid);
 	if (pid == data.pid && GetWindow(hWnd, GW_OWNER) == HWND(0) && IsWindowVisible(hWnd))
 	{
 		data.hWnd = hWnd;
 		return FALSE;
 	}
-
 	return TRUE;
 }
 
@@ -417,5 +418,5 @@ void deinject(LPVOID pHandle) {
 	CleanupD3D();
 	WriteMem(ogPresent, ogBytes, PRESENT_STUB_SIZE);
 	VirtualFree((void*)ogPresentTramp, 0x1000, MEM_RELEASE);
-	CreateThread(0, 0, (LPTHREAD_START_ROUTINE)FreeLibrary, pHandle, 0, 0);
+	CreateThread(0, 0, (LPTHREAD_START_ROUTINE)FreeLibraryAndExitThread, pHandle, 0, 0);
 }

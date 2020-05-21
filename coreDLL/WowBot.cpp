@@ -64,6 +64,8 @@ void WowBot::run() {
 		// no profile has been loaded!
 		dbg.log("[E] Bot started but no PathFinder has been loaded\n");
 	}
+
+	dbg.flush();
 }
 
 const WowGame& WowBot::getGame() const {
