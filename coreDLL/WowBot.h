@@ -1,5 +1,7 @@
 #pragma once
 
+#include <set>
+
 class IPathFinder;
 class WowGame;
 
@@ -22,6 +24,10 @@ protected:
 	WowGame& mGame;
 	bool mBotStarted = false;
 	std::unique_ptr<IPathFinder> mPathFinder;
+	std::shared_ptr<WowUnitObject> mCurrentUnitTarget;
+
+	//TEMP BLACK LIST
+	std::set<WowGuid64> blackListKilledGUID;
 };
 
 inline std::ostream& operator<<(

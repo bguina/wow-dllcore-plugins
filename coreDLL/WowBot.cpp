@@ -32,14 +32,65 @@ void WowBot::run() {
 		return;
 	}
 
-	if (mPathFinder != nullptr) {
+	auto allUnits = mGame.getObjectManager().allOfType<WowUnitObject>(WowObject::Unit);
+
+
+	if (nullptr != mCurrentUnitTarget && blackListKilledGUID.find(mCurrentUnitTarget->getGuid()) != blackListKilledGUID.end())
+	{
+		mCurrentUnitTarget = nullptr;
+	}
+	if (nullptr == mCurrentUnitTarget)
+	{
+		std::shared_ptr<WowUnitObject> targetUnit;
+		float distance = FLT_MAX;
+		for (auto it = allUnits.begin(); it != allUnits.end(); it++)
+		{
+			if (blackListKilledGUID.find((*it)->getGuid()) == blackListKilledGUID.end())
+			{
+				float tmpDistace = self->getPosition().getDistanceTo((*it)->getPosition());
+				if (tmpDistace < distance)
+				{
+					targetUnit = (*it);
+					distance = tmpDistace;
+				}
+			}
+
+		}
+		if (distance < 30)
+		{
+			mCurrentUnitTarget = targetUnit;
+		}
+	}
+
+	//Check with destination
+	if (self->getPosition().getDistanceTo(mCurrentUnitTarget->getPosition()) > 5)
+	{
+		self->moveTo(mGame, mCurrentUnitTarget->getPosition());
+	}
+	else {
+		//START ATTACK
+		//KILL
+		//LOOT
+		blackListKilledGUID.insert(mCurrentUnitTarget->getGuid());
+	}
+
+	//Calcul distance between closest waypoint
+	//Try to add more mob really far
+
+	if (mCurrentUnitTarget == nullptr && mPathFinder != nullptr) {
 		const Vector3f& selfPosition = self->getPosition();
 		Vector3f nextPosition;
 
+		/*
 		if (mPathFinder->followPathToDestination(selfPosition, nextPosition)) {
 			self->moveTo(mGame, nextPosition);
 		}
+		*/
+		if (mPathFinder->moveAlong(selfPosition, nextPosition)) {
+			self->moveTo(mGame, nextPosition);
+		}
 
+		/*
 		if (true) {
 			std::shared_ptr<WowUnitObject> someBoar = mGame.getObjectManager().anyOfType<WowUnitObject>(WowObject::Unit);
 
@@ -59,6 +110,7 @@ void WowBot::run() {
 				}
 			}
 		}
+		*/
 	}
 	else {
 		// no profile has been loaded!
