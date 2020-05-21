@@ -184,6 +184,7 @@
     <ClInclude Include="pch.h" />
     <ClInclude Include="Sandbox.h" />
     <ClInclude Include="NetworkParsing.h" />
+    <ClInclude Include="spellbook\SpellBookManager.h" />
     <ClInclude Include="Vector3f.h" />
     <ClInclude Include="WindowController.h" />
     <ClInclude Include="WinVirtualKey.h" />
@@ -217,6 +218,7 @@
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="Sandbox.cpp" />
     <ClCompile Include="NetworkParsing.cpp" />
+    <ClCompile Include="spellbook\SpellBookManager.cpp" />
     <ClCompile Include="Vector3f.cpp" />
     <ClCompile Include="WowGame.cpp" />
   </ItemGroup>

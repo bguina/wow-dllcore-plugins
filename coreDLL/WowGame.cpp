@@ -4,12 +4,13 @@
 #include "d3d/d3d.h"
 
 WowGame::WowGame(const uint8_t* baseAddr) : AGame(baseAddr),
-mObjMgr((const uint8_t**)(getAddress() + 0x2372D48))
+mObjMgr((const uint8_t**)(getAddress() + 0x2372D48)), mSpellBookMgr((const uint8_t*)(getAddress() + 0x2595D78))
 {}
 
 void WowGame::update() {
 
 	mObjMgr.scan();
+	mSpellBookMgr.scan();
 
 	for (std::map<std::string, IGameObserver<WowGame>*>::iterator it = mObservers.begin(); it != mObservers.end(); ++it) {
 		it->second->capture(*this);
@@ -23,6 +24,10 @@ const ObjectManager WowGame::getObjectManager() const {
 
 ObjectManager WowGame::getObjectManager() {
 	return mObjMgr;
+}
+
+const SpellBookManager WowGame::getSpellBookManager() const {
+	return mSpellBookMgr;
 }
 
 bool WowGame::isObjectManagerActive() const {

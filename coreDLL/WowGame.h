@@ -3,6 +3,7 @@
 #include "AGame.h"
 #include "observers/IGameObserver.h"
 #include "objectmanager/ObjectManager.h"
+#include "spellbook/SpellBookManager.h"
 
 class WowGame : public AGame
 {
@@ -12,6 +13,8 @@ public:
 	const ObjectManager getObjectManager() const;
 
 	ObjectManager getObjectManager();
+
+	const SpellBookManager getSpellBookManager() const;
 
 	bool isObjectManagerActive() const;
 
@@ -39,6 +42,7 @@ public:
 private:
 	std::map<std::string, IGameObserver<WowGame>*> mObservers;
 	ObjectManager mObjMgr;
+	SpellBookManager mSpellBookMgr;
 };
 
 inline std::ostream& operator<<(
@@ -49,8 +53,10 @@ inline std::ostream& operator<<(
 	out << "[WowGame@" << (void*)obj.getAddress() << "]" << std::endl;
 	if (obj.isObjectManagerActive()) {
 		ObjectManager objMgr = obj.getObjectManager();
-
 		out << objMgr << std::endl;
+
+		SpellBookManager spellBookMgr = obj.getSpellBookManager();
+		out << spellBookMgr << std::endl;
 	}
 
 	return out;
