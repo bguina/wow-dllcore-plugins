@@ -41,8 +41,10 @@ bool readMessageAvailable(ServerSDK& server, WowGame& game, WowBot& bot) {
 			for (std::list<std::string>::iterator it = rawWaypoints.begin(); it != rawWaypoints.end(); it++) {
 				std::vector<std::string> rawVector3f;
 
-				if (splitByDelimiter(*it, ",", rawVector3f) == 3)
+				if (splitByDelimiter(*it, ",", rawVector3f) == 3) {
 					waypoints.push_back(Vector3f(std::stof(rawVector3f[0]), std::stof(rawVector3f[1]), std::stof(rawVector3f[2])));
+				}
+				else throw "Bad split!";
 			}
 			bot.loadLinearWaypoints(waypoints);
 			break;
@@ -80,7 +82,6 @@ Sandbox::~Sandbox() {
 	// TODO disconnect from server in case we are still connected
 
 	mDebugger.log("~Sandbox");
-	mDebugger.flush();
 }
 
 ULONG64 Sandbox::getBootTime() const { return mBootTime; }
@@ -97,14 +98,7 @@ bool Sandbox::run(ServerSDK& server) {
 	bool abort = !readMessageAvailable(server, mGame, mBot);
 
 	mGame.update();
-	mBot.run(mDebugger);
-
-	if (true) {
-		std::stringstream ss;
-		ss << mGame << std::endl;
-		mDebugger.log(ss.str());
-	}
-
+	mBot.run();
 	mDebugger.flush();
 	mLastPulse = GetTickCount64();
 	return !abort;

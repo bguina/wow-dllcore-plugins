@@ -5,10 +5,9 @@
 
 #include "Ressources.h"
 #include "ClientConnection.h"
-#include "PeerClient.h";
+#include "PeerClient.h"
 #include "MessageManager.h"
 #include "InjectorPrototypes.h"
-
 
 class Server
 {

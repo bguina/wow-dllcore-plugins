@@ -10,6 +10,11 @@ Debugger::Debugger(const char* logPath)
 {
 }
 
+Debugger::~Debugger()
+{
+	flush();
+}
+
 void Debugger::clear() {
 	std::ofstream(mOutputFile, std::fstream::in | std::fstream::out);
 }
@@ -18,9 +23,6 @@ void Debugger::log(const std::string& msg) {
 	mBuff << msg;
 }
 
-void Debugger::log(const char* msg) {
-	mBuff << msg;
-}
 
 void Debugger::flush() {
 	std::ofstream(mOutputFile, std::fstream::in | std::fstream::out | std::fstream::app) << mBuff.str() << std::endl << std::endl;
