@@ -4,6 +4,8 @@
 
 class IDebugger {
 public:
+	virtual ~IDebugger() {};
+
 	void operator=(IDebugger const&) = delete;
 
 	// append output for the next file flush
@@ -21,4 +23,3 @@ public:
 	virtual void w(std::stringstream& msg) = 0;
 	virtual void e(std::stringstream& msg) = 0;
 };
-

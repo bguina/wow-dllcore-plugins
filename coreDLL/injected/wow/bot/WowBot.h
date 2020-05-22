@@ -15,7 +15,6 @@ class WowBot : public AGameBot<WowGame>
 {
 public:
 	WowBot(WowGame& game);
-
 	~WowBot();
 
 	virtual void run();

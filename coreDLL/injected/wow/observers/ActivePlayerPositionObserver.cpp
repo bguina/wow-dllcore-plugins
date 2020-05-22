@@ -16,10 +16,10 @@ void ActivePlayerPositionObserver::makeCapture(const WowGame& game) {
 		auto currentPosition = self->getPosition();
 		auto distanceDelta = currentPosition.getFlightDistanceTo(mLastPosition);
 
-		if (distanceDelta >= mMaxDistanceDelta || mLastPosition.isOrigin()) {
+		if (distanceDelta >= mMaxDistanceDelta || (mLastPosition[0] == .0f && mLastPosition[1] == .0f && mLastPosition[2] == .0f)) {
 			std::stringstream ss;
 
-			ss << currentPosition.x << ',' << currentPosition.y << ',' << currentPosition.z;
+			ss << currentPosition[0] << ',' << currentPosition[1] << ',' << currentPosition[2];
 			mServer.sendMessage(mServer.getMessageManager().builResponseInfo("position", ss.str()));
 			mLastPosition = self->getPosition();
 		}

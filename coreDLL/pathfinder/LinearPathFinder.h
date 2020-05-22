@@ -39,7 +39,11 @@ inline std::ostream& operator<<(
 	const class LinearPathFinder& obj
 	)
 {
-	out << "[LinearPathFinder]";
-	// TODO print navigator state
+	Vector3f destination;
+
+	out << "[LinearPathFinder:" << obj.getWaypointsCount() << " waypoints, destination:";
+	if (obj.getDestination(destination)) out << destination; else out << "none";
+	out << "]";
+
 	return out;
 }

@@ -5,6 +5,8 @@
 class IWindowController
 {
 public:
+	virtual ~IWindowController() {};
+
 	virtual bool isKeyPressed(WinVirtualKey key) const = 0;
 
 	// Attempt to push down or unpush a key.

@@ -13,14 +13,14 @@
 bool Sandbox::stackServerMessages(ServerSDK& server) {
 	std::list<std::string> messages = server.getMessageAvailable();
 
-	for (std::list<std::string>::iterator it = messages.begin(); it != messages.end(); it++)
+	for (std::list<std::string>::iterator msgIte = messages.begin(); msgIte != messages.end(); msgIte++)
 	{
-		auto messageType = server.getMessageManager().getMessageType((*it));
+		auto messageType = server.getMessageManager().getMessageType((*msgIte));
 
 		switch (messageType)
 		{
 		case MessageType::START_SUBSCRIBE: {
-			std::list<std::string> toSubscribe = server.getMessageManager().getSubcribeObject(*it);
+			std::list<std::string> toSubscribe = server.getMessageManager().getSubcribeObject(*msgIte);
 
 			bool found = (std::find(toSubscribe.begin(), toSubscribe.end(), "position") != toSubscribe.end());
 
@@ -31,7 +31,7 @@ bool Sandbox::stackServerMessages(ServerSDK& server) {
 			break;
 		}
 		case MessageType::STOP_SUBSCRIBE: {
-			std::list<std::string> toSubscribe = server.getMessageManager().getSubcribeObject(*it);
+			std::list<std::string> toSubscribe = server.getMessageManager().getSubcribeObject(*msgIte);
 			bool found = (std::find(toSubscribe.begin(), toSubscribe.end(), "position") != toSubscribe.end());
 			if (found) {
 				mGame.removeObserver("position");
@@ -40,14 +40,14 @@ bool Sandbox::stackServerMessages(ServerSDK& server) {
 			break;
 		}
 		case MessageType::WAYPOINTS: {
-			std::list<std::string> rawWaypoints = server.getMessageManager().getWaypointsObject(*it);
+			std::list<std::string> rawWaypoints = server.getMessageManager().getWaypointsObject(*msgIte);
 			std::vector<Vector3f> waypoints;
 
 			for (std::list<std::string>::iterator it = rawWaypoints.begin(); it != rawWaypoints.end(); it++) {
 				std::vector<std::string> rawVector3f;
 
 				if (splitByDelimiter(*it, ",", rawVector3f) == 3) {
-					waypoints.push_back(Vector3f(std::stof(rawVector3f[0]), std::stof(rawVector3f[1]), std::stof(rawVector3f[2])));
+					waypoints.push_back(Vector3f({ std::stof(rawVector3f[0]), std::stof(rawVector3f[1]), std::stof(rawVector3f[2]) }));
 				}
 				else throw "Bad split!";
 			}

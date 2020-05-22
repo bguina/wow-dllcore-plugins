@@ -34,10 +34,10 @@ FileDebugger::FileDebugger(const std::string& fileName) :
 	mFolder("D:\\nvtest\\"),
 	mOutputFile(mFolder + fileName + ".log")
 {
-	struct stat info;
+	struct stat dirInfo;
 
 	// make folder if it does not exist yet
-	if (0 != stat(mFolder.c_str(), &info) && errno == ENOENT) {
+	if (0 != stat(mFolder.c_str(), &dirInfo) && errno == ENOENT) {
 		_mkdir(mFolder.c_str());
 	}
 }

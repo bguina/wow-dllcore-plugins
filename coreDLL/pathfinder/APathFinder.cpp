@@ -3,9 +3,10 @@
 #include "APathFinder.h"
 #include "Vector3f.h"
 
-APathFinder::APathFinder() 
-	: mDestination(nullptr)
-{}
+APathFinder::APathFinder() :
+	mDestination(nullptr)
+{
+}
 
 bool APathFinder::getDestination(Vector3f& result) const {
 	if (mDestination != nullptr) {

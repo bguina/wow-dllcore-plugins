@@ -61,15 +61,15 @@ const WowVector3f& WowObject::getPosition() const {
 }
 
 float WowObject::getX() const {
-	return getPosition().x;
+	return getPosition().position.x;
 }
 
 float WowObject::getY() const {
-	return getPosition().y;
+	return getPosition().position.y;
 }
 
 float WowObject::getZ() const {
-	return getPosition().z;
+	return getPosition().position.z;
 }
 
 float WowObject::getFacingRadians() const {
@@ -77,7 +77,6 @@ float WowObject::getFacingRadians() const {
 }
 
 int WowObject::getFacingDegrees() const {
-	const double PI = 3.141592653589793;
 	return (int)(getFacingRadians() * 180 / PI);
 }
 
@@ -90,11 +89,11 @@ float WowObject::getFlightDistanceTo(const WowObject& object) const {
 	return getPosition().getFlightDistanceTo(object.getPosition());
 }
 
-float WowObject::getFacingDegreesTo(const WowObject& object) const {
+int WowObject::getFacingDegreesTo(const WowObject& object) const {
 	return getPosition().getFacingDegreesTo(object.getPosition());
 }
 
-float WowObject::getFacingDeltaDegrees(const WowObject& object) const {
+int WowObject::getFacingDeltaDegrees(const WowObject& object) const {
 	return getPosition().getFacingDeltaDegrees(getFacingDegrees(), object.getPosition());
 }
 

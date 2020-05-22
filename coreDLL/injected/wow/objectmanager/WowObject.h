@@ -55,8 +55,8 @@ public:
 	float getDistanceTo(const WowObject& object) const;
 	float getFlightDistanceTo(const WowObject& object) const;
 
-	float getFacingDegreesTo(const WowObject& object) const;
-	float getFacingDeltaDegrees(const WowObject& object) const;
+	int getFacingDegreesTo(const WowObject& object) const;
+	int getFacingDeltaDegrees(const WowObject& object) const;
 
 protected:
 	void* vtableAt(unsigned index);

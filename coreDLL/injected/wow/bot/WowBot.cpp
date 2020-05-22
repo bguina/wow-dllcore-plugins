@@ -29,7 +29,6 @@ bool WowBot::isPaused() const {
 	return mPaused;
 }
 
-//#include <algorithm>
 void WowBot::run() {
 	size_t waypointsCount = 0;
 	auto linearWaypoints = dynamic_cast<LinearPathFinder*>(mPathFinder.get());
@@ -37,14 +36,7 @@ void WowBot::run() {
 		waypointsCount = dynamic_cast<LinearPathFinder*>(mPathFinder.get())->getWaypointsCount();
 	}
 
-	if (mPaused) {
-		mDbg << FileDebugger::info << "bot not started" << FileDebugger::normal << std::endl;
-	}
-	else {
-		mDbg << FileDebugger::info << "bot started" << FileDebugger::normal << std::endl;
-	}
-
-	mDbg << FileDebugger::info << waypointsCount << " waypoints" << FileDebugger::normal << std::endl;
+	mDbg << FileDebugger::info << "WowBot " << (mPaused ? "paused" : "running") << FileDebugger::normal << std::endl;
 
 	if (!mPaused) {
 		std::shared_ptr<WowActivePlayerObject> self = mGame.getObjectManager().getActivePlayer();
@@ -52,7 +44,6 @@ void WowBot::run() {
 		if (self != nullptr) {
 			std::list<std::shared_ptr<const WowUnitObject>> allUnits = mGame.getObjectManager().allOfType<const WowUnitObject>(WowObjectType::Unit);
 			std::list<std::shared_ptr<const WowUnitObject>> unblacklistedUnits;
-			//std::copy_if(allUnits.begin(), allUnits.end(), std::back_inserter(unblacklistedUnits), [](std::shared_ptr<const WowUnitObject> u) {return blackListKilledGUID.find(u->getGuid()) != blackListKilledGUID.end()  == 0; });
 
 			if (nullptr != mCurrentUnitTarget && mBlacklistedGuids.find(mCurrentUnitTarget->getGuid()) != mBlacklistedGuids.end())
 			{

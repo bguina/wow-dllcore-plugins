@@ -14,8 +14,6 @@ public:
 
 	const std::string& getName() const;
 
-	virtual void update() = 0;
-
 	long getPid() const;
 
 	virtual const IWindowController* getWindowController() const = 0;

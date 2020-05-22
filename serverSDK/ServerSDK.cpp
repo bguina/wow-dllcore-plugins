@@ -77,7 +77,7 @@ int ServerSDK::mainLoopClient() {
 	while (getConnectionStatus()) {
 		build_fd_sets();
 		struct timeval tv = { 0, 1000 };   // sleep for ten minutes!
-		int activity = select(activeSocket + 1, &read_fds, &write_fds, &except_fds, &tv);
+		int activity = select((int)(activeSocket + 1), &read_fds, &write_fds, &except_fds, &tv);
 		switch (activity) {
 		case -1:
 			printf("select()");
@@ -147,12 +147,12 @@ int ServerSDK::sendMessageToServer() {
 	std::list<std::string> listMessagesToSend = getMessageToSend(true);
 
 	for (std::list<std::string>::iterator it = listMessagesToSend.begin(); it != listMessagesToSend.end(); it++) {
-		int sizeMessage = (*it).size();
-		int bufferSize = sizeof(int) + sizeMessage;
+		int messageSize = (int)(*it).size();
+		int bufferSize = sizeof(int) + messageSize;
 		char* buffer = (char*)malloc(bufferSize);
 		memset(buffer, 0, bufferSize);
-		memcpy(buffer, &sizeMessage, sizeof(int));
-		memcpy(buffer + sizeof(int), (*it).c_str(), sizeMessage);
+		memcpy(buffer, &messageSize, sizeof(int));
+		memcpy(buffer + sizeof(int), (*it).c_str(), messageSize);
 
 		int totalSent = send(activeSocket, buffer, bufferSize, 0);
 		std::cout << "Sending message : ==  " << (*it) << std::endl;

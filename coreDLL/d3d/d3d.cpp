@@ -12,16 +12,16 @@
 // d3d11 related object ptrs
 using namespace DirectX;
 
-ID3D11Device* pDevice = nullptr;
-IDXGISwapChain* pSwapchain = nullptr;
-ID3D11DeviceContext* pContext = nullptr;
-ID3D11RenderTargetView* pRenderTargetView = nullptr;
-ID3D11VertexShader* pVertexShader = nullptr;
-ID3D11InputLayout* pVertexLayout = nullptr;
-ID3D11PixelShader* pPixelShader = nullptr;
-ID3D11Buffer* pVertexBuffer = nullptr;
-ID3D11Buffer* pIndexBuffer = nullptr;
-ID3D11Buffer* pConstantBuffer = nullptr;
+ID3D11Device* gpDevice = nullptr;
+IDXGISwapChain* gpSwapchain = nullptr;
+ID3D11DeviceContext* gpContext = nullptr;
+ID3D11RenderTargetView* gpRenderTargetView = nullptr;
+ID3D11VertexShader* gpVertexShader = nullptr;
+ID3D11InputLayout* gpVertexLayout = nullptr;
+ID3D11PixelShader* gpPixelShader = nullptr;
+ID3D11Buffer* gpVertexBuffer = nullptr;
+ID3D11Buffer* gpIndexBuffer = nullptr;
+ID3D11Buffer* gpConstantBuffer = nullptr;
 
 // Changing this to an array of viewports
 #define MAINVP 0
@@ -47,7 +47,7 @@ bool Hook(
 		return false;
 	}
 
-	*(char*)src = (char)0xE9;
+	*(uint8_t*)src = (uint8_t)0xE9;
 	*(int*)(src + 1) = (int)(dst - src - 5);
 
 	VirtualProtect(pSrc, size, dwOld, &dwOld);
@@ -86,20 +86,20 @@ bool HookD3D()
 	sd.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
 	sd.SampleDesc.Count = 1;
 	sd.SampleDesc.Quality = 0;
-	HRESULT hr = D3D11CreateDeviceAndSwapChain(nullptr, D3D_DRIVER_TYPE_REFERENCE, nullptr, 0, nullptr, 0, D3D11_SDK_VERSION, &sd, &pSwapchain, &pDevice, &featLevel, nullptr);
+	HRESULT hr = D3D11CreateDeviceAndSwapChain(nullptr, D3D_DRIVER_TYPE_REFERENCE, nullptr, 0, nullptr, 0, D3D11_SDK_VERSION, &sd, &gpSwapchain, &gpDevice, &featLevel, nullptr);
 	if (FAILED(hr))
 		return false;
 
 	// Get swapchain vmt
-	void** pVMT = *(void***)pSwapchain;
+	void** pVMT = *(void***)gpSwapchain;
 
 	// Get Present's address out of vmt
 	ogPresent = (fnPresent)(pVMT[VMT_PRESENT]);
 
 	// got what we need, we can release device and swapchain now
 	// we'll be stealing the game's.
-	safe_release(pSwapchain);
-	safe_release(pDevice);
+	safe_release(gpSwapchain);
+	safe_release(gpDevice);
 
 	// Create a code cave to trampoline to our hook
 	// We'll try to do this close to present to make sure we'll be able to use a 5 byte jmp (important for x64)
@@ -120,7 +120,7 @@ bool HookD3D()
 	pTrampLoc = (void*)((uintptr_t)pTrampLoc + PRESENT_STUB_SIZE);
 
 	// write the jmp back into present
-	*(char*)pTrampLoc = (char)0xE9;
+	*(uint8_t*)pTrampLoc = (uint8_t)0xE9;
 	pTrampLoc = (void*)((uintptr_t)pTrampLoc + 1);
 	uintptr_t ogPresRet = (uintptr_t)ogPresent + 5;
 	*(int*)pTrampLoc = (int)(ogPresRet - (uintptr_t)pTrampLoc - 4);
@@ -169,16 +169,16 @@ bool CompileShader(
 bool InitD3DHook(
 	IDXGISwapChain* pSwapchain
 ) {
-	HRESULT hr = pSwapchain->GetDevice(__uuidof(ID3D11Device), (void**)&pDevice);
+	HRESULT hr = pSwapchain->GetDevice(__uuidof(ID3D11Device), (void**)&gpDevice);
 	if (FAILED(hr))
 		return false;
 
-	pDevice->GetImmediateContext(&pContext);
-	pContext->OMGetRenderTargets(1, &pRenderTargetView, nullptr);
+	gpDevice->GetImmediateContext(&gpContext);
+	gpContext->OMGetRenderTargets(1, &gpRenderTargetView, nullptr);
 
 	// If for some reason we fail to get a render target, create one.
 	// This will probably never happen with a real game but maybe certain test environments... :P
-	if (!pRenderTargetView)
+	if (!gpRenderTargetView)
 	{
 		// Get a pointer to the back buffer for the render target view
 		ID3D11Texture2D* pBackbuffer = nullptr;
@@ -187,13 +187,13 @@ bool InitD3DHook(
 			return false;
 
 		// Create render target view
-		hr = pDevice->CreateRenderTargetView(pBackbuffer, nullptr, &pRenderTargetView);
+		hr = gpDevice->CreateRenderTargetView(pBackbuffer, nullptr, &gpRenderTargetView);
 		pBackbuffer->Release();
 		if (FAILED(hr))
 			return false;
 
 		// Make sure our render target is set.
-		pContext->OMSetRenderTargets(1, &pRenderTargetView, nullptr);
+		gpContext->OMSetRenderTargets(1, &gpRenderTargetView, nullptr);
 	}
 
 	// initialize shaders
@@ -203,7 +203,7 @@ bool InitD3DHook(
 	if (!CompileShader(szShadez, "VS", "vs_5_0", &pBlob))
 		return false;
 
-	hr = pDevice->CreateVertexShader(pBlob->GetBufferPointer(), pBlob->GetBufferSize(), nullptr, &pVertexShader);
+	hr = gpDevice->CreateVertexShader(pBlob->GetBufferPointer(), pBlob->GetBufferSize(), nullptr, &gpVertexShader);
 	if (FAILED(hr))
 		return false;
 
@@ -214,7 +214,7 @@ bool InitD3DHook(
 	};
 	UINT numElements = ARRAYSIZE(layout);
 
-	hr = pDevice->CreateInputLayout(layout, numElements, pBlob->GetBufferPointer(), pBlob->GetBufferSize(), &pVertexLayout);
+	hr = gpDevice->CreateInputLayout(layout, numElements, pBlob->GetBufferPointer(), pBlob->GetBufferSize(), &gpVertexLayout);
 	if (FAILED(hr))
 		return false;
 
@@ -224,7 +224,7 @@ bool InitD3DHook(
 	if (!CompileShader(szShadez, "PS", "ps_5_0", &pBlob))
 		return false;
 
-	hr = pDevice->CreatePixelShader(pBlob->GetBufferPointer(), pBlob->GetBufferSize(), nullptr, &pPixelShader);
+	hr = gpDevice->CreatePixelShader(pBlob->GetBufferPointer(), pBlob->GetBufferSize(), nullptr, &gpPixelShader);
 	if (FAILED(hr))
 		return false;
 
@@ -233,7 +233,7 @@ bool InitD3DHook(
 	float fHeight = 0;
 
 	// Apparently this isn't universal. Works on some games
-	pContext->RSGetViewports(&numViewports, pViewports);
+	gpContext->RSGetViewports(&numViewports, pViewports);
 
 	//
 	if (!numViewports || !pViewports[MAINVP].Width)
@@ -257,7 +257,7 @@ bool InitD3DHook(
 		pViewports[MAINVP].MaxDepth = 1.0f;
 
 		// Set viewport to context
-		pContext->RSSetViewports(1, pViewports);
+		gpContext->RSSetViewports(1, pViewports);
 	}
 	else
 	{
@@ -277,7 +277,7 @@ bool InitD3DHook(
 
 	D3D11_SUBRESOURCE_DATA sr{ 0 };
 	sr.pSysMem = &cb;
-	hr = pDevice->CreateBuffer(&bd, &sr, &pConstantBuffer);
+	hr = gpDevice->CreateBuffer(&bd, &sr, &gpConstantBuffer);
 	if (FAILED(hr))
 		return false;
 
@@ -311,7 +311,7 @@ bool InitD3DHook(
 	// create the buffer.
 	ZeroMemory(&sr, sizeof(sr));
 	sr.pSysMem = &pVerts;
-	hr = pDevice->CreateBuffer(&bd, &sr, &pVertexBuffer);
+	hr = gpDevice->CreateBuffer(&bd, &sr, &gpVertexBuffer);
 	if (FAILED(hr))
 		return false;
 
@@ -326,7 +326,7 @@ bool InitD3DHook(
 	bd.StructureByteStride = sizeof(UINT);
 
 	sr.pSysMem = &pIndices;
-	hr = pDevice->CreateBuffer(&bd, &sr, &pIndexBuffer);
+	hr = gpDevice->CreateBuffer(&bd, &sr, &gpIndexBuffer);
 	if (FAILED(hr))
 		return false;
 
@@ -335,41 +335,41 @@ bool InitD3DHook(
 
 void CleanupD3D()
 {
-	safe_release(pVertexBuffer);
-	safe_release(pIndexBuffer);
-	safe_release(pConstantBuffer);
-	safe_release(pPixelShader);
-	safe_release(pVertexShader);
-	safe_release(pVertexLayout);
-	pDevice = NULL;
+	safe_release(gpVertexBuffer);
+	safe_release(gpIndexBuffer);
+	safe_release(gpConstantBuffer);
+	safe_release(gpPixelShader);
+	safe_release(gpVertexShader);
+	safe_release(gpVertexLayout);
+	gpDevice = NULL;
 }
 
 void drawSomeTriangle() {
 	// Make sure our render target is set.
-	pContext->OMSetRenderTargets(1, &pRenderTargetView, nullptr);
+	gpContext->OMSetRenderTargets(1, &gpRenderTargetView, nullptr);
 
 	// Update view
 	ConstantBuffer cb;
 	cb.mProjection = XMMatrixTranspose(mOrtho);
-	pContext->UpdateSubresource(pConstantBuffer, 0, nullptr, &cb, 0, 0);
-	pContext->VSSetConstantBuffers(0, 1, &pConstantBuffer);
+	gpContext->UpdateSubresource(gpConstantBuffer, 0, nullptr, &cb, 0, 0);
+	gpContext->VSSetConstantBuffers(0, 1, &gpConstantBuffer);
 
 	// Make sure the input assembler knows how to process our verts/indices
 	UINT stride = sizeof(Vertex);
 	UINT offset = 0;
-	pContext->IASetVertexBuffers(0, 1, &pVertexBuffer, &stride, &offset);
-	pContext->IASetInputLayout(pVertexLayout);
-	pContext->IASetIndexBuffer(pIndexBuffer, DXGI_FORMAT_R32_UINT, 0);
-	pContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	gpContext->IASetVertexBuffers(0, 1, &gpVertexBuffer, &stride, &offset);
+	gpContext->IASetInputLayout(gpVertexLayout);
+	gpContext->IASetIndexBuffer(gpIndexBuffer, DXGI_FORMAT_R32_UINT, 0);
+	gpContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	// Set the shaders we need to render our triangle
-	pContext->VSSetShader(pVertexShader, nullptr, 0);
-	pContext->PSSetShader(pPixelShader, nullptr, 0);
+	gpContext->VSSetShader(gpVertexShader, nullptr, 0);
+	gpContext->PSSetShader(gpPixelShader, nullptr, 0);
 
 	// Set viewport to context
-	pContext->RSSetViewports(1, pViewports);
+	gpContext->RSSetViewports(1, pViewports);
 
-	pContext->DrawIndexed(3, 0, 0);
+	gpContext->DrawIndexed(3, 0, 0);
 }
 
 HRESULT __stdcall hkPresent(
@@ -377,9 +377,9 @@ HRESULT __stdcall hkPresent(
 	UINT SyncInterval,
 	UINT Flags
 ) {
-	pSwapchain = pThis;
+	gpSwapchain = pThis;
 
-	if (!pDevice)
+	if (!gpDevice)
 	{
 		if (!InitD3DHook(pThis))
 			return false;
@@ -417,6 +417,6 @@ void deinject(LPVOID pHandle) {
 	// Cleanup and unload dll
 	CleanupD3D();
 	WriteMem(ogPresent, ogBytes, PRESENT_STUB_SIZE);
-	VirtualFree((void*)ogPresentTramp, 0x1000, MEM_RELEASE);
+	VirtualFree((void*)ogPresentTramp, 0x0, MEM_RELEASE);
 	CreateThread(0, 0, (LPTHREAD_START_ROUTINE)FreeLibraryAndExitThread, pHandle, 0, 0);
 }
