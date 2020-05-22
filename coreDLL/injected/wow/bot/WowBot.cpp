@@ -11,7 +11,7 @@
 
 WowBot::WowBot(WowGame& game) :
 	mGame(game),
-	mDbg(game.getName() + "Bot"),
+	mDbg("WowBotWowBot"),
 	mPaused(true),
 	mPathFinder(nullptr),
 	mCurrentUnitTarget(nullptr)
@@ -43,8 +43,7 @@ void WowBot::run() {
 		std::shared_ptr<WowActivePlayerObject> self = mGame.getObjectManager().getActivePlayer();
 
 		if (self != nullptr) {
-			std::list<std::shared_ptr<const WowUnitObject>> allUnits = mGame.getObjectManager().allOfType<const WowUnitObject>(WowObjectType::Unit);
-			std::list<std::shared_ptr<const WowUnitObject>> unblacklistedUnits;
+		
 
 			if (nullptr != mCurrentUnitTarget && mBlacklistedGuids.find(mCurrentUnitTarget->getGuid()) != mBlacklistedGuids.end())
 			{
@@ -54,6 +53,8 @@ void WowBot::run() {
 
 			if (nullptr == mCurrentUnitTarget)
 			{
+				std::list<std::shared_ptr<const WowUnitObject>> allUnits = mGame.getObjectManager().allOfType<const WowUnitObject>(WowObjectType::Unit);
+				std::list<std::shared_ptr<const WowUnitObject>> whilelist;
 				mDbg.i("looking for a new unit to attack");
 				std::shared_ptr<const WowUnitObject> targetUnit(nullptr);
 				float distance = FLT_MAX;
@@ -63,8 +64,7 @@ void WowBot::run() {
 					if (mBlacklistedGuids.find((*it)->getGuid()) == mBlacklistedGuids.end())
 					{
 						float unitDistance = self->getDistanceTo(**it);
-						if (unitDistance < distance)
-						{
+						if (unitDistance < distance) {
 							targetUnit = *it;
 							distance = unitDistance;
 						}

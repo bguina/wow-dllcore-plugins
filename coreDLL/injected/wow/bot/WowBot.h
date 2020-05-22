@@ -2,20 +2,21 @@
 
 #include <set>
 
-#include "../../bot/AGameBot.h"
+#include "../../ISandboxPlugin.h"
 
 #include "../WowVector3f.h"
+#include "../../../debugger/FileDebugger.h"
 #include "../objectmanager/WowObject.h"
 
 class IPathFinder;
 class WowGame;
 class WowUnitObject;
 
-class WowBot : public AGameBot<WowGame>
+class WowBot : public ISandboxPlugin
 {
 public:
 	WowBot(WowGame& game);
-	~WowBot();
+	virtual ~WowBot();
 
 	virtual void run();
 
@@ -25,6 +26,8 @@ public:
 	void loadLinearWaypoints(const std::vector<WowVector3f>& waypoints);
 
 protected:
+	WowGame& mGame;
+	FileDebugger mDbg;
 	bool mPaused;
 	std::unique_ptr<IPathFinder> mPathFinder;
 	std::shared_ptr<const WowUnitObject> mCurrentUnitTarget;

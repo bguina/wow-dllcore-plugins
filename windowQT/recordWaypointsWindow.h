@@ -1,11 +1,10 @@
-#ifndef RECORDWAYPOINTSWINDOW_H
-#define RECORDWAYPOINTSWINDOW_H
+#pragma once
 
 #include <QDialog>
 #include <QStringListModel>
 #include <QFileDialog>
 #include <QMessageBox>
-#include "ServerSDK.h"
+#include "Client.h"
 
 namespace Ui {
 	class RecordWaypointsWindow;
@@ -16,7 +15,7 @@ class RecordWaypointsWindow : public QDialog
 	Q_OBJECT
 
 public:
-	explicit RecordWaypointsWindow(QWidget* parent, ServerSDK* serverSDK);
+	explicit RecordWaypointsWindow(QWidget* parent, Client* client);
 	~RecordWaypointsWindow();
 	void addNewRecordedWaypoints(std::string waypoint);
 
@@ -26,7 +25,7 @@ signals:
 
 private:
 	Ui::RecordWaypointsWindow* ui;
-	ServerSDK* serverSDK;
+	Client* mClient;
 	QStringListModel* model;
 	void closeEvent(QCloseEvent* event);
 
@@ -35,5 +34,3 @@ private slots:
 	void stopRecord();
 	void saveFile();
 };
-
-#endif // RECORDWAYPOINTSWINDOW_H

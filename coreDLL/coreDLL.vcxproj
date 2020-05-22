@@ -156,8 +156,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="injected\AGame.h" />
-    <ClInclude Include="injected\bot\IBot.h" />
-    <ClInclude Include="injected\bot\AGameBot.h" />
+    <ClInclude Include="injected\ISandboxPlugin.h" />
     <ClInclude Include="d3d\d3d.h" />
     <ClInclude Include="d3d\D3D_VMT_Indices.h" />
     <ClInclude Include="d3d\shadez.h" />
@@ -190,7 +189,7 @@
     <ClInclude Include="injected\wow\observers\AWowGameObserver.h" />
     <ClInclude Include="injected\observers\IGameObserver.h" />
     <ClInclude Include="pch.h" />
-    <ClInclude Include="Sandbox.h" />
+    <ClInclude Include="injected\Sandbox.h" />
     <ClInclude Include="NetworkParsing.h" />
     <ClInclude Include="injected\wow\spellbook\SpellBookManager.h" />
     <ClInclude Include="pathfinder\Vector3f.h" />
@@ -224,7 +223,7 @@
     <ClCompile Include="pathfinder\APathFinder.cpp" />
     <ClCompile Include="pathfinder\LinearPathFinder.cpp" />
     <ClCompile Include="pch.cpp" />
-    <ClCompile Include="Sandbox.cpp" />
+    <ClCompile Include="injected\Sandbox.cpp" />
     <ClCompile Include="NetworkParsing.cpp" />
     <ClCompile Include="injected\wow\spellbook\SpellBookManager.cpp" />
     <ClCompile Include="injected\wow\WowVector3f.cpp" />

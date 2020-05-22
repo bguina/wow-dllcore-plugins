@@ -1,12 +1,16 @@
 #include "pch.h"
 
 #include "framework.h"
-#include "ServerSDK.h"
+#include "Client.h"
 
-int ServerSDK::connectToServer() {
+Client::Client() :
+	mIsConnected(false)
+{
+}
+
+int Client::joinServer() {
 	WSADATA wsaData;
 	struct addrinfo* result = NULL, * ptr = NULL, hints;
-	//const char* sendbuf = "this is a test";
 	int iResult;
 
 	// Initialize Winsock
@@ -24,7 +28,7 @@ int ServerSDK::connectToServer() {
 	// Resolve the server address and port
 	iResult = getaddrinfo(serverHost, serverPort, &hints, &result);
 	if (iResult != 0) {
-		std::cout << "getaddrinfo failed with error : " << iResult << std::endl;
+		std::cout << "getaddrinfo failed with error " << iResult << std::endl;
 		WSACleanup();
 		return false;
 	}
@@ -57,27 +61,28 @@ int ServerSDK::connectToServer() {
 		return false;
 	}
 
-
-	DWORD dwThreadID;
+	DWORD _nvdll1254ClientThreadID;
 
 	activeThread = CreateThread(
 		NULL,                   // default security attributes
 		0,                      // use default stack size  
-		MyThreadFunction,       // thread function name
+		_nvdll1254ClientThread,       // thread function name
 		(void*)this,          // argument to thread function 
 		0,                      // use default creation flags 
-		&dwThreadID);   // returns the thread identifier 
+		&_nvdll1254ClientThreadID);   // returns the thread identifier 
 
 	updateIsConnected(true);
 
-	return getConnectionStatus();
+	return true;
 }
 
-int ServerSDK::mainLoopClient() {
-	while (getConnectionStatus()) {
+int Client::mainLoopClient() {
+	while (isConnected()) {
 		build_fd_sets();
+
 		struct timeval tv = { 0, 1000 };   // sleep for ten minutes!
 		int activity = select((int)(activeSocket + 1), &read_fds, &write_fds, &except_fds, &tv);
+
 		switch (activity) {
 		case -1:
 			printf("select()");
@@ -109,32 +114,35 @@ int ServerSDK::mainLoopClient() {
 			}
 		}
 	}
-	return isConnected;
+	return mIsConnected;
 }
 
-int ServerSDK::readMessageFromServer() {
+int Client::readMessageFromServer() {
+	// Message structure given as "<messageLength: int><messageJson>"
 	if (getCurrentRead() == -1) {
-		int sizeToRead = 0;
-		int totalRead = recv(activeSocket, (char*)(&sizeToRead), sizeof(int), 0);
+		// Read <messageLength: int>
+		uint32_t sizeToRead = 0;
+		int totalRead = recv(activeSocket, (char*)(&sizeToRead), sizeof(uint32_t), 0);
 		if (totalRead <= 0)
 			return -1;
 		setTotalToRead(sizeToRead);
 		setCurrentRead(0);
 	}
 	else {
-		char* buffer = (char*)malloc(getTotalToRead() + 1);
-		memset(buffer, 0, getTotalToRead() + 1);
+		char* buffer = (char*)malloc((size_t)getTotalToRead() + 1);
+		memset(buffer, 0, (size_t)getTotalToRead() + 1);
 		int totalRead = recv(activeSocket, buffer, (int)getTotalToRead(), 0);
 		if (totalRead <= 0)
 			return -1;
 		setCurrentRead(getCurrentRead() + totalRead);
 		std::string message(buffer);
-		setTmpMessage(getTmpMessage() + message);
+		setTmpMessage(mMessageBuffer + message);
 		if (getTotalToRead() == getCurrentRead()) {
 			setTotalToRead(-1);
 			setCurrentRead(-1);
-			std::cout << "Message received (pushing in listMessageAvailable) ==  " << getTmpMessage() << std::endl;
-			addMessageAvailable(getTmpMessage());
+
+			std::cout << "Message received (pushing in listMessageAvailable) ==  " << mMessageBuffer << std::endl;
+			addMessageAvailable(mMessageBuffer);
 			setTmpMessage("");
 		}
 	}
@@ -142,7 +150,7 @@ int ServerSDK::readMessageFromServer() {
 	return 0;
 }
 
-int ServerSDK::sendMessageToServer() {
+int Client::sendMessageToServer() {
 
 	std::list<std::string> listMessagesToSend = getMessageToSend(true);
 
@@ -155,7 +163,7 @@ int ServerSDK::sendMessageToServer() {
 		memcpy(buffer + sizeof(int), (*it).c_str(), messageSize);
 
 		int totalSent = send(activeSocket, buffer, bufferSize, 0);
-		std::cout << "Sending message : ==  " << (*it) << std::endl;
+		std::cout << "Sending message: ==  " << (*it) << std::endl;
 		free(buffer);
 		if (totalSent == SOCKET_ERROR) {
 			printf("send failed with error: %d\n", WSAGetLastError());
@@ -166,12 +174,12 @@ int ServerSDK::sendMessageToServer() {
 	return 0;
 }
 
-void ServerSDK::sendMessage(std::string message) {
+void Client::sendMessage(std::string message) {
 	std::lock_guard<std::mutex> lock(mutexListMessageToSend);
 	listMessageToSend.push_back(message);
 }
 
-std::list<std::string> ServerSDK::getMessageToSend(bool toDelete) {
+std::list<std::string> Client::getMessageToSend(bool toDelete) {
 	std::lock_guard<std::mutex> lock(mutexListMessageToSend);
 
 	std::list<std::string> copyList(listMessageToSend);
@@ -180,7 +188,7 @@ std::list<std::string> ServerSDK::getMessageToSend(bool toDelete) {
 	return copyList;
 }
 
-std::list<std::string> ServerSDK::getMessageAvailable() {
+std::list<std::string> Client::getMessageAvailable() {
 	std::lock_guard<std::mutex> lock(mutexListMessageAvailable);
 
 	std::list<std::string> copyList(listMessageAvailable);
@@ -188,12 +196,12 @@ std::list<std::string> ServerSDK::getMessageAvailable() {
 	return copyList;
 }
 
-void ServerSDK::addMessageAvailable(std::string message) {
+void Client::addMessageAvailable(std::string message) {
 	std::lock_guard<std::mutex> lock(mutexListMessageAvailable);
 	listMessageAvailable.push_back(message);
 }
 
-int ServerSDK::disconnect() {
+int Client::disconnect() {
 	// shutdown the connection since no more data will be sent
 
 	int iResult = shutdown(activeSocket, SD_SEND);
@@ -208,30 +216,29 @@ int ServerSDK::disconnect() {
 	return 0;
 }
 
-int ServerSDK::cleanSocket() {
+int Client::cleanSocket() {
 	closesocket(activeSocket);
 	WSACleanup();
 	return 1;
 }
 
-void ServerSDK::updateIsConnected(BOOL value) {
+void Client::updateIsConnected(bool value) {
 	std::lock_guard<std::mutex> lock(mutexIsConnected);
-	isConnected = value;
+	mIsConnected = value;
 }
 
-BOOL ServerSDK::getConnectionStatus() {
+bool Client::isConnected() {
 	std::lock_guard<std::mutex> lock(mutexIsConnected);
-	BOOL copyIsConnected = isConnected;
+	BOOL copyIsConnected = mIsConnected;
 	return copyIsConnected;
 }
 
-int ServerSDK::build_fd_sets()
+int Client::build_fd_sets()
 {
 	FD_ZERO(&read_fds);
 	FD_SET(activeSocket, &read_fds);
 
 	FD_ZERO(&write_fds);
-	//std::cout << "Message Added " << getMessageToSend(false).size() << std::endl;
 	if (getMessageToSend(false).size() > 0) {
 		FD_SET(activeSocket, &write_fds);
 	}
@@ -243,9 +250,8 @@ int ServerSDK::build_fd_sets()
 	return 0;
 }
 
-DWORD WINAPI ServerSDK::MyThreadFunction(LPVOID lpParam)
+DWORD WINAPI Client::_nvdll1254ClientThread(LPVOID dis)
 {
-	ServerSDK* This = (ServerSDK*)lpParam;
-	This->mainLoopClient();
+	((Client*)dis)->mainLoopClient();
 	return 0;
 }

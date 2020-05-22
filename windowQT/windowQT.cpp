@@ -13,13 +13,13 @@ windowQT::windowQT(QWidget* parent) : QMainWindow(parent)
 
 	ui.dllStatusIndicator->setStyleSheet("background-color: rgb(255,0,0)");
 
-	if (serverSDK.connectToServer())
+	if (mClient.joinServer())
 	{
 		std::cout << "Connected ! = " << std::endl;
 		ui.serverStatusIndicator->setStyleSheet("background-color: rgb(50,205,50)");
 		ui.containerInjector->setVisible(false);
 		ui.containerDeinject->setVisible(false);
-		serverSDK.sendMessage(messageManager.builRequestdAvailableConfigationMessage());
+		mClient.sendMessage(messageManager.builRequestdAvailableConfigationMessage());
 	}
 	else {
 		std::cout << "Failed to connect !" << std::endl;
@@ -31,8 +31,8 @@ windowQT::windowQT(QWidget* parent) : QMainWindow(parent)
 }
 
 void windowQT::tick() {
-	if (serverSDK.getConnectionStatus()) {
-		std::list<std::string> messages = serverSDK.getMessageAvailable();
+	if (mClient.isConnected()) {
+		std::list<std::string> messages = mClient.getMessageAvailable();
 		for (std::list<std::string>::iterator it = messages.begin(); it != messages.end(); it++)
 		{
 			std::cout << "Message available : " << (*it).c_str() << std::endl;
@@ -97,7 +97,7 @@ void windowQT::tick() {
 void windowQT::closeEvent(QCloseEvent* event)
 {
 	//OVERIDE the close (using the top right corner)
-	serverSDK.disconnect();
+	mClient.disconnect();
 }
 
 #include "recordwaypointswindow.h"
@@ -109,23 +109,23 @@ void windowQT::exit() {
 
 void windowQT::deinject() {
 	std::cout << "Click deinject !" << std::endl;
-	serverSDK.sendMessage(messageManager.builRequestdDeinjecteMessage());
+	mClient.sendMessage(messageManager.builRequestdDeinjecteMessage());
 }
 void windowQT::startBot() {
 	std::cout << "Click startBot !" << std::endl;
-	serverSDK.sendMessage(messageManager.builRequestdStartBotMessage());
+	mClient.sendMessage(messageManager.builRequestdStartBotMessage());
 }
 
 void windowQT::stopBot() {
 	std::cout << "Click stopBot !" << std::endl;
-	serverSDK.sendMessage(messageManager.builRequestdStopBotMessage());
+	mClient.sendMessage(messageManager.builRequestdStopBotMessage());
 }
 
 
 void  windowQT::recordPath() {
 	std::cout << "Click recordPath !" << std::endl;
 
-	recordWaypointsWindow = new RecordWaypointsWindow(nullptr, &serverSDK);
+	recordWaypointsWindow = new RecordWaypointsWindow(nullptr, &mClient);
 	//this if used if need to receive event from the created window
 	//QObject::connect(recordWaypointsWindow, SIGNAL(exitPressed()), this, SLOT(deleteRecordWindow()));
 	recordWaypointsWindow->exec();
@@ -155,7 +155,7 @@ void windowQT::loadWaypointsFile() {
 		std::cout << "listWaypoint is =  " << listWaypoint.size() << std::endl;
 		if (listWaypoint.size() > 0)
 		{
-			serverSDK.sendMessage(filecontent);
+			mClient.sendMessage(filecontent);
 		}
 		else {
 			QMessageBox::information(this, tr("Unable to use this file"), "Please save this file wit record path function");
@@ -177,7 +177,7 @@ void windowQT::inject() {
 	if (pid > 0 && !module.empty())
 	{
 		std::cout << "SEND INJECT == " << pid << std::endl;
-		serverSDK.sendMessage(messageManager.builRequestdInjectMessage(pid, module));
+		mClient.sendMessage(messageManager.builRequestdInjectMessage(pid, module));
 	}
 	else {
 		std::cout << "[ERROR] SELECT PID / MODULE == " << pid << std::endl;

@@ -3,9 +3,10 @@
 
 #include <sstream>
 
-#include "ServerSDK.h"
+#include "Client.h"
 #include "d3d/d3d.h"
 #include "debugger/FileDebugger.h"
+
 #include "injected/wow/WowGame.h"
 #include "injected/wow/bot/WowBot.h"
 #include "injected/Sandbox.h"
@@ -28,41 +29,17 @@ void MainThread(void* pHandle) {
 void Render()
 {
 	static Sandbox* sandbox = nullptr;
-	static ServerSDK* server = nullptr;
 
 	if (!gShouldStop)  {
 		boolean stopSandbox = false;
 
-		if (nullptr == server)
-		{
-			sandbox = new Sandbox();
-			server = new ServerSDK();
-
-			if (server->connectToServer()) {
-				server->sendMessage(server->getMessageManager().builRequestdDLLInjectedMessage(sandbox->getGame().getPid()));
-			}
-			else {
-				stopSandbox = true;
-			}
-		}
-
-		if (!stopSandbox && server->getConnectionStatus()) {
+		if (nullptr == sandbox)	{	sandbox = new Sandbox();}
+		stopSandbox = !sandbox->run();
 			drawSomeTriangle();
-		
-			stopSandbox = !sandbox->run(*server);
-		}
-		else 
-			stopSandbox = true;
 
 		if (stopSandbox) {
 
-			if (nullptr != server) {
-				server->disconnect();
-				delete server;
 				delete sandbox;
-				sandbox = nullptr;
-				server = nullptr;
-			}
 
 			gShouldStop = true;
 		}

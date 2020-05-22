@@ -3,6 +3,8 @@
 
 #include "server.h"
 
+#include <Windows.h>
+
 Server::Server()
 {
 }
@@ -103,7 +105,7 @@ void Server::setupFDSets()
 // Data came in on a client socket, so read it into the buffer.  Returns
 // false on failure, or when the client closes its half of the
 // connection.  (WSAEWOULDBLOCK doesn't count as a failure.)
-
+#include <Windows.h>
 
 BOOL Server::ReadData(ClientConnection& client)
 {
@@ -139,15 +141,21 @@ BOOL Server::ReadData(ClientConnection& client)
 					std::cout << "Adding window for Peer..." << std::endl;
 				}
 
-				std::list<std::string> listPID = getAllProcessIdFromProcessName(L"WowClassic.exe");
-				std::string stringListPIDS = "";
-				for (std::list<std::string>::iterator it = listPID.begin(); it != listPID.end(); ++it) {
-					if (stringListPIDS.size() > 0)
-						stringListPIDS += ",";
-					stringListPIDS += (*it);
+				std::vector<int> listPID = listPids(L"WowClassic.exe");
+				std::cout << "found " << listPID.size() << " PIDs" << std::endl;
+				std::string pidsResponse = "";
+				for (std::vector<int>::iterator it = listPID.begin(); it != listPID.end(); ++it) {
+					if (pidsResponse.size() > 0)
+						pidsResponse += ",";
+					pidsResponse += std::to_string(*it);
 				}
-				std::string messageToSend = messageManager.builResponseAvailableConfigationMessage(stringListPIDS, "dll1,dll2");
-				client.getListMessageToSend()->push_back(messageToSend);
+
+				std::string dllsResponse("D:\\nvtest.dll");
+				// TODO list all compatible Dlls
+
+				client.getListMessageToSend()->push_back(
+					messageManager.builResponseAvailableConfigationMessage(pidsResponse, dllsResponse)
+				);
 			}
 			else if (messageManager.getMessageType(client.getTmpMessage()) == MessageType::INJECT)
 			{
@@ -260,8 +268,6 @@ BOOL Server::checkReadStatus(int totalRead, ClientConnection& client) {
 	return true;
 }
 
-
-
 //// WriteData /////////////////////////////////////////////////////////
 // The connection is writable, so send any pending data.  Returns
 // false on failure.  (WSAEWOULDBLOCK doesn't count as a failure.)
@@ -272,7 +278,7 @@ bool WriteData(ClientConnection& client)
 
 	for (std::list<std::string>::iterator it = listMessagesToSend->begin(); it != listMessagesToSend->end(); it++) {
 
-		int sizeMessage = (*it).size();
+		int sizeMessage = (int)(*it).size();
 		int bufferSize = sizeof(int) + sizeMessage;
 		char* buffer = (char*)malloc(bufferSize);
 		memset(buffer, 0, bufferSize);

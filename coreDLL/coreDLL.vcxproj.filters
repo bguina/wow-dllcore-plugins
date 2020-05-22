@@ -36,9 +36,6 @@
     <ClInclude Include="framework.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Sandbox.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="pathfinder\IPathFinder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -61,12 +58,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="injected\MemoryObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="injected\bot\AGameBot.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="injected\bot\IBot.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="injected\wow\objectmanager\ObjectManager.h">
@@ -141,15 +132,18 @@
     <ClInclude Include="injected\wow\objectmanager\WowUnitObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="injected\ISandboxPlugin.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="injected\Sandbox.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="pch.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Sandbox.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="d3d\d3d.cpp">
@@ -222,6 +216,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="injected\wow\objectmanager\WowUnitObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="injected\Sandbox.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

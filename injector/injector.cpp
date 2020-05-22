@@ -1,15 +1,19 @@
-// injector.cpp : Defines the functions for the static library.
-//
+#define WIN32_LEAN_AND_MEAN             // Exclude rarely-used stuff from Windows headers
 
-#include "pch.h"
-#include "framework.h"
-#include "injector.h"
+#include <Windows.h>
+#include <Psapi.h>
+#include <Dwmapi.h> 
+#include <TlHelp32.h>
 
-BOOL loadRemoteDLL(HANDLE hProcess, const char* dllPath) {
+#include <iostream>
+#include <string>
+#include <vector>
+
+bool loadRemoteDLL(HANDLE hProcess, const char* dllPath) {
 	// Allocate memory for DLL's path name to remote process
 	LPVOID dllPathAddressInRemoteMemory = VirtualAllocEx(hProcess, NULL, strlen(dllPath) + 1, MEM_RESERVE | MEM_COMMIT, PAGE_EXECUTE_READWRITE);
 	if (dllPathAddressInRemoteMemory == NULL) {
-		cout << GetLastError() << endl;
+		std::cerr << "VirtualAllocEx error " << GetLastError() << std::endl;
 		printf("[---] VirtualAllocEx unsuccessful.\n");
 		getchar();
 		return FALSE;
@@ -92,43 +96,8 @@ BOOL GetDebugPrivileges() {
 	return TRUE;
 }
 
-int GetProcessIdFromProcessName(IN CONST LPCWSTR pszProcessName)
-{
-	if (pszProcessName)
-	{
-
-		HANDLE hSnapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
-
-		if (hSnapshot)
-		{
-			PROCESSENTRY32 processEntry = { 0 };
-			processEntry.dwSize = sizeof(PROCESSENTRY32);
-
-			BOOL bEntry = Process32First(hSnapshot, &processEntry);
-
-			while (bEntry)
-			{
-				if (lstrcmpi(processEntry.szExeFile, pszProcessName) == 0)
-				{
-					cout << L"found process " << processEntry.szExeFile << ": pid is " << processEntry.th32ProcessID << "\n";
-					return  processEntry.th32ProcessID;
-				}
-				else
-				{
-					bEntry = Process32Next(hSnapshot, &processEntry);
-				}
-			}
-
-			CloseHandle(hSnapshot);
-		}
-	}
-
-	return 0;
-}
-
-std::list<std::string> getAllProcessIdFromProcessName(IN CONST LPCWSTR pszProcessName) {
-
-	std::list<string> list;
+std::vector<int> listPids(IN CONST LPCWSTR pszProcessName) {
+	std::vector<int> list;
 
 	if (pszProcessName)
 	{
@@ -145,7 +114,7 @@ std::list<std::string> getAllProcessIdFromProcessName(IN CONST LPCWSTR pszProces
 			{
 				if (lstrcmpi(processEntry.szExeFile, pszProcessName) == 0)
 				{
-					list.push_back(std::to_string(processEntry.th32ProcessID));
+					list.push_back(processEntry.th32ProcessID);
 				}
 				bEntry = Process32Next(hSnapshot, &processEntry);
 			}
@@ -156,35 +125,37 @@ std::list<std::string> getAllProcessIdFromProcessName(IN CONST LPCWSTR pszProces
 	return list;
 }
 
-
-int inject(int wowPid, std::string module)
-{
-	//int wowPid = GetProcessIdFromProcessName(L"WowClassic.exe");
+int inject(int processId, const std::string& module) {
 	LPSTR crazyStuff = LPSTR("D:\\nvtest.dll");
-	//TODO DO SOMETHING WITH module
+	// TODO use "module" dll path variable to select the real DLL to inject
 
-	if (wowPid > 0) {
-		HANDLE hProcess = OpenProcess(PROCESS_CREATE_THREAD |
-			PROCESS_QUERY_INFORMATION |
-			PROCESS_VM_OPERATION |
-			PROCESS_VM_WRITE |
-			PROCESS_VM_READ,
-			FALSE,
-			wowPid
-		);
-
-		if (!GetDebugPrivileges()) {
-			return 1;
-		}
-
-		cout << "LOADING ..." << endl;
-
-		loadRemoteDLL(hProcess, crazyStuff);
+	if (processId <= 0) {
+		std::cerr << "processId <= 0" << std::endl;
+		return -1;
 	}
-	else {
-		cerr << "WowClassic.exe not running\n";
+
+	HANDLE hProcess = OpenProcess(PROCESS_CREATE_THREAD |
+		PROCESS_QUERY_INFORMATION |
+		PROCESS_VM_OPERATION |
+		PROCESS_VM_WRITE |
+		PROCESS_VM_READ,
+		FALSE,
+		processId
+	);
+
+	if (!GetDebugPrivileges()) {
+		std::cerr << "GetDebugPrivileges failed" << std::endl;
 		return 1;
 	}
+
+	if (hProcess <= 0) {
+		std::cerr << "OpenProcess: returned hProcess <= 0" << std::endl;
+		return -1;
+	}
+
+	std::cout << "LOADING ..." << std::endl;
+
+	loadRemoteDLL(hProcess, crazyStuff);
 
 	// Freeze app to see output result.
 	//cin.get();

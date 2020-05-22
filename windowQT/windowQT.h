@@ -1,11 +1,10 @@
 #pragma once
 
-#include "ServerSDK.h"
+#include "Client.h"
 #include "MessageManager.h"
 #include <QtWidgets/QMainWindow>
 #include "ui_windowQT.h"
 #include "recordWaypointsWindow.h"
-
 
 class windowQT : public QMainWindow
 {
@@ -22,7 +21,7 @@ private:
 		QMetaObject::invokeMethod(this, "tick", Qt::QueuedConnection);
 	}
 	void windowQT::closeEvent(QCloseEvent* event);
-	ServerSDK serverSDK;
+	Client mClient;
 	MessageManager messageManager;
 	RecordWaypointsWindow* recordWaypointsWindow = NULL;
 private slots:

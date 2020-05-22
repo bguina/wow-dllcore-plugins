@@ -1,16 +1,16 @@
 #pragma once
 
-#include "ServerSDK.h"
+#include "Client.h"
 
 #include "../../observers/AGameObserver.h"
 
-class ServerSDK;
+class Client;
 class WowGame;
 
 class AWowGameObserver : public AGameObserver<WowGame> {
 protected:
-	AWowGameObserver(const std::string& tag, ServerSDK& server, unsigned long periodMs);
+	AWowGameObserver(const std::string& tag, Client& client, unsigned long periodMs);
 
 protected:
-	ServerSDK& mServer;
+	Client& mClient;
 };

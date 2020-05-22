@@ -2,11 +2,11 @@
 
 #include <iostream>
 
-#include "injected/wow/WowGame.h"
-#include "injected/wow/bot/WowBot.h"
-#include "ServerSDK.h"
-#include "MessageManager.h"
-#include "debugger/FileDebugger.h"
+#include "../debugger/FileDebugger.h"
+#include "wow/WowGame.h"
+#include "wow/bot/WowBot.h"
+
+class Client;
 
 class Sandbox
 {
@@ -16,21 +16,19 @@ public:
 
 	bool throttle() const;
 
-	const void* id() const {
-		return this;
-	}
-
-	ULONG64 getBootTime() const;
-	ULONG64 getLastPulse() const;
+	const void* id() const;
+	uint64_t getBootTime() const;
+	uint64_t getLastPulse() const;
 	const WowGame& getGame() const;
 
-	bool run(ServerSDK& server);
+	bool run();
 
 private:
-	bool stackServerMessages(ServerSDK& server);
+	bool stackServerMessages();
 
-	ULONG64 mBootTime;
-	ULONG64 mLastPulse;
+	uint64_t mBootTime;
+	uint64_t mLastPulse;
+	std::unique_ptr<Client> mClient;
 	FileDebugger mDebugger;
 	WowGame mGame;
 	WowBot mBot;
@@ -40,11 +38,7 @@ public:
 	void operator=(Sandbox const&) = delete;
 };
 
-inline std::ostream& operator<<(
-	std::ostream& out,
-	const class Sandbox& obj
-	)
-{
+inline std::ostream& operator<<(std::ostream& out,const class Sandbox& obj) {
 	out << "[Sandbox:" << obj.id() << "," << obj.getLastPulse() << "]";
 	// TODO print navigator state
 	return out;

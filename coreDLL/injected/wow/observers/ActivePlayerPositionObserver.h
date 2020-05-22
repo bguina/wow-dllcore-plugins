@@ -4,9 +4,11 @@
 
 #include "../WowVector3f.h"
 
+class Client;
+
 class ActivePlayerPositionObserver final : public AWowGameObserver {
 public:
-	ActivePlayerPositionObserver(ServerSDK& server, float maxDelta);
+	ActivePlayerPositionObserver(Client& server, float maxDelta);
 
 	virtual void makeCapture(const WowGame& game);
 	

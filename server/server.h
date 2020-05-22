@@ -7,7 +7,7 @@
 #include "ClientConnection.h"
 #include "PeerClient.h"
 #include "MessageManager.h"
-#include "InjectorPrototypes.h"
+#include "injector.h"
 
 class Server
 {

@@ -4,34 +4,33 @@
 #include <sstream>
 
 #include "Sandbox.h"
-#include "pathfinder/Vector3f.h"
-#include "injected/wow/observers/ActivePlayerPositionObserver.h"
+#include "Client.h"
+#include "../pathfinder/Vector3f.h"
+#include "wow/observers/ActivePlayerPositionObserver.h"
+#include "../NetworkParsing.h"
 
-#include "pathfinder/Vector3f.h"
-#include "NetworkParsing.h"
-
-bool Sandbox::stackServerMessages(ServerSDK& server) {
-	std::list<std::string> messages = server.getMessageAvailable();
+bool Sandbox::stackServerMessages() {
+	std::list<std::string> messages = mClient->getMessageAvailable();
 
 	for (std::list<std::string>::iterator msgIte = messages.begin(); msgIte != messages.end(); msgIte++)
 	{
-		auto messageType = server.getMessageManager().getMessageType((*msgIte));
+		auto messageType = mClient->getMessageManager().getMessageType((*msgIte));
 
 		switch (messageType)
 		{
 		case MessageType::START_SUBSCRIBE: {
-			std::list<std::string> toSubscribe = server.getMessageManager().getSubcribeObject(*msgIte);
+			std::list<std::string> toSubscribe = mClient->getMessageManager().getSubcribeObject(*msgIte);
 
 			bool found = (std::find(toSubscribe.begin(), toSubscribe.end(), "position") != toSubscribe.end());
 
 			if (found) {
-				mGame.addObserver("position", std::make_shared<ActivePlayerPositionObserver>(server, 10.0f));
+				mGame.addObserver("position", std::make_shared<ActivePlayerPositionObserver>(*mClient, 10.0f));
 			}
 
 			break;
 		}
 		case MessageType::STOP_SUBSCRIBE: {
-			std::list<std::string> toSubscribe = server.getMessageManager().getSubcribeObject(*msgIte);
+			std::list<std::string> toSubscribe = mClient->getMessageManager().getSubcribeObject(*msgIte);
 			bool found = (std::find(toSubscribe.begin(), toSubscribe.end(), "position") != toSubscribe.end());
 			if (found) {
 				mGame.removeObserver("position");
@@ -40,7 +39,7 @@ bool Sandbox::stackServerMessages(ServerSDK& server) {
 			break;
 		}
 		case MessageType::WAYPOINTS: {
-			std::list<std::string> rawWaypoints = server.getMessageManager().getWaypointsObject(*msgIte);
+			std::list<std::string> rawWaypoints = mClient->getMessageManager().getWaypointsObject(*msgIte);
 			std::vector<Vector3f> waypoints;
 
 			for (std::list<std::string>::iterator it = rawWaypoints.begin(); it != rawWaypoints.end(); it++) {
@@ -77,33 +76,37 @@ bool Sandbox::stackServerMessages(ServerSDK& server) {
 Sandbox::Sandbox() :
 	mDebugger("Sandbox"),
 	mBootTime(GetTickCount64()), mLastPulse(0),
+	mClient(std::make_unique<Client>()),
 	mGame((const uint8_t*)GetModuleHandleA(0)),
 	mBot(mGame)
 {
-	// TODO connect to server from here
-	// TODO clear log files?
+	if (mClient->joinServer()) {
+		mClient->sendMessage(mClient->getMessageManager().builRequestdDLLInjectedMessage(getGame().getPid()));
+	}
 }
 
 Sandbox::~Sandbox() {
-	// TODO disconnect from server in case we are still connected
-
+	mClient->disconnect();
 	mDebugger.log("~Sandbox");
 }
 
-ULONG64 Sandbox::getBootTime() const { return mBootTime; }
-ULONG64 Sandbox::getLastPulse() const { return mLastPulse; }
+uint64_t Sandbox::getBootTime() const { return mBootTime; }
+uint64_t Sandbox::getLastPulse() const { return mLastPulse; }
 const WowGame& Sandbox::getGame() const { return mGame; }
+
+const void* Sandbox::id() const {
+	return this;
+}
 
 bool Sandbox::throttle() const {
 	return mLastPulse + 120 > GetTickCount64();
 }
 
-bool Sandbox::run(ServerSDK& server) {
+bool Sandbox::run() {
 	if (throttle()) return true;
+	if (!mClient->isConnected() || !stackServerMessages()) return false;
 
 	std::stringstream ss;
-
-	bool abort = !stackServerMessages(server);
 	ss << "abort? " << abort << std::endl;
 
 	mGame.update();
@@ -114,5 +117,5 @@ bool Sandbox::run(ServerSDK& server) {
 
 	mDebugger << ss.str();
 	mDebugger.flush();
-	return !abort;
+	return true;
 }

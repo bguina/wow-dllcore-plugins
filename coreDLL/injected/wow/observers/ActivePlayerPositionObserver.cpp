@@ -4,9 +4,10 @@
 
 #include "ActivePlayerPositionObserver.h"
 #include "../WowGame.h"
+#include "Client.h"
 
-ActivePlayerPositionObserver::ActivePlayerPositionObserver(ServerSDK& server, float maxDelta)
-	: AWowGameObserver("ActivePlayerPositionObserver", server, 800), mMaxDistanceDelta(maxDelta)
+ActivePlayerPositionObserver::ActivePlayerPositionObserver(Client& client, float maxDelta)
+	: AWowGameObserver("ActivePlayerPositionObserver", client, 800), mMaxDistanceDelta(maxDelta)
 {}
 
 void ActivePlayerPositionObserver::makeCapture(const WowGame& game) {
@@ -20,7 +21,7 @@ void ActivePlayerPositionObserver::makeCapture(const WowGame& game) {
 			std::stringstream ss;
 
 			ss << currentPosition[0] << ',' << currentPosition[1] << ',' << currentPosition[2];
-			mServer.sendMessage(mServer.getMessageManager().builResponseInfo("position", ss.str()));
+			mClient.sendMessage(mClient.getMessageManager().builResponseInfo("position", ss.str()));
 			mLastPosition = self->getPosition();
 		}
 	}

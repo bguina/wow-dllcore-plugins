@@ -1,9 +1,11 @@
 #include "recordwaypointswindow.h"
 #include "ui_recordwaypointswindow.h"
 
-RecordWaypointsWindow::RecordWaypointsWindow(QWidget* parent, ServerSDK* _serverSDK) : QDialog(parent), ui(new Ui::RecordWaypointsWindow)
+RecordWaypointsWindow::RecordWaypointsWindow(QWidget* parent, Client* cl) :
+	QDialog(parent),
+	ui(new Ui::RecordWaypointsWindow),
+	mClient(cl)
 {
-	serverSDK = _serverSDK;
 	ui->setupUi(this);
 	connect(ui->startRecordButton, SIGNAL(clicked()), this, SLOT(startRecord()));
 	connect(ui->stopRecordButton, SIGNAL(clicked()), this, SLOT(stopRecord()));
@@ -33,7 +35,7 @@ void RecordWaypointsWindow::startRecord()
 	std::cout << "startRecord Clicked" << std::endl;
 	std::list<std::string> toSubscribe;
 	toSubscribe.push_back("position");
-	serverSDK->sendMessage(serverSDK->getMessageManager().builRequestStartSubcribe(toSubscribe));
+	mClient->sendMessage(mClient->getMessageManager().builRequestStartSubcribe(toSubscribe));
 }
 
 void RecordWaypointsWindow::stopRecord()
@@ -41,7 +43,7 @@ void RecordWaypointsWindow::stopRecord()
 	std::cout << "stopRecord Clicked" << std::endl;
 	std::list<std::string> stopSubscribe;
 	stopSubscribe.push_back("position");
-	serverSDK->sendMessage(serverSDK->getMessageManager().builRequestStopSubcribe(stopSubscribe));
+	mClient->sendMessage(mClient->getMessageManager().builRequestStopSubcribe(stopSubscribe));
 }
 
 void RecordWaypointsWindow::saveFile() {

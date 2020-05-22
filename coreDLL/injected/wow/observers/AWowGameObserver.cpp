@@ -3,9 +3,9 @@
 #include "AWowGameObserver.h"
 #include "../WowGame.h"
 
-AWowGameObserver::AWowGameObserver(const std::string& tag, ServerSDK& server, unsigned long periodMs) : 
+AWowGameObserver::AWowGameObserver(const std::string& tag, Client& client, unsigned long periodMs) :
 	AGameObserver<WowGame>(tag, periodMs),
-	mServer(server)
+	mClient(client)
 {
 
 }
