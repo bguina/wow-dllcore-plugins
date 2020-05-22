@@ -1,6 +1,6 @@
 #include "pch.h"
-#include "SpellBookManager.h"
 
+#include "SpellBookManager.h"
 
 SpellBookManager::SpellBookManager(
 	const uint8_t* baseAddr

@@ -2,12 +2,11 @@
 
 #include <set>
 
-#include "../../debugger/FileDebugger.h"
+#include "ObjectManager.h"
 
+#include "../../../debugger/FileDebugger.h"
 #include "../dump/WowGameDescriptors.h"
 #include "../dump/WowGameOffsets.h"
-#include "ObjectManager.h"
-#include "WowObject.h"
 #include "WowContainerObject.h"
 #include "WowItemObject.h"
 #include "WowLootObject.h"

@@ -1,18 +1,15 @@
 #pragma once
 
-#include "../../framework.h"
-
-#include "IWindowController.h"
-
 #include <iostream>
 #include <map>
+
+#include "IWindowController.h"
 
 #include "WinVirtualKey.h"
 
 class PostMessageWindowController : public IWindowController
 {
 public:
-	PostMessageWindowController();
 	PostMessageWindowController(HWND window);
 	virtual ~PostMessageWindowController();
 
