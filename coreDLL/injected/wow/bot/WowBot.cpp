@@ -5,7 +5,7 @@
 #include "WowBot.h"
 
 #include "../../../pathfinder/LinearPathFinder.h"
-#include "../../debugger/FileDebugger.h"
+#include "../../../debugger/FileDebugger.h"
 #include "../WowGame.h"
 #include "../objectmanager/WowActivePlayerObject.h"
 
@@ -44,7 +44,7 @@ void WowBot::run() {
 		mDbg << FileDebugger::info << "bot started" << FileDebugger::normal << std::endl;
 	}
 
-	mDbg << FileDebugger::info <<  waypointsCount << " waypoints" << FileDebugger::normal << std::endl;
+	mDbg << FileDebugger::info << waypointsCount << " waypoints" << FileDebugger::normal << std::endl;
 
 	if (!mPaused) {
 		std::shared_ptr<WowActivePlayerObject> self = mGame.getObjectManager().getActivePlayer();
