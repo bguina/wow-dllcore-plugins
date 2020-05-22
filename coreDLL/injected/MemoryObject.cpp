@@ -6,7 +6,13 @@ MemoryObject::MemoryObject(
 	const uint8_t* baseAddr
 ) :
 	mBaseAddr(baseAddr)
-{}
+{
+
+}
+
+MemoryObject:: ~MemoryObject() {
+
+}
 
 const uint8_t* MemoryObject::getAddress() const {
 	return mBaseAddr;

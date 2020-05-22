@@ -2,7 +2,7 @@
 
 #include "ServerSDK.h"
 
-#include "AGameObserver.h"
+#include "../../observers/AGameObserver.h"
 
 class ServerSDK;
 class WowGame;

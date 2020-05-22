@@ -6,6 +6,7 @@ class MemoryObject
 {
 public:
 	MemoryObject(const uint8_t* baseAddr);
+	virtual ~MemoryObject();
 
 	const uint8_t* getAddress() const;
 

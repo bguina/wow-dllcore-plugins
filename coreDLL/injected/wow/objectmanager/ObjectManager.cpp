@@ -2,7 +2,7 @@
 
 #include <set>
 
-#include "../debugger/FileDebugger.h"
+#include "../../debugger/FileDebugger.h"
 
 #include "../dump/WowGameDescriptors.h"
 #include "../dump/WowGameOffsets.h"
@@ -130,4 +130,8 @@ const std::shared_ptr<const WowActivePlayerObject> ObjectManager::getActivePlaye
 
 std::shared_ptr<WowActivePlayerObject> ObjectManager::getActivePlayer() {
 	return anyOfType<WowActivePlayerObject>(WowObjectType::ActivePlayer);
+}
+
+size_t ObjectManager::getObjectsCount() const {
+	return mObjects.size();
 }

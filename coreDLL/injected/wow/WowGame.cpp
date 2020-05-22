@@ -1,14 +1,22 @@
 #include "pch.h"
 
 #include "WowGame.h"
-#include "d3d/d3d.h"
+#include "../../d3d/d3d.h"
+#include "../../windowcontroller/PostMessageWindowController.h"
 
 WowGame::WowGame(const uint8_t* baseAddr) :
-	AGame(baseAddr),
+	AGame("WowGame", baseAddr),
 	mDbg("WowGame"),
 	mObjMgr((const uint8_t**)(getAddress() + 0x2372D48)),
-	mSpellBookMgr((const uint8_t*)(getAddress() + 0x2595D78))
-{}
+	mSpellBookMgr((const uint8_t*)(getAddress() + 0x2595D78)),
+	mWindowController(std::make_unique<PostMessageWindowController>(FindMainWindow(mPid)))
+{
+
+}
+
+WowGame::~WowGame() {
+
+}
 
 void WowGame::update() {
 	mObjMgr.scan();
@@ -23,6 +31,14 @@ void WowGame::update() {
 	}
 
 	mDbg.flush();
+}
+
+const IWindowController* WowGame::getWindowController() const {
+	return mWindowController.get();
+}
+
+IWindowController* WowGame::getWindowController() {
+	return mWindowController.get();
 }
 
 const ObjectManager WowGame::getObjectManager() const {
@@ -61,11 +77,11 @@ int WowGame::getIsLoadingOrConnecting() const {
 	return *(int*)(getAddress() + 0x2260D50);
 }
 
-typedef char(__fastcall* Intersect) (const Vector3f*, const Vector3f*, Vector3f*, __int64, int);
+typedef char(__fastcall* Intersect) (const WowVector3f*, const WowVector3f*, WowVector3f*, __int64, int);
 
-bool WowGame::traceLine(const Vector3f& from, const Vector3f& to, uint64_t flags) const {
+bool WowGame::traceLine(const WowVector3f& from, const WowVector3f& to, uint64_t flags) const {
 	Intersect intersect = (Intersect)(getAddress() + 0x114AC10);
-	Vector3f collision = Vector3f();
+	WowVector3f collision = WowVector3f();
 
 	return intersect(&to, &from, &collision, flags, 0);
 }

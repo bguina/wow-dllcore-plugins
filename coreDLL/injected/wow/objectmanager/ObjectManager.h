@@ -10,8 +10,8 @@
 
 #include <iterator>     // std::back_inserter
 
-#include "../debugger/FileDebugger.h"
-#include "../MemoryObject.h"
+#include "../../debugger/FileDebugger.h"
+#include "../../injected/MemoryObject.h"
 #include "WowObject.h"
 #include "WowActivePlayerObject.h"
 
@@ -83,9 +83,7 @@ public:
 
 	std::shared_ptr<WowActivePlayerObject> getActivePlayer();
 
-	long getObjectsCount() const {
-		return mObjects.size();
-	}
+	size_t getObjectsCount() const;
 
 private:
 	const uint8_t** mPointerAddr;

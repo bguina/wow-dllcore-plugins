@@ -2,18 +2,16 @@
 
 #include <vector>
 
-#include "debugger/FileDebugger.h"
-#include "WowGame.h"
-#include "WindowController.h"
-#include "objectmanager/WowActivePlayerObject.h"
-#include "pathfinder/LinearPathFinder.h"
+#include "../../debugger/FileDebugger.h"
+#include "../WowGame.h"
+#include "../objectmanager/WowActivePlayerObject.h"
+#include "../../pathfinder/LinearPathFinder.h"
 
 #include "WowBot.h"
 
 WowBot::WowBot(WowGame& game) :
-	mGame(game),
-	mDbg("WowBot"),
-	mBotStarted(false),
+	AGameBot(game),
+	mPaused(true),
 	mPathFinder(nullptr),
 	mCurrentUnitTarget(nullptr)
 {
@@ -21,18 +19,25 @@ WowBot::WowBot(WowGame& game) :
 
 WowBot::~WowBot()
 {
-	mGame.getWindowController().releaseAllKeys();
+}
+
+void WowBot::pause(bool paused) {
+	mPaused = paused;
+}
+
+bool WowBot::isPaused() const {
+	return mPaused;
 }
 
 //#include <algorithm>
 void WowBot::run() {
-	auto waypointsCount = 0;
+	size_t waypointsCount = 0;
 	auto linearWaypoints = dynamic_cast<LinearPathFinder*>(mPathFinder.get());
 	if (nullptr != linearWaypoints) {
 		waypointsCount = dynamic_cast<LinearPathFinder*>(mPathFinder.get())->getWaypointsCount();
 	}
 
-	if (!mBotStarted) {
+	if (mPaused) {
 		mDbg << FileDebugger::info << "bot not started" << FileDebugger::normal << std::endl;
 	}
 	else {
@@ -41,7 +46,7 @@ void WowBot::run() {
 
 	mDbg << FileDebugger::info <<  waypointsCount << " waypoints" << FileDebugger::normal << std::endl;
 
-	if (mBotStarted) {
+	if (!mPaused) {
 		std::shared_ptr<WowActivePlayerObject> self = mGame.getObjectManager().getActivePlayer();
 
 		if (self != nullptr) {
@@ -87,7 +92,7 @@ void WowBot::run() {
 				if (self->getPosition().getDistanceTo(mCurrentUnitTarget->getPosition()) > 5)
 				{
 					mDbg.i("target unit still out of reach");
-					self->moveTo(mGame, mCurrentUnitTarget->getPosition());
+					//self->moveTo(mGame, mCurrentUnitTarget->getPosition());
 				}
 				else {
 					mDbg.i("Killed target! yay!");
@@ -105,7 +110,7 @@ void WowBot::run() {
 
 				if (mPathFinder->moveAlong(selfPosition, nextPosition)) {
 					mDbg.i("moving along the path");
-					self->moveTo(mGame, nextPosition);
+					//self->moveTo(mGame, nextPosition);
 				}
 				else {
 					mDbg.i("could not move along :(");
@@ -123,16 +128,6 @@ void WowBot::run() {
 	}
 
 	mDbg.flush();
-}
-
-const WowGame& WowBot::getGame() const {
-	return mGame;
-}
-
-void WowBot::setBotStarted(bool started) {
-	if (mBotStarted && !started) mGame.getWindowController().releaseAllKeys();
-
-	mBotStarted = started;
 }
 
 void WowBot::loadLinearWaypoints(const std::vector<Vector3f>& waypoints) {

@@ -1,6 +1,6 @@
 #pragma once
 
-struct Vector3f;
+#include "Vector3f.h"
 
 class IPathFinder
 {
@@ -9,7 +9,7 @@ public:
 
 	// Get the previously set desired destination given to the pathfinder
 	// return false if no destination is currently set
-	virtual bool getDestination(Vector3f destination) const = 0;
+	virtual bool getDestination(Vector3f& result) const = 0;
 
 	// Tell the pathfinder our desired final position
 	// return false if no path could be found (unreachable position or invalid path)

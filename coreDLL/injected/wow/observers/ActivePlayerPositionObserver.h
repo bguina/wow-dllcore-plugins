@@ -1,15 +1,15 @@
 #pragma once
 
 #include "AWowGameObserver.h"
-#include "../Vector3f.h"
+#include "../WowVector3f.h"
 
 class ActivePlayerPositionObserver final : public AWowGameObserver {
 public:
 	ActivePlayerPositionObserver(ServerSDK& server, float maxDelta);
 
 	virtual void makeCapture(const WowGame& game);
-
+	
 private:
 	float mMaxDistanceDelta;
-	Vector3f mLastPosition;
+	WowVector3f mLastPosition;
 };

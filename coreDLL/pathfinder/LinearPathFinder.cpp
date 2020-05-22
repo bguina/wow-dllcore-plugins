@@ -7,7 +7,7 @@
 #include <sstream>
 
 #include "LinearPathFinder.h"
-#include "../Vector3f.h"
+#include "Vector3f.h"
 
 std::list<Vector3f>::const_iterator helperGetNearestWaypoint(const std::list<Vector3f> mPath, const Vector3f& currentPosition);
 

@@ -4,16 +4,20 @@
 #include <sstream>
 
 #include "Sandbox.h"
-#include "observers/ActivePlayerPositionObserver.h"
+#include "pathfinder/Vector3f.h"
+#include "injected/wow/observers/ActivePlayerPositionObserver.h"
 
+#include "pathfinder/Vector3f.h"
 #include "NetworkParsing.h"
 
-bool readMessageAvailable(ServerSDK& server, WowGame& game, WowBot& bot) {
+bool Sandbox::stackServerMessages(ServerSDK& server) {
 	std::list<std::string> messages = server.getMessageAvailable();
 
 	for (std::list<std::string>::iterator it = messages.begin(); it != messages.end(); it++)
 	{
-		switch (server.getMessageManager().getMessageType((*it)))
+		auto messageType = server.getMessageManager().getMessageType((*it));
+
+		switch (messageType)
 		{
 		case MessageType::START_SUBSCRIBE: {
 			std::list<std::string> toSubscribe = server.getMessageManager().getSubcribeObject(*it);
@@ -21,7 +25,7 @@ bool readMessageAvailable(ServerSDK& server, WowGame& game, WowBot& bot) {
 			bool found = (std::find(toSubscribe.begin(), toSubscribe.end(), "position") != toSubscribe.end());
 
 			if (found) {
-				game.addObserver("position", std::make_shared<ActivePlayerPositionObserver>(server, 10.0f));
+				mGame.addObserver("position", std::make_shared<ActivePlayerPositionObserver>(server, 10.0f));
 			}
 
 			break;
@@ -30,7 +34,7 @@ bool readMessageAvailable(ServerSDK& server, WowGame& game, WowBot& bot) {
 			std::list<std::string> toSubscribe = server.getMessageManager().getSubcribeObject(*it);
 			bool found = (std::find(toSubscribe.begin(), toSubscribe.end(), "position") != toSubscribe.end());
 			if (found) {
-				game.removeObserver("position");
+				mGame.removeObserver("position");
 			}
 
 			break;
@@ -48,16 +52,16 @@ bool readMessageAvailable(ServerSDK& server, WowGame& game, WowBot& bot) {
 				else throw "Bad split!";
 			}
 
-			bot.loadLinearWaypoints(waypoints);
+			mBot.loadLinearWaypoints(waypoints);
 			break;
 		}
 		case MessageType::START_BOT: {
-			bot.setBotStarted(true);
+			mBot.pause(false);
 			break;
 		}
 		case MessageType::STOP_BOT: {
-			bot.setBotStarted(false);
-			break;
+			mBot.pause(true);
+			break; 
 		}
 		case MessageType::DEINJECT: {
 			return false;
@@ -99,12 +103,12 @@ bool Sandbox::run(ServerSDK& server) {
 
 	std::stringstream ss;
 
-	bool abort = !readMessageAvailable(server, mGame, mBot);
+	bool abort = !stackServerMessages(server);
 	ss << "abort? " << abort << std::endl;
 
 	mGame.update();
 	mBot.run();
-	ss << FileDebugger::info <<"bot.run" <<  std::endl;
+	ss << FileDebugger::info << "bot.run" << std::endl;
 
 	mLastPulse = GetTickCount64();
 

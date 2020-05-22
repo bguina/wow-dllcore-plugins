@@ -6,4 +6,6 @@
 AWowGameObserver::AWowGameObserver(const std::string& tag, ServerSDK& server, unsigned long periodMs) : 
 	AGameObserver<WowGame>(tag, periodMs),
 	mServer(server)
-{}
+{
+
+}

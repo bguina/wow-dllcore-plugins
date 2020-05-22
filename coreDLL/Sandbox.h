@@ -2,8 +2,8 @@
 
 #include <iostream>
 
-#include "WowGame.h"
-#include "WowBot.h"
+#include "injected/wow/WowGame.h"
+#include "injected/wow/bot/WowBot.h"
 #include "ServerSDK.h"
 #include "MessageManager.h"
 #include "debugger/FileDebugger.h"

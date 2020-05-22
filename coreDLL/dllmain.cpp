@@ -6,8 +6,8 @@
 #include "ServerSDK.h"
 #include "d3d/d3d.h"
 #include "debugger/FileDebugger.h"
-#include "WowGame.h"
-#include "WowBot.h"
+#include "injected/wow/WowGame.h"
+#include "injected/wow/bot/WowBot.h"
 #include "Sandbox.h"
 
 static boolean gShouldStop = false;

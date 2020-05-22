@@ -2,30 +2,29 @@
 
 #include <set>
 
-#include "debugger/FileDebugger.h"
+#include "../../bot/AGameBot.h"
+#include "../../debugger/FileDebugger.h"
+#include "../WowVector3f.h"
 
 class IPathFinder;
 class WowGame;
 
-class WowBot
+class WowBot : public AGameBot<WowGame>
 {
 public:
 	WowBot(WowGame& game);
 
 	~WowBot();
 
-	void run();
+	virtual void run();
 
-	const WowGame& getGame() const;
+	void pause(bool paused);
+	bool isPaused() const;
 
-	void setBotStarted(bool started);
-
-	void loadLinearWaypoints(const std::vector<Vector3f>& waypoints);
+	void loadLinearWaypoints(const std::vector<WowVector3f>& waypoints);
 
 protected:
-	WowGame& mGame;
-	FileDebugger mDbg;
-	bool mBotStarted;
+	bool mPaused;
 	std::unique_ptr<IPathFinder> mPathFinder;
 	std::shared_ptr<const WowUnitObject> mCurrentUnitTarget;
 	std::set<WowGuid64> mBlacklistedGuids;
@@ -36,7 +35,6 @@ inline std::ostream& operator<<(
 	const class WowBot& obj
 	)
 {
-	out << "[WowBot]";
-	// TODO print navigator state
+	out << "[WowBot:" << (obj.isPaused() ? "paused" : "running") << "]";
 	return out;
 }

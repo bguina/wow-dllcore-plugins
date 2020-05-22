@@ -1,15 +1,15 @@
 #include "pch.h"
 
 #include "APathFinder.h"
-#include "../Vector3f.h"
+#include "Vector3f.h"
 
 APathFinder::APathFinder() 
 	: mDestination(nullptr)
 {}
 
-bool APathFinder::getDestination(Vector3f destination) const {
+bool APathFinder::getDestination(Vector3f& result) const {
 	if (mDestination != nullptr) {
-		destination = *mDestination;
+		result = *mDestination;
 		return true;
 	}
 	return false;

@@ -56,8 +56,8 @@ std::string WowObject::getTypeLabel() const {
 	}
 }
 
-const Vector3f& WowObject::getPosition() const {
-	return *((Vector3f*)(getAddress() + WowGameOffsets::WowObject::OffsetPosition));
+const WowVector3f& WowObject::getPosition() const {
+	return *((WowVector3f*)(getAddress() + WowGameOffsets::WowObject::OffsetPosition));
 }
 
 float WowObject::getX() const {

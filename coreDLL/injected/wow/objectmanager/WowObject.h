@@ -2,9 +2,10 @@
 
 #include <sstream>
 
+#include "../../MemoryObject.h"
+
 #include "../dump/WowGameDescriptors.h"
-#include "../MemoryObject.h"
-#include "../Vector3f.h"
+#include "../WowVector3f.h"
 
 typedef uint64_t WowGuid64;
 
@@ -39,7 +40,7 @@ public:
 
 	std::string getTypeLabel() const;
 
-	const Vector3f& getPosition() const;
+	const WowVector3f& getPosition() const;
 
 
 	float getX() const;

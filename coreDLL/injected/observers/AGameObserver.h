@@ -2,7 +2,7 @@
 
 #include "ServerSDK.h"
 
-#include "../debugger/FileDebugger.h"
+#include "../../debugger/FileDebugger.h"
 #include "IGameObserver.h"
 
 template<class T>

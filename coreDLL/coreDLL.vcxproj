@@ -155,77 +155,81 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="AGame.h" />
+    <ClInclude Include="injected\AGame.h" />
+    <ClInclude Include="injected\bot\IBot.h" />
+    <ClInclude Include="injected\bot\AGameBot.h" />
     <ClInclude Include="d3d\d3d.h" />
     <ClInclude Include="d3d\D3D_VMT_Indices.h" />
     <ClInclude Include="d3d\shadez.h" />
     <ClInclude Include="debugger\IDebugger.h" />
-    <ClInclude Include="dump\WowGameDescriptors.h" />
-    <ClInclude Include="dump\WowGameOffsets.h" />
+    <ClInclude Include="injected\wow\dump\WowGameDescriptors.h" />
+    <ClInclude Include="injected\wow\dump\WowGameOffsets.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="debugger\FileDebugger.h" />
-    <ClInclude Include="MemoryObject.h" />
+    <ClInclude Include="injected\MemoryObject.h" />
+    <ClInclude Include="windowcontroller\IWindowController.h" />
+    <ClInclude Include="windowcontroller\PostMessageWindowController.h" />
+    <ClInclude Include="injected\wow\WowVector3f.h" />
     <ClInclude Include="memutils\Hexdump.h" />
     <ClInclude Include="memutils\Hexsearch.h" />
     <ClInclude Include="pathfinder\APathFinder.h" />
     <ClInclude Include="pathfinder\IPathFinder.h" />
     <ClInclude Include="pathfinder\LinearPathFinder.h" />
-    <ClInclude Include="objectmanager\ObjectManager.h" />
-    <ClInclude Include="objectmanager\WowActivePlayerObject.h" />
-    <ClInclude Include="objectmanager\WowContainerObject.h" />
-    <ClInclude Include="objectmanager\WowCorpseObject.h" />
-    <ClInclude Include="objectmanager\WowItemObject.h" />
-    <ClInclude Include="objectmanager\WowLootObject.h" />
-    <ClInclude Include="objectmanager\WowObject.h" />
-    <ClInclude Include="objectmanager\WowPlayerObject.h" />
-    <ClInclude Include="objectmanager\WowUnimplementedObject.h" />
-    <ClInclude Include="objectmanager\WowUnitObject.h" />
-    <ClInclude Include="observers\ActivePlayerPositionObserver.h" />
-    <ClInclude Include="observers\AGameObserver.h" />
-    <ClInclude Include="observers\AWowGameObserver.h" />
-    <ClInclude Include="observers\IGameObserver.h" />
+    <ClInclude Include="injected\wow\objectmanager\ObjectManager.h" />
+    <ClInclude Include="injected\wow\objectmanager\WowActivePlayerObject.h" />
+    <ClInclude Include="injected\wow\objectmanager\WowContainerObject.h" />
+    <ClInclude Include="injected\wow\objectmanager\WowCorpseObject.h" />
+    <ClInclude Include="injected\wow\objectmanager\WowItemObject.h" />
+    <ClInclude Include="injected\wow\objectmanager\WowLootObject.h" />
+    <ClInclude Include="injected\wow\objectmanager\WowObject.h" />
+    <ClInclude Include="injected\wow\objectmanager\WowPlayerObject.h" />
+    <ClInclude Include="injected\wow\objectmanager\WowUnimplementedObject.h" />
+    <ClInclude Include="injected\wow\objectmanager\WowUnitObject.h" />
+    <ClInclude Include="injected\wow\observers\ActivePlayerPositionObserver.h" />
+    <ClInclude Include="injected\observers\AGameObserver.h" />
+    <ClInclude Include="injected\wow\observers\AWowGameObserver.h" />
+    <ClInclude Include="injected\observers\IGameObserver.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Sandbox.h" />
     <ClInclude Include="NetworkParsing.h" />
-    <ClInclude Include="spellbook\SpellBookManager.h" />
-    <ClInclude Include="Vector3f.h" />
-    <ClInclude Include="WindowController.h" />
-    <ClInclude Include="WinVirtualKey.h" />
-    <ClInclude Include="WowGame.h" />
-    <ClInclude Include="WowBot.h" />
+    <ClInclude Include="injected\wow\spellbook\SpellBookManager.h" />
+    <ClInclude Include="pathfinder\Vector3f.h" />
+    <ClInclude Include="windowcontroller\WinVirtualKey.h" />
+    <ClInclude Include="injected\wow\WowGame.h" />
+    <ClInclude Include="injected\wow\bot\WowBot.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AGame.cpp" />
+    <ClCompile Include="injected\AGame.cpp" />
     <ClCompile Include="d3d\d3d.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="debugger\FileDebugger.cpp" />
-    <ClCompile Include="MemoryObject.cpp" />
-    <ClCompile Include="objectmanager\ObjectManager.cpp">
+    <ClCompile Include="injected\MemoryObject.cpp" />
+    <ClCompile Include="windowcontroller\PostMessageWindowController.cpp" />
+    <ClCompile Include="injected\wow\objectmanager\ObjectManager.cpp">
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
     </ClCompile>
-    <ClCompile Include="objectmanager\WowActivePlayerObject.cpp" />
-    <ClCompile Include="objectmanager\WowContainerObject.cpp" />
-    <ClCompile Include="objectmanager\WowCorpseObject.cpp" />
-    <ClCompile Include="objectmanager\WowItemObject.cpp" />
-    <ClCompile Include="objectmanager\WowLootObject.cpp" />
-    <ClCompile Include="objectmanager\WowObject.cpp" />
-    <ClCompile Include="objectmanager\WowPlayerObject.cpp" />
-    <ClCompile Include="objectmanager\WowUnimplementedObject.cpp" />
-    <ClCompile Include="objectmanager\WowUnitObject.cpp" />
-    <ClCompile Include="observers\ActivePlayerPositionObserver.cpp" />
-    <ClCompile Include="observers\AWowGameObserver.cpp" />
+    <ClCompile Include="injected\wow\objectmanager\WowActivePlayerObject.cpp" />
+    <ClCompile Include="injected\wow\objectmanager\WowContainerObject.cpp" />
+    <ClCompile Include="injected\wow\objectmanager\WowCorpseObject.cpp" />
+    <ClCompile Include="injected\wow\objectmanager\WowItemObject.cpp" />
+    <ClCompile Include="injected\wow\objectmanager\WowLootObject.cpp" />
+    <ClCompile Include="injected\wow\objectmanager\WowObject.cpp" />
+    <ClCompile Include="injected\wow\objectmanager\WowPlayerObject.cpp" />
+    <ClCompile Include="injected\wow\objectmanager\WowUnimplementedObject.cpp" />
+    <ClCompile Include="injected\wow\objectmanager\WowUnitObject.cpp" />
+    <ClCompile Include="injected\wow\observers\ActivePlayerPositionObserver.cpp" />
+    <ClCompile Include="injected\wow\observers\AWowGameObserver.cpp" />
     <ClCompile Include="pathfinder\APathFinder.cpp" />
     <ClCompile Include="pathfinder\LinearPathFinder.cpp" />
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="Sandbox.cpp" />
     <ClCompile Include="NetworkParsing.cpp" />
-    <ClCompile Include="spellbook\SpellBookManager.cpp" />
-    <ClCompile Include="Vector3f.cpp" />
-    <ClCompile Include="WindowController.cpp" />
-    <ClCompile Include="WowBot.cpp" />
-    <ClCompile Include="WowGame.cpp" />
+    <ClCompile Include="injected\wow\spellbook\SpellBookManager.cpp" />
+    <ClCompile Include="injected\wow\WowVector3f.cpp" />
+    <ClCompile Include="injected\wow\bot\WowBot.cpp" />
+    <ClCompile Include="injected\wow\WowGame.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MessageManager\MessageManager.vcxproj">
