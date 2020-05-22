@@ -3,8 +3,6 @@
 #include <cstdint>
 #include <iostream>
 
-#include "../Debugger.h"
-
 class SpellBookManager
 {
 public:
@@ -28,20 +26,17 @@ private:
 	};
 };
 
-inline Debugger& operator<<(
-	Debugger& dbg,
+inline std::ostream& operator<<(
+	std::ostream& out,
 	const SpellBookManager& spellBookMgr
 	)
 {
-	std::stringstream out;
 	out << "[SpellBookManager@" << (void*)spellBookMgr.getBaseAddress() << ": Count = " << spellBookMgr.getSpellBookCount() << "]" << std::endl;
-
-	dbg.i(out);
 
 	if (NULL != spellBookMgr.getBaseAddress()) {
 		//Add more print here for spell count // spell list ID
 	}
 	
-	return dbg;
+	return out;
 }
 

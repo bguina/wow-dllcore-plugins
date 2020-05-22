@@ -159,8 +159,11 @@
     <ClInclude Include="d3d\d3d.h" />
     <ClInclude Include="d3d\D3D_VMT_Indices.h" />
     <ClInclude Include="d3d\shadez.h" />
+    <ClInclude Include="debugger\IDebugger.h" />
+    <ClInclude Include="dump\WowGameDescriptors.h" />
+    <ClInclude Include="dump\WowGameOffsets.h" />
     <ClInclude Include="framework.h" />
-    <ClInclude Include="Debugger.h" />
+    <ClInclude Include="debugger\FileDebugger.h" />
     <ClInclude Include="MemoryObject.h" />
     <ClInclude Include="memutils\Hexdump.h" />
     <ClInclude Include="memutils\Hexsearch.h" />
@@ -197,7 +200,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="dllmain.cpp" />
-    <ClCompile Include="Debugger.cpp" />
+    <ClCompile Include="debugger\FileDebugger.cpp" />
     <ClCompile Include="MemoryObject.cpp" />
     <ClCompile Include="objectmanager\ObjectManager.cpp">
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
@@ -220,6 +223,7 @@
     <ClCompile Include="NetworkParsing.cpp" />
     <ClCompile Include="spellbook\SpellBookManager.cpp" />
     <ClCompile Include="Vector3f.cpp" />
+    <ClCompile Include="WindowController.cpp" />
     <ClCompile Include="WowBot.cpp" />
     <ClCompile Include="WowGame.cpp" />
   </ItemGroup>

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../dump/WowGameDescriptors.h"
 #include "WowObject.h"
 
 class WowGame;
@@ -7,76 +8,25 @@ class WowGame;
 class WowUnitObject : public WowObject
 {
 public:
-	WowUnitObject(
-		const uint8_t* baseAddr
-	) : WowObject(baseAddr)
-	{}
+	WowUnitObject(const uint8_t* baseAddr);
 
-	enum WoWUnitClass {
-		None = 0,
-		Warrior = 1,
-		Paladin = 2,
-		Hunter = 3,
-		Rogue = 4,
-		Priest = 5,
-		DeathKnight = 6,
-		Shaman = 7,
-		Mage = 8,
-		Warlock = 9,
-		Druid = 11
-	};
+	WoWUnitClass getUnitClass() const;
 
-	WoWUnitClass getUnitClass() const {
-		return static_cast<WoWUnitClass>(*(getDescriptor() + 0xD1));
-	}
+	std::string getUnitClassLabel() const;
 
-	std::string getUnitClassLabel() const {
-		switch (getUnitClass()) {
-		case Warrior: return "Warrior";
-		case Paladin: return "Paladin";
-		case Hunter: return "Hunter";
-		case Rogue: return "Rogue";
-		case Priest: return "Priest";
-		case DeathKnight: return "DeathKnight";
-		case Shaman: return "Shaman";
-		case Mage: return "Mage";
-		case Warlock: return "Warlock";
-		case Druid: return "Druid";
-		default: return "Unit";
-		}
-	}
+	int getUnitRace() const;
 
-	int getUnitRace() const {
-		return *(getDescriptor() + 0x158);
-	}
+	int getUnitLevel() const;
 
-	int getUnitLevel() const {
-		return *(getDescriptor() + 0x134);
-	}
+	int getUnitHealth() const;
 
-	int getUnitHealth() const {
-		return *reinterpret_cast<const uint32_t*>(getDescriptor() + 0xDC);
-	}
+	int getUnitMaxHealth() const;
 
-	int getUnitMaxHealth() const {
-		return *reinterpret_cast<const uint32_t*>(getDescriptor() + 0xFC);
-	}
+	int getUnitEnergy() const;
 
-	int getUnitEnergy() const {
-		return *reinterpret_cast<const uint32_t*>(getDescriptor() + 0xE4);
-	}
+	int getUnitMaxEnergy() const;
 
-	int getUnitMaxEnergy() const {
-		return *reinterpret_cast<const uint32_t*>((getDescriptor() + 0x104));
-	}
-
-	uint64_t getTargetGuid() const {
-		return *reinterpret_cast<const uint32_t*>(getDescriptor() + 0x00);
-	}
-
-	//bool canSee(const WowGame& game, const Vector3f& position) {
-	//	return game.traceLine(position, getPosition(), 0x100151);
-//	}
+	uint64_t getTargetGuid() const;
 
 	void moveTo(WowGame& game, Vector3f destination);
 };

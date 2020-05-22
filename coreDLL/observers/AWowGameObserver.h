@@ -9,7 +9,7 @@ class WowGame;
 
 class AWowGameObserver : public AGameObserver<WowGame> {
 protected:
-	AWowGameObserver(ServerSDK& server, unsigned long periodMs);
+	AWowGameObserver(const std::string& tag, ServerSDK& server, unsigned long periodMs);
 
 protected:
 	ServerSDK& mServer;

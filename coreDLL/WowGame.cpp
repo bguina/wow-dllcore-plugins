@@ -11,17 +11,15 @@ WowGame::WowGame(const uint8_t* baseAddr) :
 {}
 
 void WowGame::update() {
-	std::stringstream ss;
-
 	mObjMgr.scan();
-	mDbg << mObjMgr << "\n\n";
+	mDbg << mObjMgr << "\n";
 
 	mSpellBookMgr.scan();
-	mDbg << mSpellBookMgr << "\n\n";
+	mDbg << mSpellBookMgr << "\n";
 
 	for (auto it = mObservers.begin(); it != mObservers.end(); ++it) {
 		it->second->capture(*this);
-		mDbg.i("[i] GameObserver: capture of " + it->first);
+		mDbg.i("GameObserver: capture of " + it->first);
 	}
 
 	mDbg.flush();
@@ -76,11 +74,11 @@ bool WowGame::addObserver(const std::string& name, const std::shared_ptr<IGameOb
 	auto result = mObservers.find(name);
 
 	if (result == mObservers.end()) {
-		mDbg << "[i] added observer " << name;
+		mDbg.i("added observer " + name);
 		mObservers.insert(std::pair<std::string, std::shared_ptr<IGameObserver<WowGame>>>(name, observer));
 		return true;
 	}
-	mDbg << "[w] could not add observer " << name;
+	mDbg.w("could not add observer " + name);
 	return false;
 }
 
@@ -89,11 +87,11 @@ bool WowGame::removeObserver(const std::string& name) {
 
 	if (result != mObservers.end()) {
 		mObservers.erase(result);
-		mDbg << "[i] removed observer " << name;
+		mDbg.i("removed observer " + name);
 		return true;
 	}
 	else {
-		mDbg << "[w] could not find observer " << name << " for removal";
+		mDbg.w("could not find observer " + name + " for removal");
 		return false;
 	}
 }

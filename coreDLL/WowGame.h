@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Debugger.h"
+#include "debugger/FileDebugger.h"
 #include "AGame.h"
 #include "observers/IGameObserver.h"
 #include "objectmanager/ObjectManager.h"
@@ -41,28 +41,24 @@ public:
 	bool removeObserver(const std::string& name);
 
 private:
-	Debugger mDbg;
+	FileDebugger mDbg;
 	std::map<std::string, std::shared_ptr<IGameObserver<WowGame>>> mObservers;
 	ObjectManager mObjMgr;
 	SpellBookManager mSpellBookMgr;
 };
 
-inline Debugger& operator<<(
-	Debugger& dbg,
+inline std::ostream& operator<<(
+	std::ostream& out,
 	const class WowGame& obj
 	)
 {
-	std::stringstream out;
-
 	out << "[WowGame@" << (void*)obj.getAddress() << "]" << std::endl;
-
-	dbg.i(out.str());
 	ObjectManager objMgr = obj.getObjectManager();
-	dbg << objMgr;
+	out << objMgr;
 
 	if (obj.isObjectManagerActive()) {
 		SpellBookManager spellBookMgr = obj.getSpellBookManager();
-		dbg << spellBookMgr;
+		out << spellBookMgr;
 	}
-	return dbg;
+	return out;
 }

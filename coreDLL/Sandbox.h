@@ -6,7 +6,7 @@
 #include "WowBot.h"
 #include "ServerSDK.h"
 #include "MessageManager.h"
-#include "Debugger.h"
+#include "debugger/FileDebugger.h"
 
 class Sandbox
 {
@@ -27,9 +27,11 @@ public:
 	bool run(ServerSDK& server);
 
 private:
+	bool stackServerMessages(ServerSDK& server);
+
 	ULONG64 mBootTime;
 	ULONG64 mLastPulse;
-	Debugger mDebugger;
+	FileDebugger mDebugger;
 	WowGame mGame;
 	WowBot mBot;
 

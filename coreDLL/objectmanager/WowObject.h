@@ -1,8 +1,8 @@
 #pragma once
 
-#include <cstdint>
-#include <string>
-#include <iostream>
+#include <sstream>
+
+#include "../dump/WowGameDescriptors.h"
 #include "../MemoryObject.h"
 #include "../Vector3f.h"
 
@@ -11,32 +11,7 @@ typedef uint64_t WowGuid64;
 class WowObject : public MemoryObject
 {
 public:
-	WowObject(
-		const uint8_t* baseAddr
-	) : MemoryObject(baseAddr)
-	{}
-
-	enum Type : int32_t {
-		Object = 0,
-		Item = 1,
-		Container = 2,
-		AzeriteEmpoweredItem = 3,
-		AzeriteItem = 4,
-		Unit = 5,
-		Player = 6,
-		ActivePlayer = 7,
-		GameObject = 8,
-		DynamicObject = 9,
-		Corpse = 10,
-		AreaTrigger = 11,
-		Scene = 12,
-		Conversation = 13,
-		AiGroup = 14,
-		Scenario = 15,
-		Loot = 16,
-		Invalid = 17
-	};
-
+	WowObject(const uint8_t* baseAddr);
 
 	template<class T>
 	const T& downcast() const {
@@ -48,21 +23,11 @@ public:
 		return static_cast<T&>(*this);
 	}
 
-	const uint8_t* getDescriptor() const {
-		return *(uint8_t**)(getAddress() + 0x10);
-	}
+	const uint8_t* getDescriptor() const;
 
-	WowGuid64 getGuid() const {
-		return ((WowGuid64*)(getAddress() + 0x58))[0];
-	}
+	WowGuid64 getGuid() const;
 
-	WowGuid64 getGuid2() const {
-		return ((WowGuid64*)(getAddress() + 0x58))[1];
-	}
-
-	const uint32_t* getGuidPointer() const {
-		return (uint32_t*)(getAddress() + 0x58);
-	}
+	WowGuid64 getGuid2() const;
 
 	//		StorageField = 0x10,//good-33526
 	//		ObjectType = 0x20,//good-33526
@@ -70,63 +35,30 @@ public:
 	//		FirstObject = 0x18,//good-33526
 	//		LocalGUID = 0x58, //good-33526
 
-	Type getType() const {
-		return (WowObject::Type)(*(getAddress() + 0x20));
-	}
+	WowObjectType getType() const;
 
-	std::string getTypeLabel() const {
-		switch (getType()) {
-		case Object:return  "Object";
-		case Item:return "Item";
-		case Container:return  "Container";
-		case AzeriteEmpoweredItem: "AzeriteEmpoweredItem";
-		case AzeriteItem: "AzeriteItem";
-		case Unit:return  "Unit";
-		case Player:return  "Player";
-		case ActivePlayer:return  "ActivePlayer";
-		case GameObject:return  "GameObject";
-		case DynamicObject: return "DynamicObject";
-		case Corpse:return  "Corpse";
-		case AreaTrigger: return "AreaTrigger";
-		case Scene:return  "Scene";
-		case Conversation: return  "Conversation";
-		case AiGroup: return  "AiGroup";
-		case Scenario: return  "Scenario";
-		case Loot: return  "Loot";
-		case Invalid: return  "Invalid";
-		default: return "Unknown";
-		}
-	}
+	std::string getTypeLabel() const;
 
-	const Vector3f& getPosition() const {
-		return *((Vector3f*)(getAddress() + 0x1600));
-	}
+	const Vector3f& getPosition() const;
 
-	float getX() const {
-		return ((Vector3f*)(getAddress() + 0x1600))->x;
-	}
 
-	float getY() const {
-		return ((Vector3f*)(getAddress() + 0x1600))->y;
-	}
+	float getX() const;
+	float getY() const;
+	float getZ() const;
 
-	float getZ() const {
-		return ((Vector3f*)(getAddress() + 0x1600))->z;
-	}
+	float getFacingRadians() const;
 
-	float getFacingRadians() const {
-		return *(float*)(getAddress() + 0x1610);
-	}
+	int getFacingDegrees() const;
 
-	int getFacingDegrees() const {
-		const double PI = 3.141592653589793;
-		return (int)(getFacingRadians() * 180 / PI);
-	}
+	// Position helpers
+	float getDistanceTo(const WowObject& object) const;
+	float getFlightDistanceTo(const WowObject& object) const;
 
-private:
-	void* vtableAt(unsigned index) {
-		return ((void**)getAddress())[index];
-	}
+	float getFacingDegreesTo(const WowObject& object) const;
+	float getFacingDeltaDegrees(const WowObject& object) const;
+
+protected:
+	void* vtableAt(unsigned index);
 };
 
 //typedef bool __thiscall (*CGPlayer_C__ClickToMove)(int *, int, int *, int *, float);

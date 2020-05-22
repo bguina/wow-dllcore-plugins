@@ -2,15 +2,17 @@
 
 #include "ServerSDK.h"
 
+#include "../debugger/FileDebugger.h"
 #include "IGameObserver.h"
 
 template<class T>
 class AGameObserver : public IGameObserver<T> {
 protected:
-	AGameObserver(unsigned long periodMs)
+	AGameObserver(const std::string& tag, unsigned long periodMs)
 		:
 		mLastCapture(0),
-		mPeriodMs(periodMs)
+		mPeriodMs(periodMs),
+		mDbg(tag)
 	{}
 
 	virtual void capture(const T& game) final {
@@ -20,6 +22,11 @@ protected:
 			makeCapture(game);
 			mLastCapture = now;
 		}
+		else {
+			mDbg.i("not capturing");
+		}
+
+		mDbg.flush();
 	}
 
 	virtual void makeCapture(const T& game) = 0;
@@ -27,4 +34,5 @@ protected:
 protected:
 	unsigned long long mLastCapture;
 	unsigned long mPeriodMs;
+	FileDebugger mDbg;
 };

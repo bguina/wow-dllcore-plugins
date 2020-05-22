@@ -1,6 +1,6 @@
 #pragma once
 
-enum WinVirtualKey {
+enum class WinVirtualKey : uint32_t {
 	// Those seem to be defined in "winuser.h" but could not use them for some reason...
 	// https://docs.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes
 

@@ -1,6 +1,11 @@
 #include "pch.h"
 
 #include <set>
+
+#include "../debugger/FileDebugger.h"
+
+#include "../dump/WowGameDescriptors.h"
+#include "../dump/WowGameOffsets.h"
 #include "ObjectManager.h"
 #include "WowObject.h"
 #include "WowContainerObject.h"
@@ -22,8 +27,6 @@ bool ObjectManager::isEnabled() const {
 	return NULL != getBaseAddress();
 }
 
-#include "../Debugger.h"
-
 void ObjectManager::scan() {
 	if (isEnabled()) {
 		std::set<WowGuid64> oldGuids;
@@ -33,13 +36,10 @@ void ObjectManager::scan() {
 			oldGuids.insert(it->first);
 		}
 
-		std::stringstream ss;
-		Debugger dbg("D:\\mtlog.txt");
-
 		// Manually walk through the native ObjectManager linked list
 		for (auto pObj = *(uint8_t**)(getBaseAddress() + 0x18);
 			NULL != pObj && !((uint64_t)pObj & 1);
-			pObj = *(uint8_t**)(pObj + 0x70))
+			pObj = *(uint8_t**)(pObj + WowGameOffsets::WowObjectManager::OffsetNextObject))
 		{
 			WowObject thisObj = WowObject(pObj);
 			std::map<WowGuid64, std::shared_ptr<WowObject>>::const_iterator oldObjInstance = mObjects.find(thisObj.getGuid());
@@ -48,32 +48,32 @@ void ObjectManager::scan() {
 				std::shared_ptr<WowObject> finalObj = nullptr;
 
 				switch (thisObj.getType()) {
-				case WowObject::Object:
+				case WowObjectType::Object:
 					finalObj = std::make_shared<WowObject>(pObj);
 					break;
-				case WowObject::Item:
+				case WowObjectType::Item:
 					finalObj = std::make_shared<WowItemObject>(pObj);
 					break;
-				case WowObject::Container:
+				case WowObjectType::Container:
 					finalObj = std::make_shared<WowContainerObject>(pObj);
 					break;
-				case WowObject::Unit:
+				case WowObjectType::Unit:
 					finalObj = std::make_shared<WowUnitObject>(pObj);
 					break;
-				case WowObject::Player:
+				case WowObjectType::Player:
 					finalObj = std::make_shared<WowPlayerObject>(pObj);
 					break;
-				case WowObject::ActivePlayer:
+				case WowObjectType::ActivePlayer:
 					finalObj = std::make_shared<WowActivePlayerObject>(pObj);
 					break;
-				case WowObject::Corpse:
+				case WowObjectType::Corpse:
 					finalObj = std::make_shared<WowCorpseObject>(pObj);
 					break;
-				case WowObject::Loot:
-				case WowObject::GameObject:
-				case WowObject::DynamicObject:
-				case WowObject::Conversation:
-				case WowObject::Invalid: // Type "Invalid"? based on which wtf Blizzard
+				case WowObjectType::Loot:
+				case WowObjectType::GameObject:
+				case WowObjectType::DynamicObject:
+				case WowObjectType::Conversation:
+				case WowObjectType::Invalid: // Type "Invalid"? based on which wtf Blizzard
 					finalObj = std::make_shared<WowUnimplementedObject>(pObj);
 					break;
 				default:
@@ -98,8 +98,6 @@ void ObjectManager::scan() {
 			mObjects.find(*it)->second->rebase(0);
 			mObjects.erase(*it);
 		}
-
-		dbg.log(ss.str());
 	}
 	else {
 		mObjects.clear();
@@ -110,26 +108,26 @@ const uint8_t* ObjectManager::getBaseAddress() const {
 	return *mPointerAddr;
 }
 
-std::map<uint64_t, std::shared_ptr<WowObject>>::const_iterator ObjectManager::begin() const {
+std::map<WowGuid64, std::shared_ptr<WowObject>>::const_iterator ObjectManager::begin() const {
 	return mObjects.begin();
 }
 
-std::map<uint64_t, std::shared_ptr<WowObject>>::iterator ObjectManager::begin() {
+std::map<WowGuid64, std::shared_ptr<WowObject>>::iterator ObjectManager::begin() {
 	return mObjects.begin();
 }
 
-std::map<uint64_t, std::shared_ptr<WowObject>>::const_iterator ObjectManager::end() const {
+std::map<WowGuid64, std::shared_ptr<WowObject>>::const_iterator ObjectManager::end() const {
 	return mObjects.end();
 }
 
-std::map<uint64_t, std::shared_ptr<WowObject>>::iterator ObjectManager::end() {
+std::map<WowGuid64, std::shared_ptr<WowObject>>::iterator ObjectManager::end() {
 	return mObjects.end();
 }
 
 const std::shared_ptr<const WowActivePlayerObject> ObjectManager::getActivePlayer() const {
-	return anyOfType<const WowActivePlayerObject>(WowObject::ActivePlayer);
+	return anyOfType<const WowActivePlayerObject>(WowObjectType::ActivePlayer);
 }
 
 std::shared_ptr<WowActivePlayerObject> ObjectManager::getActivePlayer() {
-	return anyOfType<WowActivePlayerObject>(WowObject::ActivePlayer);
+	return anyOfType<WowActivePlayerObject>(WowObjectType::ActivePlayer);
 }

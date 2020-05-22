@@ -7,10 +7,7 @@ class WowGame;
 class WowActivePlayerObject : public WowPlayerObject
 {
 public:
-	WowActivePlayerObject(
-		const uint8_t* baseAddr
-	) : WowPlayerObject(baseAddr)
-	{}
+	WowActivePlayerObject(const uint8_t* baseAddr);
 
 	char canAttack(const WowGame& game, const WowUnitObject& target) const;
 

@@ -34,5 +34,4 @@ public:
 	// Find the next waypoint leading to destination.
 	// return false if no path could be found (no destination, unreachable position or invalid path)
 	virtual	bool followPathToDestination(const Vector3f& currentPosition, Vector3f& result) = 0;
-
 };

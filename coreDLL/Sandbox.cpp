@@ -104,6 +104,7 @@ bool Sandbox::run(ServerSDK& server) {
 
 	mGame.update();
 	mBot.run();
+	ss << FileDebugger::info <<"bot.run" <<  std::endl;
 
 	mLastPulse = GetTickCount64();
 

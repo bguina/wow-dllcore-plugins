@@ -5,7 +5,7 @@
 
 #include "ServerSDK.h"
 #include "d3d/d3d.h"
-#include "Debugger.h"
+#include "debugger/FileDebugger.h"
 #include "WowGame.h"
 #include "WowBot.h"
 #include "Sandbox.h"
@@ -13,7 +13,7 @@
 static boolean gShouldStop = false;
 
 void MainThread(void* pHandle) {
-	Debugger dbg("MainThread");
+	FileDebugger dbg("MainThread");
 
 	if (HookD3D()) {
 		while (!gShouldStop && !GetAsyncKeyState(VK_END)) {

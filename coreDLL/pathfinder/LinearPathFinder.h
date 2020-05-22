@@ -18,11 +18,13 @@ public:
 
 	virtual void clearDestination() override;
 
-	virtual bool findPath(const Vector3f& currentPosition, Vector3f& result) const;
+	virtual bool findPath(const Vector3f& currentPosition, Vector3f& result) const override;
 
-	virtual bool moveAlong(const Vector3f& currentPosition, Vector3f& result);
+	virtual bool moveAlong(const Vector3f& currentPosition, Vector3f& result) override;
 
-	virtual bool followPathToDestination(const Vector3f& currentPosition, Vector3f& result);
+	virtual bool followPathToDestination(const Vector3f& currentPosition, Vector3f& result) override;
+
+	size_t getWaypointsCount() const;
 
 	void reversePath();
 

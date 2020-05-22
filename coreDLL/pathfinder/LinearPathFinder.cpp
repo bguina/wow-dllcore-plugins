@@ -88,6 +88,9 @@ bool LinearPathFinder::followPathToDestination(const Vector3f& currentPosition, 
 	return true;
 }
 
+size_t LinearPathFinder::getWaypointsCount() const {
+	return mPath.size();
+}
 
 std::list<Vector3f>::const_iterator helperGetNearestWaypoint(const std::list<Vector3f> mPath, const Vector3f& currentPosition) {
 	std::list<Vector3f>::const_iterator nearestWaypoint(mPath.end());

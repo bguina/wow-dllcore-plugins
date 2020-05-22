@@ -2,8 +2,9 @@
 
 #include <fstream>
 #include <sstream>
+#include <direct.h>
 
-#include "Debugger.h"
+#include "FileDebugger.h"
 
 #define RESET   "\033[0m"
 #define BLACK   "\033[30m"      /* Black */
@@ -23,59 +24,70 @@
 #define BOLDCYAN    "\033[1m\033[36m"      /* Bold Cyan */
 #define BOLDWHITE   "\033[1m\033[37m"      /* Bold White */
 
-Debugger::Debugger(const std::string& fileName)
-	: mOutputFile(std::string("D:\\nvtest\\") + fileName + ".log")
+const std::string FileDebugger::normal = std::string(RESET);
+const std::string FileDebugger::info = std::string(GREEN);
+const std::string FileDebugger::warn = std::string(YELLOW);
+const std::string FileDebugger::err = std::string(BOLDRED);
+
+FileDebugger::FileDebugger(const std::string& fileName) :
+	IDebugger(),
+	mFolder("D:\\nvtest\\"),
+	mOutputFile(mFolder + fileName + ".log")
 {
+	struct stat info;
+
+	// make folder if it does not exist yet
+	if (0 != stat(mFolder.c_str(), &info) && errno == ENOENT) {
+		_mkdir(mFolder.c_str());
+	}
 }
 
-Debugger::~Debugger()
+FileDebugger::~FileDebugger()
 {
 	flush();
 }
 
-void Debugger::clear() {
+void FileDebugger::clear() {
 	std::ofstream(mOutputFile, std::fstream::in | std::fstream::out);
 }
 
-void Debugger::log(const std::string& msg) {
+void FileDebugger::log(const std::string& msg) {
 	mBuff << msg << std::endl;
 }
 
-
-
-void Debugger::i(const std::string& msg) {
-	mBuff << GREEN << "[i]" << msg << RESET << std::endl;
+void FileDebugger::log(std::stringstream& msg) {
+	log(msg.str());
+	msg.str("");
 }
 
-void Debugger::w(const std::string& msg) {
-	mBuff << RED << "[w]" << msg << RESET << std::endl;
+void FileDebugger::i(const std::string& msg) {
+	mBuff << info << "[i] " << msg << normal << std::endl;
 }
 
-void Debugger::e(const std::string& msg) {
-	mBuff << BOLDRED << "[e]" << msg << RESET << std::endl;
+void FileDebugger::w(const std::string& msg) {
+	mBuff << warn << "[w] " << msg << normal << std::endl;
 }
 
-void Debugger::i(std::stringstream& msg) {
+void FileDebugger::e(const std::string& msg) {
+	mBuff << err << "[e] " << msg << normal << std::endl;
+}
+
+void FileDebugger::i(std::stringstream& msg) {
 	i(msg.str());
 	msg.str("");
 }
 
-void Debugger::w(std::stringstream& msg) {
+void FileDebugger::w(std::stringstream& msg) {
 	w(msg.str());
 	msg.str("");
 }
 
-void Debugger::e(std::stringstream& msg) {
+void FileDebugger::e(std::stringstream& msg) {
 	e(msg.str());
 	msg.str("");
 }
 
-Debugger& Debugger::operator<<(const std::string& str) {
-	log(str);
-	return *this;
-}
-
-void Debugger::flush() {
+void FileDebugger::flush() {
 	if (!mBuff.str().empty()) {
 		std::ofstream(mOutputFile, std::fstream::in | std::fstream::out | std::fstream::app) << mBuff.str() << std::endl;
 		mBuff.str(std::string());

@@ -5,11 +5,7 @@
 class WowLootObject : public WowObject
 {
 public:
-	WowLootObject(
-		const uint8_t* baseAddr
-	) : WowObject(baseAddr)
-	{}
-
+	WowLootObject(const uint8_t* baseAddr);
 };
 
 inline std::ostream& operator<<(

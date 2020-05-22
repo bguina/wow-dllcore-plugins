@@ -66,9 +66,6 @@
     <ClInclude Include="WinVirtualKey.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Debugger.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="objectmanager\WowItemObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -120,6 +117,18 @@
     <ClInclude Include="spellbook\SpellBookManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="debugger\IDebugger.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="debugger\FileDebugger.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dump\WowGameOffsets.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dump\WowGameDescriptors.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -153,9 +162,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Vector3f.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Debugger.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="objectmanager\WowItemObject.cpp">
@@ -198,6 +204,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="WowBot.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="debugger\FileDebugger.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="WindowController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

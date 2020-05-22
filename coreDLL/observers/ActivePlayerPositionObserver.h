@@ -3,7 +3,7 @@
 #include "AWowGameObserver.h"
 #include "../Vector3f.h"
 
-class ActivePlayerPositionObserver : public AWowGameObserver {
+class ActivePlayerPositionObserver final : public AWowGameObserver {
 public:
 	ActivePlayerPositionObserver(ServerSDK& server, float maxDelta);
 

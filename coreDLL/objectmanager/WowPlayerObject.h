@@ -5,11 +5,7 @@
 class WowPlayerObject : public WowUnitObject
 {
 public:
-	WowPlayerObject(
-		const uint8_t* baseAddr
-	) : WowUnitObject(baseAddr)
-	{}
-
+	WowPlayerObject(const uint8_t* baseAddr);
 };
 
 inline std::ostream& operator<<(

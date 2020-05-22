@@ -2,6 +2,8 @@
 
 #include <set>
 
+#include "debugger/FileDebugger.h"
+
 class IPathFinder;
 class WowGame;
 
@@ -22,12 +24,11 @@ public:
 
 protected:
 	WowGame& mGame;
-	bool mBotStarted = false;
+	FileDebugger mDbg;
+	bool mBotStarted;
 	std::unique_ptr<IPathFinder> mPathFinder;
-	std::shared_ptr<WowUnitObject> mCurrentUnitTarget;
-
-	//TEMP BLACK LIST
-	std::set<WowGuid64> blackListKilledGUID;
+	std::shared_ptr<const WowUnitObject> mCurrentUnitTarget;
+	std::set<WowGuid64> mBlacklistedGuids;
 };
 
 inline std::ostream& operator<<(
