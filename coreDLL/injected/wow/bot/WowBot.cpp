@@ -10,7 +10,8 @@
 #include "../objectmanager/WowActivePlayerObject.h"
 
 WowBot::WowBot(WowGame& game) :
-	AGameBot(game),
+	mGame(game),
+	mDbg(game.getName() + "Bot"),
 	mPaused(true),
 	mPathFinder(nullptr),
 	mCurrentUnitTarget(nullptr)

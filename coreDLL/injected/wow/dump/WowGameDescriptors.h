@@ -2,7 +2,7 @@
 
 #include <cstdint>
 
-enum WowObjectType : uint8_t {
+enum class WowObjectType : uint8_t {
 	Object = 0,
 	Item = 1,
 	Container = 2,
@@ -23,8 +23,7 @@ enum WowObjectType : uint8_t {
 	Invalid = 17
 };
 
-
-enum WoWUnitClass : uint8_t {
+enum class WowUnitClass : uint8_t {
 	None = 0,
 	Warrior = 1,
 	Paladin = 2,
@@ -36,4 +35,9 @@ enum WoWUnitClass : uint8_t {
 	Mage = 8,
 	Warlock = 9,
 	Druid = 11
+};
+
+enum class WowUnitRace : uint8_t {
+	None = 0,
+
 };

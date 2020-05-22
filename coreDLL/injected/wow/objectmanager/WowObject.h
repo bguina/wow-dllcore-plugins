@@ -42,7 +42,6 @@ public:
 
 	const WowVector3f& getPosition() const;
 
-
 	float getX() const;
 	float getY() const;
 	float getZ() const;
@@ -73,4 +72,3 @@ inline std::ostream& operator<<(
 	out << obj.getTypeLabel() << "[GUID 0x" << (void*)obj.getGuid() << " | " << (void*)obj.getGuid2() << "]@" << obj.getX() << "," << obj.getY() << " facing " << obj.getFacingRadians();
 	return out;
 }
-

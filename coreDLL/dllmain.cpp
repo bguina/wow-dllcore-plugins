@@ -8,7 +8,7 @@
 #include "debugger/FileDebugger.h"
 #include "injected/wow/WowGame.h"
 #include "injected/wow/bot/WowBot.h"
-#include "Sandbox.h"
+#include "injected/Sandbox.h"
 
 static boolean gShouldStop = false;
 

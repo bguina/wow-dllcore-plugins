@@ -10,28 +10,28 @@ WowUnitObject::WowUnitObject(
 ) : WowObject(baseAddr)
 {}
 
-WoWUnitClass WowUnitObject::getUnitClass() const {
-	return *reinterpret_cast<const WoWUnitClass*>(getDescriptor() + WowGameOffsets::WowUnitObject::DescriptorOffsetClass);
+WowUnitClass WowUnitObject::getUnitClass() const {
+	return *reinterpret_cast<const WowUnitClass*>(getDescriptor() + WowGameOffsets::WowUnitObject::DescriptorOffsetClass);
 }
 
 std::string WowUnitObject::getUnitClassLabel() const {
 	switch (getUnitClass()) {
-	case Warrior: return "Warrior";
-	case Paladin: return "Paladin";
-	case Hunter: return "Hunter";
-	case Rogue: return "Rogue";
-	case Priest: return "Priest";
-	case DeathKnight: return "DeathKnight";
-	case Shaman: return "Shaman";
-	case Mage: return "Mage";
-	case Warlock: return "Warlock";
-	case Druid: return "Druid";
+	case WowUnitClass::Warrior: return "Warrior";
+	case WowUnitClass::Paladin: return "Paladin";
+	case WowUnitClass::Hunter: return "Hunter";
+	case WowUnitClass::Rogue: return "Rogue";
+	case WowUnitClass::Priest: return "Priest";
+	case WowUnitClass::DeathKnight: return "DeathKnight";
+	case WowUnitClass::Shaman: return "Shaman";
+	case WowUnitClass::Mage: return "Mage";
+	case WowUnitClass::Warlock: return "Warlock";
+	case WowUnitClass::Druid: return "Druid";
 	default: return "Unit";
 	}
 }
 
-int WowUnitObject::getUnitRace() const {
-	return *(getDescriptor() + 0x158);
+WowUnitRace WowUnitObject::getUnitRace() const {
+	return *reinterpret_cast<const WowUnitRace*>(getDescriptor() + WowGameOffsets::WowUnitObject::DescriptorOffsetRace);
 }
 
 int WowUnitObject::getUnitLevel() const {

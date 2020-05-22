@@ -10,11 +10,11 @@ class WowUnitObject : public WowObject
 public:
 	WowUnitObject(const uint8_t* baseAddr);
 
-	WoWUnitClass getUnitClass() const;
+	WowUnitClass getUnitClass() const;
 
 	std::string getUnitClassLabel() const;
 
-	int getUnitRace() const;
+	WowUnitRace getUnitRace() const;
 
 	int getUnitLevel() const;
 

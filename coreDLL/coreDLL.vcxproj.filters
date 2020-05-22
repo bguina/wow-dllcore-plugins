@@ -72,33 +72,6 @@
     <ClInclude Include="injected\wow\objectmanager\ObjectManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="injected\wow\objectmanager\WowActivePlayerObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="injected\wow\objectmanager\WowContainerObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="injected\wow\objectmanager\WowCorpseObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="injected\wow\objectmanager\WowItemObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="injected\wow\objectmanager\WowLootObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="injected\wow\objectmanager\WowObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="injected\wow\objectmanager\WowPlayerObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="injected\wow\objectmanager\WowUnimplementedObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="injected\wow\objectmanager\WowUnitObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="injected\wow\WowGame.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -141,6 +114,33 @@
     <ClInclude Include="windowcontroller\PostMessageWindowController.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="injected\wow\objectmanager\WowActivePlayerObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="injected\wow\objectmanager\WowContainerObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="injected\wow\objectmanager\WowCorpseObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="injected\wow\objectmanager\WowItemObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="injected\wow\objectmanager\WowLootObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="injected\wow\objectmanager\WowObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="injected\wow\objectmanager\WowPlayerObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="injected\wow\objectmanager\WowUnimplementedObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="injected\wow\objectmanager\WowUnitObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -176,6 +176,27 @@
     <ClCompile Include="injected\wow\objectmanager\ObjectManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="injected\wow\WowGame.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="injected\wow\observers\ActivePlayerPositionObserver.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="injected\wow\observers\AWowGameObserver.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="injected\wow\spellbook\SpellBookManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="injected\wow\WowVector3f.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="injected\wow\bot\WowBot.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="windowcontroller\PostMessageWindowController.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="injected\wow\objectmanager\WowActivePlayerObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -201,27 +222,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="injected\wow\objectmanager\WowUnitObject.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="injected\wow\WowGame.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="injected\wow\observers\ActivePlayerPositionObserver.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="injected\wow\observers\AWowGameObserver.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="injected\wow\spellbook\SpellBookManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="injected\wow\WowVector3f.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="injected\wow\bot\WowBot.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="windowcontroller\PostMessageWindowController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -35,23 +35,23 @@ WowObjectType WowObject::getType() const {
 std::string WowObject::getTypeLabel() const {
 	switch (getType()) {
 	case WowObjectType::Object:return  "Object";
-	case Item:return "Item";
-	case Container:return  "Container";
-	case AzeriteEmpoweredItem: "AzeriteEmpoweredItem";
-	case AzeriteItem: "AzeriteItem";
-	case Unit:return  "Unit";
-	case Player:return  "Player";
-	case ActivePlayer:return  "ActivePlayer";
-	case GameObject:return  "GameObject";
-	case DynamicObject: return "DynamicObject";
-	case Corpse:return  "Corpse";
-	case AreaTrigger: return "AreaTrigger";
-	case Scene:return  "Scene";
-	case Conversation: return  "Conversation";
-	case AiGroup: return  "AiGroup";
-	case Scenario: return  "Scenario";
-	case Loot: return  "Loot";
-	case Invalid: return  "Invalid";
+	case WowObjectType::Item:return "Item";
+	case WowObjectType::Container:return  "Container";
+	case WowObjectType::AzeriteEmpoweredItem: "AzeriteEmpoweredItem";
+	case WowObjectType::AzeriteItem: "AzeriteItem";
+	case WowObjectType::Unit:return  "Unit";
+	case WowObjectType::Player:return  "Player";
+	case WowObjectType::ActivePlayer:return  "ActivePlayer";
+	case WowObjectType::GameObject:return  "GameObject";
+	case WowObjectType::DynamicObject: return "DynamicObject";
+	case WowObjectType::Corpse:return  "Corpse";
+	case WowObjectType::AreaTrigger: return "AreaTrigger";
+	case WowObjectType::Scene:return  "Scene";
+	case WowObjectType::Conversation: return  "Conversation";
+	case WowObjectType::AiGroup: return  "AiGroup";
+	case WowObjectType::Scenario: return  "Scenario";
+	case WowObjectType::Loot: return  "Loot";
+	case WowObjectType::Invalid: return  "Invalid";
 	default: return "Unknown";
 	}
 }

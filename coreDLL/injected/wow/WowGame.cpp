@@ -19,11 +19,13 @@ WowGame::~WowGame() {
 }
 
 void WowGame::update() {
-	mObjMgr.scan();
-	mDbg << mObjMgr << "\n";
 
+	mObjMgr.scan();
 	mSpellBookMgr.scan();
-	mDbg << mSpellBookMgr << "\n";
+
+	mDbg << mObjMgr << std::endl;
+
+	//mDbg << mSpellBookMgr << "\n";
 
 	for (auto it = mObservers.begin(); it != mObservers.end(); ++it) {
 		it->second->capture(*this);
