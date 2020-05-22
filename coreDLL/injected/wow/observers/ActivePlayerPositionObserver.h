@@ -1,6 +1,7 @@
 #pragma once
 
 #include "AWowGameObserver.h"
+
 #include "../WowVector3f.h"
 
 class ActivePlayerPositionObserver final : public AWowGameObserver {

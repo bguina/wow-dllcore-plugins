@@ -8,11 +8,6 @@
 #include <memory>
 #include <iostream>
 
-#include <iterator>     // std::back_inserter
-
-#include "../../debugger/FileDebugger.h"
-#include "../../injected/MemoryObject.h"
-#include "WowObject.h"
 #include "WowActivePlayerObject.h"
 
 /*

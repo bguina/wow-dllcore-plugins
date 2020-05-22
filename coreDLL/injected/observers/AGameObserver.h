@@ -1,9 +1,8 @@
 #pragma once
 
-#include "ServerSDK.h"
+#include "IGameObserver.h"
 
 #include "../../debugger/FileDebugger.h"
-#include "IGameObserver.h"
 
 template<class T>
 class AGameObserver : public IGameObserver<T> {

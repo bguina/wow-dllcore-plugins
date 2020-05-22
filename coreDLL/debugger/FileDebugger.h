@@ -1,7 +1,5 @@
 #pragma once
 
-#include <sstream>
-
 #include "IDebugger.h"
 
 class FileDebugger : public IDebugger {

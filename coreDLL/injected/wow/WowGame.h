@@ -22,11 +22,11 @@ public:
 
 	bool isObjectManagerActive() const;
 
-	const ObjectManager getObjectManager() const;
+	const ObjectManager& getObjectManager() const;
 
-	ObjectManager getObjectManager();
+	ObjectManager& getObjectManager();
 
-	const SpellBookManager getSpellBookManager() const;
+	const SpellBookManager& getSpellBookManager() const;
 
 	const char* getVersionBuild() const;
 

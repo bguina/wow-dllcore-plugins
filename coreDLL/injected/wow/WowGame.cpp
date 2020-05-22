@@ -41,15 +41,15 @@ IWindowController* WowGame::getWindowController() {
 	return mWindowController.get();
 }
 
-const ObjectManager WowGame::getObjectManager() const {
+const ObjectManager& WowGame::getObjectManager() const {
 	return mObjMgr;
 }
 
-ObjectManager WowGame::getObjectManager() {
+ObjectManager& WowGame::getObjectManager() {
 	return mObjMgr;
 }
 
-const SpellBookManager WowGame::getSpellBookManager() const {
+const SpellBookManager& WowGame::getSpellBookManager() const {
 	return mSpellBookMgr;
 }
 

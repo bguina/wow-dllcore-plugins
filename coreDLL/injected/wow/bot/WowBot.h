@@ -5,10 +5,11 @@
 #include "../../bot/AGameBot.h"
 
 #include "../WowVector3f.h"
-#include "../objectmanager/WowUnitObject.h"
+#include "../objectmanager/WowObject.h"
 
 class IPathFinder;
 class WowGame;
+class WowUnitObject;
 
 class WowBot : public AGameBot<WowGame>
 {
