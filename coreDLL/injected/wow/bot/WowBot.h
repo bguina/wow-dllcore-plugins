@@ -3,8 +3,9 @@
 #include <set>
 
 #include "../../bot/AGameBot.h"
-#include "../../debugger/FileDebugger.h"
+
 #include "../WowVector3f.h"
+#include "../objectmanager/WowUnitObject.h"
 
 class IPathFinder;
 class WowGame;

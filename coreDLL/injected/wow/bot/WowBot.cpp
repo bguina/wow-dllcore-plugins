@@ -2,12 +2,14 @@
 
 #include <vector>
 
+
+
+#include "WowBot.h"
+
+#include "../../pathfinder/LinearPathFinder.h"
 #include "../../debugger/FileDebugger.h"
 #include "../WowGame.h"
 #include "../objectmanager/WowActivePlayerObject.h"
-#include "../../pathfinder/LinearPathFinder.h"
-
-#include "WowBot.h"
 
 WowBot::WowBot(WowGame& game) :
 	AGameBot(game),

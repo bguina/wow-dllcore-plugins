@@ -1,12 +1,12 @@
 #include "pch.h"
 
-#include "framework.h" // required for "PostMessage"
+#include "../framework.h" // required for "PostMessage"
 
 #include <cmath>
 #include <iostream>
 #include <map>
 
-#include "../../debugger/FileDebugger.h"
+#include "../debugger/FileDebugger.h"
 #include "PostMessageWindowController.h"
 
 // Observed SendMessage "legit" flags found with Spy++ app
@@ -62,4 +62,3 @@ bool PostMessageWindowController::postKeyEventMessage(WinVirtualKey key, bool ke
 
 	return PostMessage(mWindow, action, (uint8_t)key, flags);
 }
-
