@@ -43,12 +43,21 @@ bool PostMessageWindowController::pressKey(WinVirtualKey key, bool keyDown) {
 		keyAsRequested = true;
 	}
 
-	mDbg << FileDebugger::info << "pressKey " << (int)key << " success? " << keyAsRequested << FileDebugger::normal << std::endl;
-	mDbg.flush();
+	if (false) {
+		mDbg << FileDebugger::info << "pressKey " << (int)key << " success? " << keyAsRequested << FileDebugger::normal << std::endl;
+		mDbg.flush();
+	}
+
 	return keyAsRequested;
 }
 
 void PostMessageWindowController::releaseAllKeys() {
+
+	pressKey(WinVirtualKey::WVK_A, false);
+	pressKey(WinVirtualKey::WVK_D, false);
+	pressKey(WinVirtualKey::WVK_W, false);
+
+	// fixme key map states
 	for (auto it = mKeyPressedStatus.begin(); it != mKeyPressedStatus.end(); it++)
 	{
 		if (it->second != 0 && postKeyEventMessage(it->first, false)) {

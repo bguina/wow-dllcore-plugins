@@ -36,30 +36,39 @@ bool WowBot::isPaused() const {
 	return mPaused;
 }
 
-void WowBot::run() {
-	size_t waypointsCount = 0;
-	auto linearWaypoints = dynamic_cast<LinearPathFinder*>(mPathFinder.get());
-	if (nullptr != linearWaypoints) {
-		waypointsCount = dynamic_cast<LinearPathFinder*>(mPathFinder.get())->getWaypointsCount();
-	}
-
-
+void WowBot::flushDebug() {
 	std::shared_ptr<WowActivePlayerObject> self = mGame.getObjectManager().getActivePlayer();
+	mDbg << FileDebugger::info;
+
 	if (nullptr != self) {
-		mDbg << FileDebugger::info << "position is " << self->getPosition() << " angle is " << self->getFacingDegrees() << FileDebugger::normal << std::endl;
-		mDbg << FileDebugger::info << "target unit is " << self->getTargetGuid() << FileDebugger::normal << std::endl;
+		// show info relative to self
+		mDbg << "position is " << self->getPosition() << " angle is " << self->getFacingDegrees() << "target unit is " << self->getTargetGuid() << std::endl;
 
-		if (true) {
-			std::shared_ptr<WowUnitObject> any = mGame.getObjectManager().anyOfType<WowUnitObject>(WowObjectType::Unit);
+		// show info relative otof current pathfinder
+		LinearPathFinder* pathfinder = dynamic_cast<LinearPathFinder*>(mPathFinder.get());
+		if (nullptr != pathfinder) {
+			size_t waypointsCount = 0;
 
-			if (nullptr != any) {
-			
-				mDbg << FileDebugger::info << "anyunit position is " << any->getPosition() << FileDebugger::normal << std::endl;
-				mDbg << FileDebugger::info << "facing it requires angle of " << self->getFacingDegreesTo(*any) << FileDebugger::normal << std::endl;
-				mDbg << FileDebugger::info << "angle delta is " << self->getFacingDeltaDegrees(*any) << FileDebugger::normal << std::endl;
-			}
+			waypointsCount = pathfinder->getWaypointsCount();
+			mDbg << "helped by LinearPathFinder with " << waypointsCount << " waypoints " << std::endl;
+		}
+		else mDbg << " without PathFinder" << std::endl;
+
+		// show info relative to a random unit around, if any
+		std::shared_ptr<WowUnitObject> any = mGame.getObjectManager().anyOfType<WowUnitObject>(WowObjectType::Unit);
+		if (nullptr != any) {
+			mDbg << "anyunit position is " << any->getPosition()
+				<< "facing it requires angle of "
+				<< self->getFacingDegreesTo(*any)
+				<< "angle delta is " << self->getFacingDeltaDegrees(*any) << std::endl;
 		}
 	}
+	mDbg << FileDebugger::normal;
+
+}
+
+void WowBot::run() {
+
 
 	if (!mPaused) {
 		std::shared_ptr<WowActivePlayerObject> self = mGame.getObjectManager().getActivePlayer();
@@ -112,7 +121,7 @@ void WowBot::run() {
 					mDbg << FileDebugger::info << "target unit " << mDirectUnitAttack->getGuid() << " still out of reach" << mDirectUnitAttack->getPosition() << FileDebugger::normal << std::endl;
 					//mDbg.i("target unit still out of reach");
 
-					self->moveTo(mGame, mDirectUnitAttack->getPosition());
+					//self->moveTo(mGame, mDirectUnitAttack->getPosition());
 
 
 					int angle = self->getPosition().getFacingDegreesTo(mDirectUnitAttack->getPosition());
@@ -120,9 +129,9 @@ void WowBot::run() {
 					int anglePrecision = 10;
 
 					auto windowController = mGame.getWindowController();
-					mDbg << FileDebugger::warn 
+					mDbg << FileDebugger::warn
 						<< "pressing left " << (delta > anglePrecision)
-						<< "pressing forward " << (abs(delta) < anglePrecision * 2) 
+						<< "pressing forward " << (abs(delta) < anglePrecision * 2)
 						<< "pressing right " << (delta < -anglePrecision)
 						<< FileDebugger::normal << std::endl;
 

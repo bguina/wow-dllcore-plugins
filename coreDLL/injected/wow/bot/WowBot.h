@@ -26,6 +26,8 @@ public:
 	void loadLinearWaypoints(const std::vector<WowVector3f>& waypoints);
 
 protected:
+	void flushDebug();
+
 	WowGame& mGame;
 	FileDebugger mDbg;
 	bool mPaused;
