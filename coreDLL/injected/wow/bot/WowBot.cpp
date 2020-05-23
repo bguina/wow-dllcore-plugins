@@ -14,7 +14,7 @@ WowBot::WowBot(WowGame& game) :
 	mDbg("WowBotWowBot"),
 	mPaused(true),
 	mPathFinder(nullptr),
-	mCurrentUnitTarget(nullptr)
+	mDirectUnitAttack(nullptr)
 {
 }
 
@@ -28,6 +28,8 @@ void WowBot::pause(bool paused) {
 	{
 		mGame.getWindowController()->releaseAllKeys();
 	}
+
+	mDbg << FileDebugger::info << "WowBot " << (mPaused ? "paused" : "running") << FileDebugger::normal << std::endl;
 }
 
 bool WowBot::isPaused() const {
@@ -41,21 +43,40 @@ void WowBot::run() {
 		waypointsCount = dynamic_cast<LinearPathFinder*>(mPathFinder.get())->getWaypointsCount();
 	}
 
-	mDbg << FileDebugger::info << "WowBot " << (mPaused ? "paused" : "running") << FileDebugger::normal << std::endl;
+
+	std::shared_ptr<WowActivePlayerObject> self = mGame.getObjectManager().getActivePlayer();
+	if (nullptr != self) {
+		mDbg << FileDebugger::info << "position is " << self->getPosition() << " angle is " << self->getFacingDegrees() << FileDebugger::normal << std::endl;
+		mDbg << FileDebugger::info << "target unit is " << self->getTargetGuid() << FileDebugger::normal << std::endl;
+
+		if (true) {
+			std::shared_ptr<WowUnitObject> any = mGame.getObjectManager().anyOfType<WowUnitObject>(WowObjectType::Unit);
+
+			if (nullptr != any) {
+			
+				mDbg << FileDebugger::info << "anyunit position is " << any->getPosition() << FileDebugger::normal << std::endl;
+				mDbg << FileDebugger::info << "facing it requires angle of " << self->getFacingDegreesTo(*any) << FileDebugger::normal << std::endl;
+				mDbg << FileDebugger::info << "angle delta is " << self->getFacingDeltaDegrees(*any) << FileDebugger::normal << std::endl;
+			}
+		}
+	}
 
 	if (!mPaused) {
 		std::shared_ptr<WowActivePlayerObject> self = mGame.getObjectManager().getActivePlayer();
+		mDbg << FileDebugger::info << "angle is " << self->getFacingDegrees() << FileDebugger::normal << std::endl;
+
+		mDbg << FileDebugger::info << "WowBot running" << FileDebugger::normal << std::endl;
 
 		if (self != nullptr) {
 
 
-			if (nullptr != mCurrentUnitTarget && mBlacklistedGuids.find(mCurrentUnitTarget->getGuid()) != mBlacklistedGuids.end())
+			if (nullptr != mDirectUnitAttack && (mBlacklistedGuids.find(mDirectUnitAttack->getGuid()) != mBlacklistedGuids.end()))
 			{
-				mDbg << "GUID is blacklisted, ignoring" << mCurrentUnitTarget->getGuid();
-				mCurrentUnitTarget = nullptr;
+				mDbg << "GUID is blacklisted, ignoring" << mDirectUnitAttack->getGuid();
+				mDirectUnitAttack = nullptr;
 			}
 
-			if (nullptr == mCurrentUnitTarget)
+			if (nullptr == mDirectUnitAttack)
 			{
 				std::list<std::shared_ptr<const WowUnitObject>> allUnits = mGame.getObjectManager().allOfType<const WowUnitObject>(WowObjectType::Unit);
 				std::list<std::shared_ptr<const WowUnitObject>> whilelist;
@@ -75,51 +96,74 @@ void WowBot::run() {
 					}
 
 				}
-				if (distance < 30)
+				if (distance < 5000)
 				{
 					mDbg.i("found new target to attack");
-					mCurrentUnitTarget = targetUnit;
+					mDirectUnitAttack = targetUnit;
 				}
 			}
 
 			// Are we far away the target unit?
-			if (nullptr != mCurrentUnitTarget) {
+			if (nullptr != mDirectUnitAttack) {
 				mDbg.i("targetting some unit...");
-				if (self->getPosition().getDistanceTo(mCurrentUnitTarget->getPosition()) > 5)
+				if (self->getPosition().getDistanceTo(mDirectUnitAttack->getPosition()) > 5)
 				{
 					mDbg << FileDebugger::info << "My position" << self->getPosition() << FileDebugger::normal << std::endl;
-					mDbg << FileDebugger::info << "target unit still out of reach" << mCurrentUnitTarget->getPosition() << FileDebugger::normal << std::endl;
+					mDbg << FileDebugger::info << "target unit " << mDirectUnitAttack->getGuid() << " still out of reach" << mDirectUnitAttack->getPosition() << FileDebugger::normal << std::endl;
 					//mDbg.i("target unit still out of reach");
 
-					self->moveTo(mGame, mCurrentUnitTarget->getPosition());
+					self->moveTo(mGame, mDirectUnitAttack->getPosition());
+
+
+					int angle = self->getPosition().getFacingDegreesTo(mDirectUnitAttack->getPosition());
+					int delta = self->getPosition().getFacingDeltaDegrees(self->getFacingDegrees(), mDirectUnitAttack->getPosition());
+					int anglePrecision = 10;
+
+					auto windowController = mGame.getWindowController();
+					mDbg << FileDebugger::warn 
+						<< "pressing left " << (delta > anglePrecision)
+						<< "pressing forward " << (abs(delta) < anglePrecision * 2) 
+						<< "pressing right " << (delta < -anglePrecision)
+						<< FileDebugger::normal << std::endl;
+
+					mGame.getWindowController()->releaseAllKeys();
+					windowController->pressKey(WinVirtualKey::WVK_A, delta > anglePrecision);
+					windowController->pressKey(WinVirtualKey::WVK_D, delta < -anglePrecision);
+					// move forward if approximately on the right facing
+					windowController->pressKey(WinVirtualKey::WVK_W, abs(delta) < anglePrecision * 2);
+
+					mDbg << FileDebugger::info << "moving to " << mDirectUnitAttack->getPosition() << FileDebugger::normal << std::endl;
+
+					mDbg << FileDebugger::info << " target angle is" << self->getPosition().getFacingDegreesTo(mDirectUnitAttack->getPosition()) << " delta angle is " << self->getPosition().getFacingDeltaDegrees(self->getFacingDegrees(), mDirectUnitAttack->getPosition()) << FileDebugger::normal << std::endl;
 
 				}
 				else {
 					mDbg.i("Killed target! yay!");
 					// Unit gets "killed" (blacklisted for now)
-					mBlacklistedGuids.insert(mCurrentUnitTarget->getGuid());
+					mBlacklistedGuids.insert(mDirectUnitAttack->getGuid());
+
+
 				}
 			}
 			else {
-				mDbg.i("no target :(");
-			}
+				mDbg.i("no mDirectUnitAttack");
+				if (mPathFinder != nullptr) {
+					const Vector3f& selfPosition = self->getPosition();
+					Vector3f nextPosition;
 
-			if (mCurrentUnitTarget == nullptr && mPathFinder != nullptr) {
-				const Vector3f& selfPosition = self->getPosition();
-				Vector3f nextPosition;
+					if (mPathFinder->moveAlong(selfPosition, nextPosition)) {
+						mDbg.i("mPathFinder moving along the path");
+						//self->moveTo(mGame, nextPosition);
+					}
+					else {
+						mDbg.i("mPathFinder could not move along :(");
+					}
 
-				if (mPathFinder->moveAlong(selfPosition, nextPosition)) {
-					mDbg.i("moving along the path");
-					//self->moveTo(mGame, nextPosition);
 				}
 				else {
-					mDbg.i("could not move along :(");
+					// no profile has been loaded!
+					mDbg.e("no PathFinder is loaded to move around loaded\n");
 				}
-
-			}
-			else {
-				// no profile has been loaded!
-				mDbg.e("bot started but no PathFinder has been loaded\n");
 			}
 		}
 		else {
