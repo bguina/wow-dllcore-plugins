@@ -73,7 +73,7 @@ float WowObject::getZ() const {
 }
 
 float WowObject::getFacingRadians() const {
-	return *(float*)(getAddress() + WowGameOffsets::WowObject::OffsetPosition);
+	return *(float*)(getAddress() + WowGameOffsets::WowObject::OffsetFacing);
 }
 
 int WowObject::getFacingDegrees() const {

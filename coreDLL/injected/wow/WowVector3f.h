@@ -29,6 +29,6 @@ inline std::ostream& operator<<(
 	const WowVector3f& obj
 	)
 {
-	out << "[Vector3f:" << obj.position.x << "/" << obj.position.x << "/" << obj.position.x << "]";
+	out << "[Vector3f:" << obj.position.x << "/" << obj.position.y << "/" << obj.position.z << "]";
 	return out;
 }
