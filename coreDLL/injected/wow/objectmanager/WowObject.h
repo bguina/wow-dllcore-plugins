@@ -30,6 +30,8 @@ public:
 
 	WowGuid64 getGuid2() const;
 
+	WowGuid64* WowObject::getGuidPtr() const;
+
 	//		StorageField = 0x10,//good-33526
 	//		ObjectType = 0x20,//good-33526
 	//		NextObject = 0x70,//good-33526

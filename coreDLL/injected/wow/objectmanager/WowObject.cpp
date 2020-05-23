@@ -18,6 +18,10 @@ WowGuid64 WowObject::getGuid() const {
 	return ((WowGuid64*)(getAddress() + WowGameOffsets::WowObject::OffsetGuid))[0];
 }
 
+WowGuid64* WowObject::getGuidPtr() const {
+	return ((WowGuid64*)(getAddress() + WowGameOffsets::WowObject::OffsetGuid));
+}
+
 WowGuid64 WowObject::getGuid2() const {
 	return ((WowGuid64*)(getAddress() + WowGameOffsets::WowObject::OffsetGuid))[1];
 }
