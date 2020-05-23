@@ -1,13 +1,10 @@
 ﻿################################################################################
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
-
-/x64/Debug
-/windowQT/x64/Debug
-/serverSDK/x64/Debug
-/server/x64/Debug
-/MessageManager/x64/Debug
-/injector/x64/Debug
+**/x64/*
 /Debug
+/Release
+
+# wtf is that
 /.vs/wow-bot/v16
-/coreDLL/x64/Debug
+

@@ -10,11 +10,13 @@
 #include "PostMessageWindowController.h"
 
 // Observed SendMessage "legit" flags found with Spy++ app
-const int SENDMESSAGE_KEYUP_FLAGS = 0x00110001;
+const int SENDMESSAGE_KEYUP_FLAGS = 0xC0110001;
 const int SENDMESSAGE_KEYDOWN_FLAGS = 0x00110001;
 
+
 PostMessageWindowController::PostMessageWindowController(HWND window) :
-	mWindow(window)
+	mWindow(window),
+	mDbg("PostMessageWindowController")
 {
 
 }
@@ -36,18 +38,22 @@ bool PostMessageWindowController::isKeyPressed(WinVirtualKey key) const {
 bool PostMessageWindowController::pressKey(WinVirtualKey key, bool keyDown) {
 	bool keyAsRequested(keyDown == isKeyPressed(key));
 
-	if (!keyAsRequested && postKeyEventMessage(key, keyDown)) {
+	if (postKeyEventMessage(key, keyDown)) {
 		mKeyPressedStatus.insert(std::pair<WinVirtualKey, uint32_t>(key, keyDown));
 		keyAsRequested = true;
 	}
+
+	mDbg << FileDebugger::info << "pressKey " << (int)key << " success? " << keyAsRequested << FileDebugger::normal << std::endl;
+	mDbg.flush();
 	return keyAsRequested;
 }
 
 void PostMessageWindowController::releaseAllKeys() {
 	for (auto it = mKeyPressedStatus.begin(); it != mKeyPressedStatus.end(); it++)
 	{
-		if (it->second != 0 && postKeyEventMessage(it->first, false))
+		if (it->second != 0 && postKeyEventMessage(it->first, false)) {
 			it->second = 0;
+		}
 	}
 }
 

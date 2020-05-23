@@ -36,6 +36,16 @@ public:
 	std::map<WowGuid64, std::shared_ptr<WowObject>>::iterator end();
 
 	template<class T >
+	const std::shared_ptr<const T> getObjectByGuid(WowGuid64 guid) const {
+		for (auto it = begin(); it != end(); ++it) {
+			if (guid == it->second->getGuid())
+				return std::static_pointer_cast<T>(it->second);
+		}
+
+		return nullptr;
+	}
+
+	template<class T >
 	const std::shared_ptr<const T> anyOfType(WowObjectType type) const {
 		for (auto it = begin(); it != end(); ++it) {
 			if (type == it->second->getType())

@@ -18,9 +18,7 @@ const uint8_t* MemoryObject::getAddress() const {
 	return mBaseAddr;
 }
 
-void MemoryObject::rebase(
-	const uint8_t* baseAddr
-) {
+void MemoryObject::rebase(const uint8_t* baseAddr) {
 	mBaseAddr = baseAddr;
 }
 

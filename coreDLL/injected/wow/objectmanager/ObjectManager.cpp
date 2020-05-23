@@ -94,7 +94,6 @@ void ObjectManager::scan() {
 		}
 
 		for (std::set<WowGuid64>::const_iterator it = oldGuids.begin(); it != oldGuids.end(); ++it) {
-			mObjects.find(*it)->second->rebase(0);
 			mObjects.erase(*it);
 		}
 	}

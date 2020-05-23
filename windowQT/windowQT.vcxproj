@@ -62,7 +62,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
-      <AdditionalIncludeDirectories>..\MessageManager;..\serverSDK;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\MessageManager;..\client;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -76,7 +76,7 @@
       <DebugInformationFormat />
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
-      <AdditionalIncludeDirectories>C:\Users\maxim\source\repos\wow-bot\MessageManager;C:\Users\maxim\source\repos\wow-bot\serverSDK;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\maxim\source\repos\wow-bot\MessageManager;C:\Users\maxim\source\repos\wow-bot\client;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -103,7 +103,7 @@
     <ProjectReference Include="..\MessageManager\MessageManager.vcxproj">
       <Project>{9b69c2f2-f080-4375-8f30-c6d5176acc1c}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\serverSDK\serverSDK.vcxproj">
+    <ProjectReference Include="..\client\client.vcxproj">
       <Project>{62c3f70f-f814-426d-96d1-f3c6751b750d}</Project>
     </ProjectReference>
   </ItemGroup>

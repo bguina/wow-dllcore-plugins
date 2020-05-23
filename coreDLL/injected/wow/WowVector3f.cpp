@@ -30,7 +30,10 @@ float WowVector3f::getFlightDistanceTo(const WowVector3f& to) const {
 }
 
 int WowVector3f::getFacingDegreesTo(const WowVector3f& to) const {
-	return (int)(atan2(to.position.y - position.y, to.position.x - position.x) * 180.0 / PI);
+	return atan2(
+		to.position.y - position.y,
+		to.position.x - position.x
+	) * 180 / PI;
 }
 
 int WowVector3f::getFacingDeltaDegrees(int angle, const WowVector3f& to) const {

@@ -30,7 +30,7 @@ protected:
 	FileDebugger mDbg;
 	bool mPaused;
 	std::unique_ptr<IPathFinder> mPathFinder;
-	std::shared_ptr<const WowUnitObject> mCurrentUnitTarget;
+	std::shared_ptr<const WowUnitObject> mDirectUnitAttack;
 	std::set<WowGuid64> mBlacklistedGuids;
 };
 

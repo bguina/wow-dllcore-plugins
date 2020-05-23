@@ -22,6 +22,7 @@ public:
 	virtual void releaseAllKeys() override;
 
 protected:
+	FileDebugger mDbg;
 	HWND mWindow;
 	std::map<WinVirtualKey, int> mKeyPressedStatus;
 
