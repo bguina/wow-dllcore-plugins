@@ -8,6 +8,9 @@ APathFinder::APathFinder() :
 {
 }
 
+APathFinder::~APathFinder() {
+}
+
 bool APathFinder::getDestination(Vector3f& result) const {
 	if (mDestination != nullptr) {
 		result = *mDestination;

@@ -156,16 +156,25 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="injected\AGame.h" />
+    <ClInclude Include="injected\bot\Bot.h" />
     <ClInclude Include="injected\ISandboxPlugin.h" />
     <ClInclude Include="d3d\d3d.h" />
     <ClInclude Include="d3d\D3D_VMT_Indices.h" />
     <ClInclude Include="d3d\shadez.h" />
     <ClInclude Include="debugger\IDebugger.h" />
+    <ClInclude Include="injected\wow\bot\ben\BenBot.h" />
+    <ClInclude Include="injected\wow\bot\ben\BenFightBot.h" />
+    <ClInclude Include="injected\wow\bot\ben\BenTravelBot.h" />
+    <ClInclude Include="pathfinder\IPathWaypointsConsumer.h" />
+    <ClInclude Include="injected\wow\bot\max\MaxBot.h" />
+    <ClInclude Include="injected\wow\bot\WowPlayerClassBot.h" />
+    <ClInclude Include="injected\wow\bot\WowPowerLevelBot.h" />
     <ClInclude Include="injected\wow\dump\WowGameDescriptors.h" />
     <ClInclude Include="injected\wow\dump\WowGameOffsets.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="debugger\FileDebugger.h" />
     <ClInclude Include="injected\MemoryObject.h" />
+    <ClInclude Include="injected\wow\objectmanager\WowGuid64.h" />
     <ClInclude Include="windowcontroller\IWindowController.h" />
     <ClInclude Include="windowcontroller\PostMessageWindowController.h" />
     <ClInclude Include="injected\wow\WowVector3f.h" />
@@ -204,7 +213,13 @@
     </ClCompile>
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="debugger\FileDebugger.cpp" />
+    <ClCompile Include="injected\bot\Bot.cpp" />
     <ClCompile Include="injected\MemoryObject.cpp" />
+    <ClCompile Include="injected\wow\bot\ben\BenBot.cpp" />
+    <ClCompile Include="injected\wow\bot\ben\BenFightBot.cpp" />
+    <ClCompile Include="injected\wow\bot\ben\BenTravelBot.cpp" />
+    <ClCompile Include="injected\wow\bot\max\MaxBot.cpp" />
+    <ClCompile Include="injected\wow\objectmanager\WowGuid64.cpp" />
     <ClCompile Include="windowcontroller\PostMessageWindowController.cpp" />
     <ClCompile Include="injected\wow\objectmanager\ObjectManager.cpp">
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>

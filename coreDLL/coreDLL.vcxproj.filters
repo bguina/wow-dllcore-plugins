@@ -138,6 +138,33 @@
     <ClInclude Include="injected\Sandbox.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="injected\wow\objectmanager\WowGuid64.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="injected\bot\Bot.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="injected\wow\bot\WowPowerLevelBot.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="injected\wow\bot\ben\BenBot.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="injected\wow\bot\ben\BenFightBot.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="injected\wow\bot\ben\BenTravelBot.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="injected\wow\bot\max\MaxBot.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="injected\wow\bot\WowPlayerClassBot.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pathfinder\IPathWaypointsConsumer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -219,6 +246,24 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="injected\Sandbox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="injected\wow\objectmanager\WowGuid64.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="injected\bot\Bot.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="injected\wow\bot\ben\BenBot.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="injected\wow\bot\ben\BenFightBot.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="injected\wow\bot\ben\BenTravelBot.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="injected\wow\bot\max\MaxBot.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

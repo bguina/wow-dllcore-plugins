@@ -36,10 +36,10 @@ public:
 	std::map<WowGuid64, std::shared_ptr<WowObject>>::iterator end();
 
 	template<class T >
-	std::shared_ptr<T> getObjectByGuid(WowGuid64 guid) {
+	std::shared_ptr<T> getObjectByGuid(const WowGuid64& guid) {
 		for (auto it = begin(); it != end(); ++it) {
 			if (guid == it->second->getGuid())
-				return std::static_pointer_cast<T>(it->second);
+				return std::static_pointer_cast< T>(it->second);
 		}
 
 		return nullptr;
@@ -99,24 +99,37 @@ inline std::ostream& operator<<(std::ostream& out, const ObjectManager& objMgr)
 {
 	out << "[ObjectManager@" << (void*)objMgr.getBaseAddress() << ":" << (objMgr.isEnabled() ? "ENABLED" : "DISABLED") << " with " << objMgr.getObjectsCount() << " objects]" << std::endl;
 
-	if (true) {
-		if (NULL != objMgr.getBaseAddress()) {
-			// iterate ObjectManger linked list
-			for (
-				auto it = objMgr.begin();
-				it != objMgr.end();
-				++it
-				) {
-				const std::shared_ptr<WowObject> obj(it->second);
 
-				switch (obj->getType()) {
+	if (NULL != objMgr.getBaseAddress()) {
+		// iterate ObjectManger linked list
+		for (
+			auto it = objMgr.begin();
+			it != objMgr.end();
+			++it
+			) {
+			const std::shared_ptr<WowObject> obj(it->second);
 
-				case WowObjectType::Unit: out << obj->downcast<WowUnitObject>(); break;
-
-				}
-
-				out << std::endl;
+			switch (obj->getType()) {
+			case WowObjectType::Object: out << *obj; break;
+			case WowObjectType::Item: out << *obj; break;
+			case WowObjectType::Container: out << *obj; break;
+			case WowObjectType::Unit: out << obj->downcast<WowUnitObject>(); break;
+			case WowObjectType::Player:  out << obj->downcast<WowPlayerObject>(); break;
+			case WowObjectType::ActivePlayer:   out << obj->downcast<WowActivePlayerObject>(); break;
+			case WowObjectType::GameObject:  out << *obj; break;
+			case WowObjectType::DynamicObject:   out << *obj; break;
+			case WowObjectType::Corpse: out << *obj; break;
+			case WowObjectType::AreaTrigger:  out << *obj; break;
+			case WowObjectType::Scene:  out << *obj; break;
+			case WowObjectType::Conversation:  out << *obj; break;
+			case WowObjectType::AiGroup:   out << *obj; break;
+			case WowObjectType::Scenario:  out << *obj; break;
+			case WowObjectType::Loot:  out << *obj; break;
+			case WowObjectType::Invalid:  out << *obj; break;
+			default:  out << *obj; break;
 			}
+
+			out << std::endl;
 		}
 	}
 

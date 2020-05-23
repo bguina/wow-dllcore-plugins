@@ -8,6 +8,7 @@ class APathFinder : public IPathFinder
 {
 public:
 	APathFinder();
+	virtual ~APathFinder();
 
 	virtual bool getGuaranteedDestination(Vector3f& result) const;
 

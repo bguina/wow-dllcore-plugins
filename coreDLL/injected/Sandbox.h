@@ -31,7 +31,7 @@ private:
 	std::unique_ptr<Client> mClient;
 	FileDebugger mDebugger;
 	WowGame mGame;
-	WowBot mBot;
+	std::unique_ptr<WowBot> mBot;
 
 public:
 	Sandbox(Sandbox const&) = delete;

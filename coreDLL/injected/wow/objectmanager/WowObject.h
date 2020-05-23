@@ -7,7 +7,7 @@
 #include "../dump/WowGameDescriptors.h"
 #include "../WowVector3f.h"
 
-typedef uint64_t WowGuid64;
+#include "WowGuid64.h"
 
 class WowObject : public MemoryObject
 {
@@ -63,14 +63,12 @@ protected:
 	void* vtableAt(unsigned index);
 };
 
-//typedef bool __thiscall (*CGPlayer_C__ClickToMove)(int *, int, int *, int *, float);
 
 inline std::ostream& operator<<(
 	std::ostream& out,
 	const WowObject& obj
 	)
 {
-	out << "[WowObject@" << (void*)obj.getAddress() << "]" << std::endl;
-	out << obj.getTypeLabel() << "[GUID 0x" << (void*)obj.getGuid() << " | " << (void*)obj.getGuid2() << "]@" << obj.getX() << "," << obj.getY() << " facing " << obj.getFacingRadians();
+	out << "[" << obj.getTypeLabel() << ":" << (void*)obj.getAddress() << ":GUID " << obj.getGuid().upper() << obj.getGuid().lower() << ":Pos" << obj.getX() << "," << obj.getY() << "]";
 	return out;
 }

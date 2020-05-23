@@ -51,38 +51,38 @@ void FileDebugger::clear() {
 	std::ofstream(mOutputFile, std::fstream::in | std::fstream::out);
 }
 
-void FileDebugger::log(const std::string& msg) {
+void FileDebugger::log(const std::string& msg) const {
 	mBuff << msg << std::endl;
 }
 
-void FileDebugger::log(std::stringstream& msg) {
+void FileDebugger::log(std::stringstream& msg) const {
 	log(msg.str());
 	msg.str("");
 }
 
-void FileDebugger::i(const std::string& msg) {
+void FileDebugger::i(const std::string& msg) const {
 	mBuff << info << "[i] " << msg << normal << std::endl;
 }
 
-void FileDebugger::w(const std::string& msg) {
+void FileDebugger::w(const std::string& msg) const {
 	mBuff << warn << "[w] " << msg << normal << std::endl;
 }
 
-void FileDebugger::e(const std::string& msg) {
+void FileDebugger::e(const std::string& msg) const {
 	mBuff << err << "[e] " << msg << normal << std::endl;
 }
 
-void FileDebugger::i(std::stringstream& msg) {
+void FileDebugger::i(std::stringstream& msg) const {
 	i(msg.str());
 	msg.str("");
 }
 
-void FileDebugger::w(std::stringstream& msg) {
+void FileDebugger::w(std::stringstream& msg) const {
 	w(msg.str());
 	msg.str("");
 }
 
-void FileDebugger::e(std::stringstream& msg) {
+void FileDebugger::e(std::stringstream& msg) const {
 	e(msg.str());
 	msg.str("");
 }

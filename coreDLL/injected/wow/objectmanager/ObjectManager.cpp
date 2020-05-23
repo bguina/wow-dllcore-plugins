@@ -81,7 +81,7 @@ void ObjectManager::scan() {
 				}
 
 				if (nullptr != finalObj) {
-					mObjects.insert(std::pair<WowGuid64, std::shared_ptr<WowObject>>(thisObj.getGuid(), finalObj));
+					mObjects.insert(std::pair<WowGuid64, std::shared_ptr<WowObject>>(finalObj->getGuid(), finalObj));
 				}
 			}
 			else {

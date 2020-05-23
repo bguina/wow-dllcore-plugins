@@ -1,46 +1,33 @@
 #pragma once
 
-#include <set>
+#include "../../bot/Bot.h"
 
-#include "../../ISandboxPlugin.h"
-
-#include "../WowVector3f.h"
 #include "../../../debugger/FileDebugger.h"
-#include "../objectmanager/WowObject.h"
 
 class IPathFinder;
 class WowGame;
-class WowUnitObject;
 
-class WowBot : public ISandboxPlugin
+class WowBot : public Bot
 {
 public:
-	WowBot(WowGame& game);
+	WowBot(WowGame& game, const std::string& tag);
 	virtual ~WowBot();
 
-	virtual void run();
+	virtual void run() = 0;
 
-	void pause(bool paused);
-	bool isPaused() const;
+	virtual void pause(bool paused) override;
+	virtual bool isPaused() const;
 
-	void loadLinearWaypoints(const std::vector<WowVector3f>& waypoints);
+
 
 protected:
-	void flushDebug();
+	virtual void logDebug() const;
 
 	WowGame& mGame;
 	FileDebugger mDbg;
-	bool mPaused;
-	std::unique_ptr<IPathFinder> mPathFinder;
-	std::shared_ptr<const WowUnitObject> mDirectUnitAttack;
-	std::set<WowGuid64> mBlacklistedGuids;
 };
 
-inline std::ostream& operator<<(
-	std::ostream& out,
-	const class WowBot& obj
-	)
-{
+inline std::ostream& operator<<(std::ostream& out, const class WowBot& obj) {
 	out << "[WowBot:" << (obj.isPaused() ? "paused" : "running") << "]";
 	return out;
 }

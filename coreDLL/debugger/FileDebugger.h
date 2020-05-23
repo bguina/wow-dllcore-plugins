@@ -8,19 +8,19 @@ public:
 	virtual ~FileDebugger();
 
 	// append output for the next file flush
-	virtual void log(const std::string& msg) override;
-	virtual void log(std::stringstream& msg) override;
+	virtual void log(const std::string& msg) const override;
+	virtual void log(std::stringstream& msg) const override;
 
 	// append output with debug level for the next file flush
-	virtual void i(const std::string& msg) override;
-	virtual void w(const std::string& msg) override;
-	virtual void e(const std::string& msg) override;
+	virtual void i(const std::string& msg) const override;
+	virtual void w(const std::string& msg) const override;
+	virtual void e(const std::string& msg) const override;
 
 	// append output with debug level for the next file flush
 	// also, clears the stringstream after reading it.
-	virtual void i(std::stringstream& msg) override;
-	virtual void w(std::stringstream& msg) override;
-	virtual void e(std::stringstream& msg) override;
+	virtual void i(std::stringstream& msg) const override;
+	virtual void w(std::stringstream& msg) const override;
+	virtual void e(std::stringstream& msg) const override;
 
 	// clear previous file content
 	void clear();
@@ -29,13 +29,13 @@ public:
 	void flush();
 
 	template<typename T>
-	std::ostream& operator<<(const T& obj) {
+	std::ostream& operator<<(const T& obj) const {
 		mBuff << obj;
 		return mBuff;
 	}
 
 private:
-	std::stringstream mBuff;
+	mutable std::stringstream mBuff;
 	const std::string mFolder;
 	const std::string mOutputFile;
 

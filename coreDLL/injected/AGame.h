@@ -21,6 +21,11 @@ public:
 
 	template<typename T>
 	const T* get(uint64_t offset) const {
+		return reinterpret_cast<const T*>(getAddress() + offset);
+	}
+
+	template<typename T>
+	T* getWritable(uint64_t offset)  {
 		return reinterpret_cast<T*>(getAddress() + offset);
 	}
 

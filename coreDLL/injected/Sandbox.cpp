@@ -5,9 +5,22 @@
 
 #include "Sandbox.h"
 #include "Client.h"
-#include "../pathfinder/Vector3f.h"
-#include "wow/observers/ActivePlayerPositionObserver.h"
 #include "../NetworkParsing.h"
+
+/* Observers */
+// Observe wow player positions
+#include "wow/observers/ActivePlayerPositionObserver.h"
+
+/* Instanciators */
+// Wow bots
+#include "wow/bot/ben/BenFightBot.h"
+#include "wow/bot/ben/BenTravelBot.h"
+#include "wow/bot/max/MaxBot.h"
+
+/* Features */
+
+// provide a vector<vector3f> to an instance
+#include "../pathfinder/IPathWaypointsConsumer.h"
 
 bool Sandbox::stackServerMessages() {
 	std::list<std::string> messages = mClient->getMessageAvailable();
@@ -16,8 +29,7 @@ bool Sandbox::stackServerMessages() {
 	{
 		auto messageType = mClient->getMessageManager().getMessageType((*msgIte));
 
-		switch (messageType)
-		{
+		switch (messageType) {
 		case MessageType::START_SUBSCRIBE: {
 			std::list<std::string> toSubscribe = mClient->getMessageManager().getSubcribeObject(*msgIte);
 
@@ -41,6 +53,7 @@ bool Sandbox::stackServerMessages() {
 		case MessageType::WAYPOINTS: {
 			std::list<std::string> rawWaypoints = mClient->getMessageManager().getWaypointsObject(*msgIte);
 			std::vector<Vector3f> waypoints;
+			mDebugger << FileDebugger::info << "WAYPOINTS" << FileDebugger::normal << std::endl;
 
 			for (std::list<std::string>::iterator it = rawWaypoints.begin(); it != rawWaypoints.end(); it++) {
 				std::vector<std::string> rawVector3f;
@@ -51,16 +64,25 @@ bool Sandbox::stackServerMessages() {
 				else throw "Bad split!";
 			}
 
-			mBot.loadLinearWaypoints(waypoints);
+			auto waypointLoader = dynamic_cast<IPathWaypointsConsumer*>(mBot.get());
+			if (nullptr != waypointLoader) {
+				mDebugger << FileDebugger::err << "Loading " << waypoints.size() << " waypoints" << FileDebugger::normal << std::endl;
+				waypointLoader->loadPathWaypoints(waypoints);
+			}
+			else {
+				mDebugger << FileDebugger::err << "Running instance does not implement IPathWaypointsConsumer" << FileDebugger::normal << std::endl;
+			}
 			break;
 		}
 		case MessageType::START_BOT: {
-			mBot.pause(false);
+			mDebugger << FileDebugger::warn << "START_BOT" << FileDebugger::normal << std::endl;
+			mBot->pause(false);
 			break;
 		}
 		case MessageType::STOP_BOT: {
-			mBot.pause(true);
-			break; 
+			mDebugger << FileDebugger::warn << "STOP_BOT" << FileDebugger::normal << std::endl;
+			mBot->pause(true);
+			break;
 		}
 		case MessageType::DEINJECT: {
 			return false;
@@ -78,16 +100,33 @@ Sandbox::Sandbox() :
 	mBootTime(GetTickCount64()), mLastPulse(0),
 	mClient(std::make_unique<Client>()),
 	mGame((const uint8_t*)GetModuleHandleA(0)),
-	mBot(mGame)
+	mBot(nullptr)
 {
 	if (mClient->joinServer()) {
 		mClient->sendMessage(mClient->getMessageManager().builRequestdDLLInjectedMessage(getGame().getPid()));
+	}
+
+	int botSelection = 1;
+
+	switch (botSelection) {
+	case 0:
+		mDebugger << FileDebugger::info << "creating WowMaxBot" << FileDebugger::normal << std::endl;
+		mBot = std::make_unique<WowMaxBot>(mGame);
+		break;
+	case 42:
+		mDebugger << FileDebugger::info << "creating BenTravelBot" << FileDebugger::normal << std::endl;
+		mBot = std::make_unique<BenTravelBot>(mGame);
+		break;
+	default:
+		mDebugger << FileDebugger::info << "creating BenFightBot" << FileDebugger::normal << std::endl;
+		mBot = std::make_unique<BenFightBot>(mGame);
+		break;
 	}
 }
 
 Sandbox::~Sandbox() {
 	mClient->disconnect();
-	mDebugger.log("~Sandbox");
+	mDebugger << FileDebugger::warn << "~Sandbox" << FileDebugger::normal << std::endl;
 }
 
 uint64_t Sandbox::getBootTime() const { return mBootTime; }
@@ -106,16 +145,9 @@ bool Sandbox::run() {
 	if (throttle()) return true;
 	if (!mClient->isConnected() || !stackServerMessages()) return false;
 
-	std::stringstream ss;
-	ss << "abort? " << abort << std::endl;
-
 	mGame.update();
-	mBot.run();
-	ss << FileDebugger::info << "bot.run" << std::endl;
-
+	mBot->run();
 	mLastPulse = GetTickCount64();
-
-	mDebugger << ss.str();
 	mDebugger.flush();
 	return true;
 }

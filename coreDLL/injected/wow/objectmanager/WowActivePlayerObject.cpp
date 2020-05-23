@@ -25,7 +25,13 @@ bool WowActivePlayerObject::isFriendly(const WowGame& game, const WowUnitObject&
 }
 
 uint64_t  WowActivePlayerObject::interactWith(const WowGame& game, const uint32_t* targetGuid) {
-	auto UnitInteract = game.get<ActivePlayerInteract>( 0xD65D60);
+	auto UnitInteract = game.get<ActivePlayerInteract>(0xD65D60);
 
 	return UnitInteract(targetGuid);
+}
+
+const uint32_t* WowActivePlayerObject::getCamera(const WowGame& game) {
+	const uint32_t* cameraPtr = *game.get<uint32_t*>(0xD65D60);
+
+	return cameraPtr;
 }
