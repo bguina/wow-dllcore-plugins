@@ -22,7 +22,7 @@
     <VCProjectVersion>16.0</VCProjectVersion>
     <ProjectGuid>{62C3F70F-F814-426D-96D1-F3C6751B750D}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>serverSDK</RootNamespace>
+    <RootNamespace>client</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
     <ProjectName>client</ProjectName>
   </PropertyGroup>

@@ -91,7 +91,7 @@
       <WarningLevel>Level4</WarningLevel>
       <PreprocessorDefinitions>_DEBUG;COREDLL_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>..\serverSDK;..\MessageManager;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\client;..\MessageManager;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>false</TreatWarningAsError>
     </ClCompile>
     <Link>
@@ -144,7 +144,7 @@
       <PreprocessorDefinitions>NDEBUG;COREDLL_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>C:\Users\maxim\source\repos\wow-bot\serverSDK;C:\Users\maxim\source\repos\wow-bot\MessageManager;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\maxim\source\repos\wow-bot\client;C:\Users\maxim\source\repos\wow-bot\MessageManager;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -234,7 +234,7 @@
     <ProjectReference Include="..\MessageManager\MessageManager.vcxproj">
       <Project>{9b69c2f2-f080-4375-8f30-c6d5176acc1c}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\serverSDK\serverSDK.vcxproj">
+    <ProjectReference Include="..\client\client.vcxproj">
       <Project>{62c3f70f-f814-426d-96d1-f3c6751b750d}</Project>
     </ProjectReference>
   </ItemGroup>

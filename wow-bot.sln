@@ -11,7 +11,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "coreDLL", "coreDLL\coreDLL.
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "windowQT", "windowQT\windowQT.vcxproj", "{84BE4C40-6936-4C6B-8BBC-8000A182B45A}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "serverSDK", "serverSDK\serverSDK.vcxproj", "{62C3F70F-F814-426D-96D1-F3C6751B750D}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "client", "client\client.vcxproj", "{62C3F70F-F814-426D-96D1-F3C6751B750D}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MessageManager", "MessageManager\MessageManager.vcxproj", "{9B69C2F2-F080-4375-8F30-C6D5176ACC1C}"
 EndProject
