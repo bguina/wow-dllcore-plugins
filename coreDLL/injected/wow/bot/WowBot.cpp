@@ -24,6 +24,10 @@ WowBot::~WowBot()
 
 void WowBot::pause(bool paused) {
 	mPaused = paused;
+	if (paused)
+	{
+		mGame.getWindowController()->releaseAllKeys();
+	}
 }
 
 bool WowBot::isPaused() const {
@@ -43,7 +47,7 @@ void WowBot::run() {
 		std::shared_ptr<WowActivePlayerObject> self = mGame.getObjectManager().getActivePlayer();
 
 		if (self != nullptr) {
-		
+
 
 			if (nullptr != mCurrentUnitTarget && mBlacklistedGuids.find(mCurrentUnitTarget->getGuid()) != mBlacklistedGuids.end())
 			{
@@ -83,8 +87,12 @@ void WowBot::run() {
 				mDbg.i("targetting some unit...");
 				if (self->getPosition().getDistanceTo(mCurrentUnitTarget->getPosition()) > 5)
 				{
-					mDbg.i("target unit still out of reach");
-					//self->moveTo(mGame, mCurrentUnitTarget->getPosition());
+					mDbg << FileDebugger::info << "My position" << self->getPosition() << FileDebugger::normal << std::endl;
+					mDbg << FileDebugger::info << "target unit still out of reach" << mCurrentUnitTarget->getPosition() << FileDebugger::normal << std::endl;
+					//mDbg.i("target unit still out of reach");
+
+					self->moveTo(mGame, mCurrentUnitTarget->getPosition());
+
 				}
 				else {
 					mDbg.i("Killed target! yay!");

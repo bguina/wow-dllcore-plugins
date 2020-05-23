@@ -57,7 +57,7 @@ int WowUnitObject::getUnitMaxEnergy() const {
 uint64_t WowUnitObject::getTargetGuid() const {
 	return *reinterpret_cast<const uint32_t*>(getDescriptor() + WowGameOffsets::WowUnitObject::DescriptorOffsetTargetGuid);
 }
-/*
+
 void WowUnitObject::moveTo(WowGame& game, const WowVector3f& destination) {
 	int angle = getPosition().getFacingDegreesTo(destination);
 	int delta = getPosition().getFacingDeltaDegrees(getFacingDegrees(), destination);
@@ -70,4 +70,3 @@ void WowUnitObject::moveTo(WowGame& game, const WowVector3f& destination) {
 	// move forward if approximately on the right facing
 	windowController->pressKey(WinVirtualKey::WVK_W, abs(delta) < anglePrecision * 2);
 }
-*/

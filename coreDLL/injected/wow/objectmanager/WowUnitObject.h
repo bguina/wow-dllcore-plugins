@@ -28,7 +28,7 @@ public:
 
 	uint64_t getTargetGuid() const;
 
-	//void moveTo(WowGame& game, const WowVector3f& destination);
+	void moveTo(WowGame& game, const WowVector3f& destination);
 };
 
 inline std::ostream& operator<<(
