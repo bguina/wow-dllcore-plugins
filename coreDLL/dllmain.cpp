@@ -14,7 +14,7 @@
 static boolean gShouldStop = false;
 
 void MainThread(void* pHandle) {
-	FileDebugger dbg("MainThread");
+	//FileDebugger dbg("MainThread");
 
 	if (HookD3D()) {
 		while (!gShouldStop && !GetAsyncKeyState(VK_END)) {
@@ -22,7 +22,7 @@ void MainThread(void* pHandle) {
 		}
 	}
 
-	dbg << "deinject\n";
+	//dbg << "deinject\n";
 	deinject(pHandle);
 }
 
@@ -30,16 +30,16 @@ void Render()
 {
 	static Sandbox* sandbox = nullptr;
 
-	if (!gShouldStop)  {
+	if (!gShouldStop) {
 		boolean stopSandbox = false;
 
-		if (nullptr == sandbox)	{	sandbox = new Sandbox();}
+		if (nullptr == sandbox) { sandbox = new Sandbox(); }
 		stopSandbox = !sandbox->run();
-			drawSomeTriangle();
+		drawSomeTriangle();
 
 		if (stopSandbox) {
 
-				delete sandbox;
+			delete sandbox;
 
 			gShouldStop = true;
 		}
