@@ -14,7 +14,7 @@ struct WowGameOffsets {
 		static const uint64_t OffsetGuid = 0x58;
 		static const uint64_t OffsetPosition = 0x1600;
 		static const uint64_t OffsetFacing = 0x1610;
-		
+
 	};
 
 	struct WowUnitObject {
@@ -26,5 +26,6 @@ struct WowGameOffsets {
 		static const uint64_t DescriptorOffsetEnergy = 0xE4;
 		static const uint64_t DescriptorOffsetMaxEnergy = 0x104;
 		static const uint64_t DescriptorOffsetTargetGuid = 0x9C;
+		static const uint64_t DescriptorOffsetDynamicflags = 0x174;
 	};
 };

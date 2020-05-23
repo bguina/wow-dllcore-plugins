@@ -41,3 +41,7 @@ enum class WowUnitRace : uint8_t {
 	None = 0,
 
 };
+
+enum class WowUnitDynamicFlags : uint32_t {
+	isInCombat = 0x0080000,
+};

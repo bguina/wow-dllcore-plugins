@@ -26,7 +26,9 @@ public:
 
 	int getUnitMaxEnergy() const;
 
-	uint64_t getTargetGuid() const;
+	bool isInCombat() const;
+
+	WowGuid64 getTargetGuid() const;
 
 	void moveTo(WowGame& game, const WowVector3f& destination);
 };

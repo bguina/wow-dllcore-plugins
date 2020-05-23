@@ -54,8 +54,12 @@ int WowUnitObject::getUnitMaxEnergy() const {
 	return *reinterpret_cast<const uint32_t*>((getDescriptor() + WowGameOffsets::WowUnitObject::DescriptorOffsetMaxEnergy));
 }
 
-uint64_t WowUnitObject::getTargetGuid() const {
-	return *reinterpret_cast<const uint32_t*>(getDescriptor() + WowGameOffsets::WowUnitObject::DescriptorOffsetTargetGuid);
+bool WowUnitObject::isInCombat() const {
+	return *reinterpret_cast<const uint32_t*>((getDescriptor() + WowGameOffsets::WowUnitObject::DescriptorOffsetDynamicflags)) & (int)WowUnitDynamicFlags::isInCombat;
+}
+
+WowGuid64 WowUnitObject::getTargetGuid() const {
+	return ((WowGuid64*)(getDescriptor() + WowGameOffsets::WowUnitObject::DescriptorOffsetTargetGuid))[0];
 }
 
 void WowUnitObject::moveTo(WowGame& game, const WowVector3f& destination) {

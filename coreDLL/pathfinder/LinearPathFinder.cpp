@@ -48,11 +48,11 @@ bool LinearPathFinder::findPath(const Vector3f& currentPosition, Vector3f& resul
 	return false;
 }
 
-bool LinearPathFinder::moveAlong(const Vector3f& currentPosition, Vector3f& result)  {
+bool LinearPathFinder::moveAlong(const Vector3f& currentPosition, Vector3f& result) {
 	return followPathToDestination(currentPosition, result);
 }
 
-bool LinearPathFinder::followPathToDestination(const Vector3f& currentPosition, Vector3f& result)  {
+bool LinearPathFinder::followPathToDestination(const Vector3f& currentPosition, Vector3f& result) {
 	std::stringstream ss;
 
 	if (mNextWaypoint == mPath.end()) {
@@ -67,7 +67,7 @@ bool LinearPathFinder::followPathToDestination(const Vector3f& currentPosition, 
 		// fixme: this should never happen since we are supposed to lead to the mDestinationWaypoint (unless destination is not set?)
 		if (mNextWaypoint == mPath.end())
 		{
-			bool endIsNearStart = currentPosition.getDistanceTo(*mPath.begin()) < 30;
+			bool endIsNearStart = currentPosition.getDistanceTo(*mPath.begin()) < 3;
 
 			if (!endIsNearStart)
 			{

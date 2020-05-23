@@ -78,6 +78,18 @@ void WowBot::run() {
 
 		if (self != nullptr) {
 
+			mDbg << FileDebugger::info << "self == " << (void*)self->getAddress() << " combat == " << self->isInCombat() << FileDebugger::normal << std::endl;
+
+			mDbg << FileDebugger::info << "target guid == " << (void*)self->getTargetGuid() << FileDebugger::normal << std::endl;
+
+			std::shared_ptr<WowUnitObject> currentTarget = mGame.getObjectManager().getObjectByGuid<WowUnitObject>(self->getTargetGuid());
+
+			if (currentTarget != nullptr)
+			{
+				mDbg << FileDebugger::info << "target address = " << (void*)currentTarget->getAddress() << FileDebugger::normal << std::endl;
+			}
+
+
 
 			if (nullptr != mDirectUnitAttack && (mBlacklistedGuids.find(mDirectUnitAttack->getGuid()) != mBlacklistedGuids.end()))
 			{
@@ -105,7 +117,7 @@ void WowBot::run() {
 					}
 
 				}
-				if (distance < 5000)
+				if (distance < 10)
 				{
 					mDbg.i("found new target to attack");
 					mDirectUnitAttack = targetUnit;
@@ -162,7 +174,7 @@ void WowBot::run() {
 
 					if (mPathFinder->moveAlong(selfPosition, nextPosition)) {
 						mDbg.i("mPathFinder moving along the path");
-						//self->moveTo(mGame, nextPosition);
+						self->moveTo(mGame, nextPosition);
 					}
 					else {
 						mDbg.i("mPathFinder could not move along :(");
