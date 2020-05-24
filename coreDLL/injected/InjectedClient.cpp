@@ -88,7 +88,7 @@ bool InjectedClient::_dispatchMessages() {
 		const std::string& msgIdentifier(*msgIte);
 		PluginServerMessage msg(_buildMessage(msgIdentifier));
 
-		if (msg.data.eject) {
+		if (msg.eject) {
 			mDebugger << FileLogger::err << "got ejection order " << (int)msg.type << FileLogger::normal << std::endl;
 			return false;
 		}
@@ -115,7 +115,7 @@ PluginServerMessage InjectedClient::_buildMessage(const std::string& messageId) 
 	PluginServerMessage result;
 
 	result.type = messenger.getMessageType(messageId);
-	result.data.eject = false;
+	result.eject = false;
 	switch (result.type) {
 	case MessageType::SUBSCRIBE_DLL_UPDATES: {
 		std::list<std::string> toSubscribe = mClient->getMessageManager().getSubcribeObject(messageId);
@@ -152,7 +152,7 @@ PluginServerMessage InjectedClient::_buildMessage(const std::string& messageId) 
 			else throw "Bad split!";
 		}
 
-		result.data.waypoints = waypoints;
+		result.waypoints = waypoints;
 		/*auto waypointLoader = dynamic_cast<IWaypointsConsumerPlugin*>(mPlugin.get());
 		if (nullptr != waypointLoader) {
 			mDebugger << FileLogger::err << "Loading " << waypoints->size() << " waypoints" << FileLogger::normal << std::endl;
@@ -187,7 +187,7 @@ PluginServerMessage InjectedClient::_buildMessage(const std::string& messageId) 
 		break;
 	}
 	case MessageType::POST_SERVER_EJECTION: {
-		result.data.eject = true;
+		result.eject = true;
 		break;
 	}
 	default:

@@ -9,8 +9,6 @@
 class PluginServerMessage {
 public:
 	MessageType type;
-	union {
-		char eject;
-		const std::vector<Vector3f>* waypoints;
-	} data;
+	char eject;
+	const std::vector<Vector3f>* waypoints;
 };
