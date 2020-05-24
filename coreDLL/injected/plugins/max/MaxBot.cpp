@@ -38,14 +38,14 @@ bool WowMaxBot::handleServerMessage(const PluginServerMessage& serverMessage) {
 }
 
 void WowMaxBot::onD3dRender() {
-
+	
 	AWowBot::onD3dRender();
 }
 
 void WowMaxBot::_onRunning() {
+	
 	_logDebug();
 
-	if (!mPaused) {
 		std::shared_ptr<WowActivePlayerObject> self = mGame.getObjectManager().getActivePlayer();
 		mDbg << FileLogger::info << TAG << " running" << FileLogger::normal << std::endl;
 
@@ -161,7 +161,6 @@ void WowMaxBot::_onRunning() {
 		else {
 			mDbg.w("no WowActivePlayerObject");
 		}
-	}
 
 	mDbg.flush();
 }
