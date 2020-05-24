@@ -1,8 +1,8 @@
 #include "pch.h"
 
 #include "WowGame.h"
-#include "../../d3d/d3d.h"
-#include "../../windowcontroller/PostMessageWindowController.h"
+#include "../../../d3d/d3d.h"
+#include "../../../windowcontroller/PostMessageWindowController.h"
 #include "../../observer/ARecurrentServerObserver.h"
 
 WowGame::WowGame(const uint8_t* baseAddr) :

@@ -35,7 +35,7 @@ InjectedClient::InjectedClient() :
 		mClient->sendMessage(mClient->getMessageManager().builRequestdDLLInjectedMessage(getGame().getPid()));
 	}
 
-	int botSelection = 56;
+	int botSelection = 0;
 
 	switch (botSelection) {
 	case 0:
@@ -84,7 +84,7 @@ bool InjectedClient::run() {
 bool InjectedClient::_dispatchMessages() {
 	std::list<std::string> messages = mClient->getMessageAvailable();
 
-	for (std::list<std::string>::iterator msgIte = messages.begin(); msgIte != messages.end(); msgIte++){
+	for (std::list<std::string>::iterator msgIte = messages.begin(); msgIte != messages.end(); msgIte++) {
 		const std::string& msgIdentifier(*msgIte);
 		PluginServerMessage msg(_buildMessage(msgIdentifier));
 

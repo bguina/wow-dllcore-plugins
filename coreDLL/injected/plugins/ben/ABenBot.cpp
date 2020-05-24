@@ -4,8 +4,8 @@
 
 #include "ABenBot.h"
 
-#include "../../pathfinder/LinearPathFinder.h"
-#include "../../logger/FileLogger.h"
+#include "../../../pathfinder/LinearPathFinder.h"
+#include "../../../logger/FileLogger.h"
 
 #include "../../process/wow/WowGame.h"
 #include "../../process/wow/object/WowActivePlayerObject.h"
