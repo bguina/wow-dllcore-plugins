@@ -55,7 +55,11 @@ int WowUnitObject::getUnitMaxEnergy() const {
 }
 
 bool WowUnitObject::isInCombat() const {
-	return *reinterpret_cast<const uint32_t*>((getDescriptor() + WowGameOffsets::WowUnitObject::DescriptorOffsetDynamicflags)) & (int)WowUnitDynamicFlags::isInCombat;
+	return *reinterpret_cast<const uint32_t*>((getDescriptor() + WowGameOffsets::WowUnitObject::DescriptorOffsetUnitDynamicflags)) & (int)WowUnitDynamicFlags::isInCombat;
+}
+
+bool WowUnitObject::isLootable() const {
+	return *reinterpret_cast<const uint32_t*>((getDescriptor() + WowGameOffsets::WowUnitObject::DescriptorOffsetObjectDynamicflags)) & (int)WowUnitDynamicFlags::isLootable;
 }
 
 WowGuid128 WowUnitObject::getTargetGuid() const {

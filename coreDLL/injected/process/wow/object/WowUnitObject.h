@@ -28,6 +28,8 @@ public:
 
 	bool isInCombat() const;
 
+	bool isLootable() const;
+
 	WowGuid128 getTargetGuid() const;
 
 	void moveTo(WowGame& game, const WowVector3f& destination);
