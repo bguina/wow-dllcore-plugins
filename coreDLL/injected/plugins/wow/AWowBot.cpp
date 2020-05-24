@@ -22,10 +22,14 @@ AWowBot::~AWowBot()
 
 bool AWowBot::pause(bool paused) {
 	if (APausablePlugin::pause(paused)) {
+		mDbg << FileLogger::warn << "pause state toggled" << FileLogger::normal << std::endl;
+
 		if (isPaused()) _onPaused();
 		else _onResumed();
 		return true;
 	}
+
+	mDbg << FileLogger::err << "pause toggle failure" << FileLogger::normal << std::endl;
 	return false;
 }
 

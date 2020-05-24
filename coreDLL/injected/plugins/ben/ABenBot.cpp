@@ -22,21 +22,18 @@ ABenBot::~ABenBot() {
 }
 
 bool ABenBot::pause(bool paused) {
-	if (AWowBot::pause(paused)) {
-		if (isPaused()) _onPaused();
-		else _onResumed();
-		return true;
-	}
-	return false;
+	return AWowBot::pause(paused);
 }
 
 void ABenBot::_onResumed() {
 	AWowBot::_onResumed();
+
 	mDbg << FileLogger::info << TAG << " HELLO MAX ! RESUME" << FileLogger::normal << std::endl;
 }
 
 void ABenBot::_onPaused() {
 	mDbg << FileLogger::info << TAG << " HELLO MAX ! PAUSE" << FileLogger::normal << std::endl;
+
 	AWowBot::_onPaused();
 }
 

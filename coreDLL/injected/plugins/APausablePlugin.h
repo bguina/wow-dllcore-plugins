@@ -10,6 +10,8 @@ public:
 	APausablePlugin(const std::string& tag);
 	virtual ~APausablePlugin();
 
+	virtual const std::string& getTag() const override;
+
 	virtual bool pause(bool paused);
 	virtual bool isPaused() const;
 
