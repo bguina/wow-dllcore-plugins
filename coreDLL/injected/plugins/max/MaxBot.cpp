@@ -63,7 +63,7 @@ void WowMaxBot::_onRunning() {
 			mDbg << FileLogger::info << "target address = " << (void*)currentTarget->getAddress() << " Lootable == " << currentTarget->isLootable() << FileLogger::normal << std::endl;
 		}
 
-		if (nullptr != mTargetUnit && (mBlacklistedGuids.find(mTargetUnit->getGuid()) != mBlacklistedGuids.end()))
+		if (nullptr != mTargetUnit && (0 == mTargetUnit->getAddress() || mBlacklistedGuids.find(mTargetUnit->getGuid()) != mBlacklistedGuids.end()))
 		{
 			mDbg << "GUID is blacklisted, ignoring" << mTargetUnit->getGuid().upper();
 			mTargetUnit = nullptr;
@@ -89,7 +89,7 @@ void WowMaxBot::_onRunning() {
 				}
 
 			}
-			if (distance < 10)
+			if (distance < 100)
 			{
 				mDbg.i("found new target to attack");
 				mTargetUnit = targetUnit;
@@ -99,7 +99,7 @@ void WowMaxBot::_onRunning() {
 		// Are we far away the target unit?
 		if (nullptr != mTargetUnit) {
 			mDbg.i("targetting some unit...");
-			if (self->getPosition().getDistanceTo(mTargetUnit->getPosition()) > 5)
+			if (self->getPosition().getDistanceTo(mTargetUnit->getPosition()) > 20)
 			{
 				mDbg << FileLogger::info << "My position" << self->getPosition() << FileLogger::normal << std::endl;
 				mDbg << FileLogger::info << "target unit " << mTargetUnit->getGuid().upper() << " still out of reach" << mTargetUnit->getPosition() << FileLogger::normal << std::endl;
@@ -131,9 +131,11 @@ void WowMaxBot::_onRunning() {
 			}
 			else {
 				mDbg.i("Killed target! yay!");
+
 				// Unit gets "killed" (blacklisted for now)
 				mBlacklistedGuids.insert(mTargetUnit->getGuid());
-
+				self->interactWith(mGame, mTargetUnit->getGuidPtr());
+				mGame.getSpellBookManager().clickSpell(mGame, 22723);
 
 			}
 		}

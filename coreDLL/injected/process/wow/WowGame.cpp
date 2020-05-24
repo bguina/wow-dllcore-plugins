@@ -56,6 +56,10 @@ const SpellBookManager& WowGame::getSpellBookManager() const {
 	return mSpellBookMgr;
 }
 
+SpellBookManager& WowGame::getSpellBookManager() {
+	return mSpellBookMgr;
+}
+
 bool WowGame::isObjectManagerActive() const {
 	return NULL != mObjMgr.getBaseAddress();
 }

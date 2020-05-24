@@ -5,7 +5,7 @@
 
 typedef char(__fastcall ActivePlayerCanAttack)(const uint8_t* self, const uint8_t* target, char unknown);
 typedef bool(__fastcall ActivePlayerIsFriendlyWith)(const uint8_t* self, const uint8_t* target);
-typedef uint64_t(__fastcall ActivePlayerInteract)(const uint32_t*);
+typedef uint64_t(__fastcall ActivePlayerInteract)(const WowGuid128*);
 
 WowActivePlayerObject::WowActivePlayerObject(const uint8_t* baseAddr) : 
 	WowPlayerObject(baseAddr)
@@ -20,7 +20,7 @@ bool WowActivePlayerObject::isFriendly(const WowGame& game, const WowUnitObject&
 	return game.get<ActivePlayerIsFriendlyWith>(0x8A0FF0)(getAddress(), target.getAddress());
 }
 
-uint64_t  WowActivePlayerObject::interactWith(const WowGame& game, const uint32_t* targetGuid) {
+uint64_t  WowActivePlayerObject::interactWith(const WowGame& game, const WowGuid128* targetGuid) {
 	return game.get<ActivePlayerInteract>(0xD65D60)(targetGuid);
 }
 

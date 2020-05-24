@@ -62,6 +62,7 @@ void AWowBot::_logDebug() const {
 		// show info relative to self
 		mDbg << "Self position is " << self->getPosition() << " angle is " << self->getFacingDegrees() << std::endl;
 		mDbg << "Self in combat: " << self->isInCombat() << std::endl;
+		mDbg << FileLogger::info << "Spellbook Count " << mGame.getSpellBookManager().getSpellBookCount() << FileLogger::normal << std::endl;
 		auto targetGuid = self->getTargetGuid();
 
 		if (0 != targetGuid) {

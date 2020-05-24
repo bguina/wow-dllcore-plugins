@@ -29,6 +29,8 @@ public:
 
 	const SpellBookManager& getSpellBookManager() const;
 
+	SpellBookManager& getSpellBookManager();
+
 	const char* getVersionBuild() const;
 
 	const char* getReleaseDate() const;

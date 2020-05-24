@@ -15,7 +15,7 @@ public:
 
 	const uint32_t* getCamera(const WowGame& game);
 
-	uint64_t interactWith(const WowGame& game, const uint32_t* targetGuid);
+	uint64_t interactWith(const WowGame& game, const WowGuid128* targetGuid);
 };
 
 inline std::ostream& operator<<(

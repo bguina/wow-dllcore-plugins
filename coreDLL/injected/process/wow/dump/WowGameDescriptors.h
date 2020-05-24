@@ -35,6 +35,9 @@ enum class WowObjectDynamicFlags : uint32_t {
 	IsTappedByAllThreatList = 0x100,
 };
 
+//https://www.ownedcore.com/forums/world-of-warcraft/world-of-warcraft-bots-programs/wow-memory-editing/839080-classic-1-13-3-32887-a.html
+//check here for me info about "isTaggedByMe"
+
 enum class WowUnitClass : uint8_t {
 	None = 0,
 	Warrior = 1,

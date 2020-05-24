@@ -32,4 +32,8 @@ struct WowGameOffsets {
 		static const uint64_t DescriptorOffsetTargetGuid = 0x9C;
 		static const uint64_t DescriptorOffsetUnitDynamicflags = 0x174;
 	};
+
+	struct WowSpellbook {
+		static const uint64_t FunctionClickSpell = 0x7687C0;
+	};
 };

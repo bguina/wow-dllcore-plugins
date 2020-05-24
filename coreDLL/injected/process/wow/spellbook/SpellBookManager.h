@@ -3,6 +3,8 @@
 #include <cstdint>
 #include <iostream>
 
+class WowGame;
+
 class SpellBookManager
 {
 public:
@@ -13,6 +15,8 @@ public:
 	void scan();
 
 	const uint8_t* getBaseAddress() const;
+
+	uint64_t clickSpell(const WowGame& game, uint32_t spellId);
 
 private:
 	const uint8_t* mPointerAddr;
@@ -36,7 +40,7 @@ inline std::ostream& operator<<(
 	if (NULL != spellBookMgr.getBaseAddress()) {
 		//Add more print here for spell count // spell list ID
 	}
-	
+
 	return out;
 }
 
