@@ -7,6 +7,8 @@ public:
 	FileLogger(const std::string& tag);
 	virtual ~FileLogger();
 
+	virtual const std::string& getTag() const override;
+
 	// append output for the next file flush
 	virtual void log(const std::string& msg) const override;
 	virtual void log(std::stringstream& msg) const override;
@@ -37,6 +39,7 @@ public:
 private:
 	mutable std::stringstream mBuff;
 	const std::string mFolder;
+	const std::string mTag;
 	const std::string mOutputFile;
 
 public:

@@ -9,9 +9,10 @@
 const std::string TAG = "BenPlayerClassBot";
 
 ABenFarmingBot::ABenFarmingBot(WowGame& game, const std::string& tag) :
-	ABenBot(game, tag)
+	ABenBot(game, tag),
+	mPathFinder(nullptr)
 {
-	mDbg << FileLogger::warn << "ABenFarming("<< tag << ")" << FileLogger::normal << FileLogger::normal << std::endl;
+	mDbg << FileLogger::warn << "ABenFarming(" << tag << ")" << FileLogger::normal << FileLogger::normal << std::endl;
 }
 
 ABenFarmingBot::~ABenFarmingBot() {
@@ -19,18 +20,15 @@ ABenFarmingBot::~ABenFarmingBot() {
 }
 
 bool ABenFarmingBot::handleServerMessage(const PluginServerMessage& serverMessage) {
-
-	if (!AWowBot::handleServerMessage(serverMessage)) {
-		switch (serverMessage.type)
-		{
-		case MessageType::POST_DLL_DATA_3DPATH:
-			mDbg << FileLogger::info << " loading LinearPathFinder with " << serverMessage.waypoints->size() << " positions" << FileLogger::normal << std::endl;
-			mPathFinder = std::make_unique<LinearPathFinder>(*serverMessage.waypoints);
-			return true;
-		default:
-			break;
-		}
+	switch (serverMessage.type)
+	{
+	case MessageType::POST_DLL_DATA_3DPATH:
+		mDbg << FileLogger::info << " loading LinearPathFinder with " << serverMessage.waypoints->size() << " positions" << FileLogger::normal << std::endl;
+		mPathFinder = std::make_unique<LinearPathFinder>(*serverMessage.waypoints);
+		return true;
+	default:
+		break;
 	}
 
-	return false;
+	return AWowBot::handleServerMessage(serverMessage);
 }

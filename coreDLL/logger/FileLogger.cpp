@@ -29,10 +29,11 @@ const std::string FileLogger::info = std::string(GREEN);
 const std::string FileLogger::warn = std::string(YELLOW);
 const std::string FileLogger::err = std::string(BOLDRED);
 
-FileLogger::FileLogger(const std::string& fileName) :
+FileLogger::FileLogger(const std::string& tag) :
 	ILogger(),
 	mFolder("D:\\nvtest\\"),
-	mOutputFile(mFolder + fileName + ".log")
+	mTag(tag),
+	mOutputFile(mFolder + mTag + ".log")
 {
 	struct stat dirInfo;
 
@@ -45,6 +46,10 @@ FileLogger::FileLogger(const std::string& fileName) :
 FileLogger::~FileLogger()
 {
 	flush();
+}
+
+const std::string& FileLogger::getTag() const {
+	return mTag;
 }
 
 void FileLogger::clear() {

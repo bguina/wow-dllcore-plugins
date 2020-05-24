@@ -8,6 +8,8 @@ public:
 
 	void operator=(ILogger const&) = delete;
 
+	virtual const std::string& getTag() const = 0;
+
 	// append output for the next file flush
 	virtual void log(const std::string& msg) const = 0;
 	virtual void log(std::stringstream& msg) const = 0;

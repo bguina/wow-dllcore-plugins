@@ -19,10 +19,13 @@ public:
 
 protected:
 	virtual void _logDebug() const;
-	
+
+	virtual void _onResumed();
+	virtual void _onPaused();
 	virtual void _onRunning() = 0;
 
 	WowGame& mGame;
+
 };
 
 inline std::ostream& operator<<(std::ostream& out, const class AWowBot& obj) {

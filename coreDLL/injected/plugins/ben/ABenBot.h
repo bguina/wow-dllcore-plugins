@@ -14,8 +14,8 @@ public:
 	virtual bool pause(bool paused) override;
 
 protected:
-	virtual void _onPaused();
-	virtual void _onResumed();
+	virtual void _onPaused() override;
+	virtual void _onResumed() override;
 
 	std::unique_ptr<IPathFinder> mPathFinder;
 
