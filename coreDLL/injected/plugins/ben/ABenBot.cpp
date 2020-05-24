@@ -31,11 +31,13 @@ bool ABenBot::pause(bool paused) {
 }
 
 void ABenBot::_onResumed() {
-	mDbg << FileLogger::warn << TAG << " resumed" << FileLogger::normal << std::endl;
+	AWowBot::_onResumed();
+	mDbg << FileLogger::info << TAG << " HELLO MAX ! RESUME" << FileLogger::normal << std::endl;
 }
 
 void ABenBot::_onPaused() {
-	mDbg << FileLogger::warn << TAG << " paused" << FileLogger::normal << std::endl;
+	mDbg << FileLogger::info << TAG << " HELLO MAX ! PAUSE" << FileLogger::normal << std::endl;
+	AWowBot::_onPaused();
 }
 
 void ABenBot::_logDebug() const {

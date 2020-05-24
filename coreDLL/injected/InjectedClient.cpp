@@ -35,7 +35,7 @@ InjectedClient::InjectedClient() :
 		mClient->sendMessage(mClient->getMessageManager().builRequestdDLLInjectedMessage(getGame().getPid()));
 	}
 
-	int botSelection = 0;
+	int botSelection = 43;
 
 	switch (botSelection) {
 	case 0:

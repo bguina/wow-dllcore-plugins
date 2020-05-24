@@ -21,10 +21,12 @@ AWowBot::~AWowBot()
 }
 
 bool AWowBot::pause(bool paused) {
-	if (paused)
-		mGame.getWindowController()->releaseAllKeys();
-
-	return APausablePlugin::pause(paused);
+	if (APausablePlugin::pause(paused)) {
+		if (isPaused()) _onPaused();
+		else _onResumed();
+		return true;
+	}
+	return false;
 }
 
 bool AWowBot::isPaused() const {
@@ -37,6 +39,15 @@ void AWowBot::onD3dRender() {
 	}
 
 	mDbg.flush();
+}
+
+void AWowBot::_onResumed() {
+	//mDbg << FileLogger::warn << mDbg.getTag() << " resumed" << FileLogger::normal << std::endl;
+}
+
+void AWowBot::_onPaused() {
+	//mGame.getWindowController()->releaseAllKeys();
+	//mDbg << FileLogger::warn << mDbg.getTag() << " paused" << FileLogger::normal << std::endl;
 }
 
 void AWowBot::_logDebug() const {
