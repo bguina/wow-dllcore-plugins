@@ -7,7 +7,7 @@
 #include "../dump/WowGameDescriptors.h"
 #include "../WowVector3f.h"
 
-#include "WowGuid64.h"
+#include "WowGuid128.h"
 
 class WowObject : public MemoryObject
 {
@@ -26,11 +26,9 @@ public:
 
 	const uint8_t* getDescriptor() const;
 
-	WowGuid64 getGuid() const;
+	WowGuid128 getGuid() const;
 
-	WowGuid64 getGuid2() const;
-
-	WowGuid64* WowObject::getGuidPtr() const;
+	WowGuid128* WowObject::getGuidPtr() const;
 
 	//		StorageField = 0x10,//good-33526
 	//		ObjectType = 0x20,//good-33526

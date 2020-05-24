@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../../plugins/wow/AWowBot.h"
-#include "../../process/wow/object/WowGuid64.h"
+#include "../../process/wow/object/WowGuid128.h"
 
 class IPathFinder;
 

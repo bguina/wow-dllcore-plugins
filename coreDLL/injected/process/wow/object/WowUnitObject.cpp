@@ -58,8 +58,8 @@ bool WowUnitObject::isInCombat() const {
 	return *reinterpret_cast<const uint32_t*>((getDescriptor() + WowGameOffsets::WowUnitObject::DescriptorOffsetDynamicflags)) & (int)WowUnitDynamicFlags::isInCombat;
 }
 
-WowGuid64 WowUnitObject::getTargetGuid() const {
-	return ((WowGuid64*)(getDescriptor() + WowGameOffsets::WowUnitObject::DescriptorOffsetTargetGuid))[0];
+WowGuid128 WowUnitObject::getTargetGuid() const {
+	return ((WowGuid128*)(getDescriptor() + WowGameOffsets::WowUnitObject::DescriptorOffsetTargetGuid))[0];
 }
 
 void WowUnitObject::moveTo(WowGame& game, const WowVector3f& destination) {

@@ -29,14 +29,14 @@ public:
 
 	const uint8_t* getBaseAddress() const;
 
-	std::map<WowGuid64, std::shared_ptr<WowObject>>::const_iterator begin() const;
-	std::map<WowGuid64, std::shared_ptr<WowObject>>::const_iterator end() const;
+	std::map<WowGuid128, std::shared_ptr<WowObject>>::const_iterator begin() const;
+	std::map<WowGuid128, std::shared_ptr<WowObject>>::const_iterator end() const;
 
-	std::map<WowGuid64, std::shared_ptr<WowObject>>::iterator begin();
-	std::map<WowGuid64, std::shared_ptr<WowObject>>::iterator end();
+	std::map<WowGuid128, std::shared_ptr<WowObject>>::iterator begin();
+	std::map<WowGuid128, std::shared_ptr<WowObject>>::iterator end();
 
 	template<class T >
-	std::shared_ptr<T> getObjectByGuid(const WowGuid64& guid) {
+	std::shared_ptr<T> getObjectByGuid(const WowGuid128& guid) {
 		for (auto it = begin(); it != end(); ++it) {
 			if (guid == it->second->getGuid())
 				return std::static_pointer_cast< T>(it->second);
@@ -92,7 +92,7 @@ public:
 
 private:
 	const uint8_t** mPointerAddr;
-	std::map<WowGuid64, std::shared_ptr<WowObject>> mObjects;
+	std::map<WowGuid128, std::shared_ptr<WowObject>> mObjects;
 };
 
 inline std::ostream& operator<<(std::ostream& out, const ObjectManager& objMgr)

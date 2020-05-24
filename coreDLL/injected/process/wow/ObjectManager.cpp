@@ -29,9 +29,9 @@ bool ObjectManager::isEnabled() const {
 
 void ObjectManager::scan() {
 	if (isEnabled()) {
-		std::set<WowGuid64> oldGuids;
+		std::set<WowGuid128> oldGuids;
 
-		for (std::map<WowGuid64, std::shared_ptr<WowObject>>::const_iterator it = mObjects.begin();
+		for (std::map<WowGuid128, std::shared_ptr<WowObject>>::const_iterator it = mObjects.begin();
 			it != mObjects.end(); ++it) {
 			oldGuids.insert(it->first);
 		}
@@ -42,7 +42,7 @@ void ObjectManager::scan() {
 			pObj = *(uint8_t**)(pObj + WowGameOffsets::WowObjectManager::OffsetNextObject))
 		{
 			WowObject thisObj = WowObject(pObj);
-			std::map<WowGuid64, std::shared_ptr<WowObject>>::const_iterator oldObjInstance = mObjects.find(thisObj.getGuid());
+			std::map<WowGuid128, std::shared_ptr<WowObject>>::const_iterator oldObjInstance = mObjects.find(thisObj.getGuid());
 
 			if (oldObjInstance == mObjects.end()) {
 				std::shared_ptr<WowObject> finalObj = nullptr;
@@ -82,7 +82,7 @@ void ObjectManager::scan() {
 				}
 
 				if (nullptr != finalObj) {
-					mObjects.insert(std::pair<WowGuid64, std::shared_ptr<WowObject>>(finalObj->getGuid(), finalObj));
+					mObjects.insert(std::pair<WowGuid128, std::shared_ptr<WowObject>>(finalObj->getGuid(), finalObj));
 				}
 			}
 			else {
@@ -94,7 +94,7 @@ void ObjectManager::scan() {
 			}
 		}
 
-		for (std::set<WowGuid64>::const_iterator it = oldGuids.begin(); it != oldGuids.end(); ++it) {
+		for (std::set<WowGuid128>::const_iterator it = oldGuids.begin(); it != oldGuids.end(); ++it) {
 			mObjects.erase(*it);
 		}
 	}
@@ -107,19 +107,19 @@ const uint8_t* ObjectManager::getBaseAddress() const {
 	return *mPointerAddr;
 }
 
-std::map<WowGuid64, std::shared_ptr<WowObject>>::const_iterator ObjectManager::begin() const {
+std::map<WowGuid128, std::shared_ptr<WowObject>>::const_iterator ObjectManager::begin() const {
 	return mObjects.begin();
 }
 
-std::map<WowGuid64, std::shared_ptr<WowObject>>::iterator ObjectManager::begin() {
+std::map<WowGuid128, std::shared_ptr<WowObject>>::iterator ObjectManager::begin() {
 	return mObjects.begin();
 }
 
-std::map<WowGuid64, std::shared_ptr<WowObject>>::const_iterator ObjectManager::end() const {
+std::map<WowGuid128, std::shared_ptr<WowObject>>::const_iterator ObjectManager::end() const {
 	return mObjects.end();
 }
 
-std::map<WowGuid64, std::shared_ptr<WowObject>>::iterator ObjectManager::end() {
+std::map<WowGuid128, std::shared_ptr<WowObject>>::iterator ObjectManager::end() {
 	return mObjects.end();
 }
 

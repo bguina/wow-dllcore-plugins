@@ -494,7 +494,7 @@ T& operator%=(T& lhs, const uint128_t& rhs) {
     return lhs = static_cast <T> (uint128_t(lhs) % rhs);
 }
 
-typedef uint128_t WowGuid64;
+typedef uint128_t WowGuid128;
 
 /*
 struct WowGuid64 {

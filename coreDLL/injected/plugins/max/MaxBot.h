@@ -3,7 +3,7 @@
 #include <set>
 
 #include "../wow/AWowBot.h"
-#include "../../process/wow/object/WowGuid64.h"
+#include "../../process/wow/object/WowGuid128.h"
 
 class WowUnitObject;
 
@@ -24,7 +24,7 @@ protected:
 
 	std::unique_ptr<IPathFinder> mPathFinder;
 	std::shared_ptr<const WowUnitObject> mTargetUnit;
-	std::set<WowGuid64> mBlacklistedGuids;
+	std::set<WowGuid128> mBlacklistedGuids;
 };
 
 inline std::ostream& operator<<(

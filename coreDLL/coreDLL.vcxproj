@@ -175,7 +175,7 @@
     <ClInclude Include="framework.h" />
     <ClInclude Include="logger\FileLogger.h" />
     <ClInclude Include="injected\MemoryObject.h" />
-    <ClInclude Include="injected\process\wow\object\WowGuid64.h" />
+    <ClInclude Include="injected\process\wow\object\WowGuid128.h" />
     <ClInclude Include="windowcontroller\IWindowController.h" />
     <ClInclude Include="windowcontroller\PostMessageWindowController.h" />
     <ClInclude Include="injected\process\wow\WowVector3f.h" />
@@ -222,7 +222,7 @@
     <ClCompile Include="injected\plugins\ben\BenFightBot.cpp" />
     <ClCompile Include="injected\plugins\ben\BenTravelBot.cpp" />
     <ClCompile Include="injected\plugins\max\MaxBot.cpp" />
-    <ClCompile Include="injected\process\wow\object\WowGuid64.cpp" />
+    <ClCompile Include="injected\process\wow\object\WowGuid128.cpp" />
     <ClCompile Include="windowcontroller\PostMessageWindowController.cpp" />
     <ClCompile Include="injected\process\wow\ObjectManager.cpp">
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>

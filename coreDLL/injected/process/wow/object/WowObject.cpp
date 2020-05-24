@@ -5,25 +5,20 @@
 
 #include "WowObject.h"
 
-WowObject::WowObject(
-	const uint8_t* baseAddr
-) : MemoryObject(baseAddr)
-{}
+WowObject::WowObject(const uint8_t* baseAddr) : MemoryObject(baseAddr) {
+
+}
 
 const uint8_t* WowObject::getDescriptor() const {
 	return *(uint8_t**)(getAddress() + WowGameOffsets::WowObject::OffsetDescriptorPointer);
 }
 
-WowGuid64 WowObject::getGuid() const {
-	return ((WowGuid64*)(getAddress() + WowGameOffsets::WowObject::OffsetGuid))[0];
+WowGuid128 WowObject::getGuid() const {
+	return ((WowGuid128*)(getAddress() + WowGameOffsets::WowObject::OffsetGuid))[0];
 }
 
-WowGuid64* WowObject::getGuidPtr() const {
-	return ((WowGuid64*)(getAddress() + WowGameOffsets::WowObject::OffsetGuid));
-}
-
-WowGuid64 WowObject::getGuid2() const {
-	return ((WowGuid64*)(getAddress() + WowGameOffsets::WowObject::OffsetGuid))[1];
+WowGuid128* WowObject::getGuidPtr() const {
+	return ((WowGuid128*)(getAddress() + WowGameOffsets::WowObject::OffsetGuid));
 }
 
 //		StorageField = 0x10,//good-33526

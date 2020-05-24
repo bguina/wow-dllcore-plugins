@@ -96,9 +96,6 @@
     <ClInclude Include="injected\process\wow\object\WowCorpseObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="injected\process\wow\object\WowGuid64.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="injected\process\wow\object\WowItemObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -168,6 +165,9 @@
     <ClInclude Include="logger\ILogger.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="injected\process\wow\object\WowGuid128.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -213,9 +213,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="injected\process\wow\object\WowCorpseObject.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="injected\process\wow\object\WowGuid64.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="injected\process\wow\object\WowItemObject.cpp">
@@ -273,6 +270,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="logger\FileLogger.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="injected\process\wow\object\WowGuid128.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

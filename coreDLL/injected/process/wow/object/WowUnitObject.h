@@ -28,7 +28,7 @@ public:
 
 	bool isInCombat() const;
 
-	WowGuid64 getTargetGuid() const;
+	WowGuid128 getTargetGuid() const;
 
 	void moveTo(WowGame& game, const WowVector3f& destination);
 };
