@@ -7,9 +7,7 @@
 #include "d3d/d3d.h"
 #include "debugger/FileDebugger.h"
 
-#include "injected/wow/WowGame.h"
-#include "injected/wow/bot/WowBot.h"
-#include "injected/Sandbox.h"
+#include "injected/InjectedClient.h"
 
 static boolean gShouldStop = false;
 
@@ -28,12 +26,12 @@ void MainThread(void* pHandle) {
 
 void Render()
 {
-	static Sandbox* sandbox = nullptr;
+	static InjectedClient* sandbox = nullptr;
 
 	if (!gShouldStop) {
 		boolean stopSandbox = false;
 
-		if (nullptr == sandbox) { sandbox = new Sandbox(); }
+		if (nullptr == sandbox) { sandbox = new InjectedClient(); }
 		stopSandbox = !sandbox->run();
 		drawSomeTriangle();
 

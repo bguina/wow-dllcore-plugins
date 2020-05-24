@@ -1,8 +1,5 @@
 #pragma once
 
-#ifndef AVAILABLE_CONFIGURATION_OBJECT_H
-#define AVAILABLE_CONFIGURATION_OBJECT_H
-
 #include <list>
 #include <string>
 
@@ -17,5 +14,3 @@ public:
 	std::list<std::string> getListPID() { return listPID; };
 	std::list<std::string> getListModule() { return listModule; };
 };
-
-#endif // !AVAILABLE_CONFIGURATION_OBJECT

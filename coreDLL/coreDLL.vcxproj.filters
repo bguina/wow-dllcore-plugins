@@ -54,46 +54,10 @@
     <ClInclude Include="debugger\FileDebugger.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="injected\AGame.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="injected\MemoryObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="injected\wow\objectmanager\ObjectManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="injected\wow\WowGame.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="injected\wow\observers\ActivePlayerPositionObserver.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="injected\wow\observers\AWowGameObserver.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="injected\observers\AGameObserver.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="injected\observers\IGameObserver.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="injected\wow\spellbook\SpellBookManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="injected\wow\dump\WowGameDescriptors.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="injected\wow\dump\WowGameOffsets.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="pathfinder\Vector3f.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="injected\wow\WowVector3f.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="injected\wow\bot\WowBot.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="windowcontroller\IWindowController.h">
@@ -105,64 +69,103 @@
     <ClInclude Include="windowcontroller\PostMessageWindowController.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="injected\wow\objectmanager\WowActivePlayerObject.h">
+    <ClInclude Include="injected\observer\wow\ActivePlayerPositionObserver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="injected\wow\objectmanager\WowContainerObject.h">
+    <ClInclude Include="injected\observer\wow\AWowGameObserver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="injected\wow\objectmanager\WowCorpseObject.h">
+    <ClInclude Include="injected\observer\ARecurrentServerObserver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="injected\wow\objectmanager\WowItemObject.h">
+    <ClInclude Include="injected\observer\IServerObserver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="injected\wow\objectmanager\WowLootObject.h">
+    <ClInclude Include="injected\process\AGame.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="injected\wow\objectmanager\WowObject.h">
+    <ClInclude Include="injected\InjectedClient.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="injected\wow\objectmanager\WowPlayerObject.h">
+    <ClInclude Include="injected\process\wow\dump\WowGameDescriptors.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="injected\wow\objectmanager\WowUnimplementedObject.h">
+    <ClInclude Include="injected\process\wow\dump\WowGameOffsets.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="injected\wow\objectmanager\WowUnitObject.h">
+    <ClInclude Include="injected\process\wow\object\WowActivePlayerObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="injected\ISandboxPlugin.h">
+    <ClInclude Include="injected\process\wow\object\WowContainerObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="injected\Sandbox.h">
+    <ClInclude Include="injected\process\wow\object\WowCorpseObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="injected\wow\objectmanager\WowGuid64.h">
+    <ClInclude Include="injected\process\wow\object\WowGuid64.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="injected\bot\Bot.h">
+    <ClInclude Include="injected\process\wow\object\WowItemObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="injected\wow\bot\WowPowerLevelBot.h">
+    <ClInclude Include="injected\process\wow\object\WowLootObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="injected\wow\bot\ben\BenBot.h">
+    <ClInclude Include="injected\process\wow\object\WowObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="injected\wow\bot\ben\BenFightBot.h">
+    <ClInclude Include="injected\process\wow\object\WowPlayerObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="injected\wow\bot\ben\BenTravelBot.h">
+    <ClInclude Include="injected\process\wow\object\WowUnimplementedObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="injected\wow\bot\max\MaxBot.h">
+    <ClInclude Include="injected\process\wow\object\WowUnitObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="injected\wow\bot\WowPlayerClassBot.h">
+    <ClInclude Include="injected\process\wow\spellbook\SpellBookManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="pathfinder\IPathWaypointsConsumer.h">
+    <ClInclude Include="injected\process\wow\ObjectManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="injected\process\wow\WowGame.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="injected\process\wow\WowVector3f.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="injected\plugins\ben\ABenBot.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="injected\plugins\ben\BenFightBot.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="injected\plugins\ben\BenTravelBot.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="injected\plugins\max\MaxBot.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="injected\plugins\IPlugin.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="injected\plugins\wow\AWowBot.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="injected\plugins\APausablePlugin.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="injected\plugins\IPausablePlugin.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="injected\plugins\ben\ABenFarmingBot.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="injected\plugins\IServerPlugin.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="injected\plugins\PluginServerMessage.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -188,82 +191,88 @@
     <ClCompile Include="debugger\FileDebugger.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="injected\AGame.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="injected\MemoryObject.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="injected\wow\objectmanager\ObjectManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="injected\wow\WowGame.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="injected\wow\observers\ActivePlayerPositionObserver.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="injected\wow\observers\AWowGameObserver.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="injected\wow\spellbook\SpellBookManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="injected\wow\WowVector3f.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="injected\wow\bot\WowBot.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="windowcontroller\PostMessageWindowController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="injected\wow\objectmanager\WowActivePlayerObject.cpp">
+    <ClCompile Include="injected\observer\wow\ActivePlayerPositionObserver.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="injected\wow\objectmanager\WowContainerObject.cpp">
+    <ClCompile Include="injected\observer\wow\AWowGameObserver.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="injected\wow\objectmanager\WowCorpseObject.cpp">
+    <ClCompile Include="injected\process\AGame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="injected\wow\objectmanager\WowItemObject.cpp">
+    <ClCompile Include="injected\InjectedClient.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="injected\wow\objectmanager\WowLootObject.cpp">
+    <ClCompile Include="injected\process\wow\object\WowActivePlayerObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="injected\wow\objectmanager\WowObject.cpp">
+    <ClCompile Include="injected\process\wow\object\WowContainerObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="injected\wow\objectmanager\WowPlayerObject.cpp">
+    <ClCompile Include="injected\process\wow\object\WowCorpseObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="injected\wow\objectmanager\WowUnimplementedObject.cpp">
+    <ClCompile Include="injected\process\wow\object\WowGuid64.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="injected\wow\objectmanager\WowUnitObject.cpp">
+    <ClCompile Include="injected\process\wow\object\WowItemObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="injected\Sandbox.cpp">
+    <ClCompile Include="injected\process\wow\object\WowLootObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="injected\wow\objectmanager\WowGuid64.cpp">
+    <ClCompile Include="injected\process\wow\object\WowObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="injected\bot\Bot.cpp">
+    <ClCompile Include="injected\process\wow\object\WowPlayerObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="injected\wow\bot\ben\BenBot.cpp">
+    <ClCompile Include="injected\process\wow\object\WowUnimplementedObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="injected\wow\bot\ben\BenFightBot.cpp">
+    <ClCompile Include="injected\process\wow\object\WowUnitObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="injected\wow\bot\ben\BenTravelBot.cpp">
+    <ClCompile Include="injected\process\wow\spellbook\SpellBookManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="injected\wow\bot\max\MaxBot.cpp">
+    <ClCompile Include="injected\process\wow\ObjectManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="injected\process\wow\WowGame.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="injected\process\wow\WowVector3f.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="injected\plugins\ben\ABenBot.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="injected\plugins\ben\BenFightBot.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="injected\plugins\ben\BenTravelBot.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="injected\plugins\max\MaxBot.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="injected\observer\ARecurrentServerObserver.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="injected\plugins\wow\AWowBot.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="injected\plugins\APausablePlugin.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="injected\plugins\ben\ABenFarmingBot.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

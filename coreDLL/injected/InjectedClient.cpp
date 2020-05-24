@@ -1,0 +1,191 @@
+#include "pch.h"
+
+#include <thread>
+#include <sstream>
+
+#include "InjectedClient.h"
+#include "Client.h"
+#include "../NetworkParsing.h"
+
+/* Observers */
+// Observe wow player positions
+#include "observer/wow/ActivePlayerPositionObserver.h"
+
+/* Instanciators */
+// Wow bots
+#include "plugins/ben/BenFightBot.h"
+#include "plugins/ben/BenTravelBot.h"
+#include "plugins/max/MaxBot.h"
+
+/* Features */
+
+// provide a vector<vector3f> to an instance of IWaypointsConsumerPlugin
+#include "../pathfinder/Vector3f.h"
+
+#include "plugins/PluginServerMessage.h"
+
+InjectedClient::InjectedClient() :
+	mDebugger("InjectedClient"),
+	mBootTime(GetTickCount64()), mLastPulse(0),
+	mClient(std::make_unique<Client>()),
+	mGame((const uint8_t*)GetModuleHandleA(0)),
+	mPlugin(nullptr)
+{
+	if (mClient->joinServer()) {
+		mClient->sendMessage(mClient->getMessageManager().builRequestdDLLInjectedMessage(getGame().getPid()));
+	}
+
+	int botSelection = 56;
+
+	switch (botSelection) {
+	case 0:
+		mDebugger << FileDebugger::info << "creating WowMaxBot" << FileDebugger::normal << std::endl;
+		mPlugin = std::make_unique<WowMaxBot>(mGame);
+		break;
+	case 42:
+		mDebugger << FileDebugger::info << "creating BenTravelBot" << FileDebugger::normal << std::endl;
+		mPlugin = std::make_unique<BenTravelBot>(mGame);
+		break;
+	default:
+		mDebugger << FileDebugger::info << "creating BenFightBot" << FileDebugger::normal << std::endl;
+		mPlugin = std::make_unique<BenFightBot>(mGame);
+		break;
+	}
+}
+
+InjectedClient::~InjectedClient() {
+	mClient->disconnect();
+	mDebugger << FileDebugger::warn << "~InjectedClient" << FileDebugger::normal << std::endl;
+}
+
+uint64_t InjectedClient::getBootTime() const { return mBootTime; }
+uint64_t InjectedClient::getLastPulse() const { return mLastPulse; }
+const WowGame& InjectedClient::getGame() const { return mGame; }
+
+const void* InjectedClient::id() const {
+	return this;
+}
+
+bool InjectedClient::throttle() const {
+	return mLastPulse + 120 > GetTickCount64();
+}
+
+bool InjectedClient::run() {
+	if (throttle()) return true;
+	if (!mClient->isConnected() || !_dispatchMessages()) return false;
+
+	mGame.update();
+	mPlugin->onD3dRender();
+	mLastPulse = GetTickCount64();
+	mDebugger.flush();
+	return true;
+}
+
+bool InjectedClient::_dispatchMessages() {
+	std::list<std::string> messages = mClient->getMessageAvailable();
+
+	for (std::list<std::string>::iterator msgIte = messages.begin(); msgIte != messages.end(); msgIte++){
+		const std::string& msgIdentifier(*msgIte);
+		PluginServerMessage msg(_buildMessage(msgIdentifier));
+
+		if (!msg.data.eject)
+			return false;
+
+		auto messengable = dynamic_cast<IServerPlugin*>(mPlugin.get());
+		if (nullptr != messengable) {
+			if (!messengable->handleServerMessage(msg))
+				return false;
+		}
+		else {
+			mDebugger << FileDebugger::err << "Running instance cannot be messenged; is not IServerPlugin" << FileDebugger::normal << std::endl;
+		}
+	}
+	return true;
+}
+
+PluginServerMessage InjectedClient::_buildMessage(const std::string& messageId) {
+	auto messenger = mClient->getMessageManager();
+	PluginServerMessage result;
+
+	result.type = messenger.getMessageType(messageId);
+	switch (result.type) {
+	case MessageType::START_SUBSCRIBE: {
+		std::list<std::string> toSubscribe = mClient->getMessageManager().getSubcribeObject(messageId);
+
+		bool found = (std::find(toSubscribe.begin(), toSubscribe.end(), "position") != toSubscribe.end());
+
+		if (found) {
+			mGame.addObserver("position", std::make_shared<ActivePlayerPositionObserver>(*mClient, 10.0f));
+		}
+
+		break;
+	}
+	case MessageType::STOP_SUBSCRIBE: {
+		std::list<std::string> toSubscribe = mClient->getMessageManager().getSubcribeObject(messageId);
+		bool found = (std::find(toSubscribe.begin(), toSubscribe.end(), "position") != toSubscribe.end());
+		if (found) {
+			mGame.removeObserver("position");
+		}
+
+		break;
+	}
+	case MessageType::WAYPOINTS: {
+		std::list<std::string> rawWaypoints = mClient->getMessageManager().getWaypointsObject(messageId);
+
+		mDebugger << "" << FileDebugger::info << "WAYPOINTS" << FileDebugger::normal << std::endl;
+		std::vector<Vector3f>* waypoints = new std::vector<Vector3f>();
+
+		for (std::list<std::string>::iterator it = rawWaypoints.begin(); it != rawWaypoints.end(); it++) {
+			std::vector<std::string> rawVector3f;
+
+			if (splitByDelimiter(*it, ",", rawVector3f) == 3) {
+				waypoints->push_back(Vector3f({ std::stof(rawVector3f[0]), std::stof(rawVector3f[1]), std::stof(rawVector3f[2]) }));
+			}
+			else throw "Bad split!";
+		}
+
+		result.data.waypoints = waypoints;
+		/*auto waypointLoader = dynamic_cast<IWaypointsConsumerPlugin*>(mPlugin.get());
+		if (nullptr != waypointLoader) {
+			mDebugger << FileDebugger::err << "Loading " << waypoints->size() << " waypoints" << FileDebugger::normal << std::endl;
+			waypointLoader->loadWaypoints(*result.data.waypoints);
+		}
+		else {
+			mDebugger << "" << FileDebugger::err << "Running instance does not implement IPathWaypointsConsumer" << FileDebugger::normal << std::endl;
+		}*/
+		break;
+	}
+	case MessageType::START_BOT: {
+		mDebugger << "" << FileDebugger::warn << "START_BOT" << FileDebugger::normal << std::endl;
+		/*
+		auto pausable = dynamic_cast<IPausablePlugin*>(mPlugin.get());
+		if (nullptr != pausable) {
+			pausable->pause(false);
+		}
+		else {
+			mDebugger << "" << FileDebugger::err << "Running instance cannot be started; is not pausable" << FileDebugger::normal << std::endl;
+		}*/
+		break;
+	}
+	case MessageType::STOP_BOT: {
+		mDebugger << FileDebugger::warn << "STOP_BOT" << FileDebugger::normal << std::endl;
+		/*auto pausable = dynamic_cast<IPausablePlugin*>(mPlugin.get());
+		if (nullptr != pausable) {
+			pausable->pause(false);
+		}
+		else {
+			mDebugger << FileDebugger::err << "Running instance cannot be paused; is not pausable" << FileDebugger::normal << std::endl;
+		}*/
+		break;
+	}
+	case MessageType::DEINJECT: {
+		result.data.eject = true;
+		break;
+	}
+	default:
+		mDebugger << FileDebugger::err << "UNKNOWN SERVER MESSAGE " << (int)result.type << FileDebugger::normal << std::endl;
+		break;
+	}
+
+	return result;
+}

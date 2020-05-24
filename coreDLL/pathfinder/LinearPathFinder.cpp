@@ -11,17 +11,14 @@
 
 std::list<Vector3f>::const_iterator helperGetNearestWaypoint(const std::list<Vector3f> mPath, const Vector3f& currentPosition);
 
-LinearPathFinder::LinearPathFinder(const std::vector<Vector3f>& waypoints) {
-	loadPathWaypoints(waypoints);
+LinearPathFinder::LinearPathFinder(const std::vector<Vector3f>& waypoints) :
+	mPath(waypoints.begin(), waypoints.end()),
+	mDestinationWaypoint(mPath.end()),
+	mNextWaypoint(mPath.begin())
+{
 }
 
 LinearPathFinder::~LinearPathFinder() {
-}
-
-void LinearPathFinder::loadPathWaypoints(const std::vector<Vector3f>& waypoints) {
-	mPath = std::list<Vector3f>(waypoints.begin(), waypoints.end());
-	mDestinationWaypoint=mPath.end();
-	mNextWaypoint=mPath.begin();
 }
 
 bool LinearPathFinder::setDestination(const Vector3f& destination) {

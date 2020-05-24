@@ -13,20 +13,7 @@
 #include <string>
 #include <iostream>
 
-enum class MessageType {
-	UNKNOWN,
-	MESSAGE_TYPE,
-	AVAILABLE_CONFIGURATION,
-	INJECT,
-	DEINJECT,
-	DLL_INJECTED,
-	INFO,
-	START_SUBSCRIBE,
-	STOP_SUBSCRIBE,
-	START_BOT,
-	STOP_BOT,
-	WAYPOINTS,
-};
+#include "MessageType.h"
 
 class MessageManager
 {

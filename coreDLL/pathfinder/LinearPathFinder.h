@@ -7,17 +7,12 @@
 #include <sstream>
 
 #include "APathFinder.h"
-#include "IPathWaypointsConsumer.h"
 
-class LinearPathFinder final : public APathFinder, public IPathWaypointsConsumer
+class LinearPathFinder final : public APathFinder 
 {
 public:
 	LinearPathFinder(const std::vector<Vector3f>& waypoints);
 	~LinearPathFinder();
-
-	// IPathWaypointsConsumer interface
-
-	virtual void loadPathWaypoints(const std::vector<Vector3f>& waypoints) override;
 
 	// APathFinder interface
 

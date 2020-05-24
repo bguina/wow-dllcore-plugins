@@ -1,8 +1,5 @@
 #pragma once
 
-#ifndef INJECT_OBJECT_H
-#define INJECT_OBJECT_H
-
 #include <list>
 #include <string>
 
@@ -17,5 +14,3 @@ public:
 	int getPID() { return pid; };
 	std::string getModule() { return module; };
 };
-
-#endif // !INJECT_OBJECT_H

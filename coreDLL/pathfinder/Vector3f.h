@@ -1,5 +1,5 @@
 #pragma once
 
-#include "../injected/wow/WowVector3f.h"
+#include "../injected/process/wow/WowVector3f.h"
 
 typedef struct WowVector3f Vector3f;
