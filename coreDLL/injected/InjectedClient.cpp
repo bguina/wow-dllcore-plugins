@@ -88,13 +88,20 @@ bool InjectedClient::_dispatchMessages() {
 		const std::string& msgIdentifier(*msgIte);
 		PluginServerMessage msg(_buildMessage(msgIdentifier));
 
-		if (!msg.data.eject)
+		if (msg.data.eject) {
+			mDebugger << FileLogger::err << "got ejection order " << (int)msg.type << FileLogger::normal << std::endl;
 			return false;
+		}
 
 		auto messengable = dynamic_cast<IServerPlugin*>(mPlugin.get());
 		if (nullptr != messengable) {
-			if (!messengable->handleServerMessage(msg))
+			if (!messengable->handleServerMessage(msg)) {
+				mDebugger << FileLogger::err << "messengable could not handle message " << (int)msg.type << FileLogger::normal << std::endl;
 				return false;
+			}
+			else {
+				mDebugger << FileLogger::info << "messengable handled message " << (int)msg.type << FileLogger::normal << std::endl;
+			}
 		}
 		else {
 			mDebugger << FileLogger::err << "Running instance cannot be messenged; is not IServerPlugin" << FileLogger::normal << std::endl;
@@ -108,6 +115,7 @@ PluginServerMessage InjectedClient::_buildMessage(const std::string& messageId) 
 	PluginServerMessage result;
 
 	result.type = messenger.getMessageType(messageId);
+	result.data.eject = false;
 	switch (result.type) {
 	case MessageType::SUBSCRIBE_DLL_UPDATES: {
 		std::list<std::string> toSubscribe = mClient->getMessageManager().getSubcribeObject(messageId);

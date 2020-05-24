@@ -2,10 +2,12 @@
 
 #include "IPausablePlugin.h"
 
+#include "../../logger/FileLogger.h"
+
 class APausablePlugin : public IPausablePlugin
 {
 public:
-	APausablePlugin();
+	APausablePlugin(const std::string& tag);
 	virtual ~APausablePlugin();
 
 	virtual bool pause(bool paused);
@@ -14,5 +16,6 @@ public:
 	virtual bool handleServerMessage(const PluginServerMessage& serverMessage) override;
 
 protected:
+	FileLogger mDbg;
 	bool mPaused;
 };

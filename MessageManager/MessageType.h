@@ -1,8 +1,8 @@
 #pragma once
 
-enum class MessageType : int {
+enum class MessageType : uint8_t {
 	// wtf defining the unknown
-	UNKNOWN=-1,
+	UNKNOWN=0,
 	
 	// Notify a new incoming message
 	MESSAGE_TYPE = 2,
@@ -27,11 +27,11 @@ enum class MessageType : int {
 	SUBSCRIBE_DLL_UPDATES = 8,
 	UNSUBSCRIBE_DLL_UPDATES = 9,
 
-	SELECT_PLUGIN, // NOT IMPLEMENTED
+	SELECT_PLUGIN = 10, // NOT IMPLEMENTED
 	// Toggle paused / resumed state of the currently selected plugin in the associated dll plugin.
-	RESUME_PLUGIN = 10,
-	PAUSE_PLUGIN = 11,
+	RESUME_PLUGIN = 11,
+	PAUSE_PLUGIN = 12,
 
 	// Submit a 3D path to the associated injected dll to be handled by the currently set up plugin.
-	POST_DLL_DATA_3DPATH = 12,
+	POST_DLL_DATA_3DPATH = 13,
 };

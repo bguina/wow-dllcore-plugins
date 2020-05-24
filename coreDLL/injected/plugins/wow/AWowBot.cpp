@@ -11,8 +11,8 @@
 #include "../../process/wow/object/WowActivePlayerObject.h"
 
 AWowBot::AWowBot(WowGame& game, const std::string& tag) :
-	mGame(game),
-	mDbg(tag)
+	APausablePlugin(tag),
+	mGame(game)
 {
 }
 

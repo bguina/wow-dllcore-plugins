@@ -4,8 +4,9 @@
 
 #include "PluginServerMessage.h"
 
-APausablePlugin::APausablePlugin() :
-	mPaused(true)
+APausablePlugin::APausablePlugin(const std::string& tag) :
+	mPaused(true),
+	mDbg(tag)
 {
 }
 
@@ -14,10 +15,15 @@ APausablePlugin::~APausablePlugin()
 }
 
 bool APausablePlugin::handleServerMessage(const PluginServerMessage& serverMessage) {
+	mDbg << FileLogger::info << "APausablePlugin::handleServerMessage" << (int)serverMessage.type << FileLogger::normal << std::endl;
+
 	switch (serverMessage.type) {
 	case MessageType::RESUME_PLUGIN:
+		pause(false);
+		return true;
+
 	case MessageType::PAUSE_PLUGIN:
-		pause(MessageType::PAUSE_PLUGIN == serverMessage.type);
+		pause(true);
 		return true;
 
 	default: break;

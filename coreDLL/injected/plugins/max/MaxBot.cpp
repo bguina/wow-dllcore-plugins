@@ -24,17 +24,17 @@ WowMaxBot::~WowMaxBot()
 }
 
 bool WowMaxBot::handleServerMessage(const PluginServerMessage& serverMessage) {
-	if (!AWowBot::handleServerMessage(serverMessage)) {
-		switch (serverMessage.type)
-		{
-		case MessageType::POST_DLL_DATA_3DPATH:
-			mPathFinder = std::make_unique<LinearPathFinder>(*serverMessage.data.waypoints);
-			return true;
-		default:
-			break;
-		}
+	mDbg << FileLogger::info << "handleServerMessage " << (int)serverMessage.type << FileLogger::normal << std::endl;
+
+	switch (serverMessage.type)
+	{
+	case MessageType::POST_DLL_DATA_3DPATH:
+		mPathFinder = std::make_unique<LinearPathFinder>(*serverMessage.data.waypoints);
+		return true;
+	default:
+		break;
 	}
-	return false;
+	return AWowBot::handleServerMessage(serverMessage);
 }
 
 void WowMaxBot::onD3dRender() {
