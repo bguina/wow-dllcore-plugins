@@ -2,7 +2,7 @@
 
 #include "../APausablePlugin.h"
 
-#include "../../../debugger/FileDebugger.h"
+#include "../../../logger/FileLogger.h"
 
 class IPathFinder;
 class WowGame;
@@ -24,7 +24,7 @@ protected:
 	virtual void _onRunning() = 0;
 
 	WowGame& mGame;
-	FileDebugger mDbg;
+	FileLogger mDbg;
 };
 
 inline std::ostream& operator<<(std::ostream& out, const class AWowBot& obj) {

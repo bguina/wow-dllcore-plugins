@@ -4,7 +4,7 @@
 
 #include "ObjectManager.h"
 
-#include "../../../debugger/FileDebugger.h"
+#include "../../../logger/FileLogger.h"
 #include "dump/WowGameDescriptors.h"
 #include "dump/WowGameOffsets.h"
 

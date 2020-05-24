@@ -6,7 +6,7 @@
 #include <iostream>
 #include <map>
 
-#include "../debugger/FileDebugger.h"
+#include "../logger/FileLogger.h"
 #include "PostMessageWindowController.h"
 
 // Observed SendMessage "legit" flags found with Spy++ app
@@ -44,7 +44,7 @@ bool PostMessageWindowController::pressKey(WinVirtualKey key, bool keyDown) {
 	}
 
 	if (false) {
-		mDbg << FileDebugger::info << "pressKey " << (int)key << " success? " << keyAsRequested << FileDebugger::normal << std::endl;
+		mDbg << FileLogger::info << "pressKey " << (int)key << " success? " << keyAsRequested << FileLogger::normal << std::endl;
 		mDbg.flush();
 	}
 

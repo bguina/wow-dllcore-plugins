@@ -1,11 +1,11 @@
 #pragma once
 
-#include "IDebugger.h"
+#include "ILogger.h"
 
-class FileDebugger : public IDebugger {
+class FileLogger : public ILogger {
 public:
-	FileDebugger(const std::string& tag);
-	virtual ~FileDebugger();
+	FileLogger(const std::string& tag);
+	virtual ~FileLogger();
 
 	// append output for the next file flush
 	virtual void log(const std::string& msg) const override;
@@ -40,8 +40,8 @@ private:
 	const std::string mOutputFile;
 
 public:
-	FileDebugger(FileDebugger const&) = delete;
-	void operator=(FileDebugger const&) = delete;
+	FileLogger(FileLogger const&) = delete;
+	void operator=(FileLogger const&) = delete;
 
 	static const std::string normal;
 	static const std::string info;

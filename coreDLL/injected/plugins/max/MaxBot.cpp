@@ -47,20 +47,20 @@ void WowMaxBot::_onRunning() {
 
 	if (!mPaused) {
 		std::shared_ptr<WowActivePlayerObject> self = mGame.getObjectManager().getActivePlayer();
-		mDbg << FileDebugger::info << TAG << " running" << FileDebugger::normal << std::endl;
+		mDbg << FileLogger::info << TAG << " running" << FileLogger::normal << std::endl;
 
 		std::shared_ptr<WowUnitObject> secondSelf(mGame.getObjectManager().getObjectByGuid<WowUnitObject>(self->getGuid()));
 
 		if (secondSelf != nullptr) {
 
-			mDbg << FileDebugger::info << "self == " << (void*)self->getAddress() << " combat == " << self->isInCombat() << FileDebugger::normal << std::endl;
+			mDbg << FileLogger::info << "self == " << (void*)self->getAddress() << " combat == " << self->isInCombat() << FileLogger::normal << std::endl;
 
 
 			std::shared_ptr<WowUnitObject> currentTarget = mGame.getObjectManager().getObjectByGuid<WowUnitObject>(self->getTargetGuid());
 
 			if (currentTarget != nullptr)
 			{
-				mDbg << FileDebugger::info << "target address = " << (void*)currentTarget->getAddress() << FileDebugger::normal << std::endl;
+				mDbg << FileLogger::info << "target address = " << (void*)currentTarget->getAddress() << FileLogger::normal << std::endl;
 			}
 
 			if (nullptr != mTargetUnit && (mBlacklistedGuids.find(mTargetUnit->getGuid()) != mBlacklistedGuids.end()))
@@ -101,8 +101,8 @@ void WowMaxBot::_onRunning() {
 				mDbg.i("targetting some unit...");
 				if (self->getPosition().getDistanceTo(mTargetUnit->getPosition()) > 5)
 				{
-					mDbg << FileDebugger::info << "My position" << self->getPosition() << FileDebugger::normal << std::endl;
-					mDbg << FileDebugger::info << "target unit " << mTargetUnit->getGuid().upper() << " still out of reach" << mTargetUnit->getPosition() << FileDebugger::normal << std::endl;
+					mDbg << FileLogger::info << "My position" << self->getPosition() << FileLogger::normal << std::endl;
+					mDbg << FileLogger::info << "target unit " << mTargetUnit->getGuid().upper() << " still out of reach" << mTargetUnit->getPosition() << FileLogger::normal << std::endl;
 					//mDbg.i("target unit still out of reach");
 
 					//self->moveTo(mGame, mTargetUnit->getPosition());
@@ -112,11 +112,11 @@ void WowMaxBot::_onRunning() {
 					int anglePrecision = 10;
 
 					auto windowController = mGame.getWindowController();
-					mDbg << FileDebugger::warn
+					mDbg << FileLogger::warn
 						<< "pressing left " << (delta > anglePrecision)
 						<< "pressing forward " << (abs(delta) < anglePrecision * 2)
 						<< "pressing right " << (delta < -anglePrecision)
-						<< FileDebugger::normal << std::endl;
+						<< FileLogger::normal << std::endl;
 
 					mGame.getWindowController()->releaseAllKeys();
 					windowController->pressKey(WinVirtualKey::WVK_A, delta > anglePrecision);
@@ -124,9 +124,9 @@ void WowMaxBot::_onRunning() {
 					// move forward if approximately on the right facing
 					windowController->pressKey(WinVirtualKey::WVK_W, abs(delta) < anglePrecision * 2);
 
-					mDbg << FileDebugger::info << "moving to " << mTargetUnit->getPosition() << FileDebugger::normal << std::endl;
+					mDbg << FileLogger::info << "moving to " << mTargetUnit->getPosition() << FileLogger::normal << std::endl;
 
-					mDbg << FileDebugger::info << " target angle is" << self->getPosition().getFacingDegreesTo(mTargetUnit->getPosition()) << " delta angle is " << self->getPosition().getFacingDeltaDegrees(self->getFacingDegrees(), mTargetUnit->getPosition()) << FileDebugger::normal << std::endl;
+					mDbg << FileLogger::info << " target angle is" << self->getPosition().getFacingDegreesTo(mTargetUnit->getPosition()) << " delta angle is " << self->getPosition().getFacingDeltaDegrees(self->getFacingDegrees(), mTargetUnit->getPosition()) << FileLogger::normal << std::endl;
 
 				}
 				else {

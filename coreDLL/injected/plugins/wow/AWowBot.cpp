@@ -5,7 +5,7 @@
 #include "AWowBot.h"
 
 #include "../../../pathfinder/LinearPathFinder.h"
-#include "../../../debugger/FileDebugger.h"
+#include "../../../logger/FileLogger.h"
 
 #include "../../process/wow/WowGame.h"
 #include "../../process/wow/object/WowActivePlayerObject.h"
@@ -41,7 +41,7 @@ void AWowBot::onD3dRender() {
 
 void AWowBot::_logDebug() const {
 	std::shared_ptr<WowActivePlayerObject> self = mGame.getObjectManager().getActivePlayer();
-	mDbg << FileDebugger::info;
+	mDbg << FileLogger::info;
 
 	if (nullptr != self) {
 		// show info relative to self
@@ -56,7 +56,7 @@ void AWowBot::_logDebug() const {
 				mDbg << "Target: " << targetGuid.upper() << targetGuid.lower() << " can be attacked? " << self->canAttack(mGame, *target) << std::endl;
 			}
 			else {
-				mDbg << FileDebugger::err << "Target: " << targetGuid.upper() << targetGuid.lower() << " can be attacked? " << self->canAttack(mGame, *target) << FileDebugger::info << std::endl;
+				mDbg << FileLogger::err << "Target: " << targetGuid.upper() << targetGuid.lower() << " can be attacked? " << self->canAttack(mGame, *target) << FileLogger::info << std::endl;
 			}
 
 		}
@@ -69,5 +69,5 @@ void AWowBot::_logDebug() const {
 				<< " angle delta is " << self->getFacingDeltaDegrees(*any) << std::endl;
 		}
 	}
-	mDbg << FileDebugger::normal;
+	mDbg << FileLogger::normal;
 }

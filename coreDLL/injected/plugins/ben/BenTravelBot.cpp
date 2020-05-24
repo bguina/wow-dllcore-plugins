@@ -1,8 +1,6 @@
 #include "pch.h"
 
-
 #include "BenTravelBot.h"
-
 
 const std::string TAG = "BenTravelBot";
 
@@ -17,7 +15,7 @@ BenTravelBot::~BenTravelBot()
 
 void BenTravelBot::_onRunning() {
 	mDbg << "\n\n";
-	mDbg << FileDebugger::info << TAG << "::run()" << FileDebugger::normal << std::endl;
+	mDbg << FileLogger::info << TAG << "::run()" << FileLogger::normal << std::endl;
 
 	_logDebug();
 }

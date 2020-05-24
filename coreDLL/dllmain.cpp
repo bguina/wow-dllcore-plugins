@@ -5,7 +5,7 @@
 
 #include "Client.h"
 #include "d3d/d3d.h"
-#include "debugger/FileDebugger.h"
+#include "logger/FileLogger.h"
 
 #include "injected/InjectedClient.h"
 

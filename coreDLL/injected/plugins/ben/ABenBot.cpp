@@ -5,7 +5,7 @@
 #include "ABenBot.h"
 
 #include "../../pathfinder/LinearPathFinder.h"
-#include "../../debugger/FileDebugger.h"
+#include "../../logger/FileLogger.h"
 
 #include "../../process/wow/WowGame.h"
 #include "../../process/wow/object/WowActivePlayerObject.h"
@@ -31,11 +31,11 @@ bool ABenBot::pause(bool paused) {
 }
 
 void ABenBot::_onResumed() {
-	mDbg << FileDebugger::warn << TAG << " resumed" << FileDebugger::normal << std::endl;
+	mDbg << FileLogger::warn << TAG << " resumed" << FileLogger::normal << std::endl;
 }
 
 void ABenBot::_onPaused() {
-	mDbg << FileDebugger::warn << TAG << " paused" << FileDebugger::normal << std::endl;
+	mDbg << FileLogger::warn << TAG << " paused" << FileLogger::normal << std::endl;
 }
 
 void ABenBot::_logDebug() const {
@@ -47,9 +47,9 @@ void ABenBot::_logDebug() const {
 		size_t waypointsCount = 0;
 
 		waypointsCount = pathfinder->getWaypointsCount();
-		mDbg << FileDebugger::info << "helped by LinearPathFinder with " << waypointsCount << " waypoints " << std::endl;
+		mDbg << FileLogger::info << "helped by LinearPathFinder with " << waypointsCount << " waypoints " << std::endl;
 	}
-	else mDbg << FileDebugger::warn << " without PathFinder" << std::endl;
+	else mDbg << FileLogger::warn << " without PathFinder" << std::endl;
 
-	mDbg << FileDebugger::normal;
+	mDbg << FileLogger::normal;
 }

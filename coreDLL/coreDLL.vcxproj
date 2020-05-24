@@ -165,7 +165,7 @@
     <ClInclude Include="d3d\d3d.h" />
     <ClInclude Include="d3d\D3D_VMT_Indices.h" />
     <ClInclude Include="d3d\shadez.h" />
-    <ClInclude Include="debugger\IDebugger.h" />
+    <ClInclude Include="logger\ILogger.h" />
     <ClInclude Include="injected\plugins\ben\BenFightBot.h" />
     <ClInclude Include="injected\plugins\ben\BenTravelBot.h" />
     <ClInclude Include="injected\plugins\max\MaxBot.h" />
@@ -173,7 +173,7 @@
     <ClInclude Include="injected\process\wow\dump\WowGameDescriptors.h" />
     <ClInclude Include="injected\process\wow\dump\WowGameOffsets.h" />
     <ClInclude Include="framework.h" />
-    <ClInclude Include="debugger\FileDebugger.h" />
+    <ClInclude Include="logger\FileLogger.h" />
     <ClInclude Include="injected\MemoryObject.h" />
     <ClInclude Include="injected\process\wow\object\WowGuid64.h" />
     <ClInclude Include="windowcontroller\IWindowController.h" />
@@ -217,7 +217,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="dllmain.cpp" />
-    <ClCompile Include="debugger\FileDebugger.cpp" />
+    <ClCompile Include="logger\FileLogger.cpp" />
     <ClCompile Include="injected\MemoryObject.cpp" />
     <ClCompile Include="injected\plugins\ben\BenFightBot.cpp" />
     <ClCompile Include="injected\plugins\ben\BenTravelBot.cpp" />

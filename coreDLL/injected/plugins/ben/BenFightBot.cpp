@@ -17,7 +17,7 @@ BenFightBot::~BenFightBot()
 
 void BenFightBot::_onRunning() {
 	mDbg << "\n\n";
-	mDbg << FileDebugger::info << TAG << "::run()" << FileDebugger::normal << std::endl;
+	mDbg << FileLogger::info << TAG << "::run()" << FileLogger::normal << std::endl;
 
 	_logDebug();
 

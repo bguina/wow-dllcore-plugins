@@ -2,7 +2,7 @@
 
 #include "IServerObserver.h"
 
-#include "../../debugger/FileDebugger.h"
+#include "../../logger/FileLogger.h"
 
 template<class T>
 class ARecurrentServerObserver : public IServerObserver<T> {
@@ -34,5 +34,5 @@ protected:
 
 	unsigned long long mLastCapture;
 	unsigned long mPeriodMs;
-	FileDebugger mDbg;
+	FileLogger mDbg;
 };

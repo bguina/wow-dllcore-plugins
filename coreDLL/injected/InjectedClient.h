@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-#include "../debugger/FileDebugger.h"
+#include "../logger/FileLogger.h"
 #include "process/wow/WowGame.h"
 #include "plugins/IPlugin.h"
 
@@ -32,7 +32,7 @@ private:
 	uint64_t mBootTime;
 	uint64_t mLastPulse;
 	std::unique_ptr<Client> mClient;
-	FileDebugger mDebugger;
+	FileLogger mDebugger;
 	WowGame mGame;
 	std::unique_ptr<IPlugin> mPlugin;
 

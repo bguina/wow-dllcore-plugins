@@ -2,11 +2,11 @@
 
 #include <sstream>
 
-class IDebugger {
+class ILogger {
 public:
-	virtual ~IDebugger() {};
+	virtual ~ILogger() {};
 
-	void operator=(IDebugger const&) = delete;
+	void operator=(ILogger const&) = delete;
 
 	// append output for the next file flush
 	virtual void log(const std::string& msg) const = 0;

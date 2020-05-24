@@ -2,7 +2,7 @@
 
 #include "../AGame.h"
 
-#include "../../debugger/FileDebugger.h"
+#include "../../logger/FileLogger.h"
 #include "../../observer/ARecurrentServerObserver.h"
 #include "ObjectManager.h"
 #include "spellbook/SpellBookManager.h"
@@ -45,7 +45,7 @@ public:
 	bool removeObserver(const std::string& name);
 
 private:
-	FileDebugger mDbg;
+	FileLogger mDbg;
 	std::map<std::string, std::shared_ptr<ARecurrentServerObserver<WowGame>>> mObservers;
 	ObjectManager mObjMgr;
 	SpellBookManager mSpellBookMgr;

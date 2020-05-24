@@ -48,12 +48,6 @@
     <ClInclude Include="NetworkParsing.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="debugger\IDebugger.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="debugger\FileDebugger.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="injected\MemoryObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -168,6 +162,12 @@
     <ClInclude Include="injected\plugins\PluginServerMessage.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="logger\FileLogger.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="logger\ILogger.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -186,9 +186,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="NetworkParsing.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="debugger\FileDebugger.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="injected\MemoryObject.cpp">
@@ -273,6 +270,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="injected\plugins\ben\ABenFarmingBot.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="logger\FileLogger.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

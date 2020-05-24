@@ -39,15 +39,15 @@ InjectedClient::InjectedClient() :
 
 	switch (botSelection) {
 	case 0:
-		mDebugger << FileDebugger::info << "creating WowMaxBot" << FileDebugger::normal << std::endl;
+		mDebugger << FileLogger::info << "creating WowMaxBot" << FileLogger::normal << std::endl;
 		mPlugin = std::make_unique<WowMaxBot>(mGame);
 		break;
 	case 42:
-		mDebugger << FileDebugger::info << "creating BenTravelBot" << FileDebugger::normal << std::endl;
+		mDebugger << FileLogger::info << "creating BenTravelBot" << FileLogger::normal << std::endl;
 		mPlugin = std::make_unique<BenTravelBot>(mGame);
 		break;
 	default:
-		mDebugger << FileDebugger::info << "creating BenFightBot" << FileDebugger::normal << std::endl;
+		mDebugger << FileLogger::info << "creating BenFightBot" << FileLogger::normal << std::endl;
 		mPlugin = std::make_unique<BenFightBot>(mGame);
 		break;
 	}
@@ -55,7 +55,7 @@ InjectedClient::InjectedClient() :
 
 InjectedClient::~InjectedClient() {
 	mClient->disconnect();
-	mDebugger << FileDebugger::warn << "~InjectedClient" << FileDebugger::normal << std::endl;
+	mDebugger << FileLogger::warn << "~InjectedClient" << FileLogger::normal << std::endl;
 }
 
 uint64_t InjectedClient::getBootTime() const { return mBootTime; }
@@ -97,7 +97,7 @@ bool InjectedClient::_dispatchMessages() {
 				return false;
 		}
 		else {
-			mDebugger << FileDebugger::err << "Running instance cannot be messenged; is not IServerPlugin" << FileDebugger::normal << std::endl;
+			mDebugger << FileLogger::err << "Running instance cannot be messenged; is not IServerPlugin" << FileLogger::normal << std::endl;
 		}
 	}
 	return true;
@@ -132,7 +132,7 @@ PluginServerMessage InjectedClient::_buildMessage(const std::string& messageId) 
 	case MessageType::WAYPOINTS: {
 		std::list<std::string> rawWaypoints = mClient->getMessageManager().getWaypointsObject(messageId);
 
-		mDebugger << "" << FileDebugger::info << "WAYPOINTS" << FileDebugger::normal << std::endl;
+		mDebugger << "" << FileLogger::info << "WAYPOINTS" << FileLogger::normal << std::endl;
 		std::vector<Vector3f>* waypoints = new std::vector<Vector3f>();
 
 		for (std::list<std::string>::iterator it = rawWaypoints.begin(); it != rawWaypoints.end(); it++) {
@@ -147,34 +147,34 @@ PluginServerMessage InjectedClient::_buildMessage(const std::string& messageId) 
 		result.data.waypoints = waypoints;
 		/*auto waypointLoader = dynamic_cast<IWaypointsConsumerPlugin*>(mPlugin.get());
 		if (nullptr != waypointLoader) {
-			mDebugger << FileDebugger::err << "Loading " << waypoints->size() << " waypoints" << FileDebugger::normal << std::endl;
+			mDebugger << FileLogger::err << "Loading " << waypoints->size() << " waypoints" << FileLogger::normal << std::endl;
 			waypointLoader->loadWaypoints(*result.data.waypoints);
 		}
 		else {
-			mDebugger << "" << FileDebugger::err << "Running instance does not implement IPathWaypointsConsumer" << FileDebugger::normal << std::endl;
+			mDebugger << "" << FileLogger::err << "Running instance does not implement IPathWaypointsConsumer" << FileLogger::normal << std::endl;
 		}*/
 		break;
 	}
 	case MessageType::START_BOT: {
-		mDebugger << "" << FileDebugger::warn << "START_BOT" << FileDebugger::normal << std::endl;
+		mDebugger << "" << FileLogger::warn << "START_BOT" << FileLogger::normal << std::endl;
 		/*
 		auto pausable = dynamic_cast<IPausablePlugin*>(mPlugin.get());
 		if (nullptr != pausable) {
 			pausable->pause(false);
 		}
 		else {
-			mDebugger << "" << FileDebugger::err << "Running instance cannot be started; is not pausable" << FileDebugger::normal << std::endl;
+			mDebugger << "" << FileLogger::err << "Running instance cannot be started; is not pausable" << FileLogger::normal << std::endl;
 		}*/
 		break;
 	}
 	case MessageType::STOP_BOT: {
-		mDebugger << FileDebugger::warn << "STOP_BOT" << FileDebugger::normal << std::endl;
+		mDebugger << FileLogger::warn << "STOP_BOT" << FileLogger::normal << std::endl;
 		/*auto pausable = dynamic_cast<IPausablePlugin*>(mPlugin.get());
 		if (nullptr != pausable) {
 			pausable->pause(false);
 		}
 		else {
-			mDebugger << FileDebugger::err << "Running instance cannot be paused; is not pausable" << FileDebugger::normal << std::endl;
+			mDebugger << FileLogger::err << "Running instance cannot be paused; is not pausable" << FileLogger::normal << std::endl;
 		}*/
 		break;
 	}
@@ -183,7 +183,7 @@ PluginServerMessage InjectedClient::_buildMessage(const std::string& messageId) 
 		break;
 	}
 	default:
-		mDebugger << FileDebugger::err << "UNKNOWN SERVER MESSAGE " << (int)result.type << FileDebugger::normal << std::endl;
+		mDebugger << FileLogger::err << "UNKNOWN SERVER MESSAGE " << (int)result.type << FileLogger::normal << std::endl;
 		break;
 	}
 
