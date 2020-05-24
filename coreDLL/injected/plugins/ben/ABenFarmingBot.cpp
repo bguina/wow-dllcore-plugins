@@ -23,7 +23,7 @@ bool ABenFarmingBot::handleServerMessage(const PluginServerMessage& serverMessag
 	if (!AWowBot::handleServerMessage(serverMessage)) {
 		switch (serverMessage.type)
 		{
-		case MessageType::WAYPOINTS:
+		case MessageType::POST_DLL_DATA_3DPATH:
 			mDbg << FileLogger::info << " loading LinearPathFinder with " << serverMessage.data.waypoints->size() << " positions" << FileLogger::normal << std::endl;
 			mPathFinder = std::make_unique<LinearPathFinder>(*serverMessage.data.waypoints);
 			return true;

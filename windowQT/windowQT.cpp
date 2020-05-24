@@ -36,7 +36,7 @@ void windowQT::tick() {
 		for (std::list<std::string>::iterator it = messages.begin(); it != messages.end(); it++)
 		{
 			std::cout << "Message available : " << (*it).c_str() << std::endl;
-			if (messageManager.getMessageType((*it)) == MessageType::AVAILABLE_CONFIGURATION) {
+			if (messageManager.getMessageType((*it)) == MessageType::GET_SERVER_OPTIONS) {
 				std::cout << "TYPE == AVAILABLE_CONFIGURATION " << std::endl;
 				AvailableConfigurationObject* object = messageManager.getAvailableConfigurationObject(*it);
 
@@ -58,21 +58,21 @@ void windowQT::tick() {
 					free(object);
 				}
 			}
-			else if (messageManager.getMessageType((*it)) == MessageType::DLL_INJECTED)
+			else if (messageManager.getMessageType((*it)) == MessageType::DLL_RESPONSE_INJECTED)
 			{
 				std::cout << "TYPE == DLL_INJECTED ! " << std::endl;
 				ui.dllStatusIndicator->setStyleSheet("background-color: rgb(50,205,50)");
 				ui.containerInjector->setVisible(false);
 				ui.containerDeinject->setVisible(true);
 			}
-			else if (messageManager.getMessageType((*it)) == MessageType::DEINJECT)
+			else if (messageManager.getMessageType((*it)) == MessageType::POST_SERVER_EJECTION)
 			{
 				std::cout << "TYPE == DEINJECT ! " << std::endl;
 				ui.dllStatusIndicator->setStyleSheet("background-color: rgb(255,0,0)");
 				ui.containerInjector->setVisible(true);
 				ui.containerDeinject->setVisible(false);
 			}
-			else if (messageManager.getMessageType((*it)) == MessageType::INFO) {
+			else if (messageManager.getMessageType((*it)) == MessageType::DATA_PROMPT_DLL) {
 				std::cout << "TYPE == INFO ! " << std::endl;
 				std::pair<std::string, std::string> infoObject = messageManager.getInfoObject(*it);
 

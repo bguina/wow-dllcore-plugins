@@ -109,7 +109,7 @@ PluginServerMessage InjectedClient::_buildMessage(const std::string& messageId) 
 
 	result.type = messenger.getMessageType(messageId);
 	switch (result.type) {
-	case MessageType::START_SUBSCRIBE: {
+	case MessageType::SUBSCRIBE_DLL_UPDATES: {
 		std::list<std::string> toSubscribe = mClient->getMessageManager().getSubcribeObject(messageId);
 
 		bool found = (std::find(toSubscribe.begin(), toSubscribe.end(), "position") != toSubscribe.end());
@@ -120,7 +120,7 @@ PluginServerMessage InjectedClient::_buildMessage(const std::string& messageId) 
 
 		break;
 	}
-	case MessageType::STOP_SUBSCRIBE: {
+	case MessageType::UNSUBSCRIBE_DLL_UPDATES: {
 		std::list<std::string> toSubscribe = mClient->getMessageManager().getSubcribeObject(messageId);
 		bool found = (std::find(toSubscribe.begin(), toSubscribe.end(), "position") != toSubscribe.end());
 		if (found) {
@@ -129,7 +129,7 @@ PluginServerMessage InjectedClient::_buildMessage(const std::string& messageId) 
 
 		break;
 	}
-	case MessageType::WAYPOINTS: {
+	case MessageType::POST_DLL_DATA_3DPATH: {
 		std::list<std::string> rawWaypoints = mClient->getMessageManager().getWaypointsObject(messageId);
 
 		mDebugger << "" << FileLogger::info << "WAYPOINTS" << FileLogger::normal << std::endl;
@@ -155,7 +155,7 @@ PluginServerMessage InjectedClient::_buildMessage(const std::string& messageId) 
 		}*/
 		break;
 	}
-	case MessageType::START_BOT: {
+	case MessageType::RESUME_PLUGIN: {
 		mDebugger << "" << FileLogger::warn << "START_BOT" << FileLogger::normal << std::endl;
 		/*
 		auto pausable = dynamic_cast<IPausablePlugin*>(mPlugin.get());
@@ -167,7 +167,7 @@ PluginServerMessage InjectedClient::_buildMessage(const std::string& messageId) 
 		}*/
 		break;
 	}
-	case MessageType::STOP_BOT: {
+	case MessageType::PAUSE_PLUGIN: {
 		mDebugger << FileLogger::warn << "STOP_BOT" << FileLogger::normal << std::endl;
 		/*auto pausable = dynamic_cast<IPausablePlugin*>(mPlugin.get());
 		if (nullptr != pausable) {
@@ -178,7 +178,7 @@ PluginServerMessage InjectedClient::_buildMessage(const std::string& messageId) 
 		}*/
 		break;
 	}
-	case MessageType::DEINJECT: {
+	case MessageType::POST_SERVER_EJECTION: {
 		result.data.eject = true;
 		break;
 	}

@@ -11,7 +11,7 @@ std::list<std::string> MessageManager::getWaypointsObject(std::string message) {
 	if (!err.empty()) {
 		std::cerr << err << std::endl;
 	}
-	else if (getMessageType(message) == MessageType::WAYPOINTS) {
+	else if (getMessageType(message) == MessageType::POST_DLL_DATA_3DPATH) {
 		if (rootJSON.get("waypoints").is<picojson::array>())
 		{
 			picojson::array arr = rootJSON.get("waypoints").get<picojson::array>();
@@ -27,7 +27,7 @@ std::list<std::string> MessageManager::getWaypointsObject(std::string message) {
 
 std::string MessageManager::buildWaypoinsFile(std::list<std::string> listWaypoint) {
 	picojson::value rootJSON = picojson::value(picojson::object());
-	rootJSON.get<picojson::object>()[getMessageTypeString(MessageType::MESSAGE_TYPE)] = picojson::value(getMessageTypeString(MessageType::WAYPOINTS));
+	rootJSON.get<picojson::object>()[getMessageTypeString(MessageType::MESSAGE_TYPE)] = picojson::value(getMessageTypeString(MessageType::POST_DLL_DATA_3DPATH));
 	picojson::array arr;
 	for (std::list<std::string>::iterator it = listWaypoint.begin(); it != listWaypoint.end(); it++)
 	{
@@ -45,7 +45,7 @@ std::pair<std::string, std::string> MessageManager::getInfoObject(std::string me
 	if (!err.empty()) {
 		std::cerr << err << std::endl;
 	}
-	else if (getMessageType(message) == MessageType::INFO) {
+	else if (getMessageType(message) == MessageType::DATA_PROMPT_DLL) {
 		if (rootJSON.get("data").is<picojson::object>()
 			&& rootJSON.get("data").get("name").is<std::string>()
 			&& rootJSON.get("data").get("value").is<std::string>())
@@ -63,7 +63,7 @@ std::pair<std::string, std::string> MessageManager::getInfoObject(std::string me
 
 std::string MessageManager::builResponseInfo(std::string name, std::string value) {
 	picojson::value rootJSON = picojson::value(picojson::object());
-	rootJSON.get<picojson::object>()[getMessageTypeString(MessageType::MESSAGE_TYPE)] = picojson::value(getMessageTypeString(MessageType::INFO));
+	rootJSON.get<picojson::object>()[getMessageTypeString(MessageType::MESSAGE_TYPE)] = picojson::value(getMessageTypeString(MessageType::DATA_PROMPT_DLL));
 	rootJSON.get<picojson::object>()["data"] = picojson::value(picojson::object());
 	rootJSON.get<picojson::object>()["data"].get<picojson::object>()["name"] = picojson::value(name);
 	rootJSON.get<picojson::object>()["data"].get<picojson::object>()["value"] = picojson::value(value);
@@ -73,7 +73,7 @@ std::string MessageManager::builResponseInfo(std::string name, std::string value
 //START_SUBSCRIBE
 std::string MessageManager::builRequestStartSubcribe(std::list<std::string> toSubscribe) {
 	picojson::value rootJSON = picojson::value(picojson::object());
-	rootJSON.get<picojson::object>()[getMessageTypeString(MessageType::MESSAGE_TYPE)] = picojson::value(getMessageTypeString(MessageType::START_SUBSCRIBE));
+	rootJSON.get<picojson::object>()[getMessageTypeString(MessageType::MESSAGE_TYPE)] = picojson::value(getMessageTypeString(MessageType::SUBSCRIBE_DLL_UPDATES));
 	rootJSON.get<picojson::object>()["data"] = picojson::value(picojson::object());
 	std::string to("");
 	for (std::list<std::string>::iterator it = toSubscribe.begin(); it != toSubscribe.end(); it++)
@@ -89,7 +89,7 @@ std::string MessageManager::builRequestStartSubcribe(std::list<std::string> toSu
 //STOP_SUBSCRIBE
 std::string MessageManager::builRequestStopSubcribe(std::list<std::string> stopSubscribe) {
 	picojson::value rootJSON = picojson::value(picojson::object());
-	rootJSON.get<picojson::object>()[getMessageTypeString(MessageType::MESSAGE_TYPE)] = picojson::value(getMessageTypeString(MessageType::STOP_SUBSCRIBE));
+	rootJSON.get<picojson::object>()[getMessageTypeString(MessageType::MESSAGE_TYPE)] = picojson::value(getMessageTypeString(MessageType::UNSUBSCRIBE_DLL_UPDATES));
 	rootJSON.get<picojson::object>()["data"] = picojson::value(picojson::object());
 	std::string to("");
 	for (std::list<std::string>::iterator it = stopSubscribe.begin(); it != stopSubscribe.end(); it++)
@@ -110,8 +110,8 @@ std::list<std::string> MessageManager::getSubcribeObject(std::string message) {
 	if (!err.empty()) {
 		std::cerr << err << std::endl;
 	}
-	else if (getMessageType(message) == MessageType::START_SUBSCRIBE ||
-		getMessageType(message) == MessageType::STOP_SUBSCRIBE) {
+	else if (getMessageType(message) == MessageType::SUBSCRIBE_DLL_UPDATES ||
+		getMessageType(message) == MessageType::UNSUBSCRIBE_DLL_UPDATES) {
 		if (rootJSON.get("data").is<picojson::object>()
 			&& rootJSON.get("data").get("to").is<std::string>())
 		{
@@ -127,19 +127,19 @@ std::list<std::string> MessageManager::getSubcribeObject(std::string message) {
 //DEINJECT
 std::string MessageManager::builRequestdDeinjecteMessage() {
 	picojson::value rootJSON = picojson::value(picojson::object());
-	rootJSON.get<picojson::object>()[getMessageTypeString(MessageType::MESSAGE_TYPE)] = picojson::value(getMessageTypeString(MessageType::DEINJECT));
+	rootJSON.get<picojson::object>()[getMessageTypeString(MessageType::MESSAGE_TYPE)] = picojson::value(getMessageTypeString(MessageType::POST_SERVER_EJECTION));
 	return rootJSON.serialize();
 }
 
 std::string MessageManager::builRequestdStartBotMessage() {
 	picojson::value rootJSON = picojson::value(picojson::object());
-	rootJSON.get<picojson::object>()[getMessageTypeString(MessageType::MESSAGE_TYPE)] = picojson::value(getMessageTypeString(MessageType::START_BOT));
+	rootJSON.get<picojson::object>()[getMessageTypeString(MessageType::MESSAGE_TYPE)] = picojson::value(getMessageTypeString(MessageType::RESUME_PLUGIN));
 	return rootJSON.serialize();
 }
 
 std::string MessageManager::builRequestdStopBotMessage() {
 	picojson::value rootJSON = picojson::value(picojson::object());
-	rootJSON.get<picojson::object>()[getMessageTypeString(MessageType::MESSAGE_TYPE)] = picojson::value(getMessageTypeString(MessageType::STOP_BOT));
+	rootJSON.get<picojson::object>()[getMessageTypeString(MessageType::MESSAGE_TYPE)] = picojson::value(getMessageTypeString(MessageType::PAUSE_PLUGIN));
 	return rootJSON.serialize();
 }
 
@@ -150,7 +150,7 @@ int MessageManager::getDLLInjectedObject(std::string message) {
 	if (!err.empty()) {
 		std::cerr << err << std::endl;
 	}
-	else if (getMessageType(message) == MessageType::DLL_INJECTED) {
+	else if (getMessageType(message) == MessageType::DLL_RESPONSE_INJECTED) {
 		if (rootJSON.get("data").is<picojson::object>()
 			&& rootJSON.get("data").get("pid").is<std::string>())
 		{
@@ -165,7 +165,7 @@ int MessageManager::getDLLInjectedObject(std::string message) {
 //DLL_INJECTED
 std::string MessageManager::builRequestdDLLInjectedMessage(int pid) {
 	picojson::value rootJSON = picojson::value(picojson::object());
-	rootJSON.get<picojson::object>()[getMessageTypeString(MessageType::MESSAGE_TYPE)] = picojson::value(getMessageTypeString(MessageType::DLL_INJECTED));
+	rootJSON.get<picojson::object>()[getMessageTypeString(MessageType::MESSAGE_TYPE)] = picojson::value(getMessageTypeString(MessageType::DLL_RESPONSE_INJECTED));
 	rootJSON.get<picojson::object>()["data"] = picojson::value(picojson::object());
 	rootJSON.get<picojson::object>()["data"].get<picojson::object>()["pid"] = picojson::value(std::to_string(pid));
 	return rootJSON.serialize();
@@ -179,7 +179,7 @@ InjectObject* MessageManager::getInjectObject(std::string message) {
 	if (!err.empty()) {
 		std::cerr << err << std::endl;
 	}
-	else if (getMessageType(message) == MessageType::INJECT) {
+	else if (getMessageType(message) == MessageType::POST_SERVER_INJECTION) {
 		if (rootJSON.get("data").is<picojson::object>()
 			&& rootJSON.get("data").get("pid").is<std::string>()
 			&& rootJSON.get("data").get("module").is<std::string>())
@@ -198,7 +198,7 @@ InjectObject* MessageManager::getInjectObject(std::string message) {
 
 std::string MessageManager::builRequestdInjectMessage(int pid, std::string module) {
 	picojson::value rootJSON = picojson::value(picojson::object());
-	rootJSON.get<picojson::object>()[getMessageTypeString(MessageType::MESSAGE_TYPE)] = picojson::value(getMessageTypeString(MessageType::INJECT));
+	rootJSON.get<picojson::object>()[getMessageTypeString(MessageType::MESSAGE_TYPE)] = picojson::value(getMessageTypeString(MessageType::POST_SERVER_INJECTION));
 	rootJSON.get<picojson::object>()["data"] = picojson::value(picojson::object());
 	rootJSON.get<picojson::object>()["data"].get<picojson::object>()["pid"] = picojson::value(std::to_string(pid));
 	rootJSON.get<picojson::object>()["data"].get<picojson::object>()["module"] = picojson::value(module);
@@ -213,7 +213,7 @@ AvailableConfigurationObject* MessageManager::getAvailableConfigurationObject(st
 	if (!err.empty()) {
 		std::cerr << err << std::endl;
 	}
-	else if (getMessageType(message) == MessageType::AVAILABLE_CONFIGURATION) {
+	else if (getMessageType(message) == MessageType::GET_SERVER_OPTIONS) {
 		if (rootJSON.get("data").is<picojson::object>()
 			&& rootJSON.get("data").get("pids").is<std::string>()
 			&& rootJSON.get("data").get("modules").is<std::string>())
@@ -233,7 +233,7 @@ AvailableConfigurationObject* MessageManager::getAvailableConfigurationObject(st
 
 std::string MessageManager::builResponseAvailableConfigationMessage(std::string pids, std::string modules) {
 	picojson::value rootJSON = picojson::value(picojson::object());
-	rootJSON.get<picojson::object>()[getMessageTypeString(MessageType::MESSAGE_TYPE)] = picojson::value(getMessageTypeString(MessageType::AVAILABLE_CONFIGURATION));
+	rootJSON.get<picojson::object>()[getMessageTypeString(MessageType::MESSAGE_TYPE)] = picojson::value(getMessageTypeString(MessageType::GET_SERVER_OPTIONS));
 	rootJSON.get<picojson::object>()["data"] = picojson::value(picojson::object());
 	rootJSON.get<picojson::object>()["data"].get<picojson::object>()["pids"] = picojson::value(pids);
 	rootJSON.get<picojson::object>()["data"].get<picojson::object>()["modules"] = picojson::value(modules);
@@ -243,7 +243,7 @@ std::string MessageManager::builResponseAvailableConfigationMessage(std::string 
 
 std::string MessageManager::builRequestdAvailableConfigationMessage() {
 	picojson::value rootJSON = picojson::value(picojson::object());
-	rootJSON.get<picojson::object>()[getMessageTypeString(MessageType::MESSAGE_TYPE)] = picojson::value(getMessageTypeString(MessageType::AVAILABLE_CONFIGURATION));
+	rootJSON.get<picojson::object>()[getMessageTypeString(MessageType::MESSAGE_TYPE)] = picojson::value(getMessageTypeString(MessageType::GET_SERVER_OPTIONS));
 	return rootJSON.serialize();
 }
 
@@ -277,43 +277,43 @@ MessageType MessageManager::getMessageTypeFromString(std::string type) {
 	}
 	else if (type == "AVAILABLE_CONFIGURATION")
 	{
-		return MessageType::AVAILABLE_CONFIGURATION;
+		return MessageType::GET_SERVER_OPTIONS;
 	}
 	else if (type == "INJECT")
 	{
-		return MessageType::INJECT;
+		return MessageType::POST_SERVER_INJECTION;
 	}
 	else if (type == "DEINJECT")
 	{
-		return MessageType::DEINJECT;
+		return MessageType::POST_SERVER_EJECTION;
 	}
 	else if (type == "DLL_INJECTED")
 	{
-		return MessageType::DLL_INJECTED;
+		return MessageType::DLL_RESPONSE_INJECTED;
 	}
 	else if (type == "INFO")
 	{
-		return MessageType::INFO;
+		return MessageType::DATA_PROMPT_DLL;
 	}
 	else if (type == "START_SUBSCRIBE")
 	{
-		return MessageType::START_SUBSCRIBE;
+		return MessageType::SUBSCRIBE_DLL_UPDATES;
 	}
 	else if (type == "STOP_SUBSCRIBE")
 	{
-		return MessageType::STOP_SUBSCRIBE;
+		return MessageType::UNSUBSCRIBE_DLL_UPDATES;
 	}
 	else if (type == "START_BOT")
 	{
-		return MessageType::START_BOT;
+		return MessageType::RESUME_PLUGIN;
 	}
 	else if (type == "STOP_BOT")
 	{
-		return MessageType::STOP_BOT;
+		return MessageType::PAUSE_PLUGIN;
 	}
 	else if (type == "WAYPOINTS")
 	{
-		return MessageType::WAYPOINTS;
+		return MessageType::POST_DLL_DATA_3DPATH;
 	}
 	else {
 		std::cout << "Unknown type..." << std::endl;
@@ -326,16 +326,16 @@ std::string MessageManager::getMessageTypeString(MessageType type) {
 	{
 	case MessageType::UNKNOWN: { return("UNKNOWN"); } break;
 	case MessageType::MESSAGE_TYPE: { return("MESSAGE_TYPE"); } break;
-	case MessageType::AVAILABLE_CONFIGURATION: { return("AVAILABLE_CONFIGURATION"); } break;
-	case MessageType::INJECT: { return ("INJECT"); } break;
-	case MessageType::DEINJECT: { return ("DEINJECT"); } break;
-	case MessageType::DLL_INJECTED: { return ("DLL_INJECTED"); } break;
-	case MessageType::INFO: { return ("INFO"); } break;
-	case MessageType::START_SUBSCRIBE: { return ("START_SUBSCRIBE"); } break;
-	case MessageType::STOP_SUBSCRIBE: { return ("STOP_SUBSCRIBE"); } break;
-	case MessageType::START_BOT: { return ("START_BOT"); } break;
-	case MessageType::STOP_BOT: { return ("STOP_BOT"); } break;
-	case MessageType::WAYPOINTS: { return ("WAYPOINTS"); } break;
+	case MessageType::GET_SERVER_OPTIONS: { return("AVAILABLE_CONFIGURATION"); } break;
+	case MessageType::POST_SERVER_INJECTION: { return ("INJECT"); } break;
+	case MessageType::POST_SERVER_EJECTION: { return ("DEINJECT"); } break;
+	case MessageType::DLL_RESPONSE_INJECTED: { return ("DLL_INJECTED"); } break;
+	case MessageType::DATA_PROMPT_DLL: { return ("INFO"); } break;
+	case MessageType::SUBSCRIBE_DLL_UPDATES: { return ("START_SUBSCRIBE"); } break;
+	case MessageType::UNSUBSCRIBE_DLL_UPDATES: { return ("STOP_SUBSCRIBE"); } break;
+	case MessageType::RESUME_PLUGIN: { return ("START_BOT"); } break;
+	case MessageType::PAUSE_PLUGIN: { return ("STOP_BOT"); } break;
+	case MessageType::POST_DLL_DATA_3DPATH: { return ("WAYPOINTS"); } break;
 	default:
 		std::cout << "Unknown type..." << std::endl;
 		return NULL;

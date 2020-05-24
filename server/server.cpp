@@ -131,7 +131,7 @@ BOOL Server::ReadData(ClientConnection& client)
 			client.setCurrentRead(-1);
 			std::cout << "FROM : " << client.getSocket() << " Message receive ==  " << client.getTmpMessage() << std::endl;
 
-			if (messageManager.getMessageType(client.getTmpMessage()) == MessageType::AVAILABLE_CONFIGURATION)
+			if (messageManager.getMessageType(client.getTmpMessage()) == MessageType::GET_SERVER_OPTIONS)
 			{
 				//Push this client to PEER list for later
 				if (checkIfClientExistInPeerList(client.getSocket()) == NULL) {
@@ -157,7 +157,7 @@ BOOL Server::ReadData(ClientConnection& client)
 					messageManager.builResponseAvailableConfigationMessage(pidsResponse, dllsResponse)
 				);
 			}
-			else if (messageManager.getMessageType(client.getTmpMessage()) == MessageType::INJECT)
+			else if (messageManager.getMessageType(client.getTmpMessage()) == MessageType::POST_SERVER_INJECTION)
 			{
 				InjectObject* object = messageManager.getInjectObject(client.getTmpMessage());
 				if (object)
@@ -185,7 +185,7 @@ BOOL Server::ReadData(ClientConnection& client)
 					free(object);
 				}
 			}
-			else if (messageManager.getMessageType(client.getTmpMessage()) == MessageType::DLL_INJECTED)
+			else if (messageManager.getMessageType(client.getTmpMessage()) == MessageType::DLL_RESPONSE_INJECTED)
 			{
 				int pid = messageManager.getDLLInjectedObject(client.getTmpMessage());
 				if (pid != -1)
@@ -208,12 +208,12 @@ BOOL Server::ReadData(ClientConnection& client)
 				}
 
 			}
-			else if (messageManager.getMessageType(client.getTmpMessage()) == MessageType::DEINJECT ||
-				messageManager.getMessageType(client.getTmpMessage()) == MessageType::START_SUBSCRIBE ||
-				messageManager.getMessageType(client.getTmpMessage()) == MessageType::STOP_SUBSCRIBE ||
-				messageManager.getMessageType(client.getTmpMessage()) == MessageType::WAYPOINTS ||
-				messageManager.getMessageType(client.getTmpMessage()) == MessageType::START_BOT ||
-				messageManager.getMessageType(client.getTmpMessage()) == MessageType::STOP_BOT)
+			else if (messageManager.getMessageType(client.getTmpMessage()) == MessageType::POST_SERVER_EJECTION ||
+				messageManager.getMessageType(client.getTmpMessage()) == MessageType::SUBSCRIBE_DLL_UPDATES ||
+				messageManager.getMessageType(client.getTmpMessage()) == MessageType::UNSUBSCRIBE_DLL_UPDATES ||
+				messageManager.getMessageType(client.getTmpMessage()) == MessageType::POST_DLL_DATA_3DPATH ||
+				messageManager.getMessageType(client.getTmpMessage()) == MessageType::RESUME_PLUGIN ||
+				messageManager.getMessageType(client.getTmpMessage()) == MessageType::PAUSE_PLUGIN)
 			{
 				PeerClient* peerClient = checkIfClientExistInPeerList(client.getSocket());
 				if (peerClient != NULL && peerClient->getClient2())
@@ -224,7 +224,7 @@ BOOL Server::ReadData(ClientConnection& client)
 					std::cout << "[ERROR] CANNOT FOUND PEER with SOCKET..........." << std::endl;
 				}
 			}
-			else if (messageManager.getMessageType(client.getTmpMessage()) == MessageType::INFO) {
+			else if (messageManager.getMessageType(client.getTmpMessage()) == MessageType::DATA_PROMPT_DLL) {
 				PeerClient* peerClient = checkIfClientExistInPeerList(client.getSocket());
 				if (peerClient != NULL && peerClient->getClient1())
 				{

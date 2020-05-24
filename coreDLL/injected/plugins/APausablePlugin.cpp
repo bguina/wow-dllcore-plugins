@@ -15,10 +15,9 @@ APausablePlugin::~APausablePlugin()
 
 bool APausablePlugin::handleServerMessage(const PluginServerMessage& serverMessage) {
 	switch (serverMessage.type) {
-	case MessageType::START_BOT:
-	case MessageType::STOP_BOT:
-
-		pause(MessageType::STOP_BOT == serverMessage.type);
+	case MessageType::RESUME_PLUGIN:
+	case MessageType::PAUSE_PLUGIN:
+		pause(MessageType::PAUSE_PLUGIN == serverMessage.type);
 		return true;
 
 	default: break;

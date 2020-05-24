@@ -27,7 +27,7 @@ bool WowMaxBot::handleServerMessage(const PluginServerMessage& serverMessage) {
 	if (!AWowBot::handleServerMessage(serverMessage)) {
 		switch (serverMessage.type)
 		{
-		case MessageType::WAYPOINTS:
+		case MessageType::POST_DLL_DATA_3DPATH:
 			mPathFinder = std::make_unique<LinearPathFinder>(*serverMessage.data.waypoints);
 			return true;
 		default:
