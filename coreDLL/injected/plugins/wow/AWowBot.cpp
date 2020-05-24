@@ -71,7 +71,7 @@ void AWowBot::_logDebug() const {
 				mDbg << "Target: " << targetGuid.upper() << targetGuid.lower() << " can be attacked? " << self->canAttack(mGame, *target) << std::endl;
 			}
 			else {
-				mDbg << FileLogger::err << "Target: " << targetGuid.upper() << targetGuid.lower() << " can be attacked? " << self->canAttack(mGame, *target) << FileLogger::info << std::endl;
+				mDbg << FileLogger::err << "Target: " << targetGuid.upper() << targetGuid.lower() << " can be attacked? " << (uint32_t)self->canAttack(mGame, *target) << FileLogger::info << std::endl;
 			}
 
 		}

@@ -23,6 +23,18 @@ enum class WowObjectType : uint8_t {
 	Invalid = 17
 };
 
+enum class WowObjectDynamicFlags : uint32_t {
+	None = 0,
+	Invisible = 0x1,
+	Lootable = 0x4,
+	TrackUnit = 0x8,
+	Tapped = 0x10,
+	TappedByMe = 0x20,
+	Dead = 0x40,
+	ReferAFriendLinked = 0x80,
+	IsTappedByAllThreatList = 0x100,
+};
+
 enum class WowUnitClass : uint8_t {
 	None = 0,
 	Warrior = 1,
@@ -44,5 +56,4 @@ enum class WowUnitRace : uint8_t {
 
 enum class WowUnitDynamicFlags : uint32_t {
 	isInCombat = 0x0080000,
-	isLootable = 0x4,
 };

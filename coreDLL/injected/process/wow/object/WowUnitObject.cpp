@@ -59,7 +59,7 @@ bool WowUnitObject::isInCombat() const {
 }
 
 bool WowUnitObject::isLootable() const {
-	return *reinterpret_cast<const uint32_t*>((getDescriptor() + WowGameOffsets::WowUnitObject::DescriptorOffsetObjectDynamicflags)) & (int)WowUnitDynamicFlags::isLootable;
+	return *reinterpret_cast<const uint32_t*>((getDescriptor() + WowGameOffsets::WowObject::DescriptorOffsetObjectDynamicflags)) & (int)WowObjectDynamicFlags::Lootable;
 }
 
 WowGuid128 WowUnitObject::getTargetGuid() const {

@@ -45,7 +45,6 @@ void WowMaxBot::onD3dRender() {
 void WowMaxBot::_onRunning() {
 
 	_logDebug();
-	return;
 
 	std::shared_ptr<WowActivePlayerObject> self = mGame.getObjectManager().getActivePlayer();
 	mDbg << FileLogger::info << TAG << " running" << FileLogger::normal << std::endl;
