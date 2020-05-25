@@ -135,7 +135,7 @@ void WowMaxBot::_onRunning() {
 				// Unit gets "killed" (blacklisted for now)
 				mBlacklistedGuids.insert(mTargetUnit->getGuid());
 				self->interactWith(mGame, mTargetUnit->getGuidPtr());
-				mGame.getSpellBookManager().clickSpell(mGame, 22723);
+				//mGame.getSpellBookManager().clickSpell(mGame, 22723);
 
 			}
 		}

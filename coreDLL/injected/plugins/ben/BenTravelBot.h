@@ -11,6 +11,9 @@ public:
 	virtual ~BenTravelBot();
 
 protected:
+	virtual void _onPaused() override;
+	virtual void _onResumed() override;
+
 	virtual void _onRunning() override;
 };
 

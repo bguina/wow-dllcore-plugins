@@ -9,6 +9,10 @@ WowObject::WowObject(const uint8_t* baseAddr) : MemoryObject(baseAddr) {
 
 }
 
+bool WowObject::vanished() const {
+	return 0 == getAddress();
+}
+
 const uint8_t* WowObject::getDescriptor() const {
 	return *(uint8_t**)(getAddress() + WowGameOffsets::WowObject::OffsetDescriptorPointer);
 }

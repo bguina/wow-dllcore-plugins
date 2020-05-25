@@ -157,6 +157,7 @@
   <ItemGroup>
     <ClInclude Include="injected\plugins\APausablePlugin.h" />
     <ClInclude Include="injected\plugins\ben\ABenBot.h" />
+    <ClInclude Include="injected\plugins\ben\farm\Farm.h" />
     <ClInclude Include="injected\plugins\PluginServerMessage.h" />
     <ClInclude Include="injected\plugins\IPausablePlugin.h" />
     <ClInclude Include="injected\plugins\IServerPlugin.h" />
@@ -169,7 +170,7 @@
     <ClInclude Include="injected\plugins\ben\BenFightBot.h" />
     <ClInclude Include="injected\plugins\ben\BenTravelBot.h" />
     <ClInclude Include="injected\plugins\max\MaxBot.h" />
-    <ClInclude Include="injected\plugins\ben\ABenFarmingBot.h" />
+    <ClInclude Include="injected\plugins\ben\farm\ABenFarmingBot.h" />
     <ClInclude Include="injected\process\wow\dump\WowGameDescriptors.h" />
     <ClInclude Include="injected\process\wow\dump\WowGameOffsets.h" />
     <ClInclude Include="framework.h" />
@@ -211,7 +212,7 @@
     <ClCompile Include="injected\observer\ARecurrentServerObserver.cpp" />
     <ClCompile Include="injected\plugins\APausablePlugin.cpp" />
     <ClCompile Include="injected\plugins\ben\ABenBot.cpp" />
-    <ClCompile Include="injected\plugins\ben\ABenFarmingBot.cpp" />
+    <ClCompile Include="injected\plugins\ben\farm\ABenFarmingBot.cpp" />
     <ClCompile Include="injected\process\AGame.cpp" />
     <ClCompile Include="d3d\d3d.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

@@ -1,7 +1,12 @@
 #pragma once
 
 #include "../APausablePlugin.h"
+#include "../../process/wow/WowGame.h"
 
+/*
+	Helpful reminder
+	https://stackoverflow.com/questions/10334915/interface-vs-composition
+*/
 
 class IPathFinder;
 class WowGame;

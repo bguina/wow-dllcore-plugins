@@ -24,7 +24,8 @@ public:
 		return static_cast<T&>(*this);
 	}
 
-	const uint8_t* getDescriptor() const;
+
+	bool vanished() const;
 
 	WowGuid128 getGuid() const;
 
@@ -58,6 +59,8 @@ public:
 	int getFacingDeltaDegrees(const WowObject& object) const;
 
 protected:
+	const uint8_t* getDescriptor() const;
+
 	void* vtableAt(unsigned index);
 };
 

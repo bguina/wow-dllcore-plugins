@@ -150,9 +150,6 @@
     <ClInclude Include="injected\plugins\IPausablePlugin.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="injected\plugins\ben\ABenFarmingBot.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="injected\plugins\IServerPlugin.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -166,6 +163,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="injected\process\wow\object\WowGuid128.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="injected\plugins\ben\farm\ABenFarmingBot.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="injected\plugins\ben\farm\Farm.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -266,13 +269,13 @@
     <ClCompile Include="injected\plugins\APausablePlugin.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="injected\plugins\ben\ABenFarmingBot.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="logger\FileLogger.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="injected\process\wow\object\WowGuid128.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="injected\plugins\ben\farm\ABenFarmingBot.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

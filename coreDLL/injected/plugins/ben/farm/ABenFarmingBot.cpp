@@ -2,9 +2,9 @@
 
 #include "ABenFarmingBot.h"
 
-#include "../../process/wow/object/WowActivePlayerObject.h"
+#include "../../../process/wow/object/WowActivePlayerObject.h"
 
-#include "../../../pathfinder/LinearPathFinder.h"
+#include "../../../../pathfinder/LinearPathFinder.h"
 
 const std::string TAG = "BenPlayerClassBot";
 

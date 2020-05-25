@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ABenFarmingBot.h"
+#include "farm/ABenFarmingBot.h"
 
 class BenFightBot : public ABenFarmingBot
 {
