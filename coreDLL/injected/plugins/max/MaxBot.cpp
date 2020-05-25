@@ -131,11 +131,20 @@ void WowMaxBot::_onRunning() {
 			}
 			else {
 				mDbg.i("Killed target! yay!");
-
+				mGame.getWindowController()->releaseAllKeys();
 				// Unit gets "killed" (blacklisted for now)
-				mBlacklistedGuids.insert(mTargetUnit->getGuid());
-				self->interactWith(mGame, mTargetUnit->getGuidPtr());
+				
+				
 				//mGame.getSpellBookManager().clickSpell(mGame, 22723);
+				if (mTargetUnit->getUnitHealth() == 0)
+				{
+					mBlacklistedGuids.insert(mTargetUnit->getGuid());
+				}
+				else if (mTargetUnit->getUnitHealth() == mTargetUnit->getUnitMaxHealth())
+				{
+					self->interactWith(mGame, mTargetUnit->getGuidPtr());
+					mGame.getSpellBookManager().castSpell(mGame, 1978, self->getTargetGuidPtr());
+				}
 
 			}
 		}

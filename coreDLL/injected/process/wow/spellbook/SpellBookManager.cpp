@@ -49,14 +49,14 @@ const SpellbookDescriptor* SpellBookManager::getSpell(uint32_t spellId) const {
 
 //SpellBook_CastSpell = 0xDBAC30,
 
-using SpellBook_CastSpell = void (__fastcall) (int spellId, int itemId, const uint128_t* pGuid128, unsigned __int8 isTrade, char padArg);
+using SpellBook_CastSpell = void(__fastcall) (int spellId, int itemId, const uint128_t* pGuid128, unsigned __int8 isTrade, char padArg);
 
 void SpellBookManager::castSpell(const WowGame& game, const uint32_t spellId, const uint128_t* target) {
 	//return (game.get<CastSpellT>(0xDBAC30))((void*)getAddress(), spellId, 0, 0);
 	auto spellIdx = 0;
 
-		uint32_t totalSpell = getSpellBookCount();
-		SpellbookDescriptor** ptrArray = *((SpellbookDescriptor***)(mPointerAddr - 0x20));
+	uint32_t totalSpell = getSpellBookCount();
+	SpellbookDescriptor** ptrArray = *((SpellbookDescriptor***)(mPointerAddr - 0x20));
 
 	for (size_t i = 0; i < totalSpell; i++) {
 		SpellbookDescriptor* entry = ptrArray[i];
@@ -70,7 +70,7 @@ void SpellBookManager::castSpell(const WowGame& game, const uint32_t spellId, co
 		}
 	}
 
-	(game.get<SpellBook_CastSpell>(0xDBAC30))(spellIdx,0, target, 0, 0);
+	(game.get<SpellBook_CastSpell>(0xDBAC30))(spellIdx, 0, target, 0, 0);
 
 	//return game.get<SpellbookClickSpell>(WowGameOffsets::WowSpellbook::FunctionClickSpell)(getGuidPtr(), spellId);
 	//return 1;
