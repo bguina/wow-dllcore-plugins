@@ -25,6 +25,7 @@ protected:
 	std::unique_ptr<IPathFinder> mPathFinder;
 	std::shared_ptr<const WowUnitObject> mTargetUnit;
 	std::set<WowGuid128> mBlacklistedGuids;
+	bool mOpeningCombat = true;
 };
 
 inline std::ostream& operator<<(
