@@ -32,6 +32,8 @@ public:
 
 	WowGuid128 getTargetGuid() const;
 
+	WowGuid128* getTargetGuidPtr() const;
+
 	void moveTo(WowGame& game, const WowVector3f& destination);
 };
 

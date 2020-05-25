@@ -66,6 +66,10 @@ WowGuid128 WowUnitObject::getTargetGuid() const {
 	return ((WowGuid128*)(getDescriptor() + WowGameOffsets::WowUnitObject::DescriptorOffsetTargetGuid))[0];
 }
 
+WowGuid128* WowUnitObject::getTargetGuidPtr() const {
+	return ((WowGuid128*)(getDescriptor() + WowGameOffsets::WowUnitObject::DescriptorOffsetTargetGuid));
+}
+
 void WowUnitObject::moveTo(WowGame& game, const WowVector3f& destination) {
 	int delta = getPosition().getFacingDeltaDegrees(getFacingDegrees(), destination);
 	int anglePrecision = 10;
