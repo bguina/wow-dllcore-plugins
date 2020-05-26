@@ -46,6 +46,12 @@ int WowUnitObject::getUnitMaxHealth() const {
 	return *reinterpret_cast<const uint32_t*>(getDescriptor() + WowGameOffsets::WowUnitObject::DescriptorOffsetMaxHealth);
 }
 
+int WowUnitObject::getUnitHealthPercentage() const {
+	int currentHealth = *reinterpret_cast<const uint32_t*>(getDescriptor() + WowGameOffsets::WowUnitObject::DescriptorOffsetHealth);
+	int maxHealth = *reinterpret_cast<const uint32_t*>(getDescriptor() + WowGameOffsets::WowUnitObject::DescriptorOffsetMaxHealth);
+	return (currentHealth / maxHealth * 100);
+}
+
 int WowUnitObject::getUnitEnergy() const {
 	return *reinterpret_cast<const uint32_t*>(getDescriptor() + WowGameOffsets::WowUnitObject::DescriptorOffsetEnergy);
 }

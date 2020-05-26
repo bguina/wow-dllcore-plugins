@@ -22,6 +22,8 @@ public:
 
 	int getUnitMaxHealth() const;
 
+	int getUnitHealthPercentage() const;
+
 	int getUnitEnergy() const;
 
 	int getUnitMaxEnergy() const;
