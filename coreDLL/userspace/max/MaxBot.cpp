@@ -68,13 +68,14 @@ void WowMaxBot::onEvaluate() {
 				mDbg << FileLogger::info << "target address = " << (void*)currentTarget->getAddress() << " Lootable == " << currentTarget->isLootable() << FileLogger::normal << std::endl;
 			}
 
+
 			if (nullptr != mTargetUnit && (0 == mTargetUnit->getAddress() || mBlacklistedGuids.find(mTargetUnit->getGuid()) != mBlacklistedGuids.end()))
 			{
 				mDbg << "GUID is blacklisted, ignoring" << mTargetUnit->getGuid().upper();
 				mTargetUnit = nullptr;
 			}
 
-			if (nullptr == mTargetUnit)
+			if (nullptr == mTargetUnit && self->getUnitHealthPercentage() > 80)
 			{
 				std::list<std::shared_ptr<const WowUnitObject>> allUnits = mGame.getObjectManager().allOfType<const WowUnitObject>(WowObjectType::Unit);
 				std::list<std::shared_ptr<const WowUnitObject>> whilelist;
@@ -84,7 +85,9 @@ void WowMaxBot::onEvaluate() {
 
 				for (auto it = allUnits.begin(); it != allUnits.end(); it++)
 				{
-					if (self->isFriendly(mGame, *(*it)) && mBlacklistedGuids.find((*it)->getGuid()) == mBlacklistedGuids.end()) {
+					if (self->isFriendly(mGame, *(*it)) || (abs(self->getUnitLevel() - (*it)->getUnitLevel()) >= 4) &&
+						mBlacklistedGuids.find((*it)->getGuid()) == mBlacklistedGuids.end())
+					{
 						mBlacklistedGuids.insert((*it)->getGuid());
 					}
 					if (mBlacklistedGuids.find((*it)->getGuid()) == mBlacklistedGuids.end())
@@ -180,7 +183,7 @@ void WowMaxBot::onEvaluate() {
 
 				}
 			}
-			else {
+			else if (self->getUnitHealthPercentage() > 80) {
 				mDbg.i("no mTargetUnit");
 				if (mPathFinder != nullptr) {
 					const Vector3f& selfPosition = self->getPosition();
