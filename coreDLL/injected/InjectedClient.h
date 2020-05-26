@@ -1,13 +1,14 @@
 #pragma once
 
 #include <iostream>
+#include <list>
+#include <memory>
 
 #include "../logger/FileLogger.h"
-#include "process/wow/WowGame.h"
-#include "plugins/IPlugin.h"
+#include "plugin/IPlugin.h"
 
 class MessageManager;
-class PluginServerMessage;
+class ClientMessage;
 class Client;
 
 class InjectedClient
@@ -21,20 +22,18 @@ public:
 	const void* id() const;
 	uint64_t getBootTime() const;
 	uint64_t getLastPulse() const;
-	const WowGame& getGame() const;
 
 	bool run();
 
 private:
-	PluginServerMessage _buildMessage(const std::string& messageId);
+	ClientMessage _buildMessage(const std::string& messageId);
 	bool _dispatchMessages();
 
 	uint64_t mBootTime;
 	uint64_t mLastPulse;
-	std::unique_ptr<Client> mClient;
 	FileLogger mDebugger;
-	WowGame mGame;
-	std::unique_ptr<IPlugin> mPlugin;
+	std::list<std::shared_ptr<IPlugin>> mPlugins;
+	std::unique_ptr<Client> mClient;
 
 public:
 	InjectedClient(InjectedClient const&) = delete;

@@ -47,6 +47,8 @@ public:
 	void operator=(FileLogger const&) = delete;
 
 	static const std::string normal;
+	static const std::string debug;
+	static const std::string verbose;
 	static const std::string info;
 	static const std::string warn;
 	static const std::string err;
