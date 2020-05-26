@@ -39,7 +39,7 @@ public:
 	std::shared_ptr<T> getObjectByGuid(const WowGuid128& guid) {
 		for (auto it = begin(); it != end(); ++it) {
 			if (guid == it->second->getGuid())
-				return std::static_pointer_cast< T>(it->second);
+				return std::static_pointer_cast<T>(it->second);
 		}
 
 		return nullptr;
@@ -102,6 +102,8 @@ inline std::ostream& operator<<(std::ostream& out, const ObjectManager& objMgr)
 
 	if (NULL != objMgr.getBaseAddress()) {
 		// iterate ObjectManger linked list
+
+		/*
 		for (
 			auto it = objMgr.begin();
 			it != objMgr.end();
@@ -131,7 +133,9 @@ inline std::ostream& operator<<(std::ostream& out, const ObjectManager& objMgr)
 
 			out << std::endl;
 		}
+		*/
 	}
+
 
 	return out;
 }

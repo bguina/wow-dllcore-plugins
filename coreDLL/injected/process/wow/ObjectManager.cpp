@@ -29,12 +29,15 @@ bool ObjectManager::isEnabled() const {
 
 void ObjectManager::scan() {
 	if (isEnabled()) {
-		std::set<WowGuid128> oldGuids;
+		//std::set<WowGuid128> oldGuids;
 
+		/*
 		for (std::map<WowGuid128, std::shared_ptr<WowObject>>::const_iterator it = mObjects.begin();
 			it != mObjects.end(); ++it) {
 			oldGuids.insert(it->first);
 		}
+		*/
+		mObjects.clear();
 
 		// Manually walk through the native ObjectManager linked list
 		for (auto pObj = *(uint8_t**)(getBaseAddress() + 0x18);
@@ -42,9 +45,9 @@ void ObjectManager::scan() {
 			pObj = *(uint8_t**)(pObj + WowGameOffsets::WowObjectManager::OffsetNextObject))
 		{
 			WowObject thisObj = WowObject(pObj);
-			std::map<WowGuid128, std::shared_ptr<WowObject>>::const_iterator oldObjInstance = mObjects.find(thisObj.getGuid());
+			//std::map<WowGuid128, std::shared_ptr<WowObject>>::const_iterator oldObjInstance = mObjects.find(thisObj.getGuid());
 
-			if (oldObjInstance == mObjects.end()) {
+			//if (oldObjInstance == mObjects.end()) {
 				std::shared_ptr<WowObject> finalObj = nullptr;
 
 				switch (thisObj.getType()) {
@@ -84,7 +87,8 @@ void ObjectManager::scan() {
 				if (nullptr != finalObj) {
 					mObjects.insert(std::pair<WowGuid128, std::shared_ptr<WowObject>>(finalObj->getGuid(), finalObj));
 				}
-			}
+			//}
+				/*
 			else {
 				// WowObject still present in memory, rebase to found address
 				// TODO: Define WHEN/HOW a same object would be rebase, when we immediately clear any missing previous object?
@@ -92,11 +96,14 @@ void ObjectManager::scan() {
 				oldObjInstance->second->rebase(pObj);
 				oldGuids.erase(oldObjInstance->second->getGuid());
 			}
+			*/
 		}
 
+		/*
 		for (std::set<WowGuid128>::const_iterator it = oldGuids.begin(); it != oldGuids.end(); ++it) {
 			mObjects.erase(*it);
 		}
+		*/
 	}
 	else {
 		mObjects.clear();
