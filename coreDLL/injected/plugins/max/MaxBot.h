@@ -26,6 +26,8 @@ protected:
 	std::shared_ptr<const WowUnitObject> mTargetUnit;
 	std::set<WowGuid128> mBlacklistedGuids;
 	bool mOpeningCombat = true;
+	bool mInteractWith = true;
+	bool cacAttack = true;
 };
 
 inline std::ostream& operator<<(
