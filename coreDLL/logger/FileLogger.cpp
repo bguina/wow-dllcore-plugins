@@ -25,6 +25,8 @@
 #define BOLDWHITE   "\033[1m\033[37m"      /* Bold White */
 
 const std::string FileLogger::normal = std::string(RESET);
+const std::string FileLogger::debug = std::string(CYAN);
+const std::string FileLogger::verbose = std::string(WHITE);
 const std::string FileLogger::info = std::string(GREEN);
 const std::string FileLogger::warn = std::string(YELLOW);
 const std::string FileLogger::err = std::string(BOLDRED);

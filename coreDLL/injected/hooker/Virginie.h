@@ -1,0 +1,19 @@
+#pragma once
+
+#include <cstdint>
+
+class MemoryObject
+{
+public:
+	MemoryObject(const uint8_t* baseAddr);
+	virtual ~MemoryObject();
+
+	const uint8_t* getAddress() const;
+
+	void rebase(const uint8_t* baseAddr);
+
+	bool isPresent() const;
+
+private:
+	const uint8_t* mBaseAddr;
+};

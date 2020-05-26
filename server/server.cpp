@@ -212,8 +212,8 @@ BOOL Server::ReadData(ClientConnection& client)
 				messageManager.getMessageType(client.getTmpMessage()) == MessageType::SUBSCRIBE_DLL_UPDATES ||
 				messageManager.getMessageType(client.getTmpMessage()) == MessageType::UNSUBSCRIBE_DLL_UPDATES ||
 				messageManager.getMessageType(client.getTmpMessage()) == MessageType::POST_DLL_DATA_3DPATH ||
-				messageManager.getMessageType(client.getTmpMessage()) == MessageType::RESUME_PLUGIN ||
-				messageManager.getMessageType(client.getTmpMessage()) == MessageType::PAUSE_PLUGIN)
+				messageManager.getMessageType(client.getTmpMessage()) == MessageType::RESUME ||
+				messageManager.getMessageType(client.getTmpMessage()) == MessageType::PAUSE)
 			{
 				PeerClient* peerClient = checkIfClientExistInPeerList(client.getSocket());
 				if (peerClient != NULL && peerClient->getClient2())

@@ -29,8 +29,8 @@ enum class MessageType : uint8_t {
 
 	SELECT_PLUGIN = 10, // NOT IMPLEMENTED
 	// Toggle paused / resumed state of the currently selected plugin in the associated dll plugin.
-	RESUME_PLUGIN = 11,
-	PAUSE_PLUGIN = 12,
+	RESUME = 11,
+	PAUSE = 12,
 
 	// Submit a 3D path to the associated injected dll to be handled by the currently set up plugin.
 	POST_DLL_DATA_3DPATH = 13,

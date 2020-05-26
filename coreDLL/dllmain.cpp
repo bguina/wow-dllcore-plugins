@@ -24,14 +24,16 @@ void MainThread(void* pHandle) {
 	deinject(pHandle);
 }
 
-void Render()
-{
+void Render() {
 	static InjectedClient* sandbox = nullptr;
 
 	if (!gShouldStop) {
 		boolean stopSandbox = false;
 
-		if (nullptr == sandbox) { sandbox = new InjectedClient(); }
+		if (nullptr == sandbox) {
+			sandbox = new InjectedClient(); 
+		}
+
 		stopSandbox = !sandbox->run();
 		drawSomeTriangle();
 
@@ -57,3 +59,4 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID)
 	}
 	return TRUE;
 }
+

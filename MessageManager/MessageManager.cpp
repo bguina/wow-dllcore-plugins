@@ -133,13 +133,13 @@ std::string MessageManager::builRequestdDeinjecteMessage() {
 
 std::string MessageManager::builRequestdStartBotMessage() {
 	picojson::value rootJSON = picojson::value(picojson::object());
-	rootJSON.get<picojson::object>()[getMessageTypeString(MessageType::MESSAGE_TYPE)] = picojson::value(getMessageTypeString(MessageType::RESUME_PLUGIN));
+	rootJSON.get<picojson::object>()[getMessageTypeString(MessageType::MESSAGE_TYPE)] = picojson::value(getMessageTypeString(MessageType::RESUME));
 	return rootJSON.serialize();
 }
 
 std::string MessageManager::builRequestdStopBotMessage() {
 	picojson::value rootJSON = picojson::value(picojson::object());
-	rootJSON.get<picojson::object>()[getMessageTypeString(MessageType::MESSAGE_TYPE)] = picojson::value(getMessageTypeString(MessageType::PAUSE_PLUGIN));
+	rootJSON.get<picojson::object>()[getMessageTypeString(MessageType::MESSAGE_TYPE)] = picojson::value(getMessageTypeString(MessageType::PAUSE));
 	return rootJSON.serialize();
 }
 
@@ -305,11 +305,11 @@ MessageType MessageManager::getMessageTypeFromString(std::string type) {
 	}
 	else if (type == "START_BOT")
 	{
-		return MessageType::RESUME_PLUGIN;
+		return MessageType::RESUME;
 	}
 	else if (type == "STOP_BOT")
 	{
-		return MessageType::PAUSE_PLUGIN;
+		return MessageType::PAUSE;
 	}
 	else if (type == "WAYPOINTS")
 	{
@@ -333,8 +333,8 @@ std::string MessageManager::getMessageTypeString(MessageType type) {
 	case MessageType::DATA_PROMPT_DLL: { return ("INFO"); } break;
 	case MessageType::SUBSCRIBE_DLL_UPDATES: { return ("START_SUBSCRIBE"); } break;
 	case MessageType::UNSUBSCRIBE_DLL_UPDATES: { return ("STOP_SUBSCRIBE"); } break;
-	case MessageType::RESUME_PLUGIN: { return ("START_BOT"); } break;
-	case MessageType::PAUSE_PLUGIN: { return ("STOP_BOT"); } break;
+	case MessageType::RESUME: { return ("START_BOT"); } break;
+	case MessageType::PAUSE: { return ("STOP_BOT"); } break;
 	case MessageType::POST_DLL_DATA_3DPATH: { return ("WAYPOINTS"); } break;
 	default:
 		std::cout << "Unknown type..." << std::endl;
