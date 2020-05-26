@@ -22,7 +22,7 @@ public:
 
 	int getUnitMaxHealth() const;
 
-	int getUnitHealthPercentage() const;
+	float getUnitHealthPercentage() const;
 
 	int getUnitEnergy() const;
 
