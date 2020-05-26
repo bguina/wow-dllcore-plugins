@@ -21,31 +21,30 @@ WowMaxBot::~WowMaxBot() {
 
 }
 
-void WowMaxBot::onResume() {
-	BaseWowBot::onResume();
-}
-
-void WowMaxBot::onPause() {
-	BaseWowBot::onPause();
-}
-
 bool WowMaxBot::handleServerMessage(ClientMessage& serverMessage) {
+	bool handled = false;
 	mDbg << FileLogger::verbose << "handleServerMessage " << (int)serverMessage.type << FileLogger::normal << std::endl;
 
 	switch (serverMessage.type)
 	{
 	case MessageType::POST_DLL_DATA_3DPATH:
 		mPathFinder = std::make_unique<LinearPathFinder>(*serverMessage.waypoints);
-		return true;
+		handled= true;
 	default:
 		break;
 	}
 
-	return false;
+	mDbg.flush();
+	return handled;
+}
+
+void WowMaxBot::onResume() {
+}
+
+void WowMaxBot::onPause() {
 }
 
 void WowMaxBot::onEvaluate() {
-	BaseWowBot::onEvaluate();
 
 	_logDebug();
 

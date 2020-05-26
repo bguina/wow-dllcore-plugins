@@ -9,8 +9,8 @@ public:
 	virtual ~BenFightBot();
 
 	virtual void onResume() override;
-	virtual void onEvaluate() override;
 	virtual void onPause() override;
+	virtual void onEvaluate() override;
 
 protected:
 };

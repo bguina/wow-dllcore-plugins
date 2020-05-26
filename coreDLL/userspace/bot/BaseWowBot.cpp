@@ -24,21 +24,6 @@ const char* BaseWowBot::getTag() const {
 	return mDbg.getTag().c_str();
 }
 
-void BaseWowBot::onResume() {
-	mDbg << FileLogger::info << getTag() << ": onResume() " << FileLogger::normal << std::endl;
-	mDbg.flush();
-}
-
-void BaseWowBot::onEvaluate() {
-	mDbg.flush();
-}
-
-void BaseWowBot::onPause() {
-
-	mDbg << FileLogger::info << getTag() << ": onPause() " << FileLogger::normal << std::endl;
-	mDbg.flush();
-}
-
 void BaseWowBot::_logDebug() const {
 	std::shared_ptr<WowActivePlayerObject> self = mGame.getObjectManager().getActivePlayer();
 	mDbg << FileLogger::info;

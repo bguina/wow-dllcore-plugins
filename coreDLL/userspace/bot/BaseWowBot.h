@@ -21,10 +21,6 @@ public:
 
 	virtual const char* getTag() const override;
 
-	virtual void onResume() override;
-	virtual void onEvaluate() override;
-	virtual void onPause() override;
-
 protected:
 	virtual void _logDebug() const; 
 	

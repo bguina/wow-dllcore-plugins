@@ -16,8 +16,8 @@ public:
 	virtual ~WowMaxBot();
 
 	virtual void onResume() override;
-	virtual void onEvaluate() override;
 	virtual void onPause() override;
+	virtual void onEvaluate() override;
 
 	virtual bool handleServerMessage(ClientMessage& serverMessage) override;
 

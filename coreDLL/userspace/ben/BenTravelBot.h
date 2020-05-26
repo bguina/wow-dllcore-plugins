@@ -11,8 +11,9 @@ public:
 	virtual ~BenTravelBot();
 
 	virtual void onResume() override;
-	virtual void onEvaluate() override;
 	virtual void onPause() override;
+	virtual void onEvaluate() override;
+
 };
 
 inline std::ostream& operator<<(

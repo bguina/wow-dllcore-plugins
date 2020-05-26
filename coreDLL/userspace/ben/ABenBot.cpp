@@ -20,34 +20,35 @@ ABenBot::~ABenBot() {
 }
 
 void ABenBot::onResume() {
-	BaseWowBot::onResume();
+
 }
 
 void ABenBot::onEvaluate() {
-	BaseWowBot::onEvaluate();
+
 }
 
 void ABenBot::onPause() {
-	BaseWowBot::onPause();
+
 }
 
 bool ABenBot::handleServerMessage(ClientMessage& serverMessage) {
+	bool handled = false;
 	mDbg << FileLogger::verbose << "handleServerMessage " << (int)serverMessage.type << FileLogger::normal << std::endl;
 
 	switch (serverMessage.type) {
 	case MessageType::POST_DLL_DATA_3DPATH:
 		mPathFinder = std::make_unique<LinearPathFinder>(*serverMessage.waypoints);
 		mDbg << FileLogger::verbose << "Loaded pathfinder with " << serverMessage.waypoints->size() << "waypoints! thanks! " << (int)serverMessage.type << FileLogger::normal << std::endl;
-		return true;
+		handled= true;
 	default:
 		break;
 	}
 
-	return false;
+	mDbg.flush();
+	return handled;
 }
 
 void ABenBot::_logDebug() const {
-	BaseWowBot::_logDebug();
 
 	LinearPathFinder* pathfinder = dynamic_cast<LinearPathFinder*>(mPathFinder.get());
 
