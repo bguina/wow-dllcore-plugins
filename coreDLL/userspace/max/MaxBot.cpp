@@ -84,6 +84,9 @@ void WowMaxBot::onEvaluate() {
 
 				for (auto it = allUnits.begin(); it != allUnits.end(); it++)
 				{
+					if (self->isFriendly(mGame, *(*it)) && mBlacklistedGuids.find((*it)->getGuid()) == mBlacklistedGuids.end()) {
+						mBlacklistedGuids.insert((*it)->getGuid());
+					}
 					if (mBlacklistedGuids.find((*it)->getGuid()) == mBlacklistedGuids.end())
 					{
 						float unitDistance = self->getDistanceTo(**it);

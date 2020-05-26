@@ -10,7 +10,7 @@
 #include "../../userspace/max/MaxBot.h"
 
 std::unique_ptr<IWowBot> _makeBestAmongAll(WowGame& game) {
-	int botSelection = 42;
+	int botSelection = 0;
 
 	switch (botSelection) {
 	case 0:
