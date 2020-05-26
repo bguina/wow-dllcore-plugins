@@ -58,7 +58,21 @@ void WowMaxBot::onEvaluate() {
 
 		if (secondSelf != nullptr) {
 
-			mDbg << FileLogger::info << "self == " << (void*)self->getAddress() << " combat == " << self->isInCombat() << FileLogger::normal << std::endl;
+			mDbg << FileLogger::info << "self == " << (void*)self->getAddress() << " combat == " << self->isInCombat() << " Life == " << self->getUnitHealthPercentage() << FileLogger::normal << std::endl;
+
+			/*
+			Debug to find all the pet spell ID
+			size_t i = -100000;
+			while (i < 1000000)
+			{
+				uint64_t* ptrTmp = mGame.getSpellBook().petInfoFindSpellById(mGame, i);
+				if (ptrTmp != nullptr)
+				{
+					mDbg << FileLogger::info << "[Spell Pet Attack at : " << ptrTmp << " id == " << i << FileLogger::normal << std::endl;
+				}
+				i++;
+			}
+			*/
 
 
 			std::shared_ptr<WowUnitObject> currentTarget = mGame.getObjectManager().getObjectByGuid<WowUnitObject>(self->getTargetGuid());
@@ -75,7 +89,7 @@ void WowMaxBot::onEvaluate() {
 				mTargetUnit = nullptr;
 			}
 
-			if (nullptr == mTargetUnit && self->getUnitHealthPercentage() > 80)
+			if (nullptr == mTargetUnit)
 			{
 				std::list<std::shared_ptr<const WowUnitObject>> allUnits = mGame.getObjectManager().allOfType<const WowUnitObject>(WowObjectType::Unit);
 				std::list<std::shared_ptr<const WowUnitObject>> whilelist;
@@ -106,7 +120,7 @@ void WowMaxBot::onEvaluate() {
 						const Vector3f& selfPosition = self->getPosition();
 						Vector3f nextPosition;
 
-						if (mPathFinder->moveAlong(selfPosition, nextPosition) && self->getPosition().getDistanceTo(nextPosition) < 30) {
+						if (mPathFinder->moveAlong(selfPosition, nextPosition) && targetUnit->getPosition().getDistanceTo(nextPosition) < 30) {
 							mTargetUnit = targetUnit;
 						}
 						else {
@@ -122,7 +136,7 @@ void WowMaxBot::onEvaluate() {
 			}
 
 			// Are we far away the target unit?
-			if (nullptr != mTargetUnit) {
+			if (nullptr != mTargetUnit && self->getUnitHealthPercentage() > 80) {
 				mDbg.i("targetting some unit...");
 
 				int delta = self->getPosition().getFacingDeltaDegrees(self->getFacingDegrees(), mTargetUnit->getPosition());
@@ -134,9 +148,9 @@ void WowMaxBot::onEvaluate() {
 					mDbg << FileLogger::info << "target unit " << mTargetUnit->getGuid().upper() << " still out of reach" << mTargetUnit->getPosition() << FileLogger::normal << std::endl;
 					//mDbg.i("target unit still out of reach");
 
-					//self->moveTo(mGame, mTargetUnit->getPosition());
+					self->moveTo(mGame, mTargetUnit->getPosition());
 
-
+					/*
 					mDbg << FileLogger::warn
 						<< "pressing left " << (delta > anglePrecision)
 						<< "pressing forward " << (abs(delta) < anglePrecision * 2)
@@ -149,6 +163,9 @@ void WowMaxBot::onEvaluate() {
 					// move forward if approximately on the right facing
 					mGame.getWindowController()->pressKey(WinVirtualKey::WVK_W, abs(delta) < anglePrecision * 2);
 
+					*/
+
+
 					mDbg << FileLogger::info << "moving to " << mTargetUnit->getPosition() << FileLogger::normal << std::endl;
 
 					mDbg << FileLogger::info << " target angle is" << self->getPosition().getFacingDegreesTo(mTargetUnit->getPosition()) << " delta angle is " << self->getPosition().getFacingDeltaDegrees(self->getFacingDegrees(), mTargetUnit->getPosition()) << FileLogger::normal << std::endl;
@@ -158,13 +175,16 @@ void WowMaxBot::onEvaluate() {
 					mGame.getWindowController()->pressKey(WinVirtualKey::WVK_A, delta > anglePrecision);
 					mGame.getWindowController()->pressKey(WinVirtualKey::WVK_D, delta < -anglePrecision);
 				}
+				else if (self->getPosition().getDistanceTo(mTargetUnit->getPosition()) >= 5 &&
+					self->getPosition().getDistanceTo(mTargetUnit->getPosition()) <= 8 &&
+					mTargetUnit->getTargetGuid() != self->getGuid()) {
+					mGame.getWindowController()->pressKey(WinVirtualKey::WVK_S, true);
+				}
 				else {
 					mDbg.i("Killed target! yay!");
 					mGame.getWindowController()->releaseAllKeys();
 					// Unit gets "killed" (blacklisted for now)
 
-
-					//mGame.getSpellBookManager().clickSpell(mGame, 22723);
 					if (mTargetUnit->getUnitHealth() == 0)
 					{
 						toLoop++;
@@ -182,16 +202,17 @@ void WowMaxBot::onEvaluate() {
 					}
 					else if (mInteractWith == false && mOpeningCombat)
 					{
-						mGame.getSpellBook().castSpell(mGame, 1978, mTargetUnit->getGuidPtr());
+						mGame.getSpellBook().castSpell(mGame, 13549, mTargetUnit->getGuidPtr()); //1978 serpent sting rank 1
 						mOpeningCombat = false;
 					}
 					else if (mInteractWith) {
 						self->interactWith(mGame, mTargetUnit->getGuidPtr());
+						mGame.getSpellBook().orderPetToAttackTarget(mGame, mTargetUnit->getGuidPtr());
 						mInteractWith = false;
 					}
 
 					else if (self->getPosition().getDistanceTo(mTargetUnit->getPosition()) < 5 && cacAttack) {
-						mGame.getSpellBook().castSpell(mGame, 2973, mTargetUnit->getGuidPtr());
+						mGame.getSpellBook().castSpell(mGame, 14260, mTargetUnit->getGuidPtr());//2973 rank1 raptor strike
 						cacAttack = false;
 					}
 
@@ -205,7 +226,10 @@ void WowMaxBot::onEvaluate() {
 
 					if (mPathFinder->moveAlong(selfPosition, nextPosition)) {
 						mDbg.i("mPathFinder moving along the path");
-						//self->moveTo(mGame, nextPosition);
+						self->moveTo(mGame, nextPosition);
+
+
+						/*
 						int delta = self->getPosition().getFacingDeltaDegrees(self->getFacingDegrees(), nextPosition);
 						int anglePrecision = 10;
 						mGame.getWindowController()->releaseAllKeys();
@@ -213,6 +237,7 @@ void WowMaxBot::onEvaluate() {
 						mGame.getWindowController()->pressKey(WinVirtualKey::WVK_D, delta < -anglePrecision);
 						// move forward if approximately on the right facing
 						mGame.getWindowController()->pressKey(WinVirtualKey::WVK_W, abs(delta) < anglePrecision * 2);
+						*/
 					}
 					else {
 						mDbg.i("mPathFinder could not move along :(");
