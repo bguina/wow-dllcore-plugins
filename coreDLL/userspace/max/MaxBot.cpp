@@ -85,7 +85,7 @@ void WowMaxBot::onEvaluate() {
 
 				for (auto it = allUnits.begin(); it != allUnits.end(); it++)
 				{
-					if (self->isFriendly(mGame, *(*it)) || (abs(self->getUnitLevel() - (*it)->getUnitLevel()) >= 4) &&
+					if (self->isFriendly(mGame, *(*it)) || (abs(self->getUnitLevel() - (*it)->getUnitLevel()) >= 6) &&
 						mBlacklistedGuids.find((*it)->getGuid()) == mBlacklistedGuids.end())
 					{
 						mBlacklistedGuids.insert((*it)->getGuid());
@@ -100,10 +100,24 @@ void WowMaxBot::onEvaluate() {
 					}
 
 				}
-				if (distance < 100)
+				if (distance < 50)
 				{
-					mDbg.i("found new target to attack");
-					mTargetUnit = targetUnit;
+					if (mPathFinder != nullptr) {
+						const Vector3f& selfPosition = self->getPosition();
+						Vector3f nextPosition;
+
+						if (mPathFinder->moveAlong(selfPosition, nextPosition) && self->getPosition().getDistanceTo(nextPosition) < 30) {
+							mTargetUnit = targetUnit;
+						}
+						else {
+							mDbg.i("mPathFinder could not move along :(");
+							mTargetUnit = targetUnit;
+						}
+					}
+					else {
+						mDbg.i("found new target to attack");
+						mTargetUnit = targetUnit;
+					}
 				}
 			}
 
@@ -191,7 +205,14 @@ void WowMaxBot::onEvaluate() {
 
 					if (mPathFinder->moveAlong(selfPosition, nextPosition)) {
 						mDbg.i("mPathFinder moving along the path");
-						self->moveTo(mGame, nextPosition);
+						//self->moveTo(mGame, nextPosition);
+						int delta = self->getPosition().getFacingDeltaDegrees(self->getFacingDegrees(), nextPosition);
+						int anglePrecision = 10;
+						mGame.getWindowController()->releaseAllKeys();
+						mGame.getWindowController()->pressKey(WinVirtualKey::WVK_A, delta > anglePrecision);
+						mGame.getWindowController()->pressKey(WinVirtualKey::WVK_D, delta < -anglePrecision);
+						// move forward if approximately on the right facing
+						mGame.getWindowController()->pressKey(WinVirtualKey::WVK_W, abs(delta) < anglePrecision * 2);
 					}
 					else {
 						mDbg.i("mPathFinder could not move along :(");
