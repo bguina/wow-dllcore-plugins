@@ -126,8 +126,32 @@ std::vector<int> listPids(IN CONST LPCWSTR pszProcessName) {
 }
 
 int inject(int processId, const std::string& module) {
-	LPSTR crazyStuff = LPSTR("D:\\nvtest.dll");
+
 	// TODO use "module" dll path variable to select the real DLL to inject
+	//LPSTR crazyStuff = LPSTR("D:\\nvtest.dll");
+
+	//LPSTR crazyStuff = LPSTR("C:\\Users\\maxim\\Documents\\wow01\\Debug\\nvtest.dll");
+
+	wchar_t buffer[512];
+
+	if (GetCurrentDirectory(sizeof(buffer), buffer) == 0)
+	{
+		DWORD err = GetLastError();
+		MessageBox(NULL, L"GetCurrentDirectory failed", L"Window1", MB_OK);
+		ExitProcess(err);
+	}
+
+	std::wstring fullPathDLL;
+	fullPathDLL.append(buffer);
+	fullPathDLL.append(L"\\nvtest.dll");
+
+	std::string str(fullPathDLL.begin(), fullPathDLL.end());
+
+	MessageBox(NULL, fullPathDLL.c_str(), L"Window1", MB_OK);
+
+	LPSTR crazyStuff = _strdup(str.c_str());
+
+
 
 	if (processId <= 0) {
 		std::cerr << "processId <= 0" << std::endl;
