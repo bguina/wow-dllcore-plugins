@@ -31,6 +31,7 @@ protected:
 	bool mOpeningCombat = true;
 	bool mInteractWith = true;
 	bool cacAttack = true;
+	int toLoop = 0;
 };
 
 inline std::ostream& operator<<(

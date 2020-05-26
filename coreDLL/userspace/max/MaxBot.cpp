@@ -150,11 +150,18 @@ void WowMaxBot::onEvaluate() {
 					//mGame.getSpellBookManager().clickSpell(mGame, 22723);
 					if (mTargetUnit->getUnitHealth() == 0)
 					{
-						//self->interactWith(mGame, mTargetUnit->getGuidPtr());
-						mBlacklistedGuids.insert(mTargetUnit->getGuid());
-						mInteractWith = true;
-						mOpeningCombat = true;
-						cacAttack = true;
+						toLoop++;
+						if (mTargetUnit->isLootable() && toLoop < 10)
+						{
+							self->interactWith(mGame, mTargetUnit->getGuidPtr());
+						}
+						else if (toLoop == 10) {
+							mBlacklistedGuids.insert(mTargetUnit->getGuid());
+							mInteractWith = true;
+							mOpeningCombat = true;
+							cacAttack = true;
+							toLoop = 0;
+						}
 					}
 					else if (mInteractWith == false && mOpeningCombat)
 					{
