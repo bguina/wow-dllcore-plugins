@@ -76,5 +76,7 @@ bool PostMessageWindowController::postKeyEventMessage(WinVirtualKey key, bool ke
 		flags = SENDMESSAGE_KEYDOWN_FLAGS;
 	}
 
-	return PostMessage(mWindow, action, (uint8_t)key, flags);
+
+	//PostMessage switch to sendmessage for syncronous process
+	return SendMessage(mWindow, action, (uint8_t)key, flags);
 }
