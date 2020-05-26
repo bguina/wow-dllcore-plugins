@@ -38,8 +38,11 @@ public:
 	template<class T >
 	std::shared_ptr<T> getObjectByGuid(const WowGuid128& guid) {
 		for (auto it = begin(); it != end(); ++it) {
-			if (guid == it->second->getGuid())
+			if (nullptr == it->second) return nullptr;
+
+			if (guid == it->second->getGuid()) {
 				return std::static_pointer_cast<T>(it->second);
+			}
 		}
 
 		return nullptr;

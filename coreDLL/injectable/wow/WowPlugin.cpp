@@ -47,6 +47,7 @@ bool WowPlugin::handleServerMessage(ClientMessage& serverMessage) {
 	mDbg << FileLogger::verbose << "serverMessage: " << (int)serverMessage.type << FileLogger::normal << std::endl;
 	switch (serverMessage.type) {
 	case MessageType::RESUME:
+		mGame.update();
 		mBotPause = false;
 		mBot->onResume();
 		return true;

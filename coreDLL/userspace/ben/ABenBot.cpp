@@ -23,11 +23,11 @@ void ABenBot::onResume() {
 
 }
 
-void ABenBot::onEvaluate() {
+void ABenBot::onPause() {
 
 }
 
-void ABenBot::onPause() {
+void ABenBot::onEvaluate() {
 
 }
 

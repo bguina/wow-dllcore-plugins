@@ -18,7 +18,8 @@ class SpellBook
 public:
 	SpellBook(const uint8_t* baseAddr);
 
-	std::list<SpellbookDescriptor>  listSpells() const;
+	std::list<SpellbookDescriptor> listSpells() const;
+
 	uint32_t getSpellBookCount() const;
 
 	void scan();
