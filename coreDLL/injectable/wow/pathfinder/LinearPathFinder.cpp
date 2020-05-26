@@ -71,7 +71,7 @@ bool LinearPathFinder::followPathToDestination(const Vector3f& currentPosition, 
 			if (!endIsNearStart)
 			{
 				// the graph start can't be found, just reverse the list to walk back
-				//reversePath();
+				reversePath();
 			}
 
 			// otherwise just continue the loop to the graph start
