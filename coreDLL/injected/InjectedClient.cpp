@@ -100,6 +100,12 @@ bool InjectedClient::_dispatchMessages() {
 
 		if (msg.eject) {
 			mDebugger << FileLogger::err << "got ejection order " << (int)msg.type << FileLogger::normal << std::endl;
+			if (nullptr != msg.subscriptions) {
+				delete msg.subscriptions;
+			}
+			if (nullptr != msg.waypoints) {
+				delete msg.waypoints;
+			}
 			eject = true;
 		}
 	}
@@ -108,31 +114,17 @@ bool InjectedClient::_dispatchMessages() {
 }
 
 ClientMessage InjectedClient::_buildMessage(const std::string& messageId) {
+	ClientMessage result(mClient);
 	auto messenger = mClient->getMessageManager();
-	ClientMessage result;
 
+	result.cl = mClient;
 	result.type = messenger.getMessageType(messageId);
 	result.eject = false;
 	switch (result.type) {
-	case MessageType::SUBSCRIBE_DLL_UPDATES: {
-		std::list<std::string> toSubscribe = mClient->getMessageManager().getSubcribeObject(messageId);
-
-		bool found = (std::find(toSubscribe.begin(), toSubscribe.end(), "position") != toSubscribe.end());
-
-		if (found) {
-
-			//mGame.addObserver("position", std::make_shared<ActivePlayerPositionObserver>(*mClient, 10.0f));
-		}
-
-		break;
-	}
+	case MessageType::SUBSCRIBE_DLL_UPDATES:
 	case MessageType::UNSUBSCRIBE_DLL_UPDATES: {
 		std::list<std::string> toSubscribe = mClient->getMessageManager().getSubcribeObject(messageId);
-		bool found = (std::find(toSubscribe.begin(), toSubscribe.end(), "position") != toSubscribe.end());
-		if (found) {
-			//mGame.removeObserver("position");
-		}
-
+		result.subscriptions = new std::vector<std::string>(toSubscribe.begin(), toSubscribe.end());
 		break;
 	}
 	case MessageType::POST_DLL_DATA_3DPATH: {

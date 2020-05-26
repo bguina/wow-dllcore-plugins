@@ -33,7 +33,7 @@ private:
 	uint64_t mLastPulse;
 	FileLogger mDebugger;
 	std::list<std::shared_ptr<IPlugin>> mPlugins;
-	std::unique_ptr<Client> mClient;
+	std::shared_ptr<Client> mClient;
 
 public:
 	InjectedClient(InjectedClient const&) = delete;
