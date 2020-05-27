@@ -42,6 +42,7 @@ void WowMaxBot::onResume() {
 }
 
 void WowMaxBot::onPause() {
+	mGame.getWindowController()->releaseAllKeys();
 }
 
 void WowMaxBot::onEvaluate() {
@@ -175,11 +176,14 @@ void WowMaxBot::onEvaluate() {
 					mGame.getWindowController()->pressKey(WinVirtualKey::WVK_A, delta > anglePrecision);
 					mGame.getWindowController()->pressKey(WinVirtualKey::WVK_D, delta < -anglePrecision);
 				}
+				/*
 				else if (self->getPosition().getDistanceTo(mTargetUnit->getPosition()) >= 5 &&
 					self->getPosition().getDistanceTo(mTargetUnit->getPosition()) <= 8 &&
-					mTargetUnit->getTargetGuid() != self->getGuid()) {
+					mTargetUnit->getTargetGuid() != self->getGuid() &&
+					mTargetUnit->getUnitHealth() != 0) {
 					mGame.getWindowController()->pressKey(WinVirtualKey::WVK_S, true);
 				}
+				*/
 				else {
 					mDbg.i("Killed target! yay!");
 					mGame.getWindowController()->releaseAllKeys();
