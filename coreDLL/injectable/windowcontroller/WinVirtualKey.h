@@ -25,6 +25,18 @@ enum class WinVirtualKey : uint32_t {
 	WVK_PAUSE = 0x13,
 	WVK_CAPITAL = 0x14, // CAPS LOCK key
 
+	// 1 - 9
+	WVK_0 = 0x30,
+	WVK_1 = 0x31,
+	WVK_2 = 0x32,
+	WVK_3 = 0x33,
+	WVK_4 = 0x34,
+	WVK_5 = 0x35,
+	WVK_6 = 0x36,
+	WVK_7 = 0x37,
+	WVK_8 = 0x38,
+	WVK_9 = 0x39,
+
 	// A-Z
 	WVK_A = 0x41,
 	WVK_B = 0x42,

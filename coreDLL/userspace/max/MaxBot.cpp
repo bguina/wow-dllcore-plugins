@@ -39,6 +39,7 @@ bool WowMaxBot::handleServerMessage(ClientMessage& serverMessage) {
 }
 
 void WowMaxBot::onResume() {
+	mLastFeedPet = GetTickCount64();
 }
 
 void WowMaxBot::onPause() {
@@ -88,6 +89,15 @@ void WowMaxBot::onEvaluate() {
 			{
 				mDbg << "GUID is blacklisted, ignoring" << mTargetUnit->getGuid().upper();
 				mTargetUnit = nullptr;
+			}
+			mDbg << "Elapsed time for feeding == " << GetTickCount64() - mLastFeedPet;
+
+			if (GetTickCount64() - mLastFeedPet > 1000 * 60 * 15 && self->isInCombat() == false)
+			{
+				mDbg.i("Feeding Pet...");
+				mLastFeedPet = GetTickCount64();
+				mGame.getWindowController()->pressKey(WinVirtualKey::WVK_8, true);
+				mGame.getWindowController()->pressKey(WinVirtualKey::WVK_8, false);
 			}
 
 			if (nullptr == mTargetUnit)

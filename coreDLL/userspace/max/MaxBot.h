@@ -32,6 +32,7 @@ protected:
 	bool mInteractWith = true;
 	bool cacAttack = true;
 	int toLoop = 0;
+	uint64_t mLastFeedPet;
 };
 
 inline std::ostream& operator<<(
