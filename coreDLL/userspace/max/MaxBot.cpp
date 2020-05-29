@@ -48,7 +48,7 @@ void WowMaxBot::onPause() {
 
 void WowMaxBot::onEvaluate() {
 
-	_logDebug();
+	//_logDebug();
 
 	std::shared_ptr<WowActivePlayerObject> self = mGame.getObjectManager().getActivePlayer();
 	mDbg << FileLogger::info << TAG << " running" << FileLogger::normal << std::endl;
@@ -126,22 +126,25 @@ void WowMaxBot::onEvaluate() {
 				}
 				if (distance < 50)
 				{
+					//mTargetUnit = targetUnit;
+
 					if (mPathFinder != nullptr) {
 						const Vector3f& selfPosition = self->getPosition();
 						Vector3f nextPosition;
 
-						if (mPathFinder->moveAlong(selfPosition, nextPosition) && targetUnit->getPosition().getDistanceTo(nextPosition) < 30) {
-							mTargetUnit = targetUnit;
+						if (targetUnit != nullptr) {
+							if (mPathFinder->moveAlong(selfPosition, nextPosition) && targetUnit->getPosition().getDistanceTo(nextPosition) < 50)
+							{
+								mTargetUnit = targetUnit;
+							}
 						}
-						else {
-							mDbg.i("mPathFinder could not move along :(");
-							mTargetUnit = targetUnit;
-						}
+
 					}
 					else {
 						mDbg.i("found new target to attack");
 						mTargetUnit = targetUnit;
 					}
+
 				}
 			}
 
@@ -185,14 +188,15 @@ void WowMaxBot::onEvaluate() {
 					mGame.getWindowController()->pressKey(WinVirtualKey::WVK_A, delta > anglePrecision);
 					mGame.getWindowController()->pressKey(WinVirtualKey::WVK_D, delta < -anglePrecision);
 				}
-				/*
+
 				else if (self->getPosition().getDistanceTo(mTargetUnit->getPosition()) >= 5 &&
 					self->getPosition().getDistanceTo(mTargetUnit->getPosition()) <= 8 &&
 					mTargetUnit->getTargetGuid() != self->getGuid() &&
-					mTargetUnit->getUnitHealth() != 0) {
-					mGame.getWindowController()->pressKey(WinVirtualKey::WVK_S, true);
+					mTargetUnit->getUnitHealth() > 0)
+				{
+					mGame.getWindowController()->pressKey(WinVirtualKey::WVK_W, true);
 				}
-				*/
+
 				else {
 					mDbg.i("Killed target! yay!");
 					mGame.getWindowController()->releaseAllKeys();
@@ -200,18 +204,21 @@ void WowMaxBot::onEvaluate() {
 
 					if (mTargetUnit->getUnitHealth() == 0)
 					{
+
 						toLoop++;
-						if (mTargetUnit->isLootable() && toLoop < 10)
+						if (mTargetUnit->isLootable() && toLoop < 50)
 						{
 							self->interactWith(mGame, mTargetUnit->getGuidPtr());
 						}
-						else if (toLoop == 10) {
+						else if (toLoop == 50) {
 							mBlacklistedGuids.insert(mTargetUnit->getGuid());
 							mInteractWith = true;
 							mOpeningCombat = true;
 							cacAttack = true;
 							toLoop = 0;
 						}
+
+
 					}
 					else if (mInteractWith == false && mOpeningCombat)
 					{
@@ -233,14 +240,21 @@ void WowMaxBot::onEvaluate() {
 			}
 			else if (self->getUnitHealthPercentage() > 80) {
 				mDbg.i("no mTargetUnit");
+				mDbg.flush();
 				if (mPathFinder != nullptr) {
+					mDbg.i("mPathFinder Getting my position");
+					mDbg.flush();
 					const Vector3f& selfPosition = self->getPosition();
+					mDbg << FileLogger::info << "Position " << self->getPosition() << FileLogger::normal << std::endl;
+					mDbg.flush();
 					Vector3f nextPosition;
 
 					if (mPathFinder->moveAlong(selfPosition, nextPosition)) {
 						mDbg.i("mPathFinder moving along the path");
+						mDbg.flush();
 						self->moveTo(mGame, nextPosition);
-
+						mDbg << FileLogger::info << "moving to " << nextPosition << FileLogger::normal << std::endl;
+						mDbg.flush();
 
 						/*
 						int delta = self->getPosition().getFacingDeltaDegrees(self->getFacingDegrees(), nextPosition);

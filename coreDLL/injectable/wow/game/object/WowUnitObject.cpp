@@ -68,6 +68,10 @@ bool WowUnitObject::isLootable() const {
 	return *reinterpret_cast<const uint32_t*>((getDescriptor() + WowGameOffsets::WowObject::DescriptorOffsetObjectDynamicflags)) & (uint32_t)WowObjectDynamicFlags::Lootable;
 }
 
+WowGuid128  WowUnitObject::getSummonedBy() const {
+	return ((WowGuid128*)(getDescriptor() + WowGameOffsets::WowUnitObject::DescriptorOffsetSummonedBy))[0];
+}
+
 WowGuid128 WowUnitObject::getTargetGuid() const {
 	return ((WowGuid128*)(getDescriptor() + WowGameOffsets::WowUnitObject::DescriptorOffsetTargetGuid))[0];
 }

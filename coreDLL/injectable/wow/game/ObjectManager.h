@@ -140,7 +140,7 @@ inline std::ostream& operator<<(std::ostream& out, const ObjectManager& objMgr)
 	if (NULL != objMgr.getBaseAddress()) {
 		// iterate ObjectManger linked list
 
-		/*
+
 		for (
 			auto it = objMgr.begin();
 			it != objMgr.end();
@@ -170,7 +170,7 @@ inline std::ostream& operator<<(std::ostream& out, const ObjectManager& objMgr)
 
 			out << std::endl;
 		}
-		*/
+
 	}
 
 

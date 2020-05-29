@@ -32,6 +32,8 @@ public:
 
 	bool isLootable() const;
 
+	WowGuid128 getSummonedBy() const;
+
 	WowGuid128 getTargetGuid() const;
 
 	WowGuid128* getTargetGuidPtr() const;
@@ -46,6 +48,7 @@ inline std::ostream& operator<<(
 {
 	out << (WowObject)obj
 		<< ": [LVL" << obj.getUnitLevel() << "]" << obj.getUnitClassLabel()
+		<< ": [SummonedBy Guid = " << obj.getSummonedBy().upper() << obj.getSummonedBy().lower()
 		<< " health=" << obj.getUnitHealth() << "/" << obj.getUnitMaxHealth()
 		<< " energy=" << obj.getUnitEnergy() << "/" << obj.getUnitMaxEnergy();
 	return out;
