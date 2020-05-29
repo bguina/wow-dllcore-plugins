@@ -2,7 +2,7 @@
 
 #include <sstream>
 
-#include "../../../../injected/MemoryObject.h"
+#include "../../../MemoryObject.h"
 
 #include "../dump/WowGameDescriptors.h"
 #include "../WowVector3f.h"
@@ -29,7 +29,7 @@ public:
 
 	WowGuid128 getGuid() const;
 
-	WowGuid128* WowObject::getGuidPtr() const;
+	WowGuid128* getGuidPtr() const;
 
 	//		StorageField = 0x10,//good-33526
 	//		ObjectType = 0x20,//good-33526

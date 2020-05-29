@@ -4,9 +4,6 @@
 
 #include "BaseWowBot.h"
 
-#include "../../logger/FileLogger.h"
-
-#include "../../injectable/wow/game/WowGame.h"
 #include "../../injectable/wow/game/object/WowActivePlayerObject.h"
 #include "../../injectable/wow/pathfinder/LinearPathFinder.h"
 
@@ -32,7 +29,6 @@ void BaseWowBot::_logDebug() const {
 		// show info relative to self
 		mDbg << "Self position is " << self->getPosition() << " angle is " << self->getFacingDegrees() << std::endl;
 		mDbg << "Self in combat: " << self->isInCombat() << std::endl;
-		mDbg << FileLogger::info << "Spellbook Count " << mGame.getSpellBook().getSpellBookCount() << FileLogger::normal << std::endl;
 		auto targetGuid = self->getTargetGuid();
 
 		if (0 != targetGuid) {

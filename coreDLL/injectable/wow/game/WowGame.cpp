@@ -3,7 +3,7 @@
 #include "WowGame.h"
 #include "../../../d3d/d3d.h"
 #include "../../windowcontroller/PostMessageWindowController.h"
-#include "../../../injected/observer/ARecurrentServerObserver.h"
+#include "../../../injected/deprecated/ARecurrentServerObserver.h"
 
 WowGame::WowGame(long pid, const uint8_t* baseAddr) :
 	AGame(pid, baseAddr),
@@ -22,7 +22,6 @@ WowGame::~WowGame() {
 void WowGame::update() {
 
 	mObjMgr.scan();
-	mSpellBook.scan();
 
 	mDbg << mObjMgr << std::endl;
 

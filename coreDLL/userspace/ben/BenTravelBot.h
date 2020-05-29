@@ -2,7 +2,6 @@
 
 #include "ABenBot.h"
 
-#include "../../injectable/wow/game/object/WowActivePlayerObject.h"
 
 class BenTravelBot : public ABenBot
 {

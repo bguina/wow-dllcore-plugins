@@ -137,7 +137,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -156,10 +156,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="injectable\wow\game\Lua.h" />
+    <ClInclude Include="injectable\wow\game\spell\IFireball.h" />
+    <ClInclude Include="injectable\wow\game\spell\ISpell.h" />
+    <ClInclude Include="injectable\wow\game\dump\WowPatterns.h" />
+    <ClInclude Include="injected\plugin\DllPlugin.h" />
+    <ClInclude Include="injected\plugin\DllFolderPlugin.h" />
+    <ClInclude Include="injected\plugin\IDllPlugin.h" />
     <ClInclude Include="userspace\ben\ABenBot.h" />
-    <ClInclude Include="userspace\ben\farm\Farm.h" />
-    <ClInclude Include="injected\ClientMessage.h" />
-    <ClInclude Include="injected\plugin\IMessageablePlugin.h" />
+    <ClInclude Include="userspace\ben\ABenSMBot.h" />
+    <ClInclude Include="injectable\wow\ServerWowMessage.h" />
     <ClInclude Include="injectable\wow\IWowBot.h" />
     <ClInclude Include="injectable\wow\WowPlugin.h" />
     <ClInclude Include="injectable\AGame.h" />
@@ -168,15 +174,15 @@
     <ClInclude Include="d3d\D3D_VMT_Indices.h" />
     <ClInclude Include="d3d\shadez.h" />
     <ClInclude Include="logger\ILogger.h" />
-    <ClInclude Include="userspace\ben\BenFightBot.h" />
+    <ClInclude Include="userspace\ben\BenBots.h" />
+    <ClInclude Include="userspace\ben\BenSimpleBot.h" />
     <ClInclude Include="userspace\ben\BenTravelBot.h" />
     <ClInclude Include="userspace\max\MaxBot.h" />
-    <ClInclude Include="userspace\ben\farm\ABenFarmingBot.h" />
     <ClInclude Include="injectable\wow\game\dump\WowGameDescriptors.h" />
     <ClInclude Include="injectable\wow\game\dump\WowGameOffsets.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="logger\FileLogger.h" />
-    <ClInclude Include="injected\MemoryObject.h" />
+    <ClInclude Include="injectable\MemoryObject.h" />
     <ClInclude Include="injectable\wow\game\object\WowGuid128.h" />
     <ClInclude Include="injectable\windowcontroller\IWindowController.h" />
     <ClInclude Include="injectable\windowcontroller\PostMessageWindowController.h" />
@@ -197,9 +203,9 @@
     <ClInclude Include="injectable\wow\game\object\WowUnimplementedObject.h" />
     <ClInclude Include="injectable\wow\game\object\WowUnitObject.h" />
     <ClInclude Include="injectable\wow\observer\ActivePlayerPositionObserver.h" />
-    <ClInclude Include="injected\observer\ARecurrentServerObserver.h" />
+    <ClInclude Include="injected\deprecated\ARecurrentServerObserver.h" />
     <ClInclude Include="injectable\wow\observer\AWowGameObserver.h" />
-    <ClInclude Include="injected\observer\IServerObserver.h" />
+    <ClInclude Include="injected\deprecated\IServerObserver.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="injected\InjectedClient.h" />
     <ClInclude Include="NetworkParsing.h" />
@@ -210,9 +216,10 @@
     <ClInclude Include="userspace\bot\BaseWowBot.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="injected\observer\ARecurrentServerObserver.cpp" />
+    <ClCompile Include="injectable\wow\game\Lua.cpp" />
+    <ClCompile Include="injected\plugin\DllPlugin.cpp" />
+    <ClCompile Include="injected\plugin\DllFolderPlugin.cpp" />
     <ClCompile Include="userspace\ben\ABenBot.cpp" />
-    <ClCompile Include="userspace\ben\farm\ABenFarmingBot.cpp" />
     <ClCompile Include="injectable\wow\WowPlugin.cpp" />
     <ClCompile Include="injectable\AGame.cpp" />
     <ClCompile Include="d3d\d3d.cpp">
@@ -220,8 +227,8 @@
     </ClCompile>
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="logger\FileLogger.cpp" />
-    <ClCompile Include="injected\MemoryObject.cpp" />
-    <ClCompile Include="userspace\ben\BenFightBot.cpp" />
+    <ClCompile Include="injectable\MemoryObject.cpp" />
+    <ClCompile Include="userspace\ben\BenSimpleBot.cpp" />
     <ClCompile Include="userspace\ben\BenTravelBot.cpp" />
     <ClCompile Include="userspace\max\MaxBot.cpp" />
     <ClCompile Include="injectable\wow\game\object\WowGuid128.cpp" />

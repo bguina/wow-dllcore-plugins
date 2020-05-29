@@ -4,9 +4,8 @@
 #include <string>
 
 #include "../bot/BaseWowBot.h"
-#include "../../injectable/wow/game/object/WowGuid128.h"
-
-class IPathFinder;
+#include "../../injectable/wow/game/Lua.h"
+#include "../../injectable/wow/pathfinder/IPathFinder.h"
 
 class ABenBot : public BaseWowBot
 {
@@ -18,10 +17,10 @@ public:
 	virtual void onEvaluate() override;
 	virtual void onPause() override;
 
-	virtual bool handleServerMessage(ClientMessage& serverMessage);
+	virtual bool handleWowMessage(ServerWowMessage& cl);
 
 protected:
-
+	Lua mLua;
 	std::unique_ptr<IPathFinder> mPathFinder;
 
 	virtual void _logDebug() const override;

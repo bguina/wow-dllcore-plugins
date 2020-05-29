@@ -7,8 +7,7 @@
 template<class T>
 class ARecurrentServerObserver : public IServerObserver<T> {
 protected:
-	ARecurrentServerObserver(const std::string& tag, unsigned long periodMs)
-		:
+	ARecurrentServerObserver(const std::string& tag, unsigned long periodMs) :
 		mLastCapture(0),
 		mPeriodMs(periodMs),
 		mDbg(tag)

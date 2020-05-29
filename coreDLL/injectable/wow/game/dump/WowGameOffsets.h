@@ -3,6 +3,13 @@
 #include <cstdint>
 
 struct WowGameOffsets {
+	struct WowGame {
+		static const uint64_t OffsetCameraBase = 0x2595A80;
+
+		static const uint64_t FunctionFrameScript_ExecuteBuffer = 0x31F580;
+
+	};
+
 	struct WowCamera {
 		static const uint64_t OffsetCameraBase = 0x2595A80;
 	};

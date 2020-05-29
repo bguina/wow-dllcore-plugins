@@ -6,18 +6,21 @@
 #include "MessageType.h"
 #include "Client.h"
 
-#include "../injectable/wow/game/WowVector3f.h"
+#include "game/WowVector3f.h"
 
-class ClientMessage {
+class ServerWowMessage {
 public:
-	ClientMessage(std::shared_ptr<Client> client) :
-	cl(client),
+	ServerWowMessage(Client* client) :
+		cl(client),
+		type(MessageType::UNKNOWN),
+		eject(false),
 		waypoints(nullptr),
 		subscriptions(nullptr)
 	{
 
 	}
-	std::shared_ptr<Client> cl;
+
+	Client* cl;
 	MessageType type;
 	char eject;
 	const std::vector<WowVector3f>* waypoints;

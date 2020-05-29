@@ -3,8 +3,6 @@
 #include <set>
 
 #include "../bot/BaseWowBot.h"
-#include "../../injectable/wow/game/object/WowGuid128.h"
-#include "../../injectable/wow/game/object/WowActivePlayerObject.h"
 
 class IPathFinder;
 class WowUnitObject;
@@ -19,7 +17,7 @@ public:
 	virtual void onPause() override;
 	virtual void onEvaluate() override;
 
-	virtual bool handleServerMessage(ClientMessage& serverMessage) override;
+	virtual bool handleWowMessage(ServerWowMessage& cl) override;
 
 protected:
 

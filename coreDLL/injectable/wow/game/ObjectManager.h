@@ -37,6 +37,8 @@ public:
 
 	template<class T >
 	std::shared_ptr<T> getObjectByGuid(const WowGuid128& guid) {
+		static_assert(std::is_base_of<WowObject, T>::value, "T must inherit from WowObject");
+
 		for (auto it = begin(); it != end(); ++it) {
 			if (nullptr == it->second) return nullptr;
 
@@ -50,6 +52,8 @@ public:
 
 	template<class T >
 	const std::shared_ptr<const T> anyOfType(WowObjectType type) const {
+		static_assert(std::is_base_of<WowObject, T>::value, "T must inherit from WowObject");
+
 		for (auto it = begin(); it != end(); ++it) {
 			if (type == it->second->getType())
 				return std::static_pointer_cast<T>(it->second);
@@ -65,6 +69,7 @@ public:
 
 	template<class T>
 	std::list<std::shared_ptr<const T>> allOfType(WowObjectType type) const {
+		static_assert(std::is_base_of<WowObject, T>::value, "T must inherit from WowObject");
 		std::list<std::shared_ptr<const T>> results;
 
 		for (auto it = begin(); it != end(); ++it) {
@@ -77,11 +82,40 @@ public:
 
 	template<class T>
 	std::list<std::shared_ptr<T>> allOfType(WowObjectType type) {
+		static_assert(std::is_base_of<WowObject, T>::value, "T must inherit from WowObject");
 		std::list<std::shared_ptr<T>> results;
 
 		for (auto it = begin(); it != end(); ++it) {
 			if (type == it->second->getType())
 				results.push_back(std::static_pointer_cast<T>(it->second));
+		}
+
+		return results;
+	}
+
+	template<class T>
+	std::list<std::shared_ptr<const T>> allOfType() const {
+		static_assert(std::is_base_of<WowObject, T>::value, "T must inherit from WowObject");
+		std::list<std::shared_ptr<const T>> results;
+
+		for (auto it = begin(); it != end(); ++it) {
+			auto obj = std::dynamic_pointer_cast<T>(it->second);
+			if (nullptr != obj)
+				results.push_back(std::static_pointer_cast<T>(it->second));
+		}
+
+		return results;
+	}
+
+	template<class T>
+	std::list<std::shared_ptr<T>> allOfType() {
+		static_assert(std::is_base_of<WowObject, T>::value, "T must inherit from WowObject");
+		std::list<std::shared_ptr<T>> results;
+
+		for (auto it = begin(); it != end(); ++it) {
+			auto obj = std::dynamic_pointer_cast<T>(it->second);
+			if (nullptr != obj)
+				results.push_back(obj);
 		}
 
 		return results;

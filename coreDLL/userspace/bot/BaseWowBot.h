@@ -1,17 +1,11 @@
 #pragma once
 
-#include "../../injectable/wow/game/WowGame.h"
 #include "../../logger/FileLogger.h"
 
+#include "../../injectable/wow/ServerWowMessage.h"
 #include "../../injectable/wow/IWowBot.h"
-
-/*
-	Helpful reminder
-	https://stackoverflow.com/questions/10334915/interface-vs-composition
-*/
-
 #include "../../injectable/wow/game/WowGame.h"
-#include "../../injected/ClientMessage.h"
+#include "../../injectable/wow/game/object/WowGuid128.h"
 
 class BaseWowBot : public IWowBot
 {

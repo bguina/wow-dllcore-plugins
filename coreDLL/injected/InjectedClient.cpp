@@ -14,20 +14,19 @@
 
 // business
 #include "../injectable/wow/observer/ActivePlayerPositionObserver.h"
+#include "../injected/plugin/DllFolderPlugin.h"
 #include "../injectable/wow/WowPlugin.h"
 
 
 /* Features */
 
-// provide a vector<WowVector3f> to an instance of IWaypointsConsumerPlugin
 #include "../injectable/wow/game/WowVector3f.h"
 
-#include "plugin/IMessageablePlugin.h"
-#include "ClientMessage.h"
+#include "../injectable/wow/ServerWowMessage.h"
 
 InjectedClient::InjectedClient() :
 	mDebugger("InjectedClient"),
-	mBootTime(GetTickCount64()), 
+	mBootTime(GetTickCount64()),
 	mLastPulse(0),
 	mClient(std::make_unique<Client>())
 {
@@ -37,12 +36,23 @@ InjectedClient::InjectedClient() :
 		mClient->sendMessage(mClient->getMessageManager().builRequestdDLLInjectedMessage(pid));
 	}
 
-	mPlugins.push_back(std::make_shared<WowPlugin>(pid, GetModuleHandleA(0)));
+
+	auto pluginsPath = L"D:\\myplugins";
+
+	auto plugins = std::make_shared<DllFolderPlugin>();
+	if (plugins->loadFolder(pluginsPath)) {
+		mPlugins.push_back(plugins);
+	}
+	else {
+		// Failed to read from plugins folder, fallback to default "WowPlugin"
+		mPlugins.push_back(std::make_shared<WowPlugin>(0));
+	}
 }
 
 InjectedClient::~InjectedClient() {
 	mClient->disconnect();
 	mDebugger << FileLogger::warn << "~InjectedClient" << FileLogger::normal << std::endl;
+	mDebugger.flush();
 }
 
 uint64_t InjectedClient::getBootTime() const { return mBootTime; }
@@ -70,84 +80,12 @@ bool InjectedClient::run() {
 }
 
 bool InjectedClient::_dispatchMessages() {
-	std::list<std::string> messages = mClient->getMessageAvailable();
 	bool eject = false;
+	auto wowPlugin = dynamic_cast<WowPlugin*>(mPlugins.begin()->get());
 
-	for (std::list<std::string>::iterator msgIte = messages.begin(); !eject && msgIte != messages.end(); msgIte++) {
-		const std::string& msgIdentifier(*msgIte);
-		ClientMessage msg(_buildMessage(msgIdentifier));
-
-		for (auto it = mPlugins.begin(); it != mPlugins.end(); ++it) {
-			auto messengable = dynamic_cast<IMessageablePlugin*>(it->get());
-
-
-			if (nullptr != messengable) {
-				if (messengable->handleServerMessage(msg)) {
-					mDebugger << FileLogger::info << "messengable handled message " << (int)msg.type << FileLogger::normal << std::endl;
-					break;
-				}
-				else {
-					mDebugger << FileLogger::err << "messengable could not handle unknown message " << (int)msg.type << FileLogger::normal << std::endl;
-
-					// treat as error and eject, since only a single pluggin is instanciated for now
-					eject = true;
-				}
-			}
-			else {
-				mDebugger << FileLogger::err << "Running instance cannot be messenged; is not IServerPlugin" << FileLogger::normal << std::endl;
-			}
-		}
-
-		if (msg.eject) {
-			mDebugger << FileLogger::err << "got ejection order " << (int)msg.type << FileLogger::normal << std::endl;
-			if (nullptr != msg.subscriptions) {
-				delete msg.subscriptions;
-			}
-			if (nullptr != msg.waypoints) {
-				delete msg.waypoints;
-			}
-			eject = true;
-		}
+	if (wowPlugin != nullptr) {
+		eject = !wowPlugin->handleClient(*mClient);
 	}
 
 	return !eject;
-}
-
-ClientMessage InjectedClient::_buildMessage(const std::string& messageId) {
-	ClientMessage result(mClient);
-	auto messenger = mClient->getMessageManager();
-
-	result.cl = mClient;
-	result.type = messenger.getMessageType(messageId);
-	result.eject = false;
-	switch (result.type) {
-	case MessageType::SUBSCRIBE_DLL_UPDATES:
-	case MessageType::UNSUBSCRIBE_DLL_UPDATES: {
-		std::list<std::string> toSubscribe = mClient->getMessageManager().getSubcribeObject(messageId);
-		result.subscriptions = new std::vector<std::string>(toSubscribe.begin(), toSubscribe.end());
-		break;
-	}
-	case MessageType::POST_DLL_DATA_3DPATH: {
-		std::list<std::string> rawWaypoints = mClient->getMessageManager().getWaypointsObject(messageId);
-
-		mDebugger << "" << FileLogger::info << "WAYPOINTS" << FileLogger::normal << std::endl;
-		std::vector<WowVector3f>* waypoints = new std::vector<WowVector3f>();
-
-		for (std::list<std::string>::iterator it = rawWaypoints.begin(); it != rawWaypoints.end(); it++) {
-			std::vector<std::string> rawWowVector3f;
-
-			if (splitByDelimiter(*it, ",", rawWowVector3f) == 3) {
-				waypoints->push_back(WowVector3f({ std::stof(rawWowVector3f[0]), std::stof(rawWowVector3f[1]), std::stof(rawWowVector3f[2]) }));
-			}
-			else throw "Bad split!";
-		}
-
-		result.waypoints = waypoints;
-		break;
-	}
-	default:
-		break;
-	}
-
-	return result;
 }

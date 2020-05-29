@@ -26,13 +26,14 @@ public:
 	bool run();
 
 private:
-	ClientMessage _buildMessage(const std::string& messageId);
 	bool _dispatchMessages();
 
 	uint64_t mBootTime;
 	uint64_t mLastPulse;
 	FileLogger mDebugger;
 	std::list<std::shared_ptr<IPlugin>> mPlugins;
+
+	// TODO move Client to WowPlugin
 	std::shared_ptr<Client> mClient;
 
 public:

@@ -39,15 +39,6 @@
     <ClInclude Include="NetworkParsing.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="injected\MemoryObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="injected\observer\ARecurrentServerObserver.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="injected\observer\IServerObserver.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="injected\InjectedClient.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -57,16 +48,7 @@
     <ClInclude Include="logger\ILogger.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="userspace\ben\farm\ABenFarmingBot.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="userspace\ben\farm\Farm.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="userspace\ben\ABenBot.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="userspace\ben\BenFightBot.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="userspace\ben\BenTravelBot.h">
@@ -162,13 +144,49 @@
     <ClInclude Include="injectable\wow\WowPlugin.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="injected\ClientMessage.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="injected\plugin\IMessageablePlugin.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="userspace\bot\BaseWowBot.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="userspace\ben\ABenSMBot.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="userspace\ben\BenBots.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="injectable\wow\game\spell\IFireball.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="injectable\wow\game\spell\ISpell.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="injectable\wow\game\Lua.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="userspace\ben\BenSimpleBot.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="injectable\wow\game\dump\WowPatterns.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="injected\plugin\IDllPlugin.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="injected\plugin\DllPlugin.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="injected\plugin\DllFolderPlugin.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="injectable\MemoryObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="injected\deprecated\ARecurrentServerObserver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="injected\deprecated\IServerObserver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="injectable\wow\ServerWowMessage.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -185,25 +203,13 @@
     <ClCompile Include="NetworkParsing.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="injected\MemoryObject.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="injected\InjectedClient.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="injected\observer\ARecurrentServerObserver.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="logger\FileLogger.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="userspace\ben\farm\ABenFarmingBot.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="userspace\ben\ABenBot.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="userspace\ben\BenFightBot.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="userspace\ben\BenTravelBot.cpp">
@@ -276,6 +282,21 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="userspace\bot\BaseWowBot.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="injectable\wow\game\Lua.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="userspace\ben\BenSimpleBot.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="injected\plugin\DllPlugin.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="injected\plugin\DllFolderPlugin.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="injectable\MemoryObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

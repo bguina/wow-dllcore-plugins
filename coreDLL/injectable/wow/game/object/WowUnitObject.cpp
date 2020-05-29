@@ -47,9 +47,9 @@ int WowUnitObject::getUnitMaxHealth() const {
 }
 
 float WowUnitObject::getUnitHealthPercentage() const {
-	float currentHealth = *reinterpret_cast<const uint32_t*>(getDescriptor() + WowGameOffsets::WowUnitObject::DescriptorOffsetHealth);
-	float maxHealth = *reinterpret_cast<const uint32_t*>(getDescriptor() + WowGameOffsets::WowUnitObject::DescriptorOffsetMaxHealth);
-	return (currentHealth / maxHealth * (float)100);
+	uint32_t currentHealth = *reinterpret_cast<const uint32_t*>(getDescriptor() + WowGameOffsets::WowUnitObject::DescriptorOffsetHealth);
+	uint32_t maxHealth = *reinterpret_cast<const uint32_t*>(getDescriptor() + WowGameOffsets::WowUnitObject::DescriptorOffsetMaxHealth);
+	return (currentHealth * 100.00f / maxHealth);
 }
 
 int WowUnitObject::getUnitEnergy() const {
@@ -61,11 +61,11 @@ int WowUnitObject::getUnitMaxEnergy() const {
 }
 
 bool WowUnitObject::isInCombat() const {
-	return *reinterpret_cast<const uint32_t*>((getDescriptor() + WowGameOffsets::WowUnitObject::DescriptorOffsetUnitDynamicflags)) & (int)WowUnitDynamicFlags::isInCombat;
+	return *reinterpret_cast<const uint32_t*>((getDescriptor() + WowGameOffsets::WowUnitObject::DescriptorOffsetUnitDynamicflags)) & (uint32_t)WowUnitDynamicFlags::isInCombat;
 }
 
 bool WowUnitObject::isLootable() const {
-	return *reinterpret_cast<const uint32_t*>((getDescriptor() + WowGameOffsets::WowObject::DescriptorOffsetObjectDynamicflags)) & (int)WowObjectDynamicFlags::Lootable;
+	return *reinterpret_cast<const uint32_t*>((getDescriptor() + WowGameOffsets::WowObject::DescriptorOffsetObjectDynamicflags)) & (uint32_t)WowObjectDynamicFlags::Lootable;
 }
 
 WowGuid128 WowUnitObject::getTargetGuid() const {

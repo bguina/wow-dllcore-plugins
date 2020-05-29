@@ -1,7 +1,9 @@
-// MessageManager.cpp : Defines the functions for the static library.
-//
-
 #include "pch.h"
+
+#include <iostream>
+
+#include "PicoJSON.h"
+
 #include "MessageManager.h"
 
 std::list<std::string> MessageManager::getWaypointsObject(std::string message) {
@@ -174,12 +176,15 @@ std::string MessageManager::builRequestdDLLInjectedMessage(int pid) {
 //INJECT
 InjectObject* MessageManager::getInjectObject(std::string message) {
 	picojson::value rootJSON;
-	InjectObject* object = NULL;
-	std::string err = picojson::parse(rootJSON, message);
+	std::string err(picojson::parse(rootJSON, message));
+
 	if (!err.empty()) {
 		std::cerr << err << std::endl;
+		return nullptr;
 	}
-	else if (getMessageType(message) == MessageType::POST_SERVER_INJECTION) {
+
+	if (getMessageType(message) == MessageType::POST_SERVER_INJECTION) {
+
 		if (rootJSON.get("data").is<picojson::object>()
 			&& rootJSON.get("data").get("pid").is<std::string>()
 			&& rootJSON.get("data").get("module").is<std::string>())
@@ -187,13 +192,11 @@ InjectObject* MessageManager::getInjectObject(std::string message) {
 			std::string strPID = rootJSON.get("data").get("pid").to_str();
 			std::string strModule = rootJSON.get("data").get("module").to_str();
 
-			int pid = std::stoi(strPID);
-
-			object = new InjectObject(pid, strModule);
-			return object;
+			return new InjectObject(std::stoi(strPID), strModule);
 		}
+
 	}
-	return object;
+	return nullptr;
 }
 
 std::string MessageManager::builRequestdInjectMessage(int pid, std::string module) {
@@ -254,7 +257,7 @@ MessageType MessageManager::getMessageType(std::string message) {
 	picojson::value rootJSON;
 	std::string err = picojson::parse(rootJSON, message);
 	if (!err.empty()) {
-		std::cout << err << std::endl;
+		std::cerr << err << std::endl;
 	}
 	if (rootJSON.is<picojson::object>()) {
 		picojson::value type = rootJSON.get(getMessageTypeString(MessageType::MESSAGE_TYPE));
@@ -316,7 +319,7 @@ MessageType MessageManager::getMessageTypeFromString(std::string type) {
 		return MessageType::POST_DLL_DATA_3DPATH;
 	}
 	else {
-		std::cout << "Unknown type..." << std::endl;
+		std::cerr << "Unknown type..." << std::endl;
 		return MessageType::UNKNOWN;
 	}
 }
@@ -337,9 +340,8 @@ std::string MessageManager::getMessageTypeString(MessageType type) {
 	case MessageType::PAUSE: { return ("STOP_BOT"); } break;
 	case MessageType::POST_DLL_DATA_3DPATH: { return ("WAYPOINTS"); } break;
 	default:
-		std::cout << "Unknown type..." << std::endl;
+		std::cerr << "Unknown type..." << std::endl;
 		return NULL;
-		break;
 	}
 }
 
