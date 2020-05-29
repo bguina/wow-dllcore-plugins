@@ -30,6 +30,7 @@ struct WowGameOffsets {
 		static const uint64_t DescriptorOffsetEnergy = 0xE4;
 		static const uint64_t DescriptorOffsetMaxEnergy = 0x104;
 		static const uint64_t DescriptorOffsetTargetGuid = 0x9C;
+		static const uint64_t DescriptorOffsetSummonedBy = 0x5C;
 		static const uint64_t DescriptorOffsetUnitDynamicflags = 0x174;
 	};
 
