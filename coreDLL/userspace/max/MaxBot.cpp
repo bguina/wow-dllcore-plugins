@@ -190,19 +190,6 @@ void WowMaxBot::onEvaluate() {
 					mGame.getWindowController()->pressKey(WinVirtualKey::WVK_D, delta < -anglePrecision);
 					mDbg.i("Case -> moving orientation");
 				}
-				/*
-				else if (self->getPosition().getDistanceTo(mTargetUnit->getPosition()) >= 5 &&
-					self->getPosition().getDistanceTo(mTargetUnit->getPosition()) <= 10 &&
-					mTargetUnit->getTargetGuid() != self->getGuid() &&
-					mTargetUnit->getUnitHealth() > 0)
-				{
-					mGame.getWindowController()->pressKey(WinVirtualKey::WVK_S, true);
-					mOpeningCombat = true;
-					//mInteractWith = true;
-					mDbg.i("Case -> Going Back");
-				}
-				*/
-
 				else {
 					mDbg.i("Case -> Combat mode");
 					mGame.getWindowController()->releaseAllKeys();
@@ -226,6 +213,19 @@ void WowMaxBot::onEvaluate() {
 
 
 					}
+					
+					
+					else if (self->getPosition().getDistanceTo(mTargetUnit->getPosition()) >= 5 &&
+						self->getPosition().getDistanceTo(mTargetUnit->getPosition()) <= 13 &&
+						mTargetUnit->getTargetGuid() != self->getGuid())
+					{
+						mGame.getWindowController()->pressKey(WinVirtualKey::WVK_S, true);
+						mOpeningCombat = true;
+						//mInteractWith = true;
+						mDbg.i("Case -> Going Back");
+					}
+					
+				
 					else if (mInteractWith == false && mOpeningCombat)
 					{
 						mDbg.i("Case -> serpent sting....");
