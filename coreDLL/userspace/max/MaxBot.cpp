@@ -110,7 +110,7 @@ void WowMaxBot::onEvaluate() {
 
 				for (auto it = allUnits.begin(); it != allUnits.end(); it++)
 				{
-					if (self->isFriendly(mGame, *(*it)) || (abs(self->getUnitLevel() - (*it)->getUnitLevel()) >= 6) &&
+					if (self->isFriendly(mGame, *(*it)) || (abs(self->getUnitLevel() - (*it)->getUnitLevel()) > 6) &&
 						mBlacklistedGuids.find((*it)->getGuid()) == mBlacklistedGuids.end())
 					{
 						mBlacklistedGuids.insert((*it)->getGuid());
@@ -156,7 +156,7 @@ void WowMaxBot::onEvaluate() {
 				int delta = self->getPosition().getFacingDeltaDegrees(self->getFacingDegrees(), mTargetUnit->getPosition());
 				int anglePrecision = 10;
 
-				if (self->getPosition().getDistanceTo(mTargetUnit->getPosition()) > 25)
+				if (self->getPosition().getDistanceTo(mTargetUnit->getPosition()) > 25 && mTargetUnit->getUnitHealth() > 0)
 				{
 					mDbg << FileLogger::info << "My position" << self->getPosition() << FileLogger::normal << std::endl;
 					mDbg << FileLogger::info << "target unit " << mTargetUnit->getGuid().upper() << " still out of reach" << mTargetUnit->getPosition() << FileLogger::normal << std::endl;
@@ -188,24 +188,29 @@ void WowMaxBot::onEvaluate() {
 					mGame.getWindowController()->releaseAllKeys();
 					mGame.getWindowController()->pressKey(WinVirtualKey::WVK_A, delta > anglePrecision);
 					mGame.getWindowController()->pressKey(WinVirtualKey::WVK_D, delta < -anglePrecision);
+					mDbg.i("Case -> moving orientation");
 				}
-
+				/*
 				else if (self->getPosition().getDistanceTo(mTargetUnit->getPosition()) >= 5 &&
-					self->getPosition().getDistanceTo(mTargetUnit->getPosition()) <= 8 &&
+					self->getPosition().getDistanceTo(mTargetUnit->getPosition()) <= 10 &&
 					mTargetUnit->getTargetGuid() != self->getGuid() &&
 					mTargetUnit->getUnitHealth() > 0)
 				{
-					mGame.getWindowController()->pressKey(WinVirtualKey::WVK_W, true);
+					mGame.getWindowController()->pressKey(WinVirtualKey::WVK_S, true);
+					mOpeningCombat = true;
+					//mInteractWith = true;
+					mDbg.i("Case -> Going Back");
 				}
+				*/
 
 				else {
-					mDbg.i("Killed target! yay!");
+					mDbg.i("Case -> Combat mode");
 					mGame.getWindowController()->releaseAllKeys();
 					// Unit gets "killed" (blacklisted for now)
 
 					if (mTargetUnit->getUnitHealth() == 0)
 					{
-
+						mDbg.i("Case -> Looting....");
 						toLoop++;
 						if (mTargetUnit->isLootable() && toLoop < 50)
 						{
@@ -223,17 +228,20 @@ void WowMaxBot::onEvaluate() {
 					}
 					else if (mInteractWith == false && mOpeningCombat)
 					{
-						mGame.getSpellBook().castSpell(mGame, 13549, mTargetUnit->getGuidPtr()); //1978 serpent sting rank 1
+						mDbg.i("Case -> serpent sting....");
+						mGame.getSpellBook().castSpell(mGame, 13550, mTargetUnit->getGuidPtr()); //1978 serpent sting rank 1 //rank 2 13549
 						mOpeningCombat = false;
 					}
 					else if (mInteractWith) {
+						mDbg.i("Case -> mInteractWith....");
 						self->interactWith(mGame, mTargetUnit->getGuidPtr());
 						mGame.getSpellBook().orderPetToAttackTarget(mGame, mTargetUnit->getGuidPtr());
 						mInteractWith = false;
 					}
 
 					else if (self->getPosition().getDistanceTo(mTargetUnit->getPosition()) < 5 && cacAttack) {
-						mGame.getSpellBook().castSpell(mGame, 14260, mTargetUnit->getGuidPtr());//2973 rank1 raptor strike
+						mDbg.i("Case -> raptor strike....");
+						mGame.getSpellBook().castSpell(mGame, 14261, mTargetUnit->getGuidPtr());//2973 rank1 raptor strike //rank2 14260
 						cacAttack = false;
 					}
 
