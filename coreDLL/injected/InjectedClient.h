@@ -15,6 +15,8 @@ class InjectedClient
 {
 public:
 	InjectedClient();
+	InjectedClient(InjectedClient const&) = delete;
+	void operator=(InjectedClient const&) = delete;
 	~InjectedClient();
 
 	bool throttle() const;
@@ -25,9 +27,7 @@ public:
 
 	bool run();
 
-private:
-	bool _dispatchMessages();
-
+protected:
 	uint64_t mBootTime;
 	uint64_t mLastPulse;
 	FileLogger mDebugger;
@@ -35,10 +35,6 @@ private:
 
 	// TODO move Client to WowPlugin
 	std::shared_ptr<Client> mClient;
-
-public:
-	InjectedClient(InjectedClient const&) = delete;
-	void operator=(InjectedClient const&) = delete;
 };
 
 inline std::ostream& operator<<(std::ostream& out,const class InjectedClient& obj) {

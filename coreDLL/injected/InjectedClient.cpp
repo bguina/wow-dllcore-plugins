@@ -36,7 +36,6 @@ InjectedClient::InjectedClient() :
 		mClient->sendMessage(mClient->getMessageManager().builRequestdDLLInjectedMessage(pid));
 	}
 
-
 	auto pluginsPath = L"D:\\myplugins";
 
 	auto plugins = std::make_shared<DllFolderPlugin>();
@@ -68,24 +67,20 @@ bool InjectedClient::throttle() const {
 
 bool InjectedClient::run() {
 	if (throttle()) return true;
-	if (!mClient->isConnected() || !_dispatchMessages()) return false;
+	if (!mClient->isConnected()) return false;
 
+	auto wowPlugin = dynamic_cast<WowPlugin*>(mPlugins.begin()->get());
+	if (wowPlugin != nullptr) {
+		// dispatch client
+		if (!wowPlugin->handleClient(*mClient))
+			return false;
+	}
 
 	for (auto it = mPlugins.begin(); it != mPlugins.end(); ++it) {
 		(*it)->onD3dRender();
 	}
+
 	mLastPulse = GetTickCount64();
 	mDebugger.flush();
 	return true;
-}
-
-bool InjectedClient::_dispatchMessages() {
-	bool eject = false;
-	auto wowPlugin = dynamic_cast<WowPlugin*>(mPlugins.begin()->get());
-
-	if (wowPlugin != nullptr) {
-		eject = !wowPlugin->handleClient(*mClient);
-	}
-
-	return !eject;
 }

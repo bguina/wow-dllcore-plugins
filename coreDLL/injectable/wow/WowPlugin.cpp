@@ -83,8 +83,9 @@ ServerWowMessage _buildMessage(Client* mClient, const std::string& messageId) {
 
 bool WowPlugin::handleClient(Client& mClient) {
 	std::list<std::string> messages = mClient.getMessageAvailable();
+	bool eject = false;
 
-	for (std::list<std::string>::iterator msgIte = messages.begin(); msgIte != messages.end(); msgIte++) {
+	for (std::list<std::string>::iterator msgIte = messages.begin(); !eject && msgIte != messages.end(); msgIte++) {
 		const std::string& msgIdentifier(*msgIte);
 		ServerWowMessage msg(_buildMessage(&mClient, msgIdentifier));
 
@@ -97,6 +98,8 @@ bool WowPlugin::handleClient(Client& mClient) {
 			mBot->onResume();
 			break;
 
+		case MessageType::POST_SERVER_EJECTION:
+			msg.eject = true;
 		case MessageType::PAUSE:
 			mBotPause = true;
 			mBot->onPause();
@@ -140,10 +143,11 @@ bool WowPlugin::handleClient(Client& mClient) {
 		}
 
 		if (msg.eject) {
+			eject = true;
 			mDbg << FileLogger::err << "got ejection order " << (int)msg.type << FileLogger::normal << std::endl;
-			return false;
+			break;
 		}
 	}
 
-	return true;
+	return !eject;
 }
