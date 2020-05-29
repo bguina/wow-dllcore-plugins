@@ -18,26 +18,18 @@ class SpellBook
 public:
 	SpellBook(const uint8_t* baseAddr);
 
-	std::list<SpellbookDescriptor> listSpells() const;
+	bool isKnown(int spellId) const;
+	bool isLearnt(int spellId) const;
 
-	uint32_t getSpellBookCount() const;
-
-	void scan();
-
-	const uint8_t* getBaseAddress() const;
-	const SpellbookDescriptor* getSpell(uint32_t spellId) const;
 	void castSpell(const WowGame& game, const uint32_t spellId, const uint128_t* target);
 	uint64_t* petInfoFindSpellById(const WowGame& game, const uint32_t petSpellId);
 	void petInfoSendPetAction(const WowGame& game, uint64_t* spell, uint128_t* target, uint32_t unknown, uint64_t* unkwown2);
 	bool orderPetToAttackTarget(const WowGame& game, uint128_t* target);
 
 private:
+	const SpellbookDescriptor* getSpell(uint32_t spellId) const;
+	uint32_t getSpellBookCount() const;
 	const uint8_t* mPointerAddr;
-
-	enum SpellbookFlags : uint32_t {
-		IS_LEARNT = 1,
-		IS_KNOWN = 2,
-	};
 };
 
 inline std::ostream& operator<<(
@@ -45,13 +37,7 @@ inline std::ostream& operator<<(
 	const SpellBook& spellBookMgr
 	)
 {
-	out << "[SpellBook@" << (void*)spellBookMgr.getBaseAddress() << ": Count = " << spellBookMgr.getSpellBookCount() << "]" << std::endl;
-
-
-
-	if (NULL != spellBookMgr.getBaseAddress()) {
-		//Add more print here for spell count // spell list ID
-	}
+	out << "[SpellBook@]" << std::endl;
 
 	return out;
 }

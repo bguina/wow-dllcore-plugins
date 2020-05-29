@@ -147,7 +147,8 @@ int inject(int processId, const std::string& module) {
 
 	std::string str(fullPathDLL.begin(), fullPathDLL.end());
 
-	MessageBox(NULL, fullPathDLL.c_str(), L"Window1", MB_OK);
+	if (false)
+	MessageBox(NULL, fullPathDLL.c_str(), L"MyDebugMESSageEasyToGrep", MB_OK);
 
 	LPSTR crazyStuff = _strdup(str.c_str());
 

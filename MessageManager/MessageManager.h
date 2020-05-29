@@ -1,17 +1,12 @@
 #pragma once
 
+#include <string>
+#include <list>
+
 #include "framework.h"
-
-#ifndef MESSAGE_MANAGER_H
-#define MESSAGE_MANAGER_H
-
-#include "PicoJSON.h"
 
 #include "AvailableConfigurationObject.h"
 #include "InjectObject.h"
-
-#include <string>
-#include <iostream>
 
 #include "MessageType.h"
 
@@ -53,8 +48,3 @@ public:
 	//WAYPOINS FILE
 	std::string buildWaypoinsFile(std::list<std::string> listWaypoint);
 };
-#endif // !MESSAGE_MANAGER_H
-
-
-
-

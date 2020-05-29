@@ -6,7 +6,7 @@
 */
 
 class WowGame;
-class ClientMessage;
+class ServerWowMessage;
 
 class IWowBot
 {
@@ -28,5 +28,5 @@ public:
 	virtual void onEvaluate() = 0;
 	virtual void onPause() = 0;
 
-	virtual bool handleServerMessage(ClientMessage& serverMessage) = 0;
+	virtual bool handleWowMessage(ServerWowMessage& cl) = 0;
 };

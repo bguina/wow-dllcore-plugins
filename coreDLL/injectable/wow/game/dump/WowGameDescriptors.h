@@ -60,3 +60,8 @@ enum class WowUnitRace : uint8_t {
 enum class WowUnitDynamicFlags : uint32_t {
 	isInCombat = 0x0080000,
 };
+
+enum SpellbookSpellFlags : uint32_t {
+	IsLearnt = 1,
+	Isknown = 2,
+};

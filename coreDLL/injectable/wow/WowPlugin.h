@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../injected/plugin/IMessageablePlugin.h"
+#include "../../injected/plugin/IPlugin.h"
 #include "game/WowGame.h"
 
 /*
@@ -10,16 +10,17 @@
 
 class WowGame;
 class IWowBot;
+class Client;
 
-class WowPlugin : public IMessageablePlugin
+class WowPlugin : public IPlugin
 {
 public:
-	WowPlugin(long pid, HMODULE moduleBaseAddress);
+	WowPlugin(long botId);
 	virtual ~WowPlugin();
 
 	virtual void onD3dRender() override;
 
-	virtual bool handleServerMessage(ClientMessage& serverMessage) override;
+	bool handleClient(Client& cl);
 
 protected:
 	bool mBotPause;

@@ -1,3 +1,6 @@
+
+#include <iostream>
+
 #include "windowQT.h"
 
 windowQT::windowQT(QWidget* parent) : QMainWindow(parent)

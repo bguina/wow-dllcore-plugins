@@ -3,7 +3,7 @@
 #include "../../AGame.h"
 
 #include "../../../logger/FileLogger.h"
-#include "../../../injected/observer/ARecurrentServerObserver.h"
+#include "../../../injected/deprecated/ARecurrentServerObserver.h"
 
 #include "ObjectManager.h"
 #include "SpellBook.h"

@@ -5,6 +5,7 @@
 #include "ABenBot.h"
 
 #include "../../injectable/wow/game/WowGame.h"
+#include "../../injectable/wow/game/object/WowGuid128.h"
 #include "../../injectable/wow/game/object/WowActivePlayerObject.h"
 #include "../../injectable/wow/pathfinder/LinearPathFinder.h"
 
@@ -12,6 +13,7 @@ const std::string TAG = "ABenBot";
 
 ABenBot::ABenBot(WowGame& game, const std::string& tag) :
 	BaseWowBot(game, tag),
+	mLua(game),
 	mPathFinder(nullptr)
 {
 }
@@ -31,14 +33,14 @@ void ABenBot::onEvaluate() {
 
 }
 
-bool ABenBot::handleServerMessage(ClientMessage& serverMessage) {
+bool ABenBot::handleWowMessage(ServerWowMessage& cl) {
 	bool handled = false;
-	mDbg << FileLogger::verbose << "handleServerMessage " << (int)serverMessage.type << FileLogger::normal << std::endl;
+	mDbg << FileLogger::verbose << "handleServerMessage " << (int)cl.type << FileLogger::normal << std::endl;
 
-	switch (serverMessage.type) {
+	switch (cl.type) {
 	case MessageType::POST_DLL_DATA_3DPATH:
-		mPathFinder = std::make_unique<LinearPathFinder>(*serverMessage.waypoints);
-		mDbg << FileLogger::verbose << "Loaded pathfinder with " << serverMessage.waypoints->size() << "waypoints! thanks! " << (int)serverMessage.type << FileLogger::normal << std::endl;
+		mPathFinder = std::make_unique<LinearPathFinder>(*cl.waypoints);
+		mDbg << FileLogger::verbose << "Loaded pathfinder with " << cl.waypoints->size() << "waypoints! thanks! " << (int)cl.type << FileLogger::normal << std::endl;
 		handled= true;
 	default:
 		break;

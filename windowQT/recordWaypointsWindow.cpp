@@ -1,3 +1,6 @@
+
+#include <iostream>
+
 #include "recordwaypointswindow.h"
 #include "ui_recordwaypointswindow.h"
 

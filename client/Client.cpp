@@ -1,6 +1,8 @@
 #include "pch.h"
 
 #include "framework.h"
+#include "PicoJSON.h"
+
 #include "Client.h"
 
 Client::Client() :

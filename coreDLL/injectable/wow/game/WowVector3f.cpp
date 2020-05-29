@@ -1,9 +1,22 @@
 #include "pch.h"
 
-#include <cmath>
 #include "WowVector3f.h"
 
-const double PI = 3.141592653589793;
+
+WowVector3f& WowVector3f::translateByX(float d) {
+	position.x += d;
+	return *this;
+}
+
+WowVector3f& WowVector3f::translateByY(float d) {
+	position.y += d;
+	return *this;
+}
+
+WowVector3f& WowVector3f::translateByZ(float d) {
+	position.z += d;
+	return *this;
+}
 
 float WowVector3f::operator[](int index) const {
 	return matrix[index];
@@ -30,10 +43,10 @@ float WowVector3f::getFlightDistanceTo(const WowVector3f& to) const {
 }
 
 int WowVector3f::getFacingDegreesTo(const WowVector3f& to) const {
-	return atan2(
+	return (int)(atan2(
 		to.position.y - position.y,
 		to.position.x - position.x
-	) * 180 / PI;
+	) * 180.0f / PI);
 }
 
 int WowVector3f::getFacingDeltaDegrees(int angle, const WowVector3f& to) const {

@@ -21,7 +21,7 @@ WowMaxBot::~WowMaxBot() {
 
 }
 
-bool WowMaxBot::handleServerMessage(ClientMessage& serverMessage) {
+bool WowMaxBot::handleWowMessage(ServerWowMessage& serverMessage) {
 	bool handled = false;
 	mDbg << FileLogger::verbose << "handleServerMessage " << (int)serverMessage.type << FileLogger::normal << std::endl;
 
@@ -102,12 +102,11 @@ void WowMaxBot::onEvaluate() {
 
 			if (nullptr == mTargetUnit)
 			{
-				std::list<std::shared_ptr<const WowUnitObject>> allUnits = mGame.getObjectManager().allOfType<const WowUnitObject>(WowObjectType::Unit);
-				std::list<std::shared_ptr<const WowUnitObject>> whilelist;
-				mDbg.i("looking for a new unit to attack");
+				std::list<std::shared_ptr<const WowUnitObject>> allUnits = mGame.getObjectManager().allOfType<const WowUnitObject>();
 				std::shared_ptr<const WowUnitObject> targetUnit(nullptr);
 				float distance = FLT_MAX;
 
+				mDbg.i("looking for a new unit to attack");
 				for (auto it = allUnits.begin(); it != allUnits.end(); it++)
 				{
 					if (self->isFriendly(mGame, *(*it)) || (abs(self->getUnitLevel() - (*it)->getUnitLevel()) > 6) &&

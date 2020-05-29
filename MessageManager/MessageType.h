@@ -2,14 +2,14 @@
 
 enum class MessageType : uint8_t {
 	// wtf defining the unknown
-	UNKNOWN=0,
-	
+	UNKNOWN = 0,
+
 	// Notify a new incoming message
 	MESSAGE_TYPE = 2,
 
 	// Request server for available processes and dlls.
 	GET_SERVER_OPTIONS = 3,
-	
+
 	// Request injection with a given pair of dll+pid.
 	// Client is implicitly associated to the resulting process injection.
 	POST_SERVER_INJECTION = 4,
@@ -22,7 +22,7 @@ enum class MessageType : uint8_t {
 
 	// Request for a given labeled data to the associated dll.
 	DATA_PROMPT_DLL = 7,
-	
+
 	// Toggle subscription to a data observer from associated dll.
 	SUBSCRIBE_DLL_UPDATES = 8,
 	UNSUBSCRIBE_DLL_UPDATES = 9,
@@ -35,3 +35,4 @@ enum class MessageType : uint8_t {
 	// Submit a 3D path to the associated injected dll to be handled by the currently set up plugin.
 	POST_DLL_DATA_3DPATH = 13,
 };
+

@@ -1,13 +1,16 @@
 #pragma once
 
+#ifndef H_CLIENT
+#define H_CLIENT
+
 #include <winsock2.h>
 #include <windows.h>
 #include <ws2tcpip.h>
+
 #include <stdlib.h>
-#include <stdio.h>
+
 #include <list>
 #include <mutex>
-#include <iostream>
 
 #include "MessageManager.h"
 
@@ -73,3 +76,4 @@ private:
 	int sendMessageToServer();
 	int readMessageFromServer();
 };
+#endif // !H_CLIENT
