@@ -7,46 +7,43 @@
 #include "FileLogger.h"
 
 #include "DllCore.h"
-#include "injected/plugin/DllFolderPlugin.h"
+#include "plugin/DllFolderPlugin.h"
 
 static bool gShouldStop = false;
 
-void Render(
-	IDXGISwapChain* pThis,
-	UINT SyncInterval,
-	UINT Flags
-) {
-
+void Render(IDXGISwapChain* pThis, UINT SyncInterval, UINT Flags) {
 	static DllCore* sandbox = nullptr;
 
 	if (!gShouldStop) {
+		FileLogger dbg("Render");
 		boolean stopSandbox = false;
 
 		if (nullptr == sandbox) {
-			sandbox = new DllCore(new DllFolderPlugin());
+			dbg << "loading sandbox" << std::endl;
+			dbg.flush();
+			sandbox = new DllCore(new DllFolderPlugin("D:\\myplugins"));
+			dbg << "loaded sandbox" << std::endl;
+			dbg.flush();
 		}
 
-		stopSandbox = !sandbox->run();
+		stopSandbox = !sandbox->onFrameRender();
 		drawSomeTriangle();
 
 		if (stopSandbox) {
-
+			dbg << "deleting sandbox" << std::endl;
+			dbg.flush();
 			delete sandbox;
 
 			gShouldStop = true;
 		}
 	}
-
 }
 
 void MainThread(void* pHandle) {
 	//FileDebugger dbg("MainThread");
 
-	if (HookD3D(&Render)) {
-		while (!gShouldStop && !GetAsyncKeyState(VK_END)) {
-
-		}
-	}
+	if (HookD3D(&Render)) 
+		while (!gShouldStop && !GetAsyncKeyState(VK_END));
 
 	//dbg << "deinject\n";
 	deinject(pHandle);

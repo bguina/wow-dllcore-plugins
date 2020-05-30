@@ -3,8 +3,8 @@
 #include <list>
 #include <memory>
 
+#include "plugin/IPlugin.h"
 #include "FileLogger.h"
-#include "injected/plugin/IPlugin.h"
 
 class MessageManager;
 class ClientMessage;
@@ -23,7 +23,7 @@ public:
 	uint64_t getBootTime() const;
 	uint64_t getLastPulse() const;
 
-	bool run();
+	bool onFrameRender();
 
 protected:
 	FileLogger mDbg;

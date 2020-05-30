@@ -23,8 +23,9 @@ WowMaxBot::~WowMaxBot() {
 }
 
 bool WowMaxBot::handleWowMessage(ServerWowMessage& serverMessage) {
+	FileLogger dbg(mDbg, "handleWowMessage");
 	bool handled = false;
-	mDbg << FileLogger::verbose << "handleServerMessage " << (int)serverMessage.type << FileLogger::normal << std::endl;
+	dbg << FileLogger::verbose << "handleServerMessage " << (int)serverMessage.type << FileLogger::normal << std::endl;
 
 	switch (serverMessage.type)
 	{
@@ -35,7 +36,6 @@ bool WowMaxBot::handleWowMessage(ServerWowMessage& serverMessage) {
 		break;
 	}
 
-	mDbg.flush();
 	return handled;
 }
 

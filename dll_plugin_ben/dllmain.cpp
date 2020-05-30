@@ -6,7 +6,7 @@
 #include "WowPlugin.h"
 #include "ben/BenTravelBot.h"
 
- WowPlugin* gContainedPlugin = nullptr;
+WowPlugin* gContainedPlugin = nullptr;
 
 extern "C" int __declspec(dllexport) __stdcall DllPlugin_OnLoad(uint32_t pid) {
 	gContainedPlugin = new WowPlugin(new BenTravelBot(), "DllBenTravelBot");
@@ -14,17 +14,20 @@ extern "C" int __declspec(dllexport) __stdcall DllPlugin_OnLoad(uint32_t pid) {
 }
 
 extern "C" int __declspec(dllexport) __stdcall DllPlugin_OnUnload() {
-	delete gContainedPlugin;
+	if (gContainedPlugin) {
+		delete gContainedPlugin;
+		gContainedPlugin = nullptr;
+	}
 	return 0;
 }
 
 extern "C" int __declspec(dllexport) __stdcall DllPlugin_OnD3dRender() {
-	 gContainedPlugin->onD3dRender();
-	 return 0;
+	return gContainedPlugin->onD3dRender();
+	//return 0;
 }
 
 extern "C" int __declspec(dllexport) __stdcall DllPlugin_OnServerMessage(void* param) {
-	gContainedPlugin->onD3dRender();
+	//gContainedPlugin->onS(param);
 	return 0;
 }
 

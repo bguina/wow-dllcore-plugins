@@ -1,7 +1,7 @@
 #pragma once
 
 #include "FileLogger.h"
-#include "injected/deprecated/ARecurrentServerObserver.h"
+#include "deprecated/ARecurrentServerObserver.h"
 
 #include "ObjectManager.h"
 #include "SpellBook.h"

@@ -8,6 +8,9 @@
 class FileLogger : public ILogger {
 public:
 	FileLogger(const std::string& tag);
+	FileLogger(FileLogger const&);
+	FileLogger(const FileLogger& o, const std::string& prefix);
+	void operator=(FileLogger const&) = delete;
 	virtual ~FileLogger();
 
 	virtual const std::string& getTag() const override;
@@ -35,19 +38,21 @@ public:
 
 	template<typename T>
 	std::ostream& operator<<(const T& obj) const {
-		mBuff << obj;
+		mBuff << mPrefix << obj;
 		return mBuff;
 	}
 
 private:
+	FileLogger(const std::string& tag, const std::string& prefix);
+	
 	mutable std::stringstream mBuff;
 	const std::string mFolder;
 	const std::string mTag;
+	const std::string mPrefix;
 	const std::string mOutputFile;
 
 public:
-	FileLogger(FileLogger const&) = delete;
-	void operator=(FileLogger const&) = delete;
+
 
 	static const std::string normal;
 	static const std::string debug;

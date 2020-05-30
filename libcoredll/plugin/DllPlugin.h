@@ -10,9 +10,13 @@ class DllPlugin : public IDllPlugin
 public:
 	DllPlugin();
 	virtual ~DllPlugin();
+	virtual std::string getTag() const override;
+
+	virtual bool isLibraryLoaded() const;
+	virtual std::string getLibraryName() const;
+	virtual uint64_t getLibraryVersion() const;
 
 	virtual bool loadLibrary(const std::wstring& dllPath);
-	virtual bool isLibraryLoaded() const;
 	virtual void freeLibrary();
 
 	virtual bool onD3dRender() override;
@@ -23,6 +27,10 @@ public:
 	typedef int(__stdcall* DllPlugin_OnServerMessage)(void* param);
 
 protected:
+	std::wstring stringConvertToWstring(const std::string& w) const;
+	std::string wstringConvertToString(const std::wstring& w) const;
+
+	std::wstring mFilePath;
 	HINSTANCE mDll;
 	FileLogger mDbg;
 	DllPlugin_OnLoad mDllOnLoadFunc;

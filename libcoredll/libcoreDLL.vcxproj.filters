@@ -27,28 +27,28 @@
     <ClInclude Include="memutils\Hexsearch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="injected\deprecated\ARecurrentServerObserver.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="injected\deprecated\IServerObserver.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="injected\plugin\DllFolderPlugin.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="injected\plugin\DllPlugin.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="injected\plugin\IDllPlugin.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="injected\plugin\IPlugin.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DllCore.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="plugin\DllFolderPlugin.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="plugin\DllPlugin.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="plugin\IDllPlugin.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="plugin\IPlugin.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="deprecated\ARecurrentServerObserver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="deprecated\IServerObserver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -56,16 +56,16 @@
     <ClCompile Include="NetworkParsing.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="injected\plugin\DllFolderPlugin.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="injected\plugin\DllPlugin.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DllCore.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="plugin\DllFolderPlugin.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="plugin\DllPlugin.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

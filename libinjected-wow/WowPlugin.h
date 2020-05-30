@@ -1,6 +1,6 @@
 #pragma once
 
-#include "injected/plugin/IPlugin.h"
+#include "plugin/IPlugin.h"
 #include "game/WowGame.h"
 
 /*
@@ -18,8 +18,9 @@ class WowPlugin : public IPlugin
 public:
 	WowPlugin(IWowBot* bot);
 	WowPlugin(IWowBot* bot, const std::string& tag);
-
 	virtual ~WowPlugin();
+
+	virtual std::string getTag() const;
 
 	virtual bool onD3dRender() override;
 

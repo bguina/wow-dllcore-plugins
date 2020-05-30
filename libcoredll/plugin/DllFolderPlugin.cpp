@@ -25,20 +25,28 @@ FILETIME lookupLatest(const std::wstring& path, std::wstring& latest) {
 	return latestTs;
 }
 
-
 DllFolderPlugin::DllFolderPlugin() :
 	DllPlugin(),
 	mCurrentVersion({ 0,0 })
 {
 }
 
-DllFolderPlugin::DllFolderPlugin(const std::string& watched) : 
+DllFolderPlugin::DllFolderPlugin(const std::string& watched) :
 	DllFolderPlugin()
 {
+	loadFolder(stringConvertToWstring(watched));
 }
 
 DllFolderPlugin::~DllFolderPlugin() {
 
+}
+
+std::string DllFolderPlugin::getTag() const {
+	return "DllFolderPlugin[" + getLibraryFolder() + "/" + getLibraryName() + ":" + std::to_string(getLibraryVersion()) + "]";
+}
+
+std::string DllFolderPlugin::getLibraryFolder() const {
+	return wstringConvertToString(mFolder);
 }
 
 void DllFolderPlugin::freeLibrary() {
@@ -47,13 +55,15 @@ void DllFolderPlugin::freeLibrary() {
 }
 
 bool DllFolderPlugin::loadFolder(const std::wstring& path) {
+	FileLogger dbg(mDbg, "loadFolder");
 	std::wstring latestFile;
 	FILETIME latestTs(lookupLatest(path, latestFile));
 
+	dbg << "loadFolder" << std::endl;
 	if (isLibraryLoaded())
 		freeLibrary();
 
-	if (!latestFile.empty() && loadLibrary(latestFile)) {
+	if (!loadLibrary(latestFile)) {
 		mFolder = path;
 		mCurrentVersion = latestTs;
 		return true;
@@ -71,20 +81,22 @@ bool DllFolderPlugin::refreshLibrary() {
 		mDbg.flush();
 
 		mCurrentVersion = { 0,0 };
-		if (loadLibrary(latestFile)) {
-			mCurrentVersion = latestTs;
-			return true;
+		if (!loadLibrary(latestFile)) {
+			mDbg << FileLogger::err << " failed updating to new library version " << FileLogger::normal << std::endl;
+			return false;
 		}
 
-		mDbg << FileLogger::err << " failed updating to new library version " << FileLogger::normal << std::endl;
+		mCurrentVersion = latestTs;
 	}
 
-	return false; 
+	return true;
 }
 
 bool DllFolderPlugin::onD3dRender() {
 	if (!refreshLibrary()) {
 		DllPlugin::onD3dRender();
 	}
-	return true;
+
+	mDbg.flush();
+	return isLibraryLoaded();
 }

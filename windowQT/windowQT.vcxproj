@@ -116,9 +116,6 @@
     <ProjectReference Include="..\MessageManager\MessageManager.vcxproj">
       <Project>{9b69c2f2-f080-4375-8f30-c6d5176acc1c}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\client\client.vcxproj">
-      <Project>{62c3f70f-f814-426d-96d1-f3c6751b750d}</Project>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="recordWaypointsWindow.h" />

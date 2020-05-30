@@ -157,12 +157,12 @@
   <ItemGroup>
     <ClInclude Include="framework.h" />
     <ClInclude Include="DllCore.h" />
-    <ClInclude Include="injected\deprecated\ARecurrentServerObserver.h" />
-    <ClInclude Include="injected\deprecated\IServerObserver.h" />
-    <ClInclude Include="injected\plugin\DllFolderPlugin.h" />
-    <ClInclude Include="injected\plugin\DllPlugin.h" />
-    <ClInclude Include="injected\plugin\IDllPlugin.h" />
-    <ClInclude Include="injected\plugin\IPlugin.h" />
+    <ClInclude Include="deprecated\ARecurrentServerObserver.h" />
+    <ClInclude Include="deprecated\IServerObserver.h" />
+    <ClInclude Include="plugin\DllFolderPlugin.h" />
+    <ClInclude Include="plugin\DllPlugin.h" />
+    <ClInclude Include="plugin\IDllPlugin.h" />
+    <ClInclude Include="plugin\IPlugin.h" />
     <ClInclude Include="memutils\Hexdump.h" />
     <ClInclude Include="memutils\Hexsearch.h" />
     <ClInclude Include="NetworkParsing.h" />
@@ -170,8 +170,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DllCore.cpp" />
-    <ClCompile Include="injected\plugin\DllFolderPlugin.cpp" />
-    <ClCompile Include="injected\plugin\DllPlugin.cpp" />
+    <ClCompile Include="plugin\DllFolderPlugin.cpp" />
+    <ClCompile Include="plugin\DllPlugin.cpp" />
     <ClCompile Include="NetworkParsing.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

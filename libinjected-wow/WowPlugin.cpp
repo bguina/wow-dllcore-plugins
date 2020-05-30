@@ -7,31 +7,70 @@
 #include "WowPlugin.h"
 #include "ServerWowMessage.h"
 
-WowPlugin::WowPlugin(IWowBot* bot) : WowPlugin(bot, "WowPlugin") {
-	if (mClient->joinServer()) {
-		mClient->sendMessage(mClient->getMessageManager().builRequestdDLLInjectedMessage(GetCurrentProcessId()));
-	}
+WowPlugin::WowPlugin(IWowBot* bot) :
+	WowPlugin(bot, "WowPlugin")
+{
+
+
 }
 
 WowPlugin::WowPlugin(IWowBot* bot, const std::string& tag) :
 	mBotPause(true),
 	mGame(GetCurrentProcessId(), (const uint8_t*)GetModuleHandleA(0)),
 	mDbg(tag),
-	mBot(bot) {
+	mBot(bot),
+	mClient(new Client())
+{
+	FileLogger dbg(mDbg, "WowPlugin()");
+
+	if (nullptr == bot) {
+		dbg << FileLogger::err << "created with nullptr" << FileLogger::normal << std::endl;
+	}
+	else
+		dbg << FileLogger::info << "created with " << bot->getTag() << FileLogger::normal << std::endl;
+
+	if (mClient->joinServer()) {
+		dbg << FileLogger::info << "connected to server" << FileLogger::normal << std::endl;
+		mClient->sendMessage(mClient->getMessageManager().builRequestdDLLInjectedMessage(GetCurrentProcessId()));
+	}
+	else {
+		dbg << FileLogger::warn << "failed to join the server" << FileLogger::normal << std::endl;
+	}
 }
 
 WowPlugin::~WowPlugin() {
+	FileLogger dbg(mDbg, "~WowPlugin()");
+	dbg << FileLogger::info << "call" << FileLogger::normal << std::endl;
+	mClient->disconnect();
+}
+
+std::string WowPlugin::getTag() const {
+	return mDbg.getTag();
 }
 
 bool WowPlugin::onD3dRender() {
-	if (!mClient->isConnected()) return false;
-	if (!_readServerMessages()) return false;
+	FileLogger dbg(mDbg, "onD3dRender");
 
-	mGame.update();
-	if (mBot != nullptr && !mBotPause) {
-		mBot->onEvaluate(mGame);
+	dbg << FileLogger::debug << "call" << FileLogger::normal << std::endl;
+	if (!mClient->isConnected() || !_readServerMessages()) {
+		dbg << FileLogger::warn << "lost connection with server" << FileLogger::normal << std::endl;
+		return false;
 	}
-	mDbg.flush();
+	else {
+		dbg << FileLogger::debug << "server up-to-date" << FileLogger::normal << std::endl;
+	}
+
+	dbg << FileLogger::debug << "updating game" << FileLogger::normal << std::endl;
+	mGame.update();
+	if (mBot != nullptr) {
+		if (!mBotPause)
+			mBot->onEvaluate(mGame);
+	}
+	else {
+		dbg << FileLogger::warn << "no bot is set" << FileLogger::normal << std::endl;
+	}
+
+	dbg << FileLogger::debug << "success" << FileLogger::normal << std::endl;
 
 	return true;
 }
@@ -75,6 +114,7 @@ ServerWowMessage _buildMessage(Client& mClient, const std::string& messageId) {
 
 
 bool WowPlugin::_readServerMessages() {
+	FileLogger dbg(mDbg, "_readServerMessages");
 	std::list<std::string> messages = mClient->getMessageAvailable();
 	bool eject = false;
 
@@ -82,11 +122,10 @@ bool WowPlugin::_readServerMessages() {
 		const std::string& msgIdentifier(*msgIte);
 		ServerWowMessage msg(_buildMessage(*mClient, msgIdentifier));
 
-		mDbg << FileLogger::verbose << "serverMessage: " << (int)msg.type << FileLogger::normal << std::endl;
+		dbg << FileLogger::verbose << "serverMessage: " << (int)msg.type << FileLogger::normal << std::endl;
 
 		switch (msg.type) {
 		case MessageType::RESUME:
-			mGame.update();
 			mBotPause = false;
 			mBot->onResume(mGame);
 			break;
@@ -119,11 +158,11 @@ bool WowPlugin::_readServerMessages() {
 		default:
 			// let the bot handle it
 			if (mBot->handleWowMessage(msg)) {
-				mDbg << FileLogger::info << "messengable handled message " << (int)msg.type << FileLogger::normal << std::endl;
+				dbg << FileLogger::info << "messengable handled message " << (int)msg.type << FileLogger::normal << std::endl;
 				break;
 			}
 			else {
-				mDbg << FileLogger::err << "messengable could not handle unknown message " << (int)msg.type << FileLogger::normal << std::endl;
+				dbg << FileLogger::err << "messengable could not handle unknown message " << (int)msg.type << FileLogger::normal << std::endl;
 			}
 		}
 
@@ -137,10 +176,10 @@ bool WowPlugin::_readServerMessages() {
 
 		if (msg.eject) {
 			eject = true;
-			mDbg << FileLogger::err << "got ejection order " << (int)msg.type << FileLogger::normal << std::endl;
+			dbg << FileLogger::err << "got ejection order " << (int)msg.type << FileLogger::normal << std::endl;
 			break;
 		}
 	}
-
+	dbg << FileLogger::verbose << "read of " << messages.size() << FileLogger::normal << std::endl;
 	return !eject;
 }

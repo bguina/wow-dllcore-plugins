@@ -2,7 +2,7 @@
 
 #include "Client.h"
 
-#include "injected/deprecated/ARecurrentServerObserver.h"
+#include "deprecated/ARecurrentServerObserver.h"
 
 class Client;
 class WowGame;

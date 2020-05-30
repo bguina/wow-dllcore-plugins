@@ -3,7 +3,7 @@
 #include "WowGame.h"
 
 #include "windowcontroller/PostMessageWindowController.h"
-#include "injected/deprecated/ARecurrentServerObserver.h"
+#include "deprecated/ARecurrentServerObserver.h"
 
 WowGame::WowGame(long pid, const uint8_t* baseAddr) :
 	AGame(pid, baseAddr),

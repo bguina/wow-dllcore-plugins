@@ -13,12 +13,7 @@
 
 static bool gShouldStop = false;
 
-void Render(
-	IDXGISwapChain* pThis,
-	UINT SyncInterval,
-	UINT Flags
-) {
-
+void Render(IDXGISwapChain* pThis, UINT SyncInterval, UINT Flags) {
 	static DllCore* sandbox = nullptr;
 
 	if (!gShouldStop) {
@@ -28,7 +23,7 @@ void Render(
 			sandbox = new DllCore(new WowPlugin(new WowMaxBot()));
 		}
 
-		stopSandbox = !sandbox->run();
+		stopSandbox = !sandbox->onFrameRender();
 		drawSomeTriangle();
 
 		if (stopSandbox) {
@@ -38,7 +33,6 @@ void Render(
 			gShouldStop = true;
 		}
 	}
-
 }
 
 void MainThread(void* pHandle) {

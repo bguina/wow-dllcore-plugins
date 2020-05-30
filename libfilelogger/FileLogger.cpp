@@ -30,10 +30,7 @@ const std::string FileLogger::warn = std::string(YELLOW);
 const std::string FileLogger::err = std::string(BOLDRED);
 
 FileLogger::FileLogger(const std::string& tag) :
-	ILogger(),
-	mFolder("D:\\nvtest\\"),
-	mTag(tag),
-	mOutputFile(mFolder + mTag + ".log")
+	FileLogger(tag, std::string())
 {
 	struct stat dirInfo;
 
@@ -43,8 +40,28 @@ FileLogger::FileLogger(const std::string& tag) :
 	}
 }
 
-FileLogger::~FileLogger()
+FileLogger::FileLogger(const FileLogger& o) :
+	FileLogger(o.getTag())
 {
+
+}
+
+FileLogger::FileLogger(const FileLogger& o, const std::string& prefix) :
+	FileLogger(o.getTag(), prefix)
+{
+
+}
+
+FileLogger::FileLogger(const std::string& tag, const std::string& prefix) :
+	mFolder("D:\\nvtest\\"),
+	mTag(tag),
+	mPrefix(prefix + ": "),
+	mOutputFile(mFolder + mTag + ".log")
+{
+
+}
+
+FileLogger::~FileLogger() {
 	flush();
 }
 
@@ -61,20 +78,20 @@ void FileLogger::log(const std::string& msg) const {
 }
 
 void FileLogger::log(std::stringstream& msg) const {
-	log(msg.str());
+	log(mPrefix + msg.str());
 	msg.str("");
 }
 
 void FileLogger::i(const std::string& msg) const {
-	mBuff << info << "[i] " << msg << normal << std::endl;
+	mBuff << info << "[i] " << mPrefix << msg << normal << std::endl;
 }
 
 void FileLogger::w(const std::string& msg) const {
-	mBuff << warn << "[w] " << msg << normal << std::endl;
+	mBuff << warn << "[w] " << mPrefix << msg << normal << std::endl;
 }
 
 void FileLogger::e(const std::string& msg) const {
-	mBuff << err << "[e] " << msg << normal << std::endl;
+	mBuff << err << "[e] " << mPrefix << msg << normal << std::endl;
 }
 
 void FileLogger::i(std::stringstream& msg) const {

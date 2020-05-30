@@ -1,27 +1,8 @@
 #include "pch.h"
 
-#include <thread>
-#include <sstream>
-
 #include "DllCore.h"
 #include "NetworkParsing.h"
-
-/* Observers */
-// Observe wow player positions
-
-/* Userspace */
-
-// business
-#include "injected/plugin/DllFolderPlugin.h"
-//#include "observer/ActivePlayerPositionObserver.h"
-//#include "WowPlugin.h"
-
-
-/* Features */
-
-//#include "game/WowVector3f.h"
-
-//#include "ServerWowMessage.h"
+#include "plugin/DllFolderPlugin.h"
 
 DllCore::DllCore(IPlugin* plugin) :
 	mDbg("DllCore"),
@@ -32,7 +13,6 @@ DllCore::DllCore(IPlugin* plugin) :
 }
 
 DllCore::~DllCore() {
-	//mClient->disconnect();
 	mDbg << FileLogger::warn << "~DllCore" << FileLogger::normal << std::endl;
 	mDbg.flush();
 }
@@ -48,17 +28,26 @@ bool DllCore::throttle() const {
 	return mLastPulse + 120 > GetTickCount64();
 }
 
-bool DllCore::run() {
-	if (throttle()) return true;
+bool DllCore::onFrameRender() {
+	if (!throttle()) {
+		FileLogger dbg(mDbg, "run");
 
-	for (auto it = mPlugins.begin(); it != mPlugins.end(); ++it) {
-		if (!(*it)->onD3dRender()) {
-			mDbg.flush();
-			return false;
+		dbg << FileLogger::debug << "->run()" << FileLogger::normal << std::endl;
+
+		if (!mPlugins.empty()) {
+			for (auto it = mPlugins.begin(); it != mPlugins.end(); ++it) {
+				dbg << FileLogger::debug << (*it)->getTag() << "->onD3dRender()" << FileLogger::normal << std::endl;
+
+				if (!(*it)->onD3dRender()) {
+					dbg << FileLogger::warn << "->onD3dRender() ejection" << FileLogger::normal << std::endl;
+					return false;
+				}
+			}
 		}
-	}
+		else
+			dbg << FileLogger::err << "no plugin loaded" << FileLogger::normal << std::endl;
 
-	mLastPulse = GetTickCount64();
-	mDbg.flush();
+		mLastPulse = GetTickCount64();
+	}
 	return true;
 }
