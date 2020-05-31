@@ -51,6 +51,21 @@ public:
 	}
 
 	template<class T >
+	std::shared_ptr<T> getObjectBySummonedGuid(const WowGuid128& guid) {
+		static_assert(std::is_base_of<WowObject, T>::value, "T must inherit from WowObject");
+
+		for (auto it = begin(); it != end(); ++it) {
+			if (nullptr == it->second) return nullptr;
+
+			if (WowObjectType::Unit == it->second->getType() && guid == std::static_pointer_cast<WowUnitObject>(it->second)->getSummonedBy()) {
+				return std::static_pointer_cast<T>(it->second);
+			}
+		}
+
+		return nullptr;
+	}
+
+	template<class T >
 	const std::shared_ptr<const T> anyOfType(WowObjectType type) const {
 		static_assert(std::is_base_of<WowObject, T>::value, "T must inherit from WowObject");
 

@@ -31,6 +31,7 @@ protected:
 	bool cacAttack = true;
 	int toLoop = 0;
 	uint64_t mLastFeedPet;
+	uint64_t mLastJump;
 };
 
 inline std::ostream& operator<<(
