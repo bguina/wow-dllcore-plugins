@@ -4,7 +4,7 @@
 #include "framework.h"
 
 #include "WowPlugin.h"
-#include "ben/BenTravelBot.h"
+#include "bot/BenTravel.h"
 
 WowPlugin* gContainedPlugin = nullptr;
 
@@ -12,7 +12,7 @@ extern "C" int __declspec(dllexport) __stdcall DllPlugin_OnLoad() {
 	FileLogger dbg("dllmain_ben");
 
 	dbg << "DllPlugin_OnLoad" << std::endl;
-	gContainedPlugin = new WowPlugin(new BenTravelBot());
+	gContainedPlugin = new WowPlugin(new BenTravel());
 	return 0;
 }
 

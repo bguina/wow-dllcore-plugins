@@ -1,13 +1,13 @@
 #pragma once
 
-#include "ABenBot.h"
+#include "ABen.h"
 #include "WowPlugin.h"
 
-class BenTravelBot : public ABenBot
+class BenTravel : public ABen
 {
 public:
-	BenTravelBot();
-	virtual ~BenTravelBot();
+	BenTravel();
+	virtual ~BenTravel();
 
 	virtual void onResume(WowGame& game) override;
 	virtual void onPause(WowGame& game) override;
@@ -16,7 +16,7 @@ public:
 
 inline std::ostream& operator<<(
 	std::ostream& out,
-	const class BenTravelBot& obj
+	const class BenTravel& obj
 	)
 {
 	out << dynamic_cast<const BaseWowBot&>(obj);

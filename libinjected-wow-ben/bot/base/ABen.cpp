@@ -10,8 +10,8 @@
 
 const std::string TAG = "ABen";
 
-ABen::ABen( const std::string& tag) :
-	BaseWow(tag),
+ABen::ABen(const std::string& tag) :
+	BaseWowBot(tag),
 	mPathFinder(nullptr)
 {
 }
@@ -55,9 +55,5 @@ void ABen::_logDebug(const WowGame& game) const {
 		size_t waypointsCount = 0;
 
 		waypointsCount = pathfinder->getWaypointsCount();
-		//mDbg << FileLogger::info << "helped by LinearPathFinder with " << waypointsCount << " waypoints " << std::endl;
 	}
-	//else mDbg << FileLogger::warn << " without PathFinder" << std::endl;
-
-	//mDbg << FileLogger::normal;
 }

@@ -6,10 +6,9 @@
 #include "pathfinder/IPathFinder.h"
 #include "game/Lua.h"
 
-#include "/BaseWow.h"
+#include "bot/BaseWowBot.h"
 
-class ABen : public BaseWow
-{
+class ABen : public BaseWowBot {
 public:
 	ABen(const std::string& tag);
 	virtual ~ABen();

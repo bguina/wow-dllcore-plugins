@@ -445,7 +445,8 @@ std::string uint128_t::str(uint8_t base, const unsigned int& len) const {
 }
 
 uint128_t operator<<(const bool& lhs, const uint128_t& rhs) {
-    return uint128_t(lhs) << rhs;
+    //return uint128_t(lhs) << rhs;
+    return lhs || 0 != rhs ? 1 : 0; // fix for "warning C4804: '<': unsafe use of type 'bool' in operation"
 }
 
 uint128_t operator<<(const uint8_t& lhs, const uint128_t& rhs) {

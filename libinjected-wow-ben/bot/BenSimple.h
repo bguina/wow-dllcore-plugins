@@ -1,12 +1,12 @@
 #pragma once
 
-#include "ABenBot.h"
+#include "ABen.h"
 
-class BenSimpleBot : public ABenBot
+class BenSimple : public ABen
 {
 public:
-	BenSimpleBot();
-	virtual ~BenSimpleBot();
+	BenSimple();
+	virtual ~BenSimple();
 
 	virtual void onEvaluate(WowGame& game) override;
 
@@ -16,7 +16,7 @@ protected:
 
 inline std::ostream& operator<<(
 	std::ostream& out,
-	const class BenSimpleBot& obj
+	const class BenSimple& obj
 	)
 {
 	out << dynamic_cast<const BaseWowBot&>(obj);

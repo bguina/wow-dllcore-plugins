@@ -5,7 +5,6 @@
 #include <windows.h>
 #include <string>
 #include <iostream>
-#include <locale>
 #include <codecvt>
 
 DllPlugin::DllPlugin() :

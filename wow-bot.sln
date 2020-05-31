@@ -48,6 +48,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dll_core", "coredll\corell.
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dllmax", "dllmax\dllmax.vcxproj", "{1ED5FDE9-5B01-4CC1-899F-2F23133D98FF}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libinjected-wow-ben", "libinjected-wow-ben\libinjected-wow-ben.vcxproj", "{33E536DC-2F5B-4272-9579-AAA65EDC4F02}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -158,6 +160,14 @@ Global
 		{1ED5FDE9-5B01-4CC1-899F-2F23133D98FF}.Release|x64.Build.0 = Release|x64
 		{1ED5FDE9-5B01-4CC1-899F-2F23133D98FF}.Release|x86.ActiveCfg = Release|Win32
 		{1ED5FDE9-5B01-4CC1-899F-2F23133D98FF}.Release|x86.Build.0 = Release|Win32
+		{33E536DC-2F5B-4272-9579-AAA65EDC4F02}.Debug|x64.ActiveCfg = Debug|x64
+		{33E536DC-2F5B-4272-9579-AAA65EDC4F02}.Debug|x64.Build.0 = Debug|x64
+		{33E536DC-2F5B-4272-9579-AAA65EDC4F02}.Debug|x86.ActiveCfg = Debug|Win32
+		{33E536DC-2F5B-4272-9579-AAA65EDC4F02}.Debug|x86.Build.0 = Debug|Win32
+		{33E536DC-2F5B-4272-9579-AAA65EDC4F02}.Release|x64.ActiveCfg = Release|x64
+		{33E536DC-2F5B-4272-9579-AAA65EDC4F02}.Release|x64.Build.0 = Release|x64
+		{33E536DC-2F5B-4272-9579-AAA65EDC4F02}.Release|x86.ActiveCfg = Release|Win32
+		{33E536DC-2F5B-4272-9579-AAA65EDC4F02}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

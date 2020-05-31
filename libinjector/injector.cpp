@@ -13,9 +13,9 @@
 
 #include "injector.h"
 
-bool loadRemoteDLL(HANDLE hProcess, const char* dllPath) {
+bool loadRemoteDLL(HANDLE hProcess, const std::wstring& dllPath) {
 	// Allocate memory for DLL's path name to remote process
-	LPVOID dllPathAddressInRemoteMemory = VirtualAllocEx(hProcess, NULL, strlen(dllPath) + 1, MEM_RESERVE | MEM_COMMIT, PAGE_EXECUTE_READWRITE);
+	LPVOID dllPathAddressInRemoteMemory = VirtualAllocEx(hProcess, NULL, dllPath.size() + 1, MEM_RESERVE | MEM_COMMIT, PAGE_EXECUTE_READWRITE);
 	if (dllPathAddressInRemoteMemory == NULL) {
 		std::cerr << "VirtualAllocEx error " << GetLastError() << std::endl;
 		printf("[---] VirtualAllocEx unsuccessful.\n");
@@ -24,7 +24,7 @@ bool loadRemoteDLL(HANDLE hProcess, const char* dllPath) {
 	}
 
 	// Write DLL's path name to remote process
-	BOOL succeededWriting = WriteProcessMemory(hProcess, dllPathAddressInRemoteMemory, dllPath, strlen(dllPath) + 1, NULL);
+	BOOL succeededWriting = WriteProcessMemory(hProcess, dllPathAddressInRemoteMemory, dllPath.c_str(), dllPath.size() + 1, NULL);
 
 	if (!succeededWriting) {
 		printf("[---] WriteProcessMemory unsuccessful.\n");
@@ -33,7 +33,7 @@ bool loadRemoteDLL(HANDLE hProcess, const char* dllPath) {
 	}
 	else {
 		// Returns a pointer to the LoadLibrary address. This will be the same on the remote process as in our current process.
-		LPVOID loadLibraryAddress = (LPVOID)GetProcAddress(GetModuleHandle(L"kernel32.dll"), "LoadLibraryA");
+		LPVOID loadLibraryAddress = (LPVOID)GetProcAddress(GetModuleHandle(L"kernel32.dll"), "LoadLibraryW");
 		if (loadLibraryAddress == NULL) {
 			printf("[---] LoadLibrary not found in process.\n");
 			getchar();
@@ -129,6 +129,16 @@ BOOL GetDebugPrivileges() {
 //	return list;
 //}
 
+#include <codecvt>
+
+std::wstring stringConvertToWstring(const std::string& w) {
+	return std::wstring_convert<std::codecvt_utf8<wchar_t>>().from_bytes(w);
+}
+
+std::string wstringConvertToString(const std::wstring& w) {
+	return std::wstring_convert<std::codecvt_utf8<wchar_t>>().to_bytes(w);
+}
+
 int inject(int processId, const std::string& module) {
 
 	// TODO use "module" dll path variable to select the real DLL to inject
@@ -145,17 +155,9 @@ int inject(int processId, const std::string& module) {
 		ExitProcess(err);
 	}
 
-	std::wstring fullPathDLL;
-	fullPathDLL.append(buffer);
-	fullPathDLL.append(L"\\nvtest.dll");
-
-	std::string str(fullPathDLL.begin(), fullPathDLL.end());
-
-	if (false)
-	MessageBox(NULL, fullPathDLL.c_str(), L"MyDebugMESSageEasyToGrep", MB_OK);
-
-	LPSTR crazyStuff = _strdup(str.c_str());
-
+	std::wstring wFullPath(buffer);
+	wFullPath += L"\\nvtest.dll";
+	std::string fullPath(wstringConvertToString(wFullPath));
 
 
 	if (processId <= 0) {
@@ -184,7 +186,7 @@ int inject(int processId, const std::string& module) {
 
 	std::cout << "LOADING ..." << std::endl;
 
-	loadRemoteDLL(hProcess, crazyStuff);
+	loadRemoteDLL(hProcess, wFullPath);
 
 	// Freeze app to see output result.
 	//cin.get();

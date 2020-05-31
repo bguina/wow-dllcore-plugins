@@ -1,21 +1,21 @@
 
-#include "BenSimpleBot.h"
+#include "BenSimple.h"
 
 #include "game/object/WowActivePlayerObject.h"
-#include "game/spell/ISpell.h"
+//#include "game/spell/ISpell.h"
 
-const std::string TAG = "BenSimpleBot";
+const std::string TAG = "BenSimple";
 
-BenSimpleBot::BenSimpleBot() :
-	ABenBot(TAG)
+BenSimple::BenSimple() :
+	ABen(TAG)
 {
 }
 
-BenSimpleBot::~BenSimpleBot()
+BenSimple::~BenSimple()
 {
 }
 
-void BenSimpleBot::onEvaluate(WowGame& game) {
+void BenSimple::onEvaluate(WowGame& game) {
 
 	std::list<std::shared_ptr<WowUnitObject>> allObjects = game.getObjectManager().allOfType<WowUnitObject>();
 

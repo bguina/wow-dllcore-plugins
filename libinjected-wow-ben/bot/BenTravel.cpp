@@ -1,22 +1,22 @@
 #include <bitset>
 
 #include "game/object/WowActivePlayerObject.h"
-#include "game/spell/ISpell.h"
+//#include "game/spell/ISpell.h"
 
-#include "BenTravelBot.h"
+#include "BenTravel.h"
 
-const std::string TAG = "BenTravelBot";
+const std::string TAG = "BenTravel";
 
-BenTravelBot::BenTravelBot() :
-	ABenBot(TAG)
+BenTravel::BenTravel() :
+	ABen(TAG)
 {
 }
 
-BenTravelBot::~BenTravelBot()
+BenTravel::~BenTravel()
 {
 }
 
-void BenTravelBot::onResume(WowGame& game) {
+void BenTravel::onResume(WowGame& game) {
 	int spellId = 168;
 	auto self = game.getObjectManager().getActivePlayer();
 
@@ -35,15 +35,15 @@ void BenTravelBot::onResume(WowGame& game) {
 	}
 }
 
-void BenTravelBot::onPause(WowGame& game) {
+void BenTravel::onPause(WowGame& game) {
 
 }
 
-void BenTravelBot::onEvaluate(WowGame& game) {
+void BenTravel::onEvaluate(WowGame& game) {
 	std::list<std::shared_ptr<WowUnitObject>> allObjects = game.getObjectManager().allOfType<WowUnitObject>(WowObjectType::Unit);
 	
-	Fireball fireball = Fireball();
-	fireball.getRankId(1);
+	//Fireball fireball = Fireball();
+	//fireball.getRankId(1);
 
 	//_logDebug();
 
@@ -52,6 +52,6 @@ void BenTravelBot::onEvaluate(WowGame& game) {
 	}
 
 	Lua(game).run("OpenAllBags();");
-
+	//Fireball1 f;
 }
 
