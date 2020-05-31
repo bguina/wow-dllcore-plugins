@@ -79,6 +79,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
+    <IntDir>$(Platform)\$(Configuration)\$(ProjectName)</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -158,6 +159,8 @@
     <ClInclude Include="AGame.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="MemoryObject.h" />
+    <ClInclude Include="observer\ARecurrentServerObserver.h" />
+    <ClInclude Include="observer\IServerObserver.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="windowcontroller\IWindowController.h" />
     <ClInclude Include="windowcontroller\PostMessageWindowController.h" />

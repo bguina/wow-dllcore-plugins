@@ -13,11 +13,11 @@
 
 #include "injector.h"
 
-bool loadRemoteDLL(HANDLE hProcess, const std::wstring& dllPath) {
+bool loadRemoteDLL(HANDLE hProcess, const std::string& dllPath) {
 	// Allocate memory for DLL's path name to remote process
 	LPVOID dllPathAddressInRemoteMemory = VirtualAllocEx(hProcess, NULL, dllPath.size() + 1, MEM_RESERVE | MEM_COMMIT, PAGE_EXECUTE_READWRITE);
 	if (dllPathAddressInRemoteMemory == NULL) {
-		std::cerr << "VirtualAllocEx error " << GetLastError() << std::endl;
+		std::cerr << "VirtualAllocEx error "<< dllPath << " " << GetLastError() << std::endl;
 		printf("[---] VirtualAllocEx unsuccessful.\n");
 		getchar();
 		return FALSE;
@@ -33,7 +33,7 @@ bool loadRemoteDLL(HANDLE hProcess, const std::wstring& dllPath) {
 	}
 	else {
 		// Returns a pointer to the LoadLibrary address. This will be the same on the remote process as in our current process.
-		LPVOID loadLibraryAddress = (LPVOID)GetProcAddress(GetModuleHandle(L"kernel32.dll"), "LoadLibraryW");
+		LPVOID loadLibraryAddress = (LPVOID)GetProcAddress(GetModuleHandle(L"kernel32.dll"), "LoadLibraryA");
 		if (loadLibraryAddress == NULL) {
 			printf("[---] LoadLibrary not found in process.\n");
 			getchar();
@@ -186,7 +186,7 @@ int inject(int processId, const std::string& module) {
 
 	std::cout << "LOADING ..." << std::endl;
 
-	loadRemoteDLL(hProcess, wFullPath);
+	loadRemoteDLL(hProcess, fullPath);
 
 	// Freeze app to see output result.
 	//cin.get();

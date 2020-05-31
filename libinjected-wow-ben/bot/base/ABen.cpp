@@ -48,7 +48,6 @@ bool ABen::handleWowMessage(ServerWowMessage& cl) {
 }
 
 void ABen::_logDebug(const WowGame& game) const {
-
 	LinearPathFinder* pathfinder = dynamic_cast<LinearPathFinder*>(mPathFinder.get());
 
 	if (nullptr != pathfinder) {

@@ -63,7 +63,7 @@ FileLogger::FileLogger(const std::string& tag, const std::string& prefix) :
 }
 
 FileLogger::~FileLogger() {
-	mOfs.close();
+	//mOfs.close();
 }
 
 const std::string& FileLogger::getTag() const {

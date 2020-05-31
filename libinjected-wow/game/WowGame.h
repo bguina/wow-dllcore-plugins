@@ -1,8 +1,8 @@
 #pragma once
 
-#include "FileLogger.h"
-#include "deprecated/ARecurrentServerObserver.h"
+#include "observer/ARecurrentServerObserver.h"
 
+#include "FileLogger.h"
 #include "ObjectManager.h"
 #include "SpellBook.h"
 

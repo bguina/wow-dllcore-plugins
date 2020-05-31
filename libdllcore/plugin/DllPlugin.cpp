@@ -8,16 +8,18 @@
 #include <codecvt>
 
 DllPlugin::DllPlugin() :
-	mDll(nullptr),
 	mDbg("DllPlugin"),
+	mDll(nullptr),
 	mDllOnLoadFunc(nullptr),
 	mDllOnUnloadFunc(nullptr),
 	mDllOnD3dRenderFunc(nullptr)
 {
+	mDbg << FileLogger::debug << "DllPlugin()" << FileLogger::normal << std::endl;
 }
 
 DllPlugin::~DllPlugin() {
 	freeLibrary();
+	mDbg << FileLogger::debug << "~DllPlugin()" << FileLogger::normal << std::endl;
 }
 
 std::string DllPlugin::getTag() const {
@@ -83,8 +85,8 @@ void DllPlugin::freeLibrary() {
 		dbg << FileLogger::verbose << "freeing library" << FileLogger::normal << std::endl;
 		mDllOnUnloadFunc();
 		FreeLibrary(mDll);
-		dbg << FileLogger::verbose << "freed library" << FileLogger::normal << std::endl;
 		mDll = nullptr;
+		dbg << FileLogger::verbose << "freed library" << FileLogger::normal << std::endl;
 	} else
 		dbg << FileLogger::warn << "no library to free" << FileLogger::normal << std::endl;
 

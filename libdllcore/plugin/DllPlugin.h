@@ -17,7 +17,7 @@ public:
 	virtual uint64_t getLibraryVersion() const;
 
 	virtual bool loadLibrary(const std::wstring& dllPath);
-	virtual void freeLibrary();
+	virtual void   freeLibrary();
 
 	virtual bool onD3dRender() override;
 

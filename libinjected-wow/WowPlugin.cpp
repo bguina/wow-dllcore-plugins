@@ -33,8 +33,8 @@ WowPlugin::WowPlugin(IWowBot* bot) :
 
 WowPlugin::~WowPlugin() {
 	FileLogger dbg(mDbg, "~WowPlugin()");
-	dbg << FileLogger::info << "call" << FileLogger::normal << std::endl;
 	mClient->disconnect();
+	dbg << FileLogger::info << "call" << FileLogger::normal << std::endl;
 }
 
 std::string WowPlugin::getTag() const {

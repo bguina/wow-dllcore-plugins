@@ -45,12 +45,6 @@
     <ClInclude Include="plugin\IPlugin.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="deprecated\ARecurrentServerObserver.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="deprecated\IServerObserver.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="NetworkParsing.cpp">

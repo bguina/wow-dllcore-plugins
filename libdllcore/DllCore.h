@@ -12,6 +12,7 @@ class Client;
 
 class DllCore {
 public:
+	DllCore();
 	DllCore(IPlugin* plugin);
 	DllCore(DllCore const&) = delete;
 	void operator=(DllCore const&) = delete;
@@ -29,5 +30,5 @@ protected:
 	FileLogger mDbg;
 	uint64_t mBootTime;
 	uint64_t mLastPulse;
-	std::list<std::shared_ptr<IPlugin>> mPlugins;
+	std::list<std::unique_ptr<IPlugin>> mPlugins;
 };

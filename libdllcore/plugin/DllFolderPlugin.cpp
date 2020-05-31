@@ -54,7 +54,7 @@ bool DllFolderPlugin::loadFolder(const std::wstring& path) {
 
 	dbg << "call" << std::endl;
 	if (isLibraryLoaded()) {
-		dbg << FileLogger::info << "freeing previous library" << std::endl;
+		dbg << FileLogger::info << "freeing previous library" << FileLogger::normal << std::endl;
 		freeLibrary();
 	}
 
@@ -64,7 +64,7 @@ bool DllFolderPlugin::loadFolder(const std::wstring& path) {
 		return true;
 	}
 
-	dbg << FileLogger::err << "failed to load library" << std::endl;
+	dbg << FileLogger::err << "failed to load library" << FileLogger::normal << std::endl;
 	return false;
 }
 
@@ -94,15 +94,15 @@ bool DllFolderPlugin::onD3dRender() {
 	FileLogger dbg(mDbg, "onD3dRender");
 	if (isLibraryLoaded()) {
 
-		if (!refreshLibrary()) {
+	/*	if (!refreshLibrary()) {*/
 
 			if (0 != mDllOnD3dRenderFunc()) {
 				dbg << FileLogger::warn << "plugin ejection" << FileLogger::normal << std::endl;
 				return false;
 			}
-		}
-		else
-			dbg << FileLogger::warn << "library changed" << FileLogger::normal << std::endl;
+		//}
+		//else
+			//dbg << FileLogger::warn << "library changed" << FileLogger::normal << std::endl;
 
 		return true;
 	} else 

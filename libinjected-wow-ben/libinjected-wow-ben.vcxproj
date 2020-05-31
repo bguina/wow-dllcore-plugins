@@ -78,6 +78,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
+    <IntDir>$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -124,7 +125,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>..\libfilelogger;..\libcoredll;..\libinjected;..\libinjected-wow;..\libclient;..\MessageManager;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\libfilelogger;..\libdllcore;..\libinjected;..\libinjected-wow;..\libclient;..\MessageManager;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -142,7 +143,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>..\libfilelogger;..\libcoredll;..\libinjected;..\libinjected-wow;..\libclient;..\MessageManager;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\libfilelogger;..\libdllcore;..\libinjected;..\libinjected-wow;..\libclient;..\MessageManager;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -153,8 +154,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="bot\ABen.h" />
-    <ClInclude Include="bot\ABenSM.h" />
+    <ClInclude Include="bot\base\ABen.h" />
+    <ClInclude Include="bot\base\ABenSM.h" />
     <ClInclude Include="bot\Bens.h" />
     <ClInclude Include="bot\BenSimple.h" />
     <ClInclude Include="bot\BenTravel.h" />
@@ -162,7 +163,7 @@
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="bot\ABen.cpp" />
+    <ClCompile Include="bot\base\ABen.cpp" />
     <ClCompile Include="bot\BenSimple.cpp" />
     <ClCompile Include="bot\BenTravel.cpp" />
     <ClCompile Include="pch.cpp">

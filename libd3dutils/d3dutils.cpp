@@ -25,7 +25,8 @@ ID3D11Buffer* gpConstantBuffer = nullptr;
 D3D11_VIEWPORT pViewports[D3D11_VIEWPORT_AND_SCISSORRECT_OBJECT_COUNT_PER_PIPELINE]{ 0 };
 XMMATRIX mOrtho;
 
-fnPresent ogPresent;					// Pointer to the original Present function
+using fnPresent = HRESULT(__stdcall*)(IDXGISwapChain* pThis, UINT SyncInterval, UINT Flags);
+void* ogPresent;					// Pointer to the original Present function
 fnPresent ogPresentTramp;			// Function pointer that calls the Present stub in our trampoline
 void* pTrampoline = nullptr;		// Pointer to jmp instruction in our trampoline that leads to hkPresent
 char ogBytes[PRESENT_STUB_SIZE];	// Buffer to store original bytes from Present

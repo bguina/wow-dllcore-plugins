@@ -32,7 +32,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libinjected-wow", "libinjec
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libinjected", "libinjected\libinjected.vcxproj", "{BF58A4B2-385A-49BB-8296-B425DADEFA94}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libdllcore", "libcoredll\libcoredll.vcxproj", "{63F9A274-C0B8-4D7C-A1DB-C2E0B333374B}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libdllcore", "libdllcore\libdllcore.vcxproj", "{63F9A274-C0B8-4D7C-A1DB-C2E0B333374B}"
 	ProjectSection(ProjectDependencies) = postProject
 		{62C3F70F-F814-426D-96D1-F3C6751B750D} = {62C3F70F-F814-426D-96D1-F3C6751B750D}
 		{1EA4C4A6-565C-4E3C-B05F-4F536AFDDAE0} = {1EA4C4A6-565C-4E3C-B05F-4F536AFDDAE0}
@@ -44,11 +44,13 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libfilelogger", "libfilelog
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libinjector-d3d", "libd3dutils\libd3dutils.vcxproj", "{C2AC97CD-3AC6-4B83-BF88-E92908552C31}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dll_core", "coredll\corell.vcxproj", "{A03CC374-742B-430E-9B25-9BB8F08CAEE8}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dll_core", "dll_core\dll_core.vcxproj", "{A03CC374-742B-430E-9B25-9BB8F08CAEE8}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dllmax", "dllmax\dllmax.vcxproj", "{1ED5FDE9-5B01-4CC1-899F-2F23133D98FF}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dll_plugin_max", "dll_plugin_max\dll_plugin_max.vcxproj", "{1ED5FDE9-5B01-4CC1-899F-2F23133D98FF}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libinjected-wow-ben", "libinjected-wow-ben\libinjected-wow-ben.vcxproj", "{33E536DC-2F5B-4272-9579-AAA65EDC4F02}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libinjected-wow-max", "libinjected-wow-max\libinjected-wow-max.vcxproj", "{975C3BBC-C28A-436B-8734-2E848A1F16F0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -168,6 +170,14 @@ Global
 		{33E536DC-2F5B-4272-9579-AAA65EDC4F02}.Release|x64.Build.0 = Release|x64
 		{33E536DC-2F5B-4272-9579-AAA65EDC4F02}.Release|x86.ActiveCfg = Release|Win32
 		{33E536DC-2F5B-4272-9579-AAA65EDC4F02}.Release|x86.Build.0 = Release|Win32
+		{975C3BBC-C28A-436B-8734-2E848A1F16F0}.Debug|x64.ActiveCfg = Debug|x64
+		{975C3BBC-C28A-436B-8734-2E848A1F16F0}.Debug|x64.Build.0 = Debug|x64
+		{975C3BBC-C28A-436B-8734-2E848A1F16F0}.Debug|x86.ActiveCfg = Debug|Win32
+		{975C3BBC-C28A-436B-8734-2E848A1F16F0}.Debug|x86.Build.0 = Debug|Win32
+		{975C3BBC-C28A-436B-8734-2E848A1F16F0}.Release|x64.ActiveCfg = Release|x64
+		{975C3BBC-C28A-436B-8734-2E848A1F16F0}.Release|x64.Build.0 = Release|x64
+		{975C3BBC-C28A-436B-8734-2E848A1F16F0}.Release|x86.ActiveCfg = Release|Win32
+		{975C3BBC-C28A-436B-8734-2E848A1F16F0}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

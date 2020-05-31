@@ -3,20 +3,20 @@
 
 #include "WowPlugin.h"
 #include "FileLogger.h"
-#include "bot/BenTravel.h"
+#include "bot/MaxBot.h"
 
 WowPlugin* gContainedPlugin = nullptr;
 
 extern "C" int __declspec(dllexport) __stdcall DllPlugin_OnLoad() {
-	FileLogger dbg("dllmain_ben");
+	FileLogger dbg("dllmain_max");
 
 	dbg << "DllPlugin_OnLoad" << std::endl;
-	gContainedPlugin = new WowPlugin(new BenTravel());
+	gContainedPlugin = new WowPlugin(new WowMaxBot());
 	return 0;
 }
 
 extern "C" int __declspec(dllexport) __stdcall DllPlugin_OnUnload() {
-	FileLogger dbg("dllmain_ben");
+	FileLogger dbg("dllmain_max");
 
 	dbg << "DllPlugin_OnUnload" << std::endl;
 	if (gContainedPlugin) {
@@ -27,8 +27,8 @@ extern "C" int __declspec(dllexport) __stdcall DllPlugin_OnUnload() {
 }
 
 extern "C" int __declspec(dllexport) __stdcall DllPlugin_OnD3dRender() {
-	FileLogger dbg("dllmain_ben");
-	
+	FileLogger dbg("dllmain_max");
+
 	dbg << "DllPlugin_OnD3dRender" << std::endl;
 	if (!gContainedPlugin->onD3dRender()) {
 		dbg << "DllPlugin_OnD3dRender stop signal" << std::endl;

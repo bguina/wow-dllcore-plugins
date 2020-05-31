@@ -1,6 +1,5 @@
 #pragma once
 
-#include "plugin/IPlugin.h"
 #include "game/WowGame.h"
 
 /*
@@ -9,6 +8,8 @@
 */
 
 #include "bot/IWowBot.h"
+
+#include "plugin/IPlugin.h"
 
 class WowGame;
 class Client;

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ABen.h"
+#include "base/ABen.h"
 #include "WowPlugin.h"
 
 class BenTravel : public ABen

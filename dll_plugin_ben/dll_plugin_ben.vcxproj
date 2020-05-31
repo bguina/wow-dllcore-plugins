@@ -80,7 +80,8 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>D:\myplugins</OutDir>
-    <TargetName>ben</TargetName>
+    <TargetName>$(ProjectName)</TargetName>
+    <IntDir>$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -130,7 +131,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>.pch</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>..\libclient;..\libfilelogger;..\libinjected;..\libinjected-wow;../libinjected-wow-ben;..\libcoreDLL;..\client;..\MessageManager;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\libclient;..\libfilelogger;..\libdllcore;..\libinjected;..\libinjected-wow;..\libinjected-wow-ben;..\client;..\MessageManager;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -149,7 +150,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>..\libclient;..\libfilelogger;..\libinjected;..\libinjected-wow;../libinjected-wow-ben;..\libcoreDLL;..\client;..\MessageManager;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\libclient;..\libfilelogger;..\libdllcore;..\libinjected;..\libinjected-wow;..\libinjected-wow-ben;..\client;..\MessageManager;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

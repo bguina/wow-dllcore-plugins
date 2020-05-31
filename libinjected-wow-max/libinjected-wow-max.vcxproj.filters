@@ -21,19 +21,7 @@
     <ClInclude Include="pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="bot\Bens.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="bot\BenSimple.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="bot\BenTravel.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="bot\base\ABenSM.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="bot\base\ABen.h">
+    <ClInclude Include="bot\MaxBot.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -41,13 +29,7 @@
     <ClCompile Include="pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="bot\BenSimple.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="bot\BenTravel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="bot\base\ABen.cpp">
+    <ClCompile Include="bot\MaxBot.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

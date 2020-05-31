@@ -11,29 +11,29 @@
 
 static bool gShouldStop = false;
 
+/// <summary>
+/// CAREFUL: Do NOT use a C++ object that might get destructed after gShouldStop is being set to true.
+/// `gShouldStop=true` must be the last instruction to prevent Render() still being executed when MainThread frees self module handle.
+/// </summary>
 void Render(IDXGISwapChain* pThis, UINT SyncInterval, UINT Flags) {
 	static DllCore* sandbox = nullptr;
 
 	if (!gShouldStop) {
-		FileLogger dbg("Render");
+		FileLogger dbg("render");
 		boolean stopSandbox = false;
 
-		if (nullptr == sandbox) {
-			dbg << "loading sandbox" << std::endl;
-			auto plugin= new DllFolderPlugin();
-			if (!plugin->loadFolder(L"D:\\myplugins")) {
-				dbg << "failed to loadFolder" << std::endl;
-			}
 
+		if (nullptr == sandbox) {
+			auto plugin = new DllFolderPlugin();
+			plugin->loadFolder(L"D:\\myplugins");
 			sandbox = new DllCore(plugin);
-			dbg << "loaded sandbox" << std::endl;
 		}
 
 		stopSandbox = !sandbox->onFrameRender();
 		drawSomeTriangle();
 
+
 		if (stopSandbox) {
-			dbg << "deleting sandbox" << std::endl;
 			delete sandbox;
 
 			gShouldStop = true;
@@ -42,12 +42,13 @@ void Render(IDXGISwapChain* pThis, UINT SyncInterval, UINT Flags) {
 }
 
 void MainThread(void* pHandle) {
-	//FileDebugger dbg("MainThread");
 
-	if (HookD3D(&Render)) 
-		while (!gShouldStop && !GetAsyncKeyState(VK_END));
+	if (HookD3D(&Render)) {
+		while (!gShouldStop && !GetAsyncKeyState(VK_END)) {
 
-	//dbg << "deinject\n";
+		}
+	}
+
 	UnhookD3D(pHandle);
 }
 
