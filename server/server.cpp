@@ -107,6 +107,8 @@ void Server::setupFDSets()
 // connection.  (WSAEWOULDBLOCK doesn't count as a failure.)
 #include <Windows.h>
 
+#include "list_by_pid.h"
+
 BOOL Server::ReadData(ClientConnection& client)
 {
 	if (client.getCurrentRead() == -1) {
