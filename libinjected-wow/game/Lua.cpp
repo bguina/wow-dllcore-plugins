@@ -1,3 +1,5 @@
+#include "pch.h"
+
 #include "dump/WowGameOffsets.h"
 
 #include "Lua.h"

@@ -41,6 +41,7 @@ bool WowMaxBot::handleWowMessage(ServerWowMessage& serverMessage) {
 
 void WowMaxBot::onResume(WowGame& mGame) {
 	mLastFeedPet = GetTickCount64();
+	mLastJump = GetTickCount64();
 }
 
 void WowMaxBot::onPause(WowGame& mGame) {
@@ -58,6 +59,14 @@ void WowMaxBot::onEvaluate(WowGame& mGame) {
 	if (self != nullptr)
 	{
 		std::shared_ptr<WowUnitObject> secondSelf(mGame.getObjectManager().getObjectByGuid<WowUnitObject>(self->getGuid()));
+
+		std::shared_ptr<WowUnitObject> myPet(mGame.getObjectManager().getObjectBySummonedGuid<WowUnitObject>(self->getGuid()));
+
+		if (myPet != nullptr) {
+
+			mDbg << FileLogger::info << "myPet == " << (void*)myPet->getAddress() << " combat == " << myPet->isInCombat() << " Life == " << myPet->getUnitHealthPercentage() << FileLogger::normal << std::endl;
+
+		}
 
 		if (secondSelf != nullptr) {
 
@@ -93,7 +102,7 @@ void WowMaxBot::onEvaluate(WowGame& mGame) {
 			}
 			mDbg << "Elapsed time for feeding == " << GetTickCount64() - mLastFeedPet;
 
-			if (GetTickCount64() - mLastFeedPet > 1000 * 60 * 15 && self->isInCombat() == false)
+			if (GetTickCount64() - mLastFeedPet > 1000 * 60 * 10 && self->isInCombat() == false)
 			{
 				mDbg.i("Feeding Pet...");
 				mLastFeedPet = GetTickCount64();
@@ -110,7 +119,7 @@ void WowMaxBot::onEvaluate(WowGame& mGame) {
 				mDbg.i("looking for a new unit to attack");
 				for (auto it = allUnits.begin(); it != allUnits.end(); it++)
 				{
-					if (self->isFriendly(mGame, *(*it)) || (abs(self->getUnitLevel() - (*it)->getUnitLevel()) > 6) &&
+					if (self->isFriendly(mGame, *(*it)) || (abs(self->getUnitLevel() - (*it)->getUnitLevel()) > 10) &&
 						mBlacklistedGuids.find((*it)->getGuid()) == mBlacklistedGuids.end())
 					{
 						mBlacklistedGuids.insert((*it)->getGuid());
@@ -164,6 +173,14 @@ void WowMaxBot::onEvaluate(WowGame& mGame) {
 
 					self->moveTo(mGame, mTargetUnit->getPosition());
 
+					if (GetTickCount64() - mLastJump > 1000 * 5)
+					{
+						mDbg.i("Jumping...");
+						mLastJump = GetTickCount64();
+						mGame.getWindowController()->pressKey(WinVirtualKey::WVK_SPACE, true);
+						mGame.getWindowController()->pressKey(WinVirtualKey::WVK_SPACE, false);
+					}
+
 					/*
 					mDbg << FileLogger::warn
 						<< "pressing left " << (delta > anglePrecision)
@@ -190,19 +207,6 @@ void WowMaxBot::onEvaluate(WowGame& mGame) {
 					mGame.getWindowController()->pressKey(WinVirtualKey::WVK_D, delta < -anglePrecision);
 					mDbg.i("Case -> moving orientation");
 				}
-				/*
-				else if (self->getPosition().getDistanceTo(mTargetUnit->getPosition()) >= 5 &&
-					self->getPosition().getDistanceTo(mTargetUnit->getPosition()) <= 10 &&
-					mTargetUnit->getTargetGuid() != self->getGuid() &&
-					mTargetUnit->getUnitHealth() > 0)
-				{
-					mGame.getWindowController()->pressKey(WinVirtualKey::WVK_S, true);
-					mOpeningCombat = true;
-					//mInteractWith = true;
-					mDbg.i("Case -> Going Back");
-				}
-				*/
-
 				else {
 					mDbg.i("Case -> Combat mode");
 					mGame.getWindowController()->releaseAllKeys();
@@ -226,10 +230,23 @@ void WowMaxBot::onEvaluate(WowGame& mGame) {
 
 
 					}
+
+
+					else if (self->getPosition().getDistanceTo(mTargetUnit->getPosition()) >= 5 &&
+						self->getPosition().getDistanceTo(mTargetUnit->getPosition()) <= 13 &&
+						mTargetUnit->getTargetGuid() != self->getGuid())
+					{
+						mGame.getWindowController()->pressKey(WinVirtualKey::WVK_S, true);
+						mOpeningCombat = true;
+						//mInteractWith = true;
+						mDbg.i("Case -> Going Back");
+					}
+
+
 					else if (mInteractWith == false && mOpeningCombat)
 					{
 						mDbg.i("Case -> serpent sting....");
-						mGame.getSpellBook().castSpell(mGame, 13550, mTargetUnit->getGuidPtr()); //1978 serpent sting rank 1 //rank 2 13549
+						mGame.getSpellBook().castSpell(mGame, 13551, mTargetUnit->getGuidPtr()); //1978 serpent sting rank 1 //rank 2 13549 //rank3 13550
 						mOpeningCombat = false;
 					}
 					else if (mInteractWith) {
@@ -241,7 +258,7 @@ void WowMaxBot::onEvaluate(WowGame& mGame) {
 
 					else if (self->getPosition().getDistanceTo(mTargetUnit->getPosition()) < 5 && cacAttack) {
 						mDbg.i("Case -> raptor strike....");
-						mGame.getSpellBook().castSpell(mGame, 14261, mTargetUnit->getGuidPtr());//2973 rank1 raptor strike //rank2 14260
+						mGame.getSpellBook().castSpell(mGame, 14262, mTargetUnit->getGuidPtr());//2973 rank1 raptor strike //rank2 14260 //rank3 14261
 						cacAttack = false;
 					}
 
@@ -264,6 +281,14 @@ void WowMaxBot::onEvaluate(WowGame& mGame) {
 						self->moveTo(mGame, nextPosition);
 						mDbg << FileLogger::info << "moving to " << nextPosition << FileLogger::normal << std::endl;
 						mDbg.flush();
+
+						if (GetTickCount64() - mLastJump > 1000 * 5)
+						{
+							mDbg.i("Jumping...");
+							mLastJump = GetTickCount64();
+							mGame.getWindowController()->pressKey(WinVirtualKey::WVK_SPACE, true);
+							mGame.getWindowController()->pressKey(WinVirtualKey::WVK_SPACE, false);
+						}
 
 						/*
 						int delta = self->getPosition().getFacingDeltaDegrees(self->getFacingDegrees(), nextPosition);

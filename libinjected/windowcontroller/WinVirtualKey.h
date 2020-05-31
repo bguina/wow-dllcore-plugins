@@ -24,6 +24,7 @@ enum class WinVirtualKey : uint32_t {
 	WVK_MENU = 0x12, // ALT key
 	WVK_PAUSE = 0x13,
 	WVK_CAPITAL = 0x14, // CAPS LOCK key
+	WVK_SPACE = 0x20,
 
 	// 1 - 9
 	WVK_0 = 0x30,
