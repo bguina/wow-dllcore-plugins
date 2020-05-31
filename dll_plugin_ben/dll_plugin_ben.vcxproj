@@ -160,18 +160,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="ben\ABenBot.h" />
-    <ClInclude Include="ben\ABenSMBot.h" />
-    <ClInclude Include="ben\BenBots.h" />
-    <ClInclude Include="ben\BenSimpleBot.h" />
-    <ClInclude Include="ben\BenTravelBot.h" />
+    <ClInclude Include="bot\ABen.h" />
+    <ClInclude Include="bot\ABenSM.h" />
+    <ClInclude Include="bot\Bens.h" />
+    <ClInclude Include="bot\BenSimple.h" />
+    <ClInclude Include="bot\BenTravel.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ben\ABenBot.cpp" />
-    <ClCompile Include="ben\BenSimpleBot.cpp" />
-    <ClCompile Include="ben\BenTravelBot.cpp" />
+    <ClCompile Include="bot\ABen.cpp" />
+    <ClCompile Include="bot\BenSimple.cpp" />
+    <ClCompile Include="bot\BenTravel.cpp" />
     <ClCompile Include="dllmain.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">

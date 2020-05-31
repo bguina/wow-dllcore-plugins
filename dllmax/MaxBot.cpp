@@ -49,7 +49,7 @@ void WowMaxBot::onPause(WowGame& mGame) {
 }
 
 void WowMaxBot::onEvaluate(WowGame& mGame) {
-
+	FileLogger mDbg(mDbg, "onEvaluate");
 	//_logDebug();
 
 	std::shared_ptr<WowActivePlayerObject> self = mGame.getObjectManager().getActivePlayer();

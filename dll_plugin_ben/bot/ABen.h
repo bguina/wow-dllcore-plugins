@@ -6,13 +6,13 @@
 #include "pathfinder/IPathFinder.h"
 #include "game/Lua.h"
 
-#include "bot/BaseWowBot.h"
+#include "/BaseWow.h"
 
-class ABenBot : public BaseWowBot
+class ABen : public BaseWow
 {
 public:
-	ABenBot(const std::string& tag);
-	virtual ~ABenBot();
+	ABen(const std::string& tag);
+	virtual ~ABen();
 
 	virtual void onResume(WowGame& game) override;
 	virtual void onEvaluate(WowGame& game) override;

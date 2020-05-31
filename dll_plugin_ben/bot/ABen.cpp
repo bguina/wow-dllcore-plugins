@@ -1,6 +1,6 @@
 #include <vector>
 
-#include "ABenBot.h"
+#include "ABen.h"
 
 #include "game/WowGame.h"
 #include "game/object/WowGuid128.h"
@@ -8,30 +8,30 @@
 #include "pathfinder/LinearPathFinder.h"
 #include "ServerWowMessage.h"
 
-const std::string TAG = "ABenBot";
+const std::string TAG = "ABen";
 
-ABenBot::ABenBot( const std::string& tag) :
-	BaseWowBot(tag),
+ABen::ABen( const std::string& tag) :
+	BaseWow(tag),
 	mPathFinder(nullptr)
 {
 }
 
-ABenBot::~ABenBot() {
+ABen::~ABen() {
 }
 
-void ABenBot::onResume(WowGame& game) {
-
-}
-
-void ABenBot::onPause(WowGame& game) {
+void ABen::onResume(WowGame& game) {
 
 }
 
-void ABenBot::onEvaluate(WowGame& game) {
+void ABen::onPause(WowGame& game) {
 
 }
 
-bool ABenBot::handleWowMessage(ServerWowMessage& cl) {
+void ABen::onEvaluate(WowGame& game) {
+
+}
+
+bool ABen::handleWowMessage(ServerWowMessage& cl) {
 	bool handled = false;
 	mDbg << FileLogger::verbose << "handleServerMessage " << (int)cl.type << FileLogger::normal << std::endl;
 
@@ -47,7 +47,7 @@ bool ABenBot::handleWowMessage(ServerWowMessage& cl) {
 	return handled;
 }
 
-void ABenBot::_logDebug(const WowGame& game) const {
+void ABen::_logDebug(const WowGame& game) const {
 
 	LinearPathFinder* pathfinder = dynamic_cast<LinearPathFinder*>(mPathFinder.get());
 

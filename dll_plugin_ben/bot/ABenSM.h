@@ -4,14 +4,12 @@
 #include <utility>
 #include <map>
 
-#include "ABenBot.h"
+#include "ABen.h"
 
 class IPathFinder;
 
-
-
 //template<typename State, typename Trigger>
-class ABenSMBot : public ABenBot
+class ABenSM : public ABen
 {
 public:
 	enum class State {
@@ -35,7 +33,7 @@ public:
 	};
 
 
-	ABenSMBot(WowGame& game, const std::string& tag) : ABenBot(game, tag){
+	ABenSM(WowGame& game, const std::string& tag) : ABen(game, tag){
 
 		/*
 		InitialState = Looking for "objective"
@@ -45,7 +43,7 @@ public:
 
 
 
-		EBotObjective
+		EObjective
 			- gain experience
 			- kill specific enemies
 			- stay alive
@@ -63,7 +61,7 @@ public:
 		mDiagram.insert(std::make_pair(State::FindCan, Message::CanSentToUser), State::Idle);
 
 	}
-	virtual ~ABenSMBot();
+	virtual ~ABenSM();
 
 	virtual void getEvaluation() const;
 
@@ -87,7 +85,7 @@ private:
 	virtual void _logDebug() const override;
 };
 
-inline std::ostream& operator<<(std::ostream& out,const class ABenBot& obj) {
-	out << dynamic_cast<const BaseWowBot&>(obj);
+inline std::ostream& operator<<(std::ostream& out,const class ABen& obj) {
+	out << dynamic_cast<const BaseWow&>(obj);
 	return out;
 }
