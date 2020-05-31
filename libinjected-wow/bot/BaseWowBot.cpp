@@ -2,9 +2,9 @@
 
 #include "BaseWowBot.h"
 
-#include "../../game/WowGame.h"
-#include "../../game/object/WowActivePlayerObject.h"
-#include "../../pathfinder/LinearPathFinder.h"
+#include "../game/WowGame.h"
+#include "../game/object/WowActivePlayerObject.h"
+#include "../pathfinder/LinearPathFinder.h"
 
 BaseWowBot::BaseWowBot(const std::string& tag) :
 	mDbg(tag)

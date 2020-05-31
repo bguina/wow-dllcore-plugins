@@ -1,3 +1,5 @@
+#include "pch.h"
+
 #include "SpellBook.h"
 #include "WowGame.h"
 #include "dump/WowGameOffsets.h"
@@ -96,11 +98,10 @@ bool SpellBook::orderPetToAttackTarget(const WowGame& game, uint128_t* target) {
 		petInfoSendPetAction(game, ptrTmp, target, 0, (uint64_t*)&tmp);
 	}
 	return found;
-	
+
 }
 
 
 uint32_t SpellBook::getSpellBookCount() const {
 	return *(uint32_t*)(mPointerAddr - 0x28);
 }
-

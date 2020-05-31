@@ -54,6 +54,8 @@ void PostMessageWindowController::releaseAllKeys() {
 	pressKey(WinVirtualKey::WVK_A, false);
 	pressKey(WinVirtualKey::WVK_D, false);
 	pressKey(WinVirtualKey::WVK_W, false);
+	pressKey(WinVirtualKey::WVK_S, false);
+	pressKey(WinVirtualKey::WVK_8, false);
 
 	// fixme key map states
 	for (auto it = mKeyPressedStatus.begin(); it != mKeyPressedStatus.end(); it++)
