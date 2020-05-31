@@ -64,4 +64,4 @@ struct HandleData
 
 void drawSomeTriangle();
 HWND FindMainWindow(DWORD dwPID);
-void deinject(LPVOID pHandle);
+void UnhookD3D(LPVOID pHandle);

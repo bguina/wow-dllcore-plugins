@@ -32,7 +32,6 @@ void WowGame::update() {
 		mDbg.i("GameObserver: capture of " + it->first);
 	}
 
-	mDbg.flush();
 }
 
 const IWindowController* WowGame::getWindowController() const {

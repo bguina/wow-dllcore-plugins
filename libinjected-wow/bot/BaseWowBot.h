@@ -17,7 +17,7 @@ public:
 protected:
 	virtual void _logDebug(const WowGame& game) const;
 
-	FileLogger mDbg;
+	mutable FileLogger mDbg;
 };
 
 inline std::ostream& operator<<(std::ostream& out, const class IWowBot& obj) {

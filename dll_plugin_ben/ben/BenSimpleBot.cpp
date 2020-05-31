@@ -34,5 +34,4 @@ void BenSimpleBot::onEvaluate(WowGame& game) {
 		mDbg << "I can't see to my ... " << std::endl;
 
 	}
-	mDbg.flush();
 }

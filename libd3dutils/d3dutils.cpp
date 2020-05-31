@@ -389,6 +389,7 @@ HRESULT __stdcall hkPresent(
 
 	if (!gpDevice) {
 		if (!InitD3DHook(pThis)) {
+			// TODO print / log some error
 			return ogPresentTramp(pThis, SyncInterval, Flags);
 		}
 	}
@@ -421,7 +422,7 @@ HWND FindMainWindow(DWORD dwPID)
 	return handleData.hWnd;
 }
 
-void deinject(LPVOID pHandle) {
+void UnhookD3D(LPVOID pHandle) {
 	// Cleanup and unload dll
 	CleanupD3D();
 	WriteMem(ogPresent, ogBytes, PRESENT_STUB_SIZE);

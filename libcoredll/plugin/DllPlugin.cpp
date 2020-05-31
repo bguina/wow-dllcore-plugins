@@ -13,8 +13,7 @@ DllPlugin::DllPlugin() :
 	mDbg("DllPlugin"),
 	mDllOnLoadFunc(nullptr),
 	mDllOnUnloadFunc(nullptr),
-	mDllOnD3dRenderFunc(nullptr),
-	mDllOnServerMessageFunc(nullptr)
+	mDllOnD3dRenderFunc(nullptr)
 {
 }
 
@@ -30,7 +29,7 @@ bool DllPlugin::isLibraryLoaded() const {
 	return nullptr != mDll;
 }
 
-std::string DllPlugin::getLibraryName() const {
+std::string DllPlugin::getLibraryPath() const {
 	return wstringConvertToString(mFilePath);
 }
 
@@ -57,7 +56,6 @@ bool DllPlugin::loadLibrary(const std::wstring& dllPath) {
 			mDllOnLoadFunc = (DllPlugin_OnLoad)GetProcAddress(mDll, "DllPlugin_OnLoad");
 			mDllOnD3dRenderFunc = (DllPlugin_OnD3dRender)GetProcAddress(mDll, "DllPlugin_OnD3dRender");
 			mDllOnUnloadFunc = (DllPlugin_OnUnload)GetProcAddress(mDll, "DllPlugin_OnUnload");
-			mDllOnServerMessageFunc = (DllPlugin_OnServerMessage)GetProcAddress(mDll, "DllPlugin_OnServerMessage");
 			dbg << FileLogger::verbose << "resolved" << path << FileLogger::normal << std::endl;
 
 			if (!mDllOnLoadFunc) {
@@ -72,7 +70,7 @@ bool DllPlugin::loadLibrary(const std::wstring& dllPath) {
 
 	if (mDllOnLoadFunc) {
 		dbg << FileLogger::verbose << "initializing " << path << FileLogger::normal << std::endl;
-		mDllOnLoadFunc(GetCurrentProcessId());
+		mDllOnLoadFunc();
 		dbg << FileLogger::info << "loaded " << path << FileLogger::normal << std::endl;
 	}
 
@@ -82,24 +80,30 @@ bool DllPlugin::loadLibrary(const std::wstring& dllPath) {
 void DllPlugin::freeLibrary() {
 	FileLogger dbg(mDbg, "freeLibrary");
 
-	dbg << FileLogger::verbose << "call" << FileLogger::normal << std::endl;
-
 	if (mDll) {
+		dbg << FileLogger::verbose << "freeing library" << FileLogger::normal << std::endl;
+		mDllOnUnloadFunc();
 		FreeLibrary(mDll);
+		dbg << FileLogger::verbose << "freed library" << FileLogger::normal << std::endl;
 		mDll = nullptr;
-	}
+	} else
+		dbg << FileLogger::warn << "no library to free" << FileLogger::normal << std::endl;
+
 	mFilePath = std::wstring();
+	mDllOnD3dRenderFunc = nullptr;
 }
 
 bool DllPlugin::onD3dRender() {
 	FileLogger dbg(mDbg, "onD3dRender");
-	if (!isLibraryLoaded()) return true;
+	if (!isLibraryLoaded()) return true; // fixme might not be loaded YET?
 
 	if (mDllOnD3dRenderFunc) {
+		dbg << FileLogger::debug << "call to library" << FileLogger::normal << std::endl;
 		mDllOnD3dRenderFunc();
 	}
 	else {
 		dbg << FileLogger::err << "mDllD3dRender failure" << FileLogger::normal << std::endl;
+		return false;
 	}
 
 	return true;

@@ -14,7 +14,6 @@ DllCore::DllCore(IPlugin* plugin) :
 
 DllCore::~DllCore() {
 	mDbg << FileLogger::warn << "~DllCore" << FileLogger::normal << std::endl;
-	mDbg.flush();
 }
 
 uint64_t DllCore::getBootTime() const { return mBootTime; }
@@ -30,16 +29,15 @@ bool DllCore::throttle() const {
 
 bool DllCore::onFrameRender() {
 	if (!throttle()) {
-		FileLogger dbg(mDbg, "run");
-
-		dbg << FileLogger::debug << "->run()" << FileLogger::normal << std::endl;
+		FileLogger dbg(mDbg, "onFrameRender");
 
 		if (!mPlugins.empty()) {
 			for (auto it = mPlugins.begin(); it != mPlugins.end(); ++it) {
-				dbg << FileLogger::debug << (*it)->getTag() << "->onD3dRender()" << FileLogger::normal << std::endl;
+				dbg << FileLogger::debug << (*it)->getTag() << "->onFrameRender()" << FileLogger::normal << std::endl;
 
 				if (!(*it)->onD3dRender()) {
-					dbg << FileLogger::warn << "->onD3dRender() ejection" << FileLogger::normal << std::endl;
+					mPlugins.remove(*it);
+					dbg << FileLogger::warn << " ejection" << FileLogger::normal << std::endl;
 					return false;
 				}
 			}

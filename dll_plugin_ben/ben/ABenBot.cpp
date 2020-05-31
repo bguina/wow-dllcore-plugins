@@ -44,7 +44,6 @@ bool ABenBot::handleWowMessage(ServerWowMessage& cl) {
 		break;
 	}
 
-	mDbg.flush();
 	return handled;
 }
 

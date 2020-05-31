@@ -28,7 +28,6 @@ public:
 			mDbg.i("not capturing");
 		}
 
-		mDbg.flush();
 	}
 
 protected:

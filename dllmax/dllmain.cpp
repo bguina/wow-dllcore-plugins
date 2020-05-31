@@ -45,7 +45,7 @@ void MainThread(void* pHandle) {
 	}
 
 	//dbg << "deinject\n";
-	deinject(pHandle);
+	UnhookD3D(pHandle);
 }
 
 BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID)

@@ -8,12 +8,18 @@
 
 WowPlugin* gContainedPlugin = nullptr;
 
-extern "C" int __declspec(dllexport) __stdcall DllPlugin_OnLoad(uint32_t pid) {
-	gContainedPlugin = new WowPlugin(new BenTravelBot(), "DllBenTravelBot");
+extern "C" int __declspec(dllexport) __stdcall DllPlugin_OnLoad() {
+	FileLogger dbg("dllmain_ben");
+
+	dbg << "DllPlugin_OnLoad" << std::endl;
+	gContainedPlugin = new WowPlugin(new BenTravelBot());
 	return 0;
 }
 
 extern "C" int __declspec(dllexport) __stdcall DllPlugin_OnUnload() {
+	FileLogger dbg("dllmain_ben");
+
+	dbg << "DllPlugin_OnUnload" << std::endl;
 	if (gContainedPlugin) {
 		delete gContainedPlugin;
 		gContainedPlugin = nullptr;
@@ -22,12 +28,13 @@ extern "C" int __declspec(dllexport) __stdcall DllPlugin_OnUnload() {
 }
 
 extern "C" int __declspec(dllexport) __stdcall DllPlugin_OnD3dRender() {
-	return gContainedPlugin->onD3dRender();
-	//return 0;
-}
-
-extern "C" int __declspec(dllexport) __stdcall DllPlugin_OnServerMessage(void* param) {
-	//gContainedPlugin->onS(param);
+	FileLogger dbg("dllmain_ben");
+	
+	dbg << "DllPlugin_OnD3dRender" << std::endl;
+	if (!gContainedPlugin->onD3dRender()) {
+		dbg << "DllPlugin_OnD3dRender stop signal" << std::endl;
+		return -1;
+	}
 	return 0;
 }
 

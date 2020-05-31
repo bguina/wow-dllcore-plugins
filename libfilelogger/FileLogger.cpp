@@ -23,11 +23,11 @@
 #define BOLDWHITE   "\033[1m\033[37m"      /* Bold White */
 
 const std::string FileLogger::normal = std::string(RESET);
-const std::string FileLogger::debug = std::string(CYAN);
-const std::string FileLogger::verbose = std::string(WHITE);
-const std::string FileLogger::info = std::string(GREEN);
-const std::string FileLogger::warn = std::string(YELLOW);
-const std::string FileLogger::err = std::string(BOLDRED);
+const std::string FileLogger::debug = std::string(CYAN) + "[d]";
+const std::string FileLogger::verbose = std::string(WHITE) + "[v]";
+const std::string FileLogger::info = std::string(GREEN) + "[i]";
+const std::string FileLogger::warn = std::string(YELLOW) + "[w]";
+const std::string FileLogger::err = std::string(BOLDRED) + "[e]";
 
 FileLogger::FileLogger(const std::string& tag) :
 	FileLogger(tag, std::string())
@@ -56,13 +56,14 @@ FileLogger::FileLogger(const std::string& tag, const std::string& prefix) :
 	mFolder("D:\\nvtest\\"),
 	mTag(tag),
 	mPrefix(prefix + ": "),
-	mOutputFile(mFolder + mTag + ".log")
+	mOutputPath(mFolder + mTag + ".log"),
+	mOfs(mOutputPath, std::fstream::in | std::fstream::out | std::fstream::app)
 {
 
 }
 
 FileLogger::~FileLogger() {
-	flush();
+	mOfs.close();
 }
 
 const std::string& FileLogger::getTag() const {
@@ -70,48 +71,40 @@ const std::string& FileLogger::getTag() const {
 }
 
 void FileLogger::clear() {
-	std::ofstream(mOutputFile, std::fstream::in | std::fstream::out);
+	std::ofstream(mOutputPath, std::fstream::in | std::fstream::out);
 }
 
-void FileLogger::log(const std::string& msg) const {
-	mBuff << msg << std::endl;
+void FileLogger::log(const std::string& msg) {
+	mOfs << msg << std::endl;
 }
 
-void FileLogger::log(std::stringstream& msg) const {
+void FileLogger::log(std::stringstream& msg) {
 	log(mPrefix + msg.str());
-	msg.str("");
 }
 
-void FileLogger::i(const std::string& msg) const {
-	mBuff << info << "[i] " << mPrefix << msg << normal << std::endl;
+void FileLogger::i(const std::string& msg) {
+	mOfs << info << mPrefix << msg << normal << std::endl;
 }
 
-void FileLogger::w(const std::string& msg) const {
-	mBuff << warn << "[w] " << mPrefix << msg << normal << std::endl;
+void FileLogger::w(const std::string& msg) {
+	mOfs << warn << mPrefix << msg << normal << std::endl;
 }
 
-void FileLogger::e(const std::string& msg) const {
-	mBuff << err << "[e] " << mPrefix << msg << normal << std::endl;
+void FileLogger::e(const std::string& msg) {
+	mOfs << err << mPrefix << msg << normal << std::endl;
 }
 
-void FileLogger::i(std::stringstream& msg) const {
+void FileLogger::i(std::stringstream& msg) {
 	i(msg.str());
 	msg.str("");
 }
 
-void FileLogger::w(std::stringstream& msg) const {
+void FileLogger::w(std::stringstream& msg) {
 	w(msg.str());
 	msg.str("");
 }
 
-void FileLogger::e(std::stringstream& msg) const {
+void FileLogger::e(std::stringstream& msg) {
 	e(msg.str());
 	msg.str("");
-}
-
-void FileLogger::flush() {
-	if (!mBuff.str().empty()) {
-		std::ofstream(mOutputFile, std::fstream::in | std::fstream::out | std::fstream::app) << mBuff.str() << std::endl;
-		mBuff.str(std::string());
-	}
 }

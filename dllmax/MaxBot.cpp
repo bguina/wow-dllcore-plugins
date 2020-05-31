@@ -53,7 +53,7 @@ void WowMaxBot::onEvaluate(WowGame& mGame) {
 
 	std::shared_ptr<WowActivePlayerObject> self = mGame.getObjectManager().getActivePlayer();
 	mDbg << FileLogger::info << TAG << " running" << FileLogger::normal << std::endl;
-	mDbg.flush();
+	//mDbg.flush();
 
 	if (self != nullptr)
 	{
@@ -248,22 +248,22 @@ void WowMaxBot::onEvaluate(WowGame& mGame) {
 				}
 			}
 			else if (self->getUnitHealthPercentage() > 80) {
-				mDbg.i("no mTargetUnit");
-				mDbg.flush();
+				//mDbg.i("no mTargetUnit");
+				//mDbg.flush();
 				if (mPathFinder != nullptr) {
-					mDbg.i("mPathFinder Getting my position");
-					mDbg.flush();
+					//mDbg.i("mPathFinder Getting my position");
+					//mDbg.flush();
 					const Vector3f& selfPosition = self->getPosition();
-					mDbg << FileLogger::info << "Position " << self->getPosition() << FileLogger::normal << std::endl;
-					mDbg.flush();
+					//mDbg << FileLogger::info << "Position " << self->getPosition() << FileLogger::normal << std::endl;
+					//mDbg.flush();
 					Vector3f nextPosition;
 
 					if (mPathFinder->moveAlong(selfPosition, nextPosition)) {
 						mDbg.i("mPathFinder moving along the path");
-						mDbg.flush();
+						//mDbg.flush();
 						self->moveTo(mGame, nextPosition);
 						mDbg << FileLogger::info << "moving to " << nextPosition << FileLogger::normal << std::endl;
-						mDbg.flush();
+						//mDbg.flush();
 
 						/*
 						int delta = self->getPosition().getFacingDeltaDegrees(self->getFacingDegrees(), nextPosition);
@@ -292,7 +292,6 @@ void WowMaxBot::onEvaluate(WowGame& mGame) {
 		mDbg.w("no WowActivePlayerObject");
 	}
 
-	mDbg.flush();
 }
 
 void WowMaxBot::_logDebug(const WowGame& game) const {

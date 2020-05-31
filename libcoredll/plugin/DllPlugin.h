@@ -13,7 +13,7 @@ public:
 	virtual std::string getTag() const override;
 
 	virtual bool isLibraryLoaded() const;
-	virtual std::string getLibraryName() const;
+	virtual std::string getLibraryPath() const;
 	virtual uint64_t getLibraryVersion() const;
 
 	virtual bool loadLibrary(const std::wstring& dllPath);
@@ -21,10 +21,9 @@ public:
 
 	virtual bool onD3dRender() override;
 
-	typedef int(__stdcall* DllPlugin_OnLoad)(uint32_t pid);
+	typedef int(__stdcall* DllPlugin_OnLoad)();
 	typedef int(__stdcall* DllPlugin_OnUnload)();
 	typedef int(__stdcall* DllPlugin_OnD3dRender)();
-	typedef int(__stdcall* DllPlugin_OnServerMessage)(void* param);
 
 protected:
 	std::wstring stringConvertToWstring(const std::string& w) const;
@@ -36,6 +35,4 @@ protected:
 	DllPlugin_OnLoad mDllOnLoadFunc;
 	DllPlugin_OnUnload mDllOnUnloadFunc;
 	DllPlugin_OnD3dRender mDllOnD3dRenderFunc;
-	DllPlugin_OnServerMessage mDllOnServerMessageFunc;
-
 };

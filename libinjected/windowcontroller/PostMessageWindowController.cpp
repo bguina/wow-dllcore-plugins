@@ -44,7 +44,6 @@ bool PostMessageWindowController::pressKey(WinVirtualKey key, bool keyDown) {
 
 	if (false) {
 		mDbg << FileLogger::info << "pressKey " << (int)key << " success? " << keyAsRequested << FileLogger::normal << std::endl;
-		mDbg.flush();
 	}
 
 	return keyAsRequested;

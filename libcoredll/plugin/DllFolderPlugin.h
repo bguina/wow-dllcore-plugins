@@ -6,7 +6,6 @@ class DllFolderPlugin : public DllPlugin
 {
 public:
 	DllFolderPlugin();
-	DllFolderPlugin(const std::string& watched);
 	virtual std::string getTag() const;
 	virtual ~DllFolderPlugin();
 

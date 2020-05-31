@@ -20,10 +20,13 @@ void Render(IDXGISwapChain* pThis, UINT SyncInterval, UINT Flags) {
 
 		if (nullptr == sandbox) {
 			dbg << "loading sandbox" << std::endl;
-			dbg.flush();
-			sandbox = new DllCore(new DllFolderPlugin("D:\\myplugins"));
+			auto plugin= new DllFolderPlugin();
+			if (!plugin->loadFolder(L"D:\\myplugins")) {
+				dbg << "failed to loadFolder" << std::endl;
+			}
+
+			sandbox = new DllCore(plugin);
 			dbg << "loaded sandbox" << std::endl;
-			dbg.flush();
 		}
 
 		stopSandbox = !sandbox->onFrameRender();
@@ -31,7 +34,6 @@ void Render(IDXGISwapChain* pThis, UINT SyncInterval, UINT Flags) {
 
 		if (stopSandbox) {
 			dbg << "deleting sandbox" << std::endl;
-			dbg.flush();
 			delete sandbox;
 
 			gShouldStop = true;
@@ -46,7 +48,7 @@ void MainThread(void* pHandle) {
 		while (!gShouldStop && !GetAsyncKeyState(VK_END));
 
 	//dbg << "deinject\n";
-	deinject(pHandle);
+	UnhookD3D(pHandle);
 }
 
 BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID)

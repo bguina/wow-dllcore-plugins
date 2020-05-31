@@ -8,16 +8,9 @@
 #include "ServerWowMessage.h"
 
 WowPlugin::WowPlugin(IWowBot* bot) :
-	WowPlugin(bot, "WowPlugin")
-{
-
-
-}
-
-WowPlugin::WowPlugin(IWowBot* bot, const std::string& tag) :
 	mBotPause(true),
 	mGame(GetCurrentProcessId(), (const uint8_t*)GetModuleHandleA(0)),
-	mDbg(tag),
+	mDbg("WowPlugin"),
 	mBot(bot),
 	mClient(new Client())
 {

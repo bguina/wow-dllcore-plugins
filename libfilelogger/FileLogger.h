@@ -1,7 +1,7 @@
 #pragma once
 
 #include <string>
-#include <sstream>
+#include <fstream>
 
 #include "ILogger.h"
 
@@ -16,40 +16,37 @@ public:
 	virtual const std::string& getTag() const override;
 
 	// append output for the next file flush
-	virtual void log(const std::string& msg) const override;
-	virtual void log(std::stringstream& msg) const override;
+	virtual void log(const std::string& msg) override;
+	virtual void log(std::stringstream& msg) override;
 
 	// append output with debug level for the next file flush
-	virtual void i(const std::string& msg) const override;
-	virtual void w(const std::string& msg) const override;
-	virtual void e(const std::string& msg) const override;
+	virtual void i(const std::string& msg) override;
+	virtual void w(const std::string& msg) override;
+	virtual void e(const std::string& msg) override;
 
 	// append output with debug level for the next file flush
 	// also, clears the stringstream after reading it.
-	virtual void i(std::stringstream& msg) const override;
-	virtual void w(std::stringstream& msg) const override;
-	virtual void e(std::stringstream& msg) const override;
+	virtual void i(std::stringstream& msg) override;
+	virtual void w(std::stringstream& msg) override;
+	virtual void e(std::stringstream& msg) override;
 
 	// clear previous file content
 	void clear();
 
-	// flush buffer to the log file
-	void flush();
-
 	template<typename T>
-	std::ostream& operator<<(const T& obj) const {
-		mBuff << mPrefix << obj;
-		return mBuff;
+	std::ostream& operator<<(const T& obj) {
+		mOfs << mPrefix << obj;
+		return mOfs;
 	}
 
 private:
 	FileLogger(const std::string& tag, const std::string& prefix);
-	
-	mutable std::stringstream mBuff;
+
 	const std::string mFolder;
 	const std::string mTag;
 	const std::string mPrefix;
-	const std::string mOutputFile;
+	const std::string mOutputPath;
+	std::ofstream mOfs;
 
 public:
 

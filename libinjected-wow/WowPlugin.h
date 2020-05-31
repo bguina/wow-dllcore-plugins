@@ -17,7 +17,6 @@ class WowPlugin : public IPlugin
 {
 public:
 	WowPlugin(IWowBot* bot);
-	WowPlugin(IWowBot* bot, const std::string& tag);
 	virtual ~WowPlugin();
 
 	virtual std::string getTag() const;

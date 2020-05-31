@@ -33,7 +33,6 @@ void BenTravelBot::onResume(WowGame& game) {
 		game.getSpellBook().castSpell(game, spellId, pSelfGuid);
 		mDbg << FileLogger::info << "casted spell " << spellId << ": " << false << FileLogger::normal << std::endl;
 	}
-	mDbg.flush();
 }
 
 void BenTravelBot::onPause(WowGame& game) {
@@ -53,8 +52,6 @@ void BenTravelBot::onEvaluate(WowGame& game) {
 	}
 
 	Lua(game).run("OpenAllBags();");
-
-	mDbg.flush();
 
 }
 
