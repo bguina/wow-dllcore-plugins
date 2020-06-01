@@ -7,30 +7,38 @@
 #include "game/Lua.h"
 
 #include "bot/BaseWowBot.h"
+#include "../../interpretation/BenGameInterpretation.h"
+#include "../../interpretation/interpretator/IBenGameInterpretor.h"
 
 class ABen : public BaseWowBot {
 public:
 	ABen(const std::string& tag);
 	virtual ~ABen();
 
-	virtual void onResume(WowGame& game) override;
-	virtual void onEvaluate(WowGame& game) override;
-	virtual void onPause(WowGame& game) override;
+	// BaseWowBot
+	virtual bool attach(std::shared_ptr<WowGame> game) override;
+	virtual void onResume() final override;
+	virtual void onEvaluate() final override;
+	virtual void onPause() final override;
+	virtual bool handleWowMessage(ServerWowMessage& cl) override;
 
-	virtual bool handleWowMessage(ServerWowMessage& cl);
+	// Detect game state
+	virtual void onGamePlayStarted();
+	virtual void onGameplayStopped();
+	
+	// Detect events
+	virtual void onTargetChanged();
 
-	// Game has objectmanager.getActivePlayer ready
-	//virtual void _onGameplayResumed() = 0;
-	//virtual void _onGameplayStopped() = 0;
+	// combat lifecycle
+	virtual void onCombatStart();
+	virtual void onCombatRelief();
+	virtual void onCombatEnd();
 
-	//virtual void _onTargetChanged() = 0;
-
-	//virtual void _onCombatStart() = 0;
-	//virtual void _onCombatEnd() = 0;
+	// What would the bot do? does it handle the situation?
+	virtual bool onEvaluatedIdle();
 
 protected:
-	std::unique_ptr<IPathFinder> mPathFinder;
-
-	virtual void _logDebug(const WowGame& game) const override;
+	std::unique_ptr<IBenGameInterpretor> mInterpret; // interpret?! interpret?!! what does this game tell?
+	std::unique_ptr<IBenGameInterpretation> mContext; // interpret: *gives vague, approximate translation*
+	std::unique_ptr<IPathFinder> mWaypoints;		 // we also we might have an idea where to walk
 };
-

@@ -5,7 +5,7 @@
 class DllFolderPlugin : public DllPlugin
 {
 public:
-	DllFolderPlugin();
+	DllFolderPlugin(const std::string& tag, bool keepAlive);
 	virtual std::string getTag() const;
 	virtual ~DllFolderPlugin();
 
@@ -17,7 +17,10 @@ public:
 	virtual bool onD3dRender() override;
 
 protected:
+	virtual bool loadLibrary(const std::wstring& dllPath) override;
+	FILETIME lookupLatest(const std::wstring& path, std::wstring& result);
 
+	bool mKeepAlive;
 	std::wstring mFolder;
 	FILETIME mCurrentVersion;
 };

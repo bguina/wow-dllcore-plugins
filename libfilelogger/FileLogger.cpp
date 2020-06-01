@@ -57,13 +57,12 @@ FileLogger::FileLogger(const std::string& tag, const std::string& prefix) :
 	mTag(tag),
 	mPrefix(prefix + ": "),
 	mOutputPath(mFolder + mTag + ".log"),
-	mOfs(mOutputPath, std::fstream::in | std::fstream::out | std::fstream::app)
+	mOfs(mOutputPath, std::fstream::out | std::fstream::app)
 {
 
 }
 
 FileLogger::~FileLogger() {
-	//mOfs.close();
 }
 
 const std::string& FileLogger::getTag() const {
@@ -75,36 +74,18 @@ void FileLogger::clear() {
 }
 
 void FileLogger::log(const std::string& msg) {
-	mOfs << msg << std::endl;
-}
-
-void FileLogger::log(std::stringstream& msg) {
-	log(mPrefix + msg.str());
+	*this << msg << std::endl;
 }
 
 void FileLogger::i(const std::string& msg) {
-	mOfs << info << mPrefix << msg << normal << std::endl;
+	*this << info << mPrefix << msg << normal << std::endl;
 }
 
 void FileLogger::w(const std::string& msg) {
-	mOfs << warn << mPrefix << msg << normal << std::endl;
+	*this << warn << mPrefix << msg << normal << std::endl;
 }
 
 void FileLogger::e(const std::string& msg) {
-	mOfs << err << mPrefix << msg << normal << std::endl;
+	*this << err << mPrefix << msg << normal << std::endl;
 }
 
-void FileLogger::i(std::stringstream& msg) {
-	i(msg.str());
-	msg.str("");
-}
-
-void FileLogger::w(std::stringstream& msg) {
-	w(msg.str());
-	msg.str("");
-}
-
-void FileLogger::e(std::stringstream& msg) {
-	e(msg.str());
-	msg.str("");
-}

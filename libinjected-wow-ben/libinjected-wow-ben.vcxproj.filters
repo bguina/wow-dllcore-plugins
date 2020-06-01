@@ -21,19 +21,64 @@
     <ClInclude Include="pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="bot\Bens.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="bot\BenSimple.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="bot\BenTravel.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="bot\base\ABenSM.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="bot\base\ABen.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BenBots.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bot\travel\BenTravel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bot\patrol\ABenPatroller.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bot\base\BenLogin.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bot\meta\BenRoot.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bot\meta\IBenPoly.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bot\quest\BenQuester.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bot\champion\ABenChampion.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bot\champion\ABenRunagate.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bot\economy\fish\IBenFisher.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="interpretation\interpretator\extrapolator\ABenGameExtrapolator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="interpretation\interpretator\extrapolator\IBenGameExtrapolator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="interpretation\interpretator\ABenGameInterpretor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="interpretation\interpretator\IBenGameInterpretor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="interpretation\BenGameInterpretation.cpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="interpretation\BenGameInterpretation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="interpretation\IBenGameInterpretation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="interpretation\ThreatZone.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -44,10 +89,25 @@
     <ClCompile Include="bot\BenSimple.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="bot\BenTravel.cpp">
+    <ClCompile Include="bot\base\ABen.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="bot\base\ABen.cpp">
+    <ClCompile Include="bot\travel\BenTravel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="bot\patrol\ABenPatroller.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="bot\base\BenLogin.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="bot\champion\ABenChampion.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="interpretation\interpretator\extrapolator\ABenGameExtrapolator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="interpretation\interpretator\ABenGameInterpretor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

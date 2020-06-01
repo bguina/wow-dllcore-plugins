@@ -3,20 +3,29 @@
 
 #include "WowPlugin.h"
 #include "FileLogger.h"
-#include "bot/BenTravel.h"
+#include "BenBots.h"
 
 WowPlugin* gContainedPlugin = nullptr;
 
 extern "C" int __declspec(dllexport) __stdcall DllPlugin_OnLoad() {
-	FileLogger dbg("dllmain_ben");
+	FileLogger dbg("ben_dllmain");
 
-	dbg << "DllPlugin_OnLoad" << std::endl;
-	gContainedPlugin = new WowPlugin(new BenTravel());
+	dbg << "DllPlugin_OknLoad" << std::endl;
+	auto basic = new BenSimple();
+
+	auto complex = new BenPoly(
+		nullptr,
+		nullptr,
+		basic
+	);
+
+	gContainedPlugin = new WowPlugin();
+	gContainedPlugin->attachBot(complex);
 	return 0;
 }
 
 extern "C" int __declspec(dllexport) __stdcall DllPlugin_OnUnload() {
-	FileLogger dbg("dllmain_ben");
+	FileLogger dbg("ben_dllmain");
 
 	dbg << "DllPlugin_OnUnload" << std::endl;
 	if (gContainedPlugin) {
@@ -27,11 +36,11 @@ extern "C" int __declspec(dllexport) __stdcall DllPlugin_OnUnload() {
 }
 
 extern "C" int __declspec(dllexport) __stdcall DllPlugin_OnD3dRender() {
-	FileLogger dbg("dllmain_ben");
+	FileLogger dbg("ben_dllmain");
 	
 	dbg << "DllPlugin_OnD3dRender" << std::endl;
 	if (!gContainedPlugin->onD3dRender()) {
-		dbg << "DllPlugin_OnD3dRender stop signal" << std::endl;
+		dbg << "DllPlugin_OnD3dRender stop signal!" << std::endl;
 		return -1;
 	}
 	return 0;

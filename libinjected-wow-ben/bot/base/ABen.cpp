@@ -12,23 +12,57 @@ const std::string TAG = "ABen";
 
 ABen::ABen(const std::string& tag) :
 	BaseWowBot(tag),
-	mPathFinder(nullptr)
+	mContext(nullptr),
+	mWaypoints(nullptr)
 {
 }
 
 ABen::~ABen() {
 }
 
-void ABen::onResume(WowGame& game) {
+bool ABen::attach(std::shared_ptr<WowGame> game) {
+	IBenGameInterpretation* newInterpretation(mInterpret->interpret(*game));
+
+	if (nullptr != newInterpretation) {
+		mContext.reset(newInterpretation);
+		return BaseWowBot::attach(game);
+	}
+	
+	return false;
+}
+
+void ABen::onResume() {
+}
+void ABen::onEvaluate() {
+}
+void ABen::onPause() {
+}
+
+void ABen::onGamePlayStarted() {
 
 }
 
-void ABen::onPause(WowGame& game) {
+void ABen::onGameplayStopped() {
 
 }
 
-void ABen::onEvaluate(WowGame& game) {
+void ABen::onTargetChanged() {
 
+}
+
+void ABen::onCombatStart() {
+
+}
+
+void ABen::onCombatRelief() {
+
+}
+void ABen::onCombatEnd() {
+
+}
+
+bool ABen::onEvaluatedIdle() {
+	return false;
 }
 
 bool ABen::handleWowMessage(ServerWowMessage& cl) {
@@ -37,22 +71,12 @@ bool ABen::handleWowMessage(ServerWowMessage& cl) {
 
 	switch (cl.type) {
 	case MessageType::POST_DLL_DATA_3DPATH:
-		mPathFinder = std::make_unique<LinearPathFinder>(*cl.waypoints);
+		mWaypoints = std::make_unique<LinearPathFinder>(*cl.waypoints);
 		mDbg << FileLogger::verbose << "Loaded pathfinder with " << cl.waypoints->size() << "waypoints! thanks! " << (int)cl.type << FileLogger::normal << std::endl;
-		handled= true;
+		handled = true;
 	default:
 		break;
 	}
 
 	return handled;
-}
-
-void ABen::_logDebug(const WowGame& game) const {
-	LinearPathFinder* pathfinder = dynamic_cast<LinearPathFinder*>(mPathFinder.get());
-
-	if (nullptr != pathfinder) {
-		size_t waypointsCount = 0;
-
-		waypointsCount = pathfinder->getWaypointsCount();
-	}
 }

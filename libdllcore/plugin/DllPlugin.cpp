@@ -7,8 +7,8 @@
 #include <iostream>
 #include <codecvt>
 
-DllPlugin::DllPlugin() :
-	mDbg("DllPlugin"),
+DllPlugin::DllPlugin(const std::string& tag) :
+	mDbg(tag),
 	mDll(nullptr),
 	mDllOnLoadFunc(nullptr),
 	mDllOnUnloadFunc(nullptr),

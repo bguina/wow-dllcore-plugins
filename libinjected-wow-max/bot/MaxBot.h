@@ -13,14 +13,14 @@ public:
 	WowMaxBot();
 	virtual ~WowMaxBot();
 
-	virtual void onResume(WowGame& game) override;
-	virtual void onPause(WowGame& game) override;
-	virtual void onEvaluate(WowGame& game) override;
+	virtual void onResume() override;
+	virtual void onPause() override;
+	virtual void onEvaluate() override;
 
 	virtual bool handleWowMessage(ServerWowMessage& cl) override;
 
 protected:
-	virtual void _logDebug(const WowGame& game) const override;
+	virtual void _logDebug() const override;
 
 	std::unique_ptr<IPathFinder> mPathFinder;
 	std::shared_ptr<const WowUnitObject> mTargetUnit;

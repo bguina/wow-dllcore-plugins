@@ -19,6 +19,18 @@ WowGame::~WowGame() {
 
 }
 
+bool WowGame::isLoggedIn() const {
+	return isInGame() && !isLoading();  // fixme
+}
+
+bool WowGame::isLoading() const {
+	return *(int*)(getAddress() + 0x2260D50);
+}
+
+bool WowGame::isInGame() const {
+	return NULL != mObjMgr.getBaseAddress(); // fixme reliable?
+}
+
 void WowGame::update() {
 
 	mObjMgr.scan();
@@ -58,10 +70,6 @@ SpellBook& WowGame::getSpellBook() {
 	return mSpellBook;
 }
 
-bool WowGame::isObjectManagerActive() const {
-	return NULL != mObjMgr.getBaseAddress();
-}
-
 const char* WowGame::getVersionBuild() const {
 	return (const char*)(getAddress() + 0x1C3531C);
 }
@@ -78,9 +86,7 @@ int  WowGame::getInGameFlags() const {
 	return *(int*)(getAddress() + 0x2594F40);
 }
 
-int WowGame::getIsLoadingOrConnecting() const {
-	return *(int*)(getAddress() + 0x2260D50);
-}
+
 
 typedef char(__fastcall* Intersect) (const WowVector3f*, const WowVector3f*, WowVector3f*, __int64, int);
 

@@ -7,6 +7,7 @@
 #include "../pathfinder/LinearPathFinder.h"
 
 BaseWowBot::BaseWowBot(const std::string& tag) :
+	mGame(nullptr),
 	mDbg(tag)
 {
 }
@@ -14,12 +15,17 @@ BaseWowBot::BaseWowBot(const std::string& tag) :
 BaseWowBot::~BaseWowBot() {
 }
 
-const char* BaseWowBot::getTag() const {
-	return mDbg.getTag().c_str();
+bool BaseWowBot::attach(std::shared_ptr<WowGame> game) {
+	mGame = game;
+	return true;
 }
 
-void BaseWowBot::_logDebug(const WowGame& game) const {
-	std::shared_ptr<const WowActivePlayerObject> self = game.getObjectManager().getActivePlayer();
+const std::string& BaseWowBot::getTag() const {
+	return mDbg.getTag();
+}
+
+void BaseWowBot::_logDebug() const {
+	std::shared_ptr<const WowActivePlayerObject> self = mGame->getObjectManager().getActivePlayer();
 	mDbg << FileLogger::info;
 
 	if (nullptr != self) {
@@ -30,17 +36,17 @@ void BaseWowBot::_logDebug(const WowGame& game) const {
 
 		if (0 != targetGuid) {
 
-			std::shared_ptr<const WowUnitObject> target = game.getObjectManager().getObjectByGuid<WowUnitObject>(targetGuid);
+			std::shared_ptr<const WowUnitObject> target = mGame->getObjectManager().getObjectByGuid<WowUnitObject>(targetGuid);
 			if (nullptr != target) {
-				mDbg << "Target: " << targetGuid.upper() << targetGuid.lower() << " can be attacked? " << self->canAttack(game, *target) << std::endl;
+				mDbg << "Target: " << targetGuid.upper() << targetGuid.lower() << " can be attacked? " << self->canAttack(*mGame, *target) << std::endl;
 			}
 			else {
-				mDbg << FileLogger::err << "Target: " << targetGuid.upper() << targetGuid.lower() << " can be attacked? " << (uint32_t)self->canAttack(game, *target) << FileLogger::info << std::endl;
+				mDbg << FileLogger::err << "Target: " << targetGuid.upper() << targetGuid.lower() << " can be attacked? " << (uint32_t)self->canAttack(*mGame, *target) << FileLogger::info << std::endl;
 			}
 		}
 
 		// show info relative to a random unit around, if any
-		std::shared_ptr<const WowUnitObject> any = game.getObjectManager().anyOfType<WowUnitObject>(WowObjectType::Unit);
+		std::shared_ptr<const WowUnitObject> any = mGame->getObjectManager().anyOfType<WowUnitObject>(WowObjectType::Unit);
 		if (nullptr != any) {
 			mDbg << "anyunit position is " << any->getPosition()
 				<< " facing it requires angle of " << self->getFacingDegreesTo(*any)

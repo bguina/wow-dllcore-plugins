@@ -24,8 +24,10 @@ void Render(IDXGISwapChain* pThis, UINT SyncInterval, UINT Flags) {
 
 
 		if (nullptr == sandbox) {
-			auto plugin = new DllFolderPlugin();
-			plugin->loadFolder(L"D:\\myplugins");
+			bool keepAlive = true;
+			auto plugin = new DllFolderPlugin("DllFolderPlugin", keepAlive);
+			const std::wstring folder(L"D:\\myplugins");
+			plugin->loadFolder(folder);
 			sandbox = new DllCore(plugin);
 		}
 

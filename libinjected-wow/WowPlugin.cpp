@@ -7,20 +7,14 @@
 #include "WowPlugin.h"
 #include "ServerWowMessage.h"
 
-WowPlugin::WowPlugin(IWowBot* bot) :
+WowPlugin::WowPlugin() :
 	mBotPause(true),
-	mGame(GetCurrentProcessId(), (const uint8_t*)GetModuleHandleA(0)),
+	mGame(std::make_shared<WowGame>(GetCurrentProcessId(), (const uint8_t*)GetModuleHandleA(0))),
 	mDbg("WowPlugin"),
-	mBot(bot),
+	mBot(nullptr),
 	mClient(new Client())
 {
 	FileLogger dbg(mDbg, "WowPlugin()");
-
-	if (nullptr == bot) {
-		dbg << FileLogger::err << "created with nullptr" << FileLogger::normal << std::endl;
-	}
-	else
-		dbg << FileLogger::info << "created with " << bot->getTag() << FileLogger::normal << std::endl;
 
 	if (mClient->joinServer()) {
 		dbg << FileLogger::info << "connected to server" << FileLogger::normal << std::endl;
@@ -41,6 +35,11 @@ std::string WowPlugin::getTag() const {
 	return mDbg.getTag();
 }
 
+void  WowPlugin::attachBot(IWowBot* bot) {
+	bot->attach(mGame);
+	mBot.reset(bot);
+}
+
 bool WowPlugin::onD3dRender() {
 	FileLogger dbg(mDbg, "onD3dRender");
 
@@ -54,10 +53,10 @@ bool WowPlugin::onD3dRender() {
 	}
 
 	dbg << FileLogger::debug << "updating game" << FileLogger::normal << std::endl;
-	mGame.update();
+	mGame->update();
 	if (mBot != nullptr) {
 		if (!mBotPause)
-			mBot->onEvaluate(mGame);
+			mBot->onEvaluate();
 	}
 	else {
 		dbg << FileLogger::warn << "no bot is set" << FileLogger::normal << std::endl;
@@ -120,21 +119,21 @@ bool WowPlugin::_readServerMessages() {
 		switch (msg.type) {
 		case MessageType::RESUME:
 			mBotPause = false;
-			mBot->onResume(mGame);
+			mBot->onResume();
 			break;
 
 		case MessageType::POST_SERVER_EJECTION:
 			msg.eject = true;
 		case MessageType::PAUSE:
 			mBotPause = true;
-			mBot->onPause(mGame);
+			mBot->onPause();
 			break;
 
 		case MessageType::SUBSCRIBE_DLL_UPDATES:
 			//mBot->startSubscription();
 			for (std::vector<std::string>::const_iterator it = msg.subscriptions->begin(); it != msg.subscriptions->end(); it++) {
 				if (*it == "position") {
-					mGame.addObserver("position", std::make_shared<ActivePlayerPositionObserver>(*msg.cl, 10.0f));
+					mGame->addObserver("position", std::make_shared<ActivePlayerPositionObserver>(*msg.cl, 10.0f));
 				}
 			}
 			break;
@@ -143,7 +142,7 @@ bool WowPlugin::_readServerMessages() {
 			//mBot->stopSubscription();
 			for (std::vector<std::string>::const_iterator it = msg.subscriptions->begin(); it != msg.subscriptions->end(); it++) {
 				if (*it == "position") {
-					mGame.removeObserver("position");
+					mGame->removeObserver("position");
 				}
 			}
 			break;

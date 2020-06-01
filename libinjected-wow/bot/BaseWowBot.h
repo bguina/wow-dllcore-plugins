@@ -12,11 +12,14 @@ public:
 	BaseWowBot(const std::string& tag);
 	virtual ~BaseWowBot();
 
-	virtual const char* getTag() const override;
+	virtual bool attach(std::shared_ptr<WowGame> game) override;
+
+	virtual const std::string& getTag() const override;
 
 protected:
-	virtual void _logDebug(const WowGame& game) const;
+	virtual void _logDebug() const;
 
+	std::shared_ptr<WowGame> mGame;
 	mutable FileLogger mDbg;
 };
 

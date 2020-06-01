@@ -17,11 +17,12 @@ class Client;
 class WowPlugin : public IPlugin
 {
 public:
-	WowPlugin(IWowBot* bot);
+	WowPlugin();
 	virtual ~WowPlugin();
 
-	virtual std::string getTag() const;
+	virtual std::string getTag() const override;
 
+	virtual void attachBot(IWowBot* bot);
 	virtual bool onD3dRender() override;
 
 protected:
@@ -29,7 +30,7 @@ protected:
 
 	std::unique_ptr<Client> mClient;
 	bool mBotPause;
-	WowGame mGame;
+	std::shared_ptr<WowGame> mGame;
 	FileLogger mDbg;
 	std::unique_ptr<IWowBot> mBot;
 };

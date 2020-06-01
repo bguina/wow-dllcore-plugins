@@ -8,7 +8,8 @@
 
 #include "AGame.h"
 
-template<typename T> class IServerObserver;
+typedef uint64_t WowGameTime;
+
 class IWindowController;
 
 class WowGame : public AGame
@@ -22,7 +23,9 @@ public:
 
 	void update();
 
-	bool isObjectManagerActive() const;
+	bool isLoggedIn() const;
+	bool isLoading() const;
+	bool isInGame() const;
 
 	const ObjectManager& getObjectManager() const;
 
@@ -40,7 +43,6 @@ public:
 
 	int getInGameFlags() const;
 
-	int getIsLoadingOrConnecting() const;
 
 	bool traceLine(const WowVector3f& from, const WowVector3f& to, uint64_t flags) const;
 	bool addObserver(const std::string& name, const std::shared_ptr<ARecurrentServerObserver<WowGame>>& observer);
@@ -63,7 +65,7 @@ inline std::ostream& operator<<(
 	ObjectManager objMgr = obj.getObjectManager();
 	out << objMgr;
 
-	if (obj.isObjectManagerActive()) {
+	if (obj.isInGame()) {
 		SpellBook spellBookMgr = obj.getSpellBook();
 		out << spellBookMgr;
 	}

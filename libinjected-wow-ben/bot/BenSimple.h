@@ -8,8 +8,6 @@ public:
 	BenSimple();
 	virtual ~BenSimple();
 
-	virtual void onEvaluate(WowGame& game) override;
-
 protected:
 
 };
@@ -19,6 +17,6 @@ inline std::ostream& operator<<(
 	const class BenSimple& obj
 	)
 {
-	out << dynamic_cast<const BaseWowBot&>(obj);
+	//out << dynamic_cast<const ABen&>(obj);
 	return out;
 }
