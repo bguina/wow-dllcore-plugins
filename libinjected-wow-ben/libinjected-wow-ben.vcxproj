@@ -125,7 +125,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>..\libfilelogger;..\libdllcore;..\libinjected;..\libinjected-wow;..\libclient;..\MessageManager;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\dllcore\libfilelogger;..\dllcore\libdllcore;..\dllcore\libinjected;..\dllcore\libinjected-wow;..\dllcore\libclient;..\dllcore\MessageManager;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -143,7 +143,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>..\libfilelogger;..\libdllcore;..\libinjected;..\libinjected-wow;..\libclient;..\MessageManager;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\dllcore\libfilelogger;..\dllcore\libdllcore;..\dllcore\libinjected;..\dllcore\libinjected-wow;..\dllcore\libclient;..\dllcore\MessageManager;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>

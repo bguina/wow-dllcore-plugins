@@ -3,15 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29911.84
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "server", "server\server.vcxproj", "{830DD6A2-B95B-4205-A61C-BDC4FEC87487}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "server", "dllcore\server\server.vcxproj", "{830DD6A2-B95B-4205-A61C-BDC4FEC87487}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libinjector", "libinjector\libinjector.vcxproj", "{5B231297-6818-4AD5-A6D7-B14BEE33AC40}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libinjector", "dllcore\libinjector\libinjector.vcxproj", "{5B231297-6818-4AD5-A6D7-B14BEE33AC40}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "windowQT", "windowQT\windowQT.vcxproj", "{84BE4C40-6936-4C6B-8BBC-8000A182B45A}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "windowQT", "dllcore\windowQT\windowQT.vcxproj", "{84BE4C40-6936-4C6B-8BBC-8000A182B45A}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libclient", "libclient\libclient.vcxproj", "{62C3F70F-F814-426D-96D1-F3C6751B750D}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libclient", "dllcore\libclient\libclient.vcxproj", "{62C3F70F-F814-426D-96D1-F3C6751B750D}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MessageManager", "MessageManager\MessageManager.vcxproj", "{9B69C2F2-F080-4375-8F30-C6D5176ACC1C}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MessageManager", "dllcore\MessageManager\MessageManager.vcxproj", "{9B69C2F2-F080-4375-8F30-C6D5176ACC1C}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dll_plugin_ben", "dll_plugin_ben\dll_plugin_ben.vcxproj", "{17DA1F63-1330-4027-8643-274009BCED4A}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -21,7 +21,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dll_plugin_ben", "dll_plugi
 		{9B69C2F2-F080-4375-8F30-C6D5176ACC1C} = {9B69C2F2-F080-4375-8F30-C6D5176ACC1C}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libinjected-wow", "libinjected-wow\libinjected-wow.vcxproj", "{69968E6B-F6A4-402E-A29C-577D028D127B}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libinjected-wow", "dllcore\libinjected-wow\libinjected-wow.vcxproj", "{69968E6B-F6A4-402E-A29C-577D028D127B}"
 	ProjectSection(ProjectDependencies) = postProject
 		{62C3F70F-F814-426D-96D1-F3C6751B750D} = {62C3F70F-F814-426D-96D1-F3C6751B750D}
 		{1EA4C4A6-565C-4E3C-B05F-4F536AFDDAE0} = {1EA4C4A6-565C-4E3C-B05F-4F536AFDDAE0}
@@ -30,9 +30,9 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libinjected-wow", "libinjec
 		{9B69C2F2-F080-4375-8F30-C6D5176ACC1C} = {9B69C2F2-F080-4375-8F30-C6D5176ACC1C}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libinjected", "libinjected\libinjected.vcxproj", "{BF58A4B2-385A-49BB-8296-B425DADEFA94}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libinjected", "dllcore\libinjected\libinjected.vcxproj", "{BF58A4B2-385A-49BB-8296-B425DADEFA94}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libdllcore", "libdllcore\libdllcore.vcxproj", "{63F9A274-C0B8-4D7C-A1DB-C2E0B333374B}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libdllcore", "dllcore\libdllcore\libdllcore.vcxproj", "{63F9A274-C0B8-4D7C-A1DB-C2E0B333374B}"
 	ProjectSection(ProjectDependencies) = postProject
 		{62C3F70F-F814-426D-96D1-F3C6751B750D} = {62C3F70F-F814-426D-96D1-F3C6751B750D}
 		{1EA4C4A6-565C-4E3C-B05F-4F536AFDDAE0} = {1EA4C4A6-565C-4E3C-B05F-4F536AFDDAE0}
@@ -40,17 +40,17 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libdllcore", "libdllcore\li
 		{9B69C2F2-F080-4375-8F30-C6D5176ACC1C} = {9B69C2F2-F080-4375-8F30-C6D5176ACC1C}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libfilelogger", "libfilelogger\libfilelogger.vcxproj", "{1EA4C4A6-565C-4E3C-B05F-4F536AFDDAE0}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libfilelogger", "dllcore\libfilelogger\libfilelogger.vcxproj", "{1EA4C4A6-565C-4E3C-B05F-4F536AFDDAE0}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libinjector-d3d", "libd3dutils\libd3dutils.vcxproj", "{C2AC97CD-3AC6-4B83-BF88-E92908552C31}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libinjector-d3d", "dllcore\libd3dutils\libd3dutils.vcxproj", "{C2AC97CD-3AC6-4B83-BF88-E92908552C31}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dll_core", "dll_core\dll_core.vcxproj", "{A03CC374-742B-430E-9B25-9BB8F08CAEE8}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dll_plugin_max", "dllcore\dll_plugin_max\dll_plugin_max.vcxproj", "{1ED5FDE9-5B01-4CC1-899F-2F23133D98FF}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dll_plugin_max", "dll_plugin_max\dll_plugin_max.vcxproj", "{1ED5FDE9-5B01-4CC1-899F-2F23133D98FF}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libinjected-wow-max", "dllcore\libinjected-wow-max\libinjected-wow-max.vcxproj", "{975C3BBC-C28A-436B-8734-2E848A1F16F0}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dll_core", "dllcore\dll_core\dll_core.vcxproj", "{A03CC374-742B-430E-9B25-9BB8F08CAEE8}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libinjected-wow-ben", "libinjected-wow-ben\libinjected-wow-ben.vcxproj", "{33E536DC-2F5B-4272-9579-AAA65EDC4F02}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libinjected-wow-max", "libinjected-wow-max\libinjected-wow-max.vcxproj", "{975C3BBC-C28A-436B-8734-2E848A1F16F0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

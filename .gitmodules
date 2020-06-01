@@ -1,0 +1,4 @@
+[submodule "dllcore"]
+	path = dllcore
+	url = git@github.com:bguina/dllcore.git
+	branch = master
