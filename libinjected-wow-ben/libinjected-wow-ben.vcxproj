@@ -172,7 +172,7 @@
     <ClInclude Include="BenBots.h" />
     <ClInclude Include="bot\BenSimple.h" />
     <ClInclude Include="bot\champion\ABenChampion.h" />
-    <ClInclude Include="bot\travel\BenTravel.h" />
+    <ClInclude Include="bot\travel\ABenTraveller.h" />
     <ClInclude Include="interpretation\BenGameInterpretation.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="pch.h" />
@@ -184,7 +184,7 @@
     <ClCompile Include="interpretation\interpretator\ABenGameInterpretor.cpp" />
     <ClCompile Include="interpretation\interpretator\extrapolator\ABenGameExtrapolator.cpp" />
     <ClCompile Include="bot\patrol\ABenPatroller.cpp" />
-    <ClCompile Include="bot\travel\BenTravel.cpp" />
+    <ClCompile Include="bot\travel\ABenTraveller.cpp" />
     <ClCompile Include="bot\base\BenLogin.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>

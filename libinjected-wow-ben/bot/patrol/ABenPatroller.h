@@ -1,11 +1,11 @@
 #pragma once
 
-#include "../travel/BenTravel.h"
+#include "../travel/ABenTraveller.h"
 #include "../champion/ABenChampion.h"
 
 class ABenPatroller : public ABen {
 public:
-	ABenPatroller(const std::string& tag, BenTravel* travelBot, ABenChampion* combatBot);
+	ABenPatroller(const std::string& tag, ABenTraveller* travelBot, ABenChampion* combatBot);
 	virtual ~ABenPatroller();
 
 
@@ -19,7 +19,7 @@ public:
 	//virtual void _onCombatEnd() = 0;
 
 protected:
-	std::unique_ptr<BenTravel> mTravel;
+	std::unique_ptr<ABenTraveller> mTravel;
 	std::unique_ptr<ABenChampion> mChamp;
 
 	std::list<WowUnitObject> mKillList;

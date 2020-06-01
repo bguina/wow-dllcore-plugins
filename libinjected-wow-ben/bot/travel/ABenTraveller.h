@@ -9,5 +9,6 @@ public:
 	ABenTraveller(const std::string& tag);
 	virtual ~ABenTraveller();
 
-	virtual bool supportsHostileEnvironment() const;
+	// dynamically adapts path to avoid mobs  
+	virtual bool supportsThreatsAvoidance() const;
 };
