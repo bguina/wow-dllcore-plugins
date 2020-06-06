@@ -82,7 +82,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>D:\myplugins</OutDir>
+    <OutDir>D:\myplugins\</OutDir>
     <TargetName>$(ProjectName)</TargetName>
     <IntDir>$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
   </PropertyGroup>
@@ -199,29 +199,8 @@
     <ProjectReference Include="..\dllcore\MessageManager\MessageManager.vcxproj">
       <Project>{9b69c2f2-f080-4375-8f30-c6d5176acc1c}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\libclient\libclient.vcxproj">
-      <Project>{62c3f70f-f814-426d-96d1-f3c6751b750d}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\libd3dutils\libd3dutils.vcxproj">
-      <Project>{c2ac97cd-3ac6-4b83-bf88-e92908552c31}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\libfilelogger\libfilelogger.vcxproj">
-      <Project>{1ea4c4a6-565c-4e3c-b05f-4f536afddae0}</Project>
-    </ProjectReference>
     <ProjectReference Include="..\libinjected-wow-ben\libinjected-wow-ben.vcxproj">
       <Project>{33e536dc-2f5b-4272-9579-aaa65edc4f02}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\libinjected-wow\libinjected-wow.vcxproj">
-      <Project>{69968e6b-f6a4-402e-a29c-577d028d127b}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\libinjected\libinjected.vcxproj">
-      <Project>{bf58a4b2-385a-49bb-8296-b425dadefa94}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\libwow\libwow.vcxproj">
-      <Project>{69968e6b-f6a4-402e-a29c-577d028d127b}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\MessageManager\MessageManager.vcxproj">
-      <Project>{9b69c2f2-f080-4375-8f30-c6d5176acc1c}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -154,44 +154,77 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="bot\economy\fish\IBenFisher.h" />
-    <ClInclude Include="bot\champion\ABenRunagate.h" />
-    <ClInclude Include="interpretation\interpretator\ABenGameInterpretor.h" />
-    <ClInclude Include="interpretation\IBenGameInterpretation.h" />
-    <ClInclude Include="interpretation\ThreatZone.h" />
-    <ClInclude Include="bot\patrol\ABenPatroller.h" />
-    <ClInclude Include="bot\meta\IBenPoly.h" />
-    <ClInclude Include="interpretation\interpretator\extrapolator\IBenGameExtrapolator.h" />
-    <ClInclude Include="interpretation\interpretator\extrapolator\ABenGameExtrapolator.h" />
-    <ClInclude Include="interpretation\BenGameInterpretation.cpp" />
-    <ClInclude Include="bot\quest\BenQuester.h" />
-    <ClInclude Include="interpretation\interpretator\IBenGameInterpretor.h" />
-    <ClInclude Include="bot\meta\BenRoot.h" />
-    <ClInclude Include="bot\base\ABen.h" />
-    <ClInclude Include="bot\base\BenLogin.h" />
-    <ClInclude Include="BenBots.h" />
-    <ClInclude Include="bot\BenSimple.h" />
-    <ClInclude Include="bot\champion\ABenChampion.h" />
-    <ClInclude Include="bot\travel\ABenTraveller.h" />
-    <ClInclude Include="interpretation\BenGameInterpretation.h" />
+    <ClInclude Include="bot\type\champion\base\ABenTamerChampion.h" />
+    <ClInclude Include="bot\gameplay\snapshot\object\WowPlayerSnapshot.h" />
+    <ClInclude Include="bot\gameplay\snapshot\object\WowObjectSnapshot.h" />
+    <ClInclude Include="bot\type\champion\base\ABenWrestlerChampion.h" />
+    <ClInclude Include="bot\type\champion\base\ABenChampion.h" />
+    <ClInclude Include="bot\type\champion\base\ABenDistantChampion.h" />
+    <ClInclude Include="bot\type\poly\BenPolyAgent.h" />
+    <ClInclude Include="bot\type\champion\hunter\BenHunterChampion.h" />
+    <ClInclude Include="bot\type\runagate\BenRunagate.h" />
+    <ClInclude Include="bot\gameplay\ABenGameplay.h" />
+    <ClInclude Include="bot\gameplay\snapshot\evaluator\extrapolator\BenGameLinearExtrapolator.h" />
+    <ClInclude Include="bot\gameplay\snapshot\BenGameSnapshot.h" />
+    <ClInclude Include="bot\gameplay\snapshot\evaluator\BenGameSnapshotEvaluator.h" />
+    <ClInclude Include="bot\gameplay\snapshot\ABenGameSnapshot.h" />
+    <ClInclude Include="bot\gameplay\IBenGameplay.h" />
+    <ClInclude Include="bot\type\economy\fish\IBenFisher.h" />
+    <ClInclude Include="bot\gameplay\BenRecordedGameplay.h" />
+    <ClInclude Include="bot\gameplay\Percent.h" />
+    <ClInclude Include="bot\gameplay\snapshot\evaluator\ABenGameSnapshotEvaluator.h" />
+    <ClInclude Include="bot\gameplay\model\RadiusZone.h" />
+    <ClInclude Include="bot\gameplay\model\RadiusThreatZone.h" />
+    <ClInclude Include="bot\gameplay\model\BoundingBox.h" />
+    <ClInclude Include="bot\gameplay\model\IThreat.h" />
+    <ClInclude Include="bot\gameplay\snapshot\IBenGameSnapshot.h" />
+    <ClInclude Include="bot\gameplay\model\Threat.h" />
+    <ClInclude Include="bot\type\patrol\ABenPatroller.h" />
+    <ClInclude Include="bot\gameplay\snapshot\evaluator\extrapolator\IBenGameExtrapolator.h" />
+    <ClInclude Include="bot\gameplay\snapshot\evaluator\extrapolator\ABenGameExtrapolator.h" />
+    <ClInclude Include="bot\type\quest\BenQuester.h" />
+    <ClInclude Include="bot\gameplay\snapshot\evaluator\IBenGameSnapshotEvaluator.h" />
+    <ClInclude Include="bot\type\base\ABenAgent.h" />
+    <ClInclude Include="bot\type\base\BenLoginAgent.h" />
+    <ClInclude Include="BenAgents.h" />
+    <ClInclude Include="bot\type\dumb\BenIdleAgent.h" />
+    <ClInclude Include="bot\type\travel\ABenTraveller.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="bot\gameplay\snapshot\object\WowUnitSnapshot.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="bot\base\ABen.cpp" />
-    <ClCompile Include="bot\BenSimple.cpp" />
-    <ClCompile Include="bot\champion\ABenChampion.cpp" />
-    <ClCompile Include="interpretation\interpretator\ABenGameInterpretor.cpp" />
-    <ClCompile Include="interpretation\interpretator\extrapolator\ABenGameExtrapolator.cpp" />
-    <ClCompile Include="bot\patrol\ABenPatroller.cpp" />
-    <ClCompile Include="bot\travel\ABenTraveller.cpp" />
-    <ClCompile Include="bot\base\BenLogin.cpp" />
+    <ClCompile Include="bot\type\champion\base\ABenTamerChampion.cpp" />
+    <ClCompile Include="bot\gameplay\snapshot\object\WowPlayerSnapshot.cpp" />
+    <ClCompile Include="bot\gameplay\snapshot\object\WowObjectSnapshot.cpp" />
+    <ClCompile Include="bot\type\champion\base\ABenWrestlerChampion.cpp" />
+    <ClCompile Include="bot\type\base\ABenAgent.cpp" />
+    <ClCompile Include="bot\type\champion\base\ABenChampion.cpp" />
+    <ClCompile Include="bot\type\champion\base\ABenDistantChampion.cpp" />
+    <ClCompile Include="bot\type\champion\hunter\BenHunterChampion.cpp" />
+    <ClCompile Include="bot\type\poly\BenPolyAgent.cpp" />
+    <ClCompile Include="bot\type\dumb\BenIdleAgent.cpp" />
+    <ClCompile Include="bot\type\runagate\BenRunagate.cpp" />
+    <ClCompile Include="bot\gameplay\ABenGameplay.cpp" />
+    <ClCompile Include="bot\gameplay\snapshot\evaluator\extrapolator\BenGameLinearExtrapolator.cpp" />
+    <ClCompile Include="bot\gameplay\snapshot\evaluator\BenGameSnapshotEvaluator.cpp" />
+    <ClCompile Include="bot\gameplay\snapshot\evaluator\ABenGameSnapshotEvaluator.cpp" />
+    <ClCompile Include="bot\gameplay\snapshot\evaluator\extrapolator\ABenGameExtrapolator.cpp" />
+    <ClCompile Include="bot\type\patrol\ABenPatroller.cpp" />
+    <ClCompile Include="bot\type\travel\ABenTraveller.cpp" />
+    <ClCompile Include="bot\type\base\BenLoginAgent.cpp" />
+    <ClCompile Include="bot\gameplay\model\RadiusZone.cpp" />
+    <ClCompile Include="bot\gameplay\model\Threat.cpp" />
+    <ClCompile Include="bot\gameplay\snapshot\ABenGameSnapshot.cpp" />
+    <ClCompile Include="bot\gameplay\snapshot\BenGameSnapshot.cpp" />
+    <ClCompile Include="bot\gameplay\model\BoundingBox.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="bot\gameplay\snapshot\object\WowUnitSnapshot.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

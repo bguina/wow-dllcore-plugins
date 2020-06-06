@@ -21,64 +21,112 @@
     <ClInclude Include="pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="bot\BenSimple.h">
+    <ClInclude Include="BenAgents.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="bot\base\ABen.h">
+    <ClInclude Include="bot\type\travel\ABenTraveller.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="BenBots.h">
+    <ClInclude Include="bot\type\base\ABenAgent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="bot\patrol\ABenPatroller.h">
+    <ClInclude Include="bot\type\base\BenLoginAgent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="bot\base\BenLogin.h">
+    <ClInclude Include="bot\type\champion\hunter\BenHunterChampion.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="bot\meta\BenRoot.h">
+    <ClInclude Include="bot\type\dumb\BenIdleAgent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="bot\meta\IBenPoly.h">
+    <ClInclude Include="bot\type\economy\fish\IBenFisher.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="bot\quest\BenQuester.h">
+    <ClInclude Include="bot\type\patrol\ABenPatroller.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="bot\champion\ABenChampion.h">
+    <ClInclude Include="bot\type\poly\BenPolyAgent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="bot\champion\ABenRunagate.h">
+    <ClInclude Include="bot\type\quest\BenQuester.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="bot\economy\fish\IBenFisher.h">
+    <ClInclude Include="bot\type\runagate\BenRunagate.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="interpretation\interpretator\extrapolator\ABenGameExtrapolator.h">
+    <ClInclude Include="bot\gameplay\model\BoundingBox.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="interpretation\interpretator\extrapolator\IBenGameExtrapolator.h">
+    <ClInclude Include="bot\gameplay\model\IThreat.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="interpretation\interpretator\ABenGameInterpretor.h">
+    <ClInclude Include="bot\gameplay\model\RadiusThreatZone.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="interpretation\interpretator\IBenGameInterpretor.h">
+    <ClInclude Include="bot\gameplay\model\RadiusZone.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="interpretation\BenGameInterpretation.cpp">
+    <ClInclude Include="bot\gameplay\model\Threat.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="interpretation\BenGameInterpretation.h">
+    <ClInclude Include="bot\gameplay\snapshot\evaluator\extrapolator\ABenGameExtrapolator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="interpretation\IBenGameInterpretation.h">
+    <ClInclude Include="bot\gameplay\snapshot\evaluator\extrapolator\BenGameLinearExtrapolator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="interpretation\ThreatZone.h">
+    <ClInclude Include="bot\gameplay\snapshot\evaluator\extrapolator\IBenGameExtrapolator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="bot\travel\ABenTraveller.h">
+    <ClInclude Include="bot\gameplay\snapshot\evaluator\ABenGameSnapshotEvaluator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bot\gameplay\snapshot\evaluator\BenGameSnapshotEvaluator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bot\gameplay\snapshot\evaluator\IBenGameSnapshotEvaluator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bot\gameplay\snapshot\object\WowUnitSnapshot.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bot\gameplay\snapshot\ABenGameSnapshot.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bot\gameplay\snapshot\BenGameSnapshot.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bot\gameplay\snapshot\IBenGameSnapshot.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bot\gameplay\ABenGameplay.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bot\gameplay\IBenGameplay.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bot\gameplay\Percent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bot\gameplay\snapshot\object\WowObjectSnapshot.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bot\gameplay\snapshot\object\WowPlayerSnapshot.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bot\gameplay\BenRecordedGameplay.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bot\type\champion\base\ABenDistantChampion.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bot\type\champion\base\ABenTamerChampion.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bot\type\champion\base\ABenWrestlerChampion.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bot\type\champion\base\ABenChampion.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -86,28 +134,79 @@
     <ClCompile Include="pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="bot\BenSimple.cpp">
+    <ClCompile Include="bot\type\travel\ABenTraveller.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="bot\base\ABen.cpp">
+    <ClCompile Include="bot\type\base\ABenAgent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="bot\patrol\ABenPatroller.cpp">
+    <ClCompile Include="bot\type\base\BenLoginAgent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="bot\base\BenLogin.cpp">
+    <ClCompile Include="bot\type\dumb\BenIdleAgent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="bot\champion\ABenChampion.cpp">
+    <ClCompile Include="bot\type\patrol\ABenPatroller.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="interpretation\interpretator\extrapolator\ABenGameExtrapolator.cpp">
+    <ClCompile Include="bot\type\poly\BenPolyAgent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="interpretation\interpretator\ABenGameInterpretor.cpp">
+    <ClCompile Include="bot\type\runagate\BenRunagate.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="bot\travel\ABenTraveller.cpp">
+    <ClCompile Include="bot\gameplay\model\BoundingBox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="bot\gameplay\model\RadiusZone.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="bot\gameplay\model\Threat.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="bot\gameplay\snapshot\evaluator\extrapolator\ABenGameExtrapolator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="bot\gameplay\snapshot\evaluator\extrapolator\BenGameLinearExtrapolator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="bot\gameplay\snapshot\evaluator\ABenGameSnapshotEvaluator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="bot\gameplay\snapshot\evaluator\BenGameSnapshotEvaluator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="bot\gameplay\snapshot\object\WowUnitSnapshot.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="bot\gameplay\snapshot\ABenGameSnapshot.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="bot\gameplay\snapshot\BenGameSnapshot.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="bot\gameplay\ABenGameplay.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="bot\gameplay\snapshot\object\WowObjectSnapshot.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="bot\gameplay\snapshot\object\WowPlayerSnapshot.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="bot\type\champion\hunter\BenHunterChampion.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="bot\type\champion\base\ABenDistantChampion.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="bot\type\champion\base\ABenTamerChampion.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="bot\type\champion\base\ABenWrestlerChampion.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="bot\type\champion\base\ABenChampion.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

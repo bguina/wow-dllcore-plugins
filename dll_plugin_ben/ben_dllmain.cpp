@@ -3,7 +3,7 @@
 
 #include "WowPlugin.h"
 #include "FileLogger.h"
-#include "BenBots.h"
+#include "BenAgents.h"
 
 WowPlugin* gContainedPlugin = nullptr;
 
@@ -11,16 +11,16 @@ extern "C" int __declspec(dllexport) __stdcall DllPlugin_OnLoad() {
 	FileLogger dbg("ben_dllmain");
 
 	dbg << "DllPlugin_OknLoad" << std::endl;
-	auto basic = new BenSimple();
+	auto* basic = new BenIdleAgent();
 
-	auto complex = new BenPoly(
+	auto* complex = new BenPolyAgent(
 		nullptr,
 		nullptr,
 		basic
 	);
 
 	gContainedPlugin = new WowPlugin();
-	gContainedPlugin->attachBot(complex);
+	gContainedPlugin->attachBot(basic);
 	return 0;
 }
 
