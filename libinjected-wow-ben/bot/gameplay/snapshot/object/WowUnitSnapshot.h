@@ -10,20 +10,20 @@ public:
 	WowUnitSnapshot(const WowUnitObject& obj);
 	virtual ~WowUnitSnapshot();
 
-	WowUnitClass getClass() const ;
-	WowUnitRace getRace() const ;
-	int getLevel() const ;
-	int getHealth() const ;
-	int getMaxHealth() const ;
+	WowUnitClass getClass() const;
+	WowUnitRace getRace() const;
+	int getLevel() const;
+	int getHealth() const;
+	int getMaxHealth() const;
 	bool isDead() const;
-	int getEnergy() const ;
-	int getMaxEnergy() const ;
-	bool isInCombat() const ;
-	bool isLootable() const ;
-	bool isTappedByOther() const ;
-	bool isTappedByMe() const ;
-	WowGuid128 getSummonedBy() const ;
-	WowGuid128 getTargetGuid() const ;
+	int getEnergy() const;
+	int getMaxEnergy() const;
+	bool isInCombat() const;
+	bool isLootable() const;
+	bool isTappedByOther() const;
+	bool isTappedByMe() const;
+	WowGuid128 getSummonedBy() const;
+	WowGuid128 getTargetGuid() const;
 	
 protected:
 	WowUnitRace mRace;

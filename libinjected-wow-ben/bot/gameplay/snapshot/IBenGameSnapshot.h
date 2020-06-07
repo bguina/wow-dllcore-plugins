@@ -16,9 +16,10 @@ public:
 	virtual Timestamp getTimestamp() const = 0;
 	virtual long getNetworkLatencyMs() const = 0;
 
-	virtual const UnitList& listHostiles() const = 0;
-	virtual const UnitList& listNonHostiles() const = 0;
-
+	virtual const UnitList& getHostileList() const = 0;
+	virtual const UnitList& getNonHostileList() const = 0;
+	virtual std::shared_ptr<const WowUnitSnapshot> getUnitByGuid(WowGuid128 guid) const = 0;
+	
 	virtual const WowPlayerObject* getSelf() const = 0;
 
 	bool operator<(const IBenGameSnapshot& b) const

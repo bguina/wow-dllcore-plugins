@@ -2,3 +2,5 @@
 
 #include "bot/type/dumb/BenIdleAgent.h"
 #include "bot/type/poly/BenPolyAgent.h"
+#include "bot/type/patrol/path/BenPathPatroller.h"
+#include "bot/type/champion/hunter/BenHunterChampion.h"

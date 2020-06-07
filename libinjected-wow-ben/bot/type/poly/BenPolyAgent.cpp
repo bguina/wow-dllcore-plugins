@@ -2,53 +2,61 @@
 
 #include "../base/BenLoginAgent.h"
 
-BenPolyAgent::BenPolyAgent(BenLoginAgent* login, ABenAgent* characterSelector, ABenAgent* task) :
+BenPolyAgent::BenPolyAgent(BenLoginAgent* login, ABenAgent* characterSelector, IWowBot* gameAgent) :
 	ABenAgent(nullptr, "BenPolyAgent"),
 	mLogin(login),
 	mCharacterSelector(characterSelector),
-	mTask(task)
+	mGameAgent(gameAgent)
 {
-
+	if (nullptr != login) mNestedAgents.push_back(login);
+	if (nullptr != characterSelector) mNestedAgents.push_back(characterSelector);
+	if (nullptr != gameAgent) mNestedAgents.push_back(gameAgent);
 }
 
 BenPolyAgent::~BenPolyAgent() = default;
 
-bool BenPolyAgent::onEvaluatedIdle() {
+bool BenPolyAgent::onEvaluatedIdle()
+{
 	FileLogger dbg(mDbg, "onEvaluate");
 	IWowBot* bot = nullptr;
 
-	if (nullptr != mTask) {
-		if (!mGame->isLoading()) {
-			if (!mGame->isLoggedIn()) {
+	if (nullptr != mGameAgent) 
+	{
+		if (!mGame->isLoading()) 
+		{
+			if (!mGame->isLoggedIn()) 
+			{
 				dbg << FileLogger::debug << "game is not logged in" << FileLogger::normal << std::endl;
 				bot = mLogin.get();
 			}
-			else if (!mGame->isInGameOrLoading()) {
+			else if (!mGame->isInGameOrLoading())
+			{
 				dbg << FileLogger::debug << "no character selection" << FileLogger::normal << std::endl;
 				bot = mCharacterSelector.get();
 			}
-			else {
+			else 
+			{
 				dbg << FileLogger::debug << "tasking" << FileLogger::normal << std::endl;
-				bot = mTask.get();
+				bot = mGameAgent.get();
 			}
 		}
-		else {
+		else 
+		{
 			dbg << FileLogger::debug << "game is loading" << FileLogger::normal << std::endl;
 		}
 	}
 
-	if (nullptr != bot) {
+	if (nullptr != bot) 
+	{
 		dbg << FileLogger::debug << "evaluated to run " << bot->getTag() << FileLogger::normal << std::endl;
-
 		return bot->onEvaluate();
 	}
-	else {
-		dbg << FileLogger::warn << "no idea what to do" << FileLogger::normal << std::endl;
-		// todo disconnect
-	}
+
+	dbg << FileLogger::warn << "no idea what to do" << FileLogger::normal << std::endl;
 	return false;
 }
 
-void BenPolyAgent::assignTask(IWowBot* task) {
-	mTask.reset(task);
+void BenPolyAgent::assignTask(IWowBot* task)
+{
+	mGameAgent.reset(task);
 }

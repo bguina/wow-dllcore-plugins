@@ -160,6 +160,9 @@
     <ClInclude Include="bot\type\champion\base\ABenWrestlerChampion.h" />
     <ClInclude Include="bot\type\champion\base\ABenChampion.h" />
     <ClInclude Include="bot\type\champion\base\ABenDistantChampion.h" />
+    <ClInclude Include="bot\type\champion\attitude\BenChampionDominantAttitude.h" />
+    <ClInclude Include="bot\type\patrol\base\ABenWaypointsPatroller.h" />
+    <ClInclude Include="bot\type\patrol\path\BenPathPatroller.h" />
     <ClInclude Include="bot\type\poly\BenPolyAgent.h" />
     <ClInclude Include="bot\type\champion\hunter\BenHunterChampion.h" />
     <ClInclude Include="bot\type\runagate\BenRunagate.h" />
@@ -179,7 +182,7 @@
     <ClInclude Include="bot\gameplay\model\IThreat.h" />
     <ClInclude Include="bot\gameplay\snapshot\IBenGameSnapshot.h" />
     <ClInclude Include="bot\gameplay\model\Threat.h" />
-    <ClInclude Include="bot\type\patrol\ABenPatroller.h" />
+    <ClInclude Include="bot\type\patrol\base\ABenPatroller.h" />
     <ClInclude Include="bot\gameplay\snapshot\evaluator\extrapolator\IBenGameExtrapolator.h" />
     <ClInclude Include="bot\gameplay\snapshot\evaluator\extrapolator\ABenGameExtrapolator.h" />
     <ClInclude Include="bot\type\quest\BenQuester.h" />
@@ -188,8 +191,9 @@
     <ClInclude Include="bot\type\base\BenLoginAgent.h" />
     <ClInclude Include="BenAgents.h" />
     <ClInclude Include="bot\type\dumb\BenIdleAgent.h" />
-    <ClInclude Include="bot\type\travel\ABenTraveller.h" />
+    <ClInclude Include="bot\type\travel\ABenTraveler.h" />
     <ClInclude Include="framework.h" />
+    <ClInclude Include="bot\type\champion\attitude\IBenChampionAttitude.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="bot\gameplay\snapshot\object\WowUnitSnapshot.h" />
   </ItemGroup>
@@ -202,6 +206,9 @@
     <ClCompile Include="bot\type\champion\base\ABenChampion.cpp" />
     <ClCompile Include="bot\type\champion\base\ABenDistantChampion.cpp" />
     <ClCompile Include="bot\type\champion\hunter\BenHunterChampion.cpp" />
+    <ClCompile Include="bot\type\champion\attitude\BenChampionDominantAttitude.cpp" />
+    <ClCompile Include="bot\type\patrol\base\ABenWaypointsPatroller.cpp" />
+    <ClCompile Include="bot\type\patrol\path\BenPathPatroller.cpp" />
     <ClCompile Include="bot\type\poly\BenPolyAgent.cpp" />
     <ClCompile Include="bot\type\dumb\BenIdleAgent.cpp" />
     <ClCompile Include="bot\type\runagate\BenRunagate.cpp" />
@@ -210,8 +217,8 @@
     <ClCompile Include="bot\gameplay\snapshot\evaluator\BenGameSnapshotEvaluator.cpp" />
     <ClCompile Include="bot\gameplay\snapshot\evaluator\ABenGameSnapshotEvaluator.cpp" />
     <ClCompile Include="bot\gameplay\snapshot\evaluator\extrapolator\ABenGameExtrapolator.cpp" />
-    <ClCompile Include="bot\type\patrol\ABenPatroller.cpp" />
-    <ClCompile Include="bot\type\travel\ABenTraveller.cpp" />
+    <ClCompile Include="bot\type\patrol\base\ABenPatroller.cpp" />
+    <ClCompile Include="bot\type\travel\ABenTraveler.cpp" />
     <ClCompile Include="bot\type\base\BenLoginAgent.cpp" />
     <ClCompile Include="bot\gameplay\model\RadiusZone.cpp" />
     <ClCompile Include="bot\gameplay\model\Threat.cpp" />

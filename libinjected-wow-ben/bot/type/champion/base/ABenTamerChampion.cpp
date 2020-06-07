@@ -3,28 +3,28 @@
 #include "../../../gameplay/BenRecordedGameplay.h"
 #include "../../../gameplay/snapshot/evaluator/BenGameSnapshotEvaluator.h"
 
-ABenTamerChampion::ABenTamerChampion(const std::string& tag, ABenAgent* runagate) :
-	ABenDistantChampion(tag, runagate)
+ABenTamerChampion::ABenTamerChampion(IBenGameplay* gameplay, const std::string& tag, ABenAgent* runagate) :
+	ABenDistantChampion(gameplay, tag, runagate)
 {
 }
 
 ABenTamerChampion::~ABenTamerChampion() = default;
 
-void ABenTamerChampion::onUnitAggro(const WowUnitObject & object)
+void ABenTamerChampion::onUnitAggro(const std::shared_ptr<const WowUnitObject>& object)
 {
 }
 
-void ABenTamerChampion::onUnitTap(const WowUnitObject & object)
+void ABenTamerChampion::onUnitTap(const std::shared_ptr<const WowUnitObject>& object)
 {
 }
 
-void ABenTamerChampion::onUnitKill(const WowUnitObject & object)
+void ABenTamerChampion::onUnitDeath(const std::shared_ptr<const WowUnitObject>& object)
 {
 }
 
 bool ABenTamerChampion::onEvaluatedInFight()
 {
-	const auto frame = mGameplay->getLastFrame();
+	const auto frame = mGameplay->front();
 
 	if (nullptr != frame) {
 	}

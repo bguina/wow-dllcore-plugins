@@ -48,42 +48,42 @@ void BenIdleAgent::onCombatEnd()
 	dbg << dbg.i() << "call" << dbg.endl();
 }
 
-bool BenIdleAgent::isPositionSatisfying(const WowVector3f & position)
+bool BenIdleAgent::isPositionSatisfying(const WowVector3f& position)
 {
 	return true;
 }
 
-bool BenIdleAgent::attack(const WowUnitObject & unit)
+bool BenIdleAgent::engage(const WowUnitObject& unit)
 {
 	return false;
 }
 
-void BenIdleAgent::onUnitTap(const WowUnitObject & object)
+void BenIdleAgent::onUnitTap(const std::shared_ptr<const WowUnitObject>& object)
 {
 	FileLogger dbg(mDbg, "onUnitTap");
 
 	dbg << dbg.v() << "onUnitTap " << dbg.endl();
 }
 
-void BenIdleAgent::onUnitAggro(const WowUnitObject & object)
+void BenIdleAgent::onUnitAggro(const std::shared_ptr<const WowUnitObject>& object)
 {
 	FileLogger dbg(mDbg, "onUnitAggro");
 
 	dbg << dbg.w() << "onUnitAggro " << dbg.endl();
 }
 
-void BenIdleAgent::onUnitUnaggro(const WowUnitObject & object)
+void BenIdleAgent::onUnitAggroLost(const std::shared_ptr<const WowUnitObject>& object)
 {
-	FileLogger dbg(mDbg, "onUnitUnaggro");
+	FileLogger dbg(mDbg, "onUnitAggroLost");
 
-	dbg << dbg.w() << "onUnitUnaggro " << dbg.endl();
+	dbg << dbg.w() << "onUnitAggroLost " << dbg.endl();
 }
 
-void BenIdleAgent::onUnitKill(const WowUnitObject & object)
+void BenIdleAgent::onUnitDeath(const std::shared_ptr<const WowUnitObject>& object)
 {
-	FileLogger dbg(mDbg, "onUnitKill");
+	FileLogger dbg(mDbg, "onUnitDeath");
 
-	dbg << dbg.i() << "onUnitKill" << dbg.endl();
+	dbg << dbg.i() << "onUnitDeath" << dbg.endl();
 }
 
 float BenIdleAgent::getEngagementRange() const
@@ -98,32 +98,26 @@ float BenIdleAgent::getPreferredRange() const
 
 bool BenIdleAgent::onEvaluatedInFight()
 {
-	const auto& frame(mGameplay->getLastFrame());
-	FileLogger dbg(mDbg, "onEvaluatedIdle");
+	//FileLogger dbg(mDbg, "onEvaluatedIdle");
 
 	if (isInCombat())
 	{
 		// I was in combat before?
 		const auto targetTimestamp(GetTickCount64() - 2000);
-		const auto& snapshot((*mGameplay)[targetTimestamp]);
+		//const auto& snapshot((*mGameplay)[targetTimestamp]);
 
-		if (nullptr != snapshot)
-		{
-			dbg << dbg.i() << "found snapshot with delta" << IBenGameplay::timestampDelta(targetTimestamp, snapshot->getTimestamp()) << dbg.endl();
-		}
+		//dbg << dbg.i() << "found snapshot with delta" << IBenGameplay::timestampDelta(targetTimestamp, snapshot->getTimestamp()) << dbg.endl();
 	}
 	else
 	{
-		//const auto targetTimestamp(GetTickCount64() - 2000);
+		const auto targetTimestamp(GetTickCount64() - 2000);
 		//const auto& snapshot((*mGameplay)[targetTimestamp]);
 
-		//dbg << dbg.i() << "current" << mGameplay->getRecordedDuration() << dbg.endl();
-		//dbg << dbg.i() << "max    " << mGameplay->getMaxRecordDuration() << dbg.endl();
+		//dbg << dbg.i() << "current delta " << IBenGameplay::timestampDelta(targetTimestamp, snapshot->getTimestamp()) << dbg.endl();
 	}
 
-	
-
+	//const auto& frame(mGameplay->front());
 	//dbg << dbg.d() << "idle success at frame" << frame.getTimestamp() << dbg.endl();
-	return true;
+	return false;
 }
 

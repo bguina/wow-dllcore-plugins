@@ -1,18 +1,18 @@
 
-#include "ABenTraveller.h"
+#include "ABenTraveler.h"
 
 #include "../../gameplay/snapshot/evaluator/BenGameSnapshotEvaluator.h"
 #include "../../gameplay/BenRecordedGameplay.h"
 
-ABenTraveller::ABenTraveller(const std::string& tag) :
+ABenTraveler::ABenTraveler(const std::string& tag) :
 	ABenAgent(new BenRecordedGameplay<60000, 10000>(new BenGameSnapshotEvaluator()), tag)
 {
 }
 
-ABenTraveller::~ABenTraveller()
+ABenTraveler::~ABenTraveler()
 = default;
 
-bool ABenTraveller::supportsThreatsAvoidance() const {
+bool ABenTraveler::supportsThreatsAvoidance() const {
 	return false;
 }
 //void BenTravel::onResume() {

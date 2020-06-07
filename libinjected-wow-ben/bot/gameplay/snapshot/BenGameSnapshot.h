@@ -10,8 +10,10 @@ public:
 
 	long getNetworkLatencyMs() const override;
 
-	const UnitList& listHostiles() const override;
-	const UnitList& listNonHostiles() const override;
+	const UnitList& getHostileList() const override;
+	const UnitList& getNonHostileList() const override;
+
+	std::shared_ptr<const WowUnitSnapshot> getUnitByGuid(WowGuid128 guid) const override;
 
 protected:
 	/**

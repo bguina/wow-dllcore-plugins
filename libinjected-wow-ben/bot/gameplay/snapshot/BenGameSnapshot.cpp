@@ -14,7 +14,7 @@ BenGameSnapshot::BenGameSnapshot(const WowGame& game) :
 		for (auto it = allUnits.begin(); it != allUnits.end(); ++it)
 		{
 			const auto& unit(**it);
-			auto& factionList(self->canAttack(game, unit) ? mHostileUnits : mNonHostileUnits);
+			auto& factionList(/*self->isFriendly(game, unit) ? mNonHostileUnits :*/ mHostileUnits);
 
 			factionList.push_back(std::make_unique<WowUnitSnapshot>(**it));
 		}
@@ -28,12 +28,29 @@ long BenGameSnapshot::getNetworkLatencyMs() const
 	return 0;
 }
 
-const IBenGameSnapshot::UnitList& BenGameSnapshot::listHostiles() const
+const IBenGameSnapshot::UnitList& BenGameSnapshot::getHostileList() const
 {
 	return mHostileUnits;
 }
 
-const IBenGameSnapshot::UnitList& BenGameSnapshot::listNonHostiles() const
+const IBenGameSnapshot::UnitList& BenGameSnapshot::getNonHostileList() const
 {
 	return mNonHostileUnits;
+}
+
+std::shared_ptr<const WowUnitSnapshot> BenGameSnapshot::getUnitByGuid(WowGuid128 guid) const
+{
+	const auto itHostile(std::find_if(mHostileUnits.begin(), mHostileUnits.end(), [&guid](const auto& v) { return v->getGuid() == guid; }));
+
+	if (mHostileUnits.end() == itHostile)
+	{
+		const auto itFriend(std::find_if(mNonHostileUnits.begin(), mNonHostileUnits.end(), [&guid](const auto& v) { return v->getGuid() == guid; }));
+
+		if (mNonHostileUnits.end() == itFriend)
+		{
+			return nullptr;
+		}
+		return *itFriend;
+	}
+	return *itHostile;
 }

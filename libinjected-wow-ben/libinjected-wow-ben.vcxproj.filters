@@ -24,9 +24,6 @@
     <ClInclude Include="BenAgents.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="bot\type\travel\ABenTraveller.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="bot\type\base\ABenAgent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -40,9 +37,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="bot\type\economy\fish\IBenFisher.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="bot\type\patrol\ABenPatroller.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="bot\type\poly\BenPolyAgent.h">
@@ -129,12 +123,27 @@
     <ClInclude Include="bot\type\champion\base\ABenChampion.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="bot\type\champion\attitude\IBenChampionAttitude.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bot\type\champion\attitude\BenChampionDominantAttitude.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bot\type\patrol\base\ABenPatroller.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bot\type\patrol\base\ABenWaypointsPatroller.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bot\type\travel\ABenTraveler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bot\type\patrol\path\BenPathPatroller.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="bot\type\travel\ABenTraveller.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="bot\type\base\ABenAgent.cpp">
@@ -144,9 +153,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="bot\type\dumb\BenIdleAgent.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="bot\type\patrol\ABenPatroller.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="bot\type\poly\BenPolyAgent.cpp">
@@ -207,6 +213,21 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="bot\type\champion\base\ABenChampion.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="bot\type\champion\attitude\BenChampionDominantAttitude.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="bot\type\patrol\base\ABenPatroller.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="bot\type\patrol\base\ABenWaypointsPatroller.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="bot\type\travel\ABenTraveler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="bot\type\patrol\path\BenPathPatroller.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

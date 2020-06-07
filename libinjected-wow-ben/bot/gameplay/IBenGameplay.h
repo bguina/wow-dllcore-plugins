@@ -19,11 +19,13 @@ public:
 	virtual bool snap(const WowGame& game) = 0;
 
 	virtual std::shared_ptr<const IBenGameSnapshot> getFrameAtTimestamp(Timestamp ms) const = 0;
-	virtual std::shared_ptr<const IBenGameSnapshot> getLastFrame() const = 0;
+	virtual std::shared_ptr<const IBenGameSnapshot> back() const = 0;
+	virtual std::shared_ptr<const IBenGameSnapshot> previous() const = 0;
+	virtual std::shared_ptr<const IBenGameSnapshot> front() const = 0;
 
+	virtual size_t getRecordsCount() const = 0;
 	virtual unsigned long long getRecordedDuration() const = 0;
 	virtual unsigned long long getMaxRecordDuration() const = 0;
-	virtual size_t getRecordsCount() const = 0;
-	
+
 	virtual std::shared_ptr<const IBenGameSnapshot> operator[](const Timestamp timestamp) const = 0;
 };

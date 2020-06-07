@@ -20,7 +20,7 @@ unsigned int ABenGameplay::getPeriodMilliseconds() const
 	return mPeriodMilliseconds;
 }
 
-void ABenGameplay::setPeriodMilliseconds(unsigned int fps)
+void ABenGameplay::setPeriodMilliseconds(const unsigned int periodMs)
 {
-	mPeriodMilliseconds = fps;
+	mPeriodMilliseconds = periodMs;
 }

@@ -14,8 +14,8 @@ WowUnitSnapshot::WowUnitSnapshot(const WowUnitObject& obj) :
 	mLootable(obj.isLootable()),
 	mTappedByOther(obj.isTappedByOther()),
 	mTappedByMe(obj.isTappedByMe()),
-	mSummonedBy(obj.getSummonedBy()),
-	mTarget(obj.getTargetGuid())
+	mSummonedBy(obj.getSummonedBy().upper(), obj.getSummonedBy().lower()),
+	mTarget(obj.getTargetGuid().upper(), obj.getTargetGuid().lower())
 {
 }
 

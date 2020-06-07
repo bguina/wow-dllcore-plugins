@@ -6,7 +6,6 @@
 #include "bot/BaseWowBot.h"
 
 #include "../../gameplay/IBenGameplay.h"
-#include "pathfinder/IPathFinder.h"
 
 class ABenAgent : public BaseWowBot {
 public:
@@ -28,26 +27,34 @@ public:
 	virtual void onGamePlayStop();
 
 	// combat lifecycle
+	virtual bool isInCombat() const;
 	virtual void onCombatStart();
 	virtual void onCombatEnd();
-	virtual bool isInCombat() const;
 
-	// What would the bot do? does it handle the situation?
-	virtual bool onEvaluatedIdle() = 0;
+	virtual void onUnitAggro(const std::shared_ptr<const WowUnitObject>& object);
+	virtual void onUnitAggroLost(const std::shared_ptr<const WowUnitObject>& object);
 	
 	virtual bool runAway();
 
 protected:
-	std::unique_ptr<IBenGameplay> mGameplay; // gives vague, approximate translation of the current ongoing game
-	std::unique_ptr<IPathFinder> mWaypoints; // we also might have an idea of where to walk
+	// "on game saved"
+	virtual bool updateFromSnapshot(const std::shared_ptr<const IBenGameSnapshot>& snapshot);
+
+	// What would the bot do? does it handle the situation?
+	virtual bool onEvaluatedIdle() = 0;
+	
+	std::list<IWowBot*> mNestedAgents;			// we might want to iterate those when a server message is received
+	std::unique_ptr<IBenGameplay> mGameplay;	// gives vague, approximate translation of the current ongoing game
 	std::shared_ptr<WowActivePlayerObject> mSelf;
 
 private:
 	// save current game state
 	virtual bool snapGameFrame();
-	virtual bool notifyGamePlay(bool inGameNow);
+	virtual void notifyGamePlay(bool inGameNow);
 	virtual bool notifyInCombat(bool inCombatNow);
 
 	bool mInGame;
 	bool mInCombat;
+	IBenGameSnapshot::Timestamp mLastEvalTimestamp;
+	std::list<std::shared_ptr<const WowUnitObject>> mAggroList;
 };

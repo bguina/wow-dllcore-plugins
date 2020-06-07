@@ -11,7 +11,7 @@ public:
 	std::shared_ptr<IBenGameSnapshot> takeSnapshot(const WowGame& game) const;
 
 	unsigned int getPeriodMilliseconds() const override;
-	void setPeriodMilliseconds(unsigned int fps) override;
+	void setPeriodMilliseconds(unsigned int periodMs) override;
 	
 protected:
 	unsigned int mPeriodMilliseconds;

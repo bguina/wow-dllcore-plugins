@@ -21,7 +21,7 @@ public:
 	bool snap(const WowGame& game) override
 	{
 		const Timestamp currentTime(game.getTime());
-		const auto lastFrame(getLastFrame());
+		const auto lastFrame(front());
 
 		if (nullptr == lastFrame || currentTime >= lastFrame->getTimestamp() + mPeriodMilliseconds)
 		{
@@ -44,26 +44,37 @@ public:
 		if (nullptr == mSnapshots[0]) return nullptr;
 
 		const auto lowerTimestamp(timestamp - mPeriodMilliseconds / 2); // peek one frame before
-		const auto latestIt(mSnapshots.begin() + mLastSnapshotIndex);
-		const typename SnapshotContainer::const_reverse_iterator rBeginFromLatest(latestIt);
-		const typename SnapshotContainer::const_reverse_iterator rBeginFromTail(mSnapshots.begin() + getRecordsCount());
-		const auto predicate = [](const auto& x, const auto& y) { return x->getTimestamp() >= y->getTimestamp(); };
-		const auto headResult(std::lower_bound(rBeginFromLatest, mSnapshots.rend(), std::make_shared<SnapshotTimestampSeeker>(lowerTimestamp), predicate));
-		const auto tailResult(std::lower_bound(rBeginFromTail, rBeginFromLatest, std::make_shared<SnapshotTimestampSeeker>(lowerTimestamp), predicate));
-		const auto nearest(tailResult != rBeginFromLatest && (headResult == mSnapshots.rend() || timestamp - tailResult->get()->getTimestamp() < timestamp - headResult->get()->getTimestamp()) ? tailResult : headResult);
+		const typename SnapshotContainer::const_reverse_iterator ritLatest(mSnapshots.begin() + mLastSnapshotIndex);
+		const typename SnapshotContainer::const_reverse_iterator ritTail(mSnapshots.begin() + getRecordsCount());
+		const auto p = [](const auto& x, const auto& y) { return x->getTimestamp() >= y->getTimestamp(); };
+		const auto head(std::lower_bound(ritLatest, mSnapshots.rend(), std::make_shared<SnapshotTimestampSeeker>(lowerTimestamp), p));
+		const auto tail(std::lower_bound(ritTail, ritLatest, std::make_shared<SnapshotTimestampSeeker>(lowerTimestamp), p));
+		const auto frame(tail != ritLatest && (head == mSnapshots.rend() || timestamp - tail->get()->getTimestamp() < timestamp - head->get()->getTimestamp()) ? tail : head);
 
-		if (nearest == mSnapshots.rend()) return nullptr;
+		if (frame == mSnapshots.rend()) return back();
 
-		const auto index(std::distance(std::begin(mSnapshots), nearest.base()) - 1);
+		const auto index(std::distance(std::begin(mSnapshots), frame.base()) - 1);
 		const auto nextIndex((index + 1) % getRecordsCount());
-		const auto& frameBefore(mSnapshots[index]);
-		const auto& frameAfter(mSnapshots[nextIndex]);
 
-		if (nullptr != frameAfter && timestamp - frameBefore->getTimestamp() > mPeriodMilliseconds / 2) return mSnapshots[nextIndex];
+		if (nullptr != mSnapshots[nextIndex] && timestamp - mSnapshots[index]->getTimestamp() > mPeriodMilliseconds / 2) return mSnapshots[nextIndex];
 		return mSnapshots[index];
 	}
 
-	std::shared_ptr<const IBenGameSnapshot> getLastFrame() const override
+	std::shared_ptr<const IBenGameSnapshot> back() const override
+	{
+		if (nullptr == mSnapshots[0]) return nullptr;
+		return mSnapshots[(mLastSnapshotIndex + 1) % getRecordsCount()];
+	}
+	
+	std::shared_ptr<const IBenGameSnapshot> previous() const override
+	{
+		if (nullptr == mSnapshots[0]) return nullptr;
+
+		const auto count(getRecordsCount());
+		return mSnapshots[(mLastSnapshotIndex + count - 1) % count];
+	}
+	
+	std::shared_ptr<const IBenGameSnapshot> front() const override
 	{
 		if (nullptr == mSnapshots[0]) return nullptr;
 		return mSnapshots[mLastSnapshotIndex];
@@ -77,9 +88,7 @@ public:
 	unsigned long long getRecordedDuration() const override
 	{
 		if (nullptr == mSnapshots[0]) return 0;
-		const auto firstSnapshotIndex((mLastSnapshotIndex + BUFFER_SIZE - 1) % BUFFER_SIZE);
-		const auto& firstSnapshot(mSnapshots[firstSnapshotIndex]);
-		return getLastFrame()->getTimestamp() - firstSnapshot->getTimestamp();
+		return front()->getTimestamp() - back()->getTimestamp();
 	}
 
 	unsigned long long getMaxRecordDuration() const override
@@ -102,14 +111,15 @@ protected:
 	class SnapshotTimestampSeeker : public IBenGameSnapshot
 	{
 	public:
-		SnapshotTimestampSeeker(long long time) : mTime(time) {}
+		SnapshotTimestampSeeker(const long long time) : mTime(time) {}
 
 		Timestamp getTimestamp() const override { return mTime; }
 		long getNetworkLatencyMs() const override { return 0; }
-		const UnitList& listHostiles() const override { return mDummy; }
-		const UnitList& listNonHostiles() const override { return mDummy; }
+		const UnitList& getHostileList() const override { return mDummy; }
+		const UnitList& getNonHostileList() const override { return mDummy; }
 		const WowPlayerObject* getSelf() const override { return nullptr; }
 
+		std::shared_ptr<const WowUnitSnapshot> getUnitByGuid(WowGuid128 guid) const override { return nullptr; }
 	private:
 		Timestamp mTime;
 		UnitList mDummy;

@@ -8,12 +8,12 @@
 
 class ABenTamerChampion : public ABenDistantChampion {
 public:
-	ABenTamerChampion(const std::string& tag, ABenAgent* runagate);
+	ABenTamerChampion(IBenGameplay* gameplay, const std::string& tag, ABenAgent* runagate);
 	virtual ~ABenTamerChampion();
 	
-	void onUnitTap(const WowUnitObject& object) override;
-	void onUnitAggro(const WowUnitObject& object) override;
-	void onUnitKill(const WowUnitObject& object) override;
+	void onUnitTap(const std::shared_ptr<const WowUnitObject>& object) override;
+	void onUnitAggro(const std::shared_ptr<const WowUnitObject>& object) override;
+	void onUnitDeath(const std::shared_ptr<const WowUnitObject>& object) override;
 
 protected:
 	bool onEvaluatedInFight() override;
