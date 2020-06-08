@@ -18,8 +18,9 @@ public:
 	void onCombatEnd() override;
 
 	bool isPositionSatisfying(const WowVector3f& position) override;
+	bool pull(const WowUnitObject& unit) override;
 	bool engage(const WowUnitObject& unit) override;
-	
+
 	void onUnitTap(const std::shared_ptr<const WowUnitObject>& object) override;
 	void onUnitAggro(const std::shared_ptr<const WowUnitObject>& object) override;
 	void onUnitAggroLost(const std::shared_ptr<const WowUnitObject>& object) override;

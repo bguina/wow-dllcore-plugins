@@ -1,16 +1,16 @@
 #include "BenHunterChampion.h"
 
-BenHunterChampion::BenHunterChampion(IBenGameplay* gameplay) :
+BenHunterChampion::BenHunterChampion(ABenWowGameEvaluator* gameplay) :
 	BenHunterChampion(gameplay, "BenHunterChampion", nullptr)
 {
 }
 
-BenHunterChampion::BenHunterChampion(IBenGameplay* gameplay, const std::string& tag) :
+BenHunterChampion::BenHunterChampion(ABenWowGameEvaluator* gameplay, const std::string& tag) :
 	BenHunterChampion(gameplay, tag, nullptr)
 {
 }
 
-BenHunterChampion::BenHunterChampion(IBenGameplay* gameplay, const std::string& tag, ABenChampion* runagate) :
+BenHunterChampion::BenHunterChampion(ABenWowGameEvaluator* gameplay, const std::string& tag, ABenChampion* runagate) :
 	ABenTamerChampion(gameplay, tag, runagate),
 	mSpells({ 3044, 1978, 2973})
 {

@@ -9,7 +9,8 @@ public:
 	virtual ~BenGameSnapshot();
 
 	long getNetworkLatencyMs() const override;
-
+	bool isInGame() const override;
+	bool isInCombat() const override;
 	const UnitList& getHostileList() const override;
 	const UnitList& getNonHostileList() const override;
 
@@ -19,6 +20,8 @@ protected:
 	/**
 	 *  https://www.bfilipek.com/2014/05/vector-of-objects-vs-vector-of-pointers.html
 	 */
+	bool mInGame;
+	bool mInCombat;
 	UnitList mHostileUnits;
 	UnitList mNonHostileUnits;
 };

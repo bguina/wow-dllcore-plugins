@@ -5,9 +5,11 @@
 
 #include "ABenChampion.h"
 
+class IBenGameEvaluator;
+
 class ABenWrestlerChampion : public ABenChampion {
 public:
-	ABenWrestlerChampion(IBenGameplay* gameplay, const std::string& tag, ABenAgent* runagate);
+	ABenWrestlerChampion(ABenWowGameEvaluator* gameplay, const std::string& tag, ABenAgent* runagate);
 	virtual ~ABenWrestlerChampion();
 
 	void onUnitTap(const std::shared_ptr<const WowUnitObject>& object) override;

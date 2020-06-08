@@ -2,49 +2,49 @@
 
 #include <array>
 
-#include "ABenGameplay.h"
+#include "IBenGameRecord.h"
+#include "snapshot/IBenGameSnapshot.h"
 
-template<unsigned int durationMs, unsigned int periodMs>
-class BenRecordedGameplay : public ABenGameplay
+template<unsigned int DurationMs, unsigned int PeriodMs>
+class ABenGameRecord : public IBenGameRecord
 {
 public:
-	BenRecordedGameplay(IBenGameSnapshotEvaluator* evaluator) :
-		ABenGameplay(periodMs, evaluator),
-		mDbg("BenRecordedGameplay"),
-		mLastSnapshotIndex(-1)
+	ABenGameRecord() :
+		mDbg("ABenGameRecord"),
+		mCursor(-1)
 	{
 		mSnapshots.fill(nullptr);
 	}
 
-	virtual ~BenRecordedGameplay() = default;
+	virtual ~ABenGameRecord() = default;
 
-	bool snap(const WowGame& game) override
+	bool record(const WowGame& game) override
 	{
 		const Timestamp currentTime(game.getTime());
 		const auto lastFrame(front());
 
-		if (nullptr == lastFrame || currentTime >= lastFrame->getTimestamp() + mPeriodMilliseconds)
+		if (nullptr == lastFrame || currentTime >= lastFrame->getTimestamp() + PeriodMs)
 		{
-			const auto snapshot(takeSnapshot(game));
+			const auto snapshot(makeSnapshot(game));
 
 			if (nullptr == snapshot)
 			{
 				return false;
 			}
 
-			mLastSnapshotIndex = (mLastSnapshotIndex + 1) % BUFFER_SIZE;
-			mSnapshots[mLastSnapshotIndex] = snapshot;
+			mCursor = (mCursor + 1) % BUFFER_SIZE;
+			mSnapshots[mCursor] = snapshot;
 		}
 
 		return true;
 	}
 
-	std::shared_ptr<const IBenGameSnapshot> getFrameAtTimestamp(Timestamp timestamp) const override
+	std::shared_ptr<const IBenGameSnapshot> getFrameAtTimestamp(IBenGameRecord::Timestamp timestamp) const override
 	{
 		if (nullptr == mSnapshots[0]) return nullptr;
 
-		const auto lowerTimestamp(timestamp - mPeriodMilliseconds / 2); // peek one frame before
-		const typename SnapshotContainer::const_reverse_iterator ritLatest(mSnapshots.begin() + mLastSnapshotIndex);
+		const auto lowerTimestamp(timestamp - PeriodMs / 2); // peek one frame before
+		const typename SnapshotContainer::const_reverse_iterator ritLatest(mSnapshots.begin() + mCursor);
 		const typename SnapshotContainer::const_reverse_iterator ritTail(mSnapshots.begin() + getRecordsCount());
 		const auto p = [](const auto& x, const auto& y) { return x->getTimestamp() >= y->getTimestamp(); };
 		const auto head(std::lower_bound(ritLatest, mSnapshots.rend(), std::make_shared<SnapshotTimestampSeeker>(lowerTimestamp), p));
@@ -56,33 +56,33 @@ public:
 		const auto index(std::distance(std::begin(mSnapshots), frame.base()) - 1);
 		const auto nextIndex((index + 1) % getRecordsCount());
 
-		if (nullptr != mSnapshots[nextIndex] && timestamp - mSnapshots[index]->getTimestamp() > mPeriodMilliseconds / 2) return mSnapshots[nextIndex];
+		if (nullptr != mSnapshots[nextIndex] && timestamp - mSnapshots[index]->getTimestamp() > PeriodMs / 2) return mSnapshots[nextIndex];
 		return mSnapshots[index];
 	}
 
 	std::shared_ptr<const IBenGameSnapshot> back() const override
 	{
 		if (nullptr == mSnapshots[0]) return nullptr;
-		return mSnapshots[(mLastSnapshotIndex + 1) % getRecordsCount()];
+		return mSnapshots[(mCursor + 1) % getRecordsCount()];
 	}
-	
+
 	std::shared_ptr<const IBenGameSnapshot> previous() const override
 	{
 		if (nullptr == mSnapshots[0]) return nullptr;
 
 		const auto count(getRecordsCount());
-		return mSnapshots[(mLastSnapshotIndex + count - 1) % count];
+		return mSnapshots[(mCursor + count - 1) % count];
 	}
-	
+
 	std::shared_ptr<const IBenGameSnapshot> front() const override
 	{
 		if (nullptr == mSnapshots[0]) return nullptr;
-		return mSnapshots[mLastSnapshotIndex];
+		return mSnapshots[mCursor];
 	}
 
 	size_t getRecordsCount() const override
 	{
-		return nullptr != mSnapshots.back() ? BUFFER_SIZE : mLastSnapshotIndex + 1;
+		return nullptr != mSnapshots.back() ? BUFFER_SIZE : mCursor + 1;
 	}
 
 	unsigned long long getRecordedDuration() const override
@@ -93,35 +93,48 @@ public:
 
 	unsigned long long getMaxRecordDuration() const override
 	{
-		return durationMs;
+		return DurationMs;
 	}
 
-	std::shared_ptr<const IBenGameSnapshot> operator[](const Timestamp timestamp) const override {
+	std::shared_ptr<const IBenGameSnapshot> operator[](const Timestamp timestamp) const
+	{
 		return getFrameAtTimestamp(timestamp);
 	}
 
+
+	bool forget() override
+	{
+		return false;
+	}
+
 protected:
-	static constexpr size_t BUFFER_SIZE = durationMs / periodMs;
+	virtual std::shared_ptr<IBenGameSnapshot> makeSnapshot(const WowGame& game) = 0;
+	
+	static constexpr size_t BUFFER_SIZE = DurationMs / PeriodMs; // number of required pointer array entries of snapshots
 	using SnapshotContainer = std::array<std::shared_ptr<IBenGameSnapshot>, BUFFER_SIZE>;
 
 	FileLogger mDbg;
 	SnapshotContainer mSnapshots;
-	size_t mLastSnapshotIndex;
+	size_t mCursor;
 
-	class SnapshotTimestampSeeker : public IBenGameSnapshot
+	class SnapshotTimestampSeeker final : public IBenGameSnapshot
 	{
 	public:
-		SnapshotTimestampSeeker(const long long time) : mTime(time) {}
+		SnapshotTimestampSeeker(const long long seekTime) : mTime(seekTime) { }
 
 		Timestamp getTimestamp() const override { return mTime; }
-		long getNetworkLatencyMs() const override { return 0; }
-		const UnitList& getHostileList() const override { return mDummy; }
-		const UnitList& getNonHostileList() const override { return mDummy; }
-		const WowPlayerObject* getSelf() const override { return nullptr; }
 
+		// no need for this, use dummy implementation
+		long getNetworkLatencyMs() const override { return 0; }
+		const UnitList& getHostileList() const override { return mDummyField; }
+		const UnitList& getNonHostileList() const override { return mDummyField; }
+		const WowPlayerObject* getSelf() const override { return nullptr; }
 		std::shared_ptr<const WowUnitSnapshot> getUnitByGuid(WowGuid128 guid) const override { return nullptr; }
+
+		bool isInGame() const override { return false; }
+		bool isInCombat() const override { return false; }
 	private:
 		Timestamp mTime;
-		UnitList mDummy;
+		UnitList mDummyField;
 	};
 };

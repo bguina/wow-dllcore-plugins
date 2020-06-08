@@ -1,12 +1,12 @@
 
 #include "BenRunagate.h"
-#include "../../gameplay/BenRecordedGameplay.h"
-#include "../../gameplay/snapshot/evaluator/BenGameSnapshotEvaluator.h"
+#include "../../gameplay/BenGameRecord.h"
+#include "../base/evaluator/BenWowGameEvaluator.h"
 
 const std::string TAG = "BenIdleAgent";
 
 BenRunagate::BenRunagate() :
-	ABenChampion(new BenRecordedGameplay<20000, 500>(new BenGameSnapshotEvaluator()), TAG, nullptr)
+	ABenChampion(new BenWowGameEvaluator(new BenGameRecord<20000, 500>()), TAG, nullptr)
 {
 }
 

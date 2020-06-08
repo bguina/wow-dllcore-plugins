@@ -1,11 +1,10 @@
 
 #include "ABenTraveler.h"
 
-#include "../../gameplay/snapshot/evaluator/BenGameSnapshotEvaluator.h"
-#include "../../gameplay/BenRecordedGameplay.h"
+#include "../../gameplay/BenGameRecord.h"
 
 ABenTraveler::ABenTraveler(const std::string& tag) :
-	ABenAgent(new BenRecordedGameplay<60000, 10000>(new BenGameSnapshotEvaluator()), tag)
+	ABenAgent(nullptr, tag) // fixme could crash without evaluator!
 {
 }
 

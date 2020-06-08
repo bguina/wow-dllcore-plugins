@@ -7,9 +7,9 @@
 
 class BenPathPatroller : public ABenWaypointsPatroller {
 public:
-	BenPathPatroller(IBenGameplay* gameplay, ABenChampion* combatBot);
-	BenPathPatroller(IBenGameplay* gameplay, const std::string& tag, ABenChampion* combatBot);
-	BenPathPatroller(IBenGameplay* gameplay, const std::string& tag, ABenTraveler* travelBot, ABenChampion* combatBot);
+	BenPathPatroller(ABenWowGameEvaluator* gameplay, ABenChampion* combatBot);
+	BenPathPatroller(ABenWowGameEvaluator* gameplay, const std::string& tag, ABenChampion* combatBot);
+	BenPathPatroller(ABenWowGameEvaluator* gameplay, const std::string& tag, ABenTraveler* travelBot, ABenChampion* combatBot);
 	virtual ~BenPathPatroller();
 
 	void onPathFound() override;

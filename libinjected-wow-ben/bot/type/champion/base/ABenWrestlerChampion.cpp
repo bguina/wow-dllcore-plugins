@@ -1,10 +1,9 @@
 
 #include "ABenWrestlerChampion.h"
-#include "../../../gameplay/BenRecordedGameplay.h"
-#include "../../../gameplay/snapshot/evaluator/BenGameSnapshotEvaluator.h"
+#include "../../../gameplay/ABenGameRecord.h"
 
-ABenWrestlerChampion::ABenWrestlerChampion(IBenGameplay* gameplay, const std::string& tag, ABenAgent* runagate) :
-	ABenChampion(gameplay/*new BenRecordedGameplay<10000, 200>(new BenGameSnapshotEvaluator())*/, tag, runagate)
+ABenWrestlerChampion::ABenWrestlerChampion(ABenWowGameEvaluator* gameplay, const std::string& tag, ABenAgent* runagate) :
+	ABenChampion(gameplay/*new ABenGameRecord<10000, 200>(new BenGameSnapshotEvaluator())*/, tag, runagate)
 {
 }
 
@@ -24,14 +23,6 @@ void ABenWrestlerChampion::onUnitDeath(const std::shared_ptr<const WowUnitObject
 
 bool ABenWrestlerChampion::onEvaluatedInFight()
 {
-	const auto frame = mGameplay->front();
-
-	if (nullptr != frame) {
-	}
-	else
-	{
-		// todo fixme
-	}
 
 	return false;
 }

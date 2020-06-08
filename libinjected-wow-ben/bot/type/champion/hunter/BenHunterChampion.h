@@ -7,9 +7,9 @@
 
 class BenHunterChampion : public ABenTamerChampion {
 public:
-	BenHunterChampion(IBenGameplay* gameplay);
-	BenHunterChampion(IBenGameplay* gameplay, const std::string& tag);
-	BenHunterChampion(IBenGameplay* gameplay, const std::string& tag, ABenChampion* runagate);
+	BenHunterChampion(ABenWowGameEvaluator* gameplay);
+	BenHunterChampion(ABenWowGameEvaluator* gameplay, const std::string& tag);
+	BenHunterChampion(ABenWowGameEvaluator* gameplay, const std::string& tag, ABenChampion* runagate);
 	virtual ~BenHunterChampion();
 
 	float getEngagementRange() const override;

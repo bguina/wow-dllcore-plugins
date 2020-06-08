@@ -3,12 +3,12 @@
 #include "pathfinder/LinearPathFinder.h"
 #include "ServerWowMessage.h"
 
-ABenWaypointsPatroller::ABenWaypointsPatroller(IBenGameplay* gameplay, const std::string& tag, ABenChampion* combatBot) :
+ABenWaypointsPatroller::ABenWaypointsPatroller(ABenWowGameEvaluator* gameplay, const std::string& tag, ABenChampion* combatBot) :
 	ABenWaypointsPatroller(gameplay, tag, nullptr, combatBot)
 {
 }
 
-ABenWaypointsPatroller::ABenWaypointsPatroller(IBenGameplay* gameplay, const std::string& tag, ABenTraveler* travelBot, ABenChampion* combatBot) :
+ABenWaypointsPatroller::ABenWaypointsPatroller(ABenWowGameEvaluator* gameplay, const std::string& tag, ABenTraveler* travelBot, ABenChampion* combatBot) :
 	ABenPatroller(gameplay, tag, travelBot, combatBot)
 {
 }

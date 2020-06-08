@@ -16,6 +16,8 @@ public:
 	virtual Timestamp getTimestamp() const = 0;
 	virtual long getNetworkLatencyMs() const = 0;
 
+	virtual bool isInGame() const = 0;
+	virtual bool isInCombat() const = 0;
 	virtual const UnitList& getHostileList() const = 0;
 	virtual const UnitList& getNonHostileList() const = 0;
 	virtual std::shared_ptr<const WowUnitSnapshot> getUnitByGuid(WowGuid128 guid) const = 0;

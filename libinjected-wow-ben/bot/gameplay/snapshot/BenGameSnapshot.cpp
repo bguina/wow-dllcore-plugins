@@ -4,7 +4,9 @@
 #include "game/WowGame.h"
 
 BenGameSnapshot::BenGameSnapshot(const WowGame& game) :
-	ABenGameSnapshot(game)
+	ABenGameSnapshot(game),
+	mInGame(nullptr != game.getObjectManager().getActivePlayer()),
+	mInCombat(mInGame&& game.getObjectManager().getActivePlayer()->isInCombat())
 {
 	const auto self(game.getObjectManager().getActivePlayer());
 
@@ -26,6 +28,16 @@ BenGameSnapshot::~BenGameSnapshot() = default;
 long BenGameSnapshot::getNetworkLatencyMs() const
 {
 	return 0;
+}
+
+bool BenGameSnapshot::isInGame() const
+{
+	return mInGame;
+}
+
+bool BenGameSnapshot::isInCombat() const
+{
+	return mInCombat;
 }
 
 const IBenGameSnapshot::UnitList& BenGameSnapshot::getHostileList() const

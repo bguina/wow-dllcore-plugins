@@ -1,14 +1,11 @@
 #include "ABenPatroller.h"
 
-#include "../../../gameplay/snapshot/evaluator/BenGameSnapshotEvaluator.h"
-#include "../../../gameplay/BenRecordedGameplay.h"
-
-ABenPatroller::ABenPatroller(IBenGameplay* gameplay, const std::string& tag, ABenChampion* combatBot) :
+ABenPatroller::ABenPatroller(ABenWowGameEvaluator* gameplay, const std::string& tag, ABenChampion* combatBot) :
 	ABenPatroller(gameplay, tag, nullptr, combatBot)
 {
 }
 
-ABenPatroller::ABenPatroller(IBenGameplay* gameplay, const std::string& tag, ABenTraveler* travelBot, ABenChampion* combatBot) :
+ABenPatroller::ABenPatroller(ABenWowGameEvaluator* gameplay, const std::string& tag, ABenTraveler* travelBot, ABenChampion* combatBot) :
 	ABenAgent(gameplay, tag),
 	mTraveler(travelBot),
 	mChamp(combatBot)
@@ -19,11 +16,7 @@ ABenPatroller::ABenPatroller(IBenGameplay* gameplay, const std::string& tag, ABe
 
 ABenPatroller::~ABenPatroller() = default;
 
-bool ABenPatroller::updateFromSnapshot(const std::shared_ptr<const IBenGameSnapshot>& snapshot)
-{
-	// todo detect if self if way out of the path, or back on it
-	return true;
-}
+
 
 bool ABenPatroller::onEvaluatedIdle()
 {
@@ -45,23 +38,25 @@ bool ABenPatroller::onEvaluatedIdle()
 		Vector3f nextWaypoint;
 		// no combat to handle
 
-		//std::list<std::shared_ptr<WowUnitSnapshot>> hostiles(mGame->getObjectManager().);
-		//hostiles.sort([&](const auto& a, const auto& b)->bool {
-		//	return evaluatePatrolRelativeThreat(*a) < evaluatePatrolRelativeThreat(*b);
-		//	//return posA.getDistanceTo(nextWaypoint) * mSelf->getPosition().getDistanceTo(posA) <
-		//		//posB.getDistanceTo(nextWaypoint) * mSelf->getPosition().getDistanceTo(posB);
-		//	});
+		std::list<std::shared_ptr<WowUnitObject>> hostiles(mGame->getObjectManager().allOfType<WowUnitObject>(WowObjectType::Unit));
+		hostiles.sort([&](const auto& a, const auto& b)->bool {
+			return evaluatePatrolRelativeThreat(*a) < evaluatePatrolRelativeThreat(*b);
+			//return posA.getDistanceTo(nextWaypoint) * mSelf->getPosition().getDistanceTo(posA) <
+				//posB.getDistanceTo(nextWaypoint) * mSelf->getPosition().getDistanceTo(posB);
+			});
 
 
-		//int i = 0;
-		//for (auto it = hostiles.begin(); it != hostiles.end(); ++it)
-		//{
-		//	++i;
-		//	dbg << dbg.i() << "threat #" << i << ": " << (*it)->getPosition().getDistanceTo(mSelf->getPosition()) << " level " << (*it)->getLevel() << dbg.endl();
-		//}
+		int i = 0;
+		for (auto it = hostiles.begin(); it != hostiles.end(); ++it)
+		{
+			++i;
+			dbg << dbg.i() << "threat #" << i << ": " << (*it)->getPosition().getDistanceTo(mSelf->getPosition()) << " level " << (*it)->getLevel() << dbg.endl();
+		}
+
 		
 		if (getPathFinder().getNextPosition(mSelf->getPosition(), nextWaypoint))
 		{
+			//mGameplay->estimatePathThreat(mGame, position, time)
 			// list all mobs around the path, listed by 1/(distance to us * nearest distance to path segment)
 			//std::vector<std::shared_ptr<WowUnitSnapshot>> hostiles(mGameplay->front()->getHostileList().begin(), mGameplay->front()->getHostileList().end());
 

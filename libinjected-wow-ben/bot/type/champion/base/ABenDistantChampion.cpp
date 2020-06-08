@@ -1,10 +1,9 @@
 
 #include "ABenDistantChampion.h"
-#include "../../../gameplay/BenRecordedGameplay.h"
-#include "../../../gameplay/snapshot/evaluator/BenGameSnapshotEvaluator.h"
+#include "../../../gameplay/ABenGameRecord.h"
 
-ABenDistantChampion::ABenDistantChampion(IBenGameplay* gameplay, const std::string& tag, ABenAgent* runagate) :
-	ABenChampion(gameplay/*new BenRecordedGameplay<15000, 1000>(new BenGameSnapshotEvaluator())*/, tag, runagate)
+ABenDistantChampion::ABenDistantChampion(ABenWowGameEvaluator* gameplay, const std::string& tag, ABenAgent* runagate) :
+	ABenChampion(gameplay/*new ABenGameRecord<15000, 1000>(new BenGameSnapshotEvaluator())*/, tag, runagate)
 {
 }
 

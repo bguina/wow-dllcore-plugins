@@ -1,20 +1,17 @@
 #include "ABenAgent.h"
 
-#include <algorithm>
-
 #include "game/WowGame.h"
 #include "pathfinder/LinearPathFinder.h"
 #include "ServerWowMessage.h"
+#include "evaluator/ABenWowGameEvaluator.h"
+#include "evaluator/IBenEvaluator.h"
 
 const std::string TAG = "ABenAgent";
 
-ABenAgent::ABenAgent(IBenGameplay* gameplay, const std::string& tag) :
+ABenAgent::ABenAgent(ABenWowGameEvaluator* gameplay, const std::string& tag) :
 	BaseWowBot(tag),
 	mGameplay(gameplay),
-	mSelf(nullptr),
-	mInGame(false),
-	mInCombat(false),
-	mLastEvalTimestamp(0)
+	mSelf(nullptr)
 {
 }
 
@@ -29,66 +26,52 @@ bool ABenAgent::attach(std::shared_ptr<WowGame> game) {
 
 void ABenAgent::onResume()
 {
-
+	onGamePlayStart();
 }
 
 void ABenAgent::onPause()
 {
-	notifyInCombat(false);
-	notifyGamePlay(false);
-	mSelf = nullptr;
+	onGamePlayStop();
 }
 
 bool ABenAgent::onEvaluate() {
 	FileLogger dbg(mDbg, "onEvaluate");
 
-	if (!snapGameFrame())
+	mSelf = mGame->getObjectManager().getActivePlayer();
+
+	if (nullptr == mGameplay || !mGameplay->read(*mGame) || !mGameplay->evaluate())
 	{
-		dbg << dbg.e() << "ABenAgent:L" << __LINE__ << ": snapGameFrame failed" << dbg.endl();
+		dbg << dbg.e() << "ABenAgent:L" << __LINE__ << ": mGameplay read / evaluate failed" << dbg.endl();
 		return false;
 	}
+	
+	const auto& result(mGameplay->getResult());
+	
+	if (result.gameEntered) onGamePlayStart();
+	else if (result.gameLeft) onGamePlayStop();
 
-	// trigger onGamePlayStart / onGamePlayStop events
-	const auto inGameBefore(nullptr != mSelf);
-	mSelf = mGame->getObjectManager().getActivePlayer();
-	const auto inGameToggled(inGameBefore != (nullptr != mSelf));
-
-	if (inGameToggled)
-	{
-		notifyGamePlay(nullptr != mSelf);
-	}
-
-	// trigger onGamePlayStart / onGamePlayStop events
 	if (nullptr != mSelf)
 	{
+		if (result.combatEntered) onCombatStart();
+		else if (result.combatLeft) onCombatEnd();
+		
+		for (auto it = result.appearList.begin(); it != result.appearList.end(); ++it)
+			onUnitAppear(mGame->getObjectManager().getObjectByGuid<WowUnitObject>(*it));
+		
+		for (auto it = result.vanishList.begin(); it != result.vanishList.end(); ++it)
+			onUnitVanish(mGame->getObjectManager().getObjectByGuid<WowUnitObject>(*it));
 
-		const auto backSnapshot = mGameplay->previous();
+		for (auto it = result.deathList.begin(); it != result.deathList.end(); ++it)
+			onUnitDeath(mGame->getObjectManager().getObjectByGuid<WowUnitObject>(*it));
+		
+		for (auto it = result.aggroList.begin(); it != result.aggroList.end(); ++it)
+			onUnitAggro(mGame->getObjectManager().getObjectByGuid<WowUnitObject>(*it));
 
-		if (nullptr != backSnapshot && backSnapshot->getTimestamp() > mLastEvalTimestamp)
-		{
-			//dbg << dbg.w() << "evaluate" << backSnapshot->getTimestamp() << dbg.endl();
-			updateFromSnapshot(backSnapshot);
-			mLastEvalTimestamp = backSnapshot->getTimestamp();
-		}
-		else
-		{
-			//dbg << dbg.w() << "mBackSnapshot is null" << dbg.endl();
-		}
-
-		if (inGameToggled)
-		{
-			onGamePlayStart();
-		}
-		notifyInCombat(mSelf->isInCombat());
-	}
-	else
-	{
-		if (inGameToggled)
-		{
-			onGamePlayStart();
-		}
+		for (auto it = result.aggroLostList.begin(); it != result.aggroLostList.end(); ++it)
+			onUnitAggroLost(mGame->getObjectManager().getObjectByGuid<WowUnitObject>(*it));
 	}
 
+	//dbg << dbg.d() << "ABenAgent:L" << __LINE__ << ": onEvaluatedIdle" << dbg.endl();
 	return onEvaluatedIdle();
 }
 
@@ -108,79 +91,30 @@ void ABenAgent::onCombatEnd() {
 
 }
 
+void ABenAgent::onUnitAppear(const std::shared_ptr<const WowUnitObject>& object)
+{
+	
+}
+
+void ABenAgent::onUnitVanish(const std::shared_ptr<const WowUnitObject>& object)
+{
+}
+
+void ABenAgent::onUnitDeath(const std::shared_ptr<const WowUnitObject>& object)
+{
+}
+
 void ABenAgent::onUnitAggro(const std::shared_ptr<const WowUnitObject>& object)
 {
-	mAggroList.push_back(object);
 }
 
 void ABenAgent::onUnitAggroLost(const std::shared_ptr<const WowUnitObject>& object)
 {
-	mAggroList.remove(object);
-}
-
-bool ABenAgent::isInCombat() const
-{
-	return mInCombat;
 }
 
 bool ABenAgent::runAway()
 {
 	return false;
-}
-
-bool ABenAgent::updateFromSnapshot(const std::shared_ptr<const IBenGameSnapshot>& snapshot)
-{
-
-	FileLogger dbg(mDbg, "updateFromSnapshot");
-	const auto& objMgr(mGame->getObjectManager());
-	auto prevEnemies = snapshot->getHostileList();
-	auto enemies = objMgr.allOfType<WowUnitObject>();
-
-	//enemies.remove_if([&](const std::shared_ptr<const WowUnitObject>& v) { return !mSelf->canAttack(*mGame, *v); });
-
-	{
-		IBenGameSnapshot::UnitList oldAggroList;
-		auto selfGuid(mSelf->getGuid());
-		auto predicate = [&selfGuid](const std::shared_ptr<const WowUnitSnapshot>& v)->bool {
-			return v->getTargetGuid() == selfGuid;
-		};
-
-		std::copy_if(prevEnemies.begin(), prevEnemies.end(), std::back_inserter(oldAggroList), predicate);
-
-		// trigger onUnitAggroLost
-		dbg << dbg.w() << "previous aggro list of " << oldAggroList.size() << dbg.endl();
-		for (auto it = oldAggroList.begin(); it != oldAggroList.end(); ++it)
-		{
-			const auto liveAggroUnit = objMgr.getObjectByGuid<WowUnitObject>((*it)->getGuid());
-
-			if (nullptr == liveAggroUnit || liveAggroUnit->vanished() || liveAggroUnit->getTargetGuid() != mSelf->getGuid())
-			{
-				dbg << dbg.w() << " onUnitAggroLost ts " << snapshot->getTimestamp() << dbg.endl();
-				onUnitAggroLost(liveAggroUnit);
-			}
-		}
-
-		// trigger onUnitAggro
-		for (auto it = enemies.begin(); it != enemies.end(); ++it)
-		{
-			const auto& enemy(**it);
-
-			if (enemy.getTargetGuid() == mSelf->getGuid())
-			{
-				auto oldVersion(snapshot->getUnitByGuid(enemy.getGuid()));
-
-				if (nullptr == oldVersion || oldVersion->getTargetGuid() != mSelf->getGuid())
-				{
-					dbg << dbg.w() << " onUnitAggro ts " << snapshot->getTimestamp() << dbg.endl();
-					onUnitAggro(*it);
-				}
-				//else
-				//	dbg << dbg.w() << " target previously already in aggro? " << oldVersion << dbg.endl();
-
-			}
-		}
-	}
-	return true;
 }
 
 bool ABenAgent::handleWowMessage(ServerWowMessage & cl) {
@@ -208,51 +142,3 @@ void ABenAgent::onGameLoadingEnd()
 	// todo
 }
 
-bool ABenAgent::snapGameFrame()
-{
-	if (nullptr != mGameplay && !mGameplay->snap(*mGame))
-	{
-		return false;
-	}
-	return true;
-}
-
-void ABenAgent::notifyGamePlay(const bool inGameNow)
-{
-	FileLogger dbg(mDbg, "notifyGamePlay");
-	
-	mInGame = inGameNow;
-	if (mInGame)
-	{
-		dbg << FileLogger::debug << "evaluated GamePlayStarted" << FileLogger::normal << std::endl;
-		onGamePlayStart();
-	}
-	else
-	{
-		dbg << FileLogger::debug << "evaluated onGamePlayStop" << FileLogger::normal << std::endl;
-		onGamePlayStop();
-	}
-}
-
-bool ABenAgent::notifyInCombat(const bool inCombatNow)
-{
-	FileLogger dbg(mDbg, "notifyGamePlay");
-
-	if (inCombatNow != mInCombat)
-	{
-		if (inCombatNow)
-		{
-			dbg << FileLogger::debug << "evaluated onCombatStart" << FileLogger::normal << std::endl;
-			onCombatStart();
-		}
-		else
-		{
-			dbg << FileLogger::debug << "evaluated onCombatEnd" << FileLogger::normal << std::endl;
-			onCombatEnd();
-		}
-
-		mInCombat = inCombatNow;
-		return true;
-	}
-	return false;
-}

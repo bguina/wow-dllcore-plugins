@@ -154,6 +154,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="bot\gameplay\BenGameRecord.h" />
     <ClInclude Include="bot\type\champion\base\ABenTamerChampion.h" />
     <ClInclude Include="bot\gameplay\snapshot\object\WowPlayerSnapshot.h" />
     <ClInclude Include="bot\gameplay\snapshot\object\WowObjectSnapshot.h" />
@@ -166,16 +167,15 @@
     <ClInclude Include="bot\type\poly\BenPolyAgent.h" />
     <ClInclude Include="bot\type\champion\hunter\BenHunterChampion.h" />
     <ClInclude Include="bot\type\runagate\BenRunagate.h" />
-    <ClInclude Include="bot\gameplay\ABenGameplay.h" />
-    <ClInclude Include="bot\gameplay\snapshot\evaluator\extrapolator\BenGameLinearExtrapolator.h" />
+    <ClInclude Include="bot\type\base\evaluator\extrapolator\BenGameLinearExtrapolator.h" />
     <ClInclude Include="bot\gameplay\snapshot\BenGameSnapshot.h" />
-    <ClInclude Include="bot\gameplay\snapshot\evaluator\BenGameSnapshotEvaluator.h" />
+    <ClInclude Include="bot\type\base\evaluator\BenWowGameEvaluator.h" />
     <ClInclude Include="bot\gameplay\snapshot\ABenGameSnapshot.h" />
-    <ClInclude Include="bot\gameplay\IBenGameplay.h" />
+    <ClInclude Include="bot\gameplay\IBenGameRecord.h" />
     <ClInclude Include="bot\type\economy\fish\IBenFisher.h" />
-    <ClInclude Include="bot\gameplay\BenRecordedGameplay.h" />
+    <ClInclude Include="bot\gameplay\ABenGameRecord.h" />
     <ClInclude Include="bot\gameplay\Percent.h" />
-    <ClInclude Include="bot\gameplay\snapshot\evaluator\ABenGameSnapshotEvaluator.h" />
+    <ClInclude Include="bot\type\base\evaluator\ABenWowGameEvaluator.h" />
     <ClInclude Include="bot\gameplay\model\RadiusZone.h" />
     <ClInclude Include="bot\gameplay\model\RadiusThreatZone.h" />
     <ClInclude Include="bot\gameplay\model\BoundingBox.h" />
@@ -183,15 +183,16 @@
     <ClInclude Include="bot\gameplay\snapshot\IBenGameSnapshot.h" />
     <ClInclude Include="bot\gameplay\model\Threat.h" />
     <ClInclude Include="bot\type\patrol\base\ABenPatroller.h" />
-    <ClInclude Include="bot\gameplay\snapshot\evaluator\extrapolator\IBenGameExtrapolator.h" />
-    <ClInclude Include="bot\gameplay\snapshot\evaluator\extrapolator\ABenGameExtrapolator.h" />
+    <ClInclude Include="bot\type\base\evaluator\extrapolator\IBenGameExtrapolator.h" />
+    <ClInclude Include="bot\type\base\evaluator\extrapolator\ABenGameExtrapolator.h" />
     <ClInclude Include="bot\type\quest\BenQuester.h" />
-    <ClInclude Include="bot\gameplay\snapshot\evaluator\IBenGameSnapshotEvaluator.h" />
+    <ClInclude Include="bot\type\base\evaluator\IBenEvaluator.h" />
     <ClInclude Include="bot\type\base\ABenAgent.h" />
     <ClInclude Include="bot\type\base\BenLoginAgent.h" />
     <ClInclude Include="BenAgents.h" />
     <ClInclude Include="bot\type\dumb\BenIdleAgent.h" />
     <ClInclude Include="bot\type\travel\ABenTraveler.h" />
+    <ClInclude Include="bot\type\base\evaluator\EvaluatedWowInstant.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="bot\type\champion\attitude\IBenChampionAttitude.h" />
     <ClInclude Include="pch.h" />
@@ -212,11 +213,10 @@
     <ClCompile Include="bot\type\poly\BenPolyAgent.cpp" />
     <ClCompile Include="bot\type\dumb\BenIdleAgent.cpp" />
     <ClCompile Include="bot\type\runagate\BenRunagate.cpp" />
-    <ClCompile Include="bot\gameplay\ABenGameplay.cpp" />
-    <ClCompile Include="bot\gameplay\snapshot\evaluator\extrapolator\BenGameLinearExtrapolator.cpp" />
-    <ClCompile Include="bot\gameplay\snapshot\evaluator\BenGameSnapshotEvaluator.cpp" />
-    <ClCompile Include="bot\gameplay\snapshot\evaluator\ABenGameSnapshotEvaluator.cpp" />
-    <ClCompile Include="bot\gameplay\snapshot\evaluator\extrapolator\ABenGameExtrapolator.cpp" />
+    <ClCompile Include="bot\type\base\evaluator\extrapolator\BenGameLinearExtrapolator.cpp" />
+    <ClCompile Include="bot\type\base\evaluator\BenWowGameEvaluator.cpp" />
+    <ClCompile Include="bot\type\base\evaluator\ABenWowGameEvaluator.cpp" />
+    <ClCompile Include="bot\type\base\evaluator\extrapolator\ABenGameExtrapolator.cpp" />
     <ClCompile Include="bot\type\patrol\base\ABenPatroller.cpp" />
     <ClCompile Include="bot\type\travel\ABenTraveler.cpp" />
     <ClCompile Include="bot\type\base\BenLoginAgent.cpp" />

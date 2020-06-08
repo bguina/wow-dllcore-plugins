@@ -2,8 +2,8 @@
 #include "WowPlugin.h"
 #include "FileLogger.h"
 #include "BenAgents.h"
-#include "bot/gameplay/BenRecordedGameplay.h"
-#include "bot/gameplay/snapshot/evaluator/BenGameSnapshotEvaluator.h"
+#include "bot/gameplay/BenGameRecord.h"
+#include "bot/type/base/evaluator/BenWowGameEvaluator.h"
 
 WowPlugin* gContainedPlugin = nullptr;
 
@@ -11,12 +11,13 @@ extern "C" int __declspec(dllexport) __stdcall DllPlugin_OnLoad() {
 	FileLogger dbg("ben_dllmain");
 
 	dbg << "DllPlugin_OknLoad" << std::endl;
-	auto* gameplay = new BenRecordedGameplay<10000, 200>(new BenGameSnapshotEvaluator());
-	auto* patroller = new BenPathPatroller(gameplay, "BenPathPatroller", nullptr, new BenHunterChampion(gameplay));
+	auto* idle = new BenIdleAgent();
+	//auto* gameplay = new BenWowGameEvaluator(new BenGameRecord<10000, 200>());
+	//auto* patroller = new BenPathPatroller(gameplay, "BenPathPatroller", nullptr, new BenHunterChampion(gameplay));
 	//auto* root = new BenPolyAgent(nullptr, nullptr, patroller);
 
 	gContainedPlugin = new WowPlugin();
-	gContainedPlugin->attachBot(patroller);
+	gContainedPlugin->attachBot(idle);
 	return 0;
 }
 

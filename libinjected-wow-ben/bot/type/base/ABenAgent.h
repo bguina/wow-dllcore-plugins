@@ -5,11 +5,15 @@
 
 #include "bot/BaseWowBot.h"
 
-#include "../../gameplay/IBenGameplay.h"
+#include "../../gameplay/IBenGameRecord.h"
+
+class ABenWowGameEvaluator;
+class IBenGameEvaluator;
 
 class ABenAgent : public BaseWowBot {
 public:
-	ABenAgent(IBenGameplay* gameplay, const std::string& tag);
+	
+	ABenAgent(ABenWowGameEvaluator* gameplay, const std::string& tag);
 	virtual ~ABenAgent();
 
 	// BaseWowBot
@@ -27,34 +31,23 @@ public:
 	virtual void onGamePlayStop();
 
 	// combat lifecycle
-	virtual bool isInCombat() const;
 	virtual void onCombatStart();
 	virtual void onCombatEnd();
 
+	virtual void onUnitAppear(const std::shared_ptr<const WowUnitObject>& object);
+	virtual void onUnitVanish(const std::shared_ptr<const WowUnitObject>& object);
+	virtual void onUnitDeath(const std::shared_ptr<const WowUnitObject>& object);
 	virtual void onUnitAggro(const std::shared_ptr<const WowUnitObject>& object);
 	virtual void onUnitAggroLost(const std::shared_ptr<const WowUnitObject>& object);
-	
+
 	virtual bool runAway();
 
 protected:
-	// "on game saved"
-	virtual bool updateFromSnapshot(const std::shared_ptr<const IBenGameSnapshot>& snapshot);
 
 	// What would the bot do? does it handle the situation?
 	virtual bool onEvaluatedIdle() = 0;
 	
 	std::list<IWowBot*> mNestedAgents;			// we might want to iterate those when a server message is received
-	std::unique_ptr<IBenGameplay> mGameplay;	// gives vague, approximate translation of the current ongoing game
+	std::unique_ptr<ABenWowGameEvaluator> mGameplay;	// gives vague, approximate translation of the current ongoing game
 	std::shared_ptr<WowActivePlayerObject> mSelf;
-
-private:
-	// save current game state
-	virtual bool snapGameFrame();
-	virtual void notifyGamePlay(bool inGameNow);
-	virtual bool notifyInCombat(bool inCombatNow);
-
-	bool mInGame;
-	bool mInCombat;
-	IBenGameSnapshot::Timestamp mLastEvalTimestamp;
-	std::list<std::shared_ptr<const WowUnitObject>> mAggroList;
 };

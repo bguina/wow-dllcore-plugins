@@ -1,16 +1,16 @@
 #include "BenPathPatroller.h"
 
-BenPathPatroller::BenPathPatroller(IBenGameplay* gameplay, ABenChampion* combatBot) :
+BenPathPatroller::BenPathPatroller(ABenWowGameEvaluator* gameplay, ABenChampion* combatBot) :
 	BenPathPatroller(gameplay, "BenPathPatroller", nullptr, combatBot)
 {
 }
 
-BenPathPatroller::BenPathPatroller(IBenGameplay* gameplay, const std::string& tag, ABenChampion* combatBot) :
+BenPathPatroller::BenPathPatroller(ABenWowGameEvaluator* gameplay, const std::string& tag, ABenChampion* combatBot) :
 	BenPathPatroller(gameplay, tag, nullptr, combatBot)
 {
 }
 
-BenPathPatroller::BenPathPatroller(IBenGameplay* gameplay, const std::string& tag, ABenTraveler* travelBot, ABenChampion* combatBot) :
+BenPathPatroller::BenPathPatroller(ABenWowGameEvaluator* gameplay, const std::string& tag, ABenTraveler* travelBot, ABenChampion* combatBot) :
 	ABenWaypointsPatroller(gameplay, tag, travelBot, combatBot)
 {
 }

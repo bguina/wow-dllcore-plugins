@@ -5,10 +5,12 @@
 
 #include "../../base/ABenAgent.h"
 
+class ABenWowGameEvaluator;
+
 class ABenChampion : public ABenAgent {
 public:
-	ABenChampion(IBenGameplay* gameplay, const std::string& tag);
-	ABenChampion(IBenGameplay* gameplay, const std::string& tag, ABenAgent* runagate);
+	ABenChampion(ABenWowGameEvaluator* gameplay, const std::string& tag);
+	ABenChampion(ABenWowGameEvaluator* gameplay, const std::string& tag, ABenAgent* runagate);
 	virtual ~ABenChampion();
 	
 	bool runAway() override;
@@ -25,7 +27,6 @@ public:
 	virtual bool isPositionSatisfying(const WowVector3f& position) = 0;
 
 protected:
-	bool updateFromSnapshot(const std::shared_ptr<const IBenGameSnapshot>& snapshot) override;
 	bool onEvaluatedIdle() final override;
 
 	virtual bool onEvaluatedInFight() = 0;
