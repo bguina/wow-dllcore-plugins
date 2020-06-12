@@ -7,15 +7,15 @@ class BenLoginAgent;
 class BenPolyAgent : public ABenAgent
 {
 public:
-	BenPolyAgent(BenLoginAgent* login, ABenAgent* characterSelector, IWowBot* gameAgent);
+	BenPolyAgent(BenLoginAgent* login, ABenAgent* characterSelector, ABenAgent* gameAgent);
 	virtual ~BenPolyAgent();
 
-	virtual void assignTask(IWowBot* task);
+	virtual void assignTask(ABenAgent* task);
 
 protected:
 	bool onEvaluatedIdle() override;
 	
-	std::unique_ptr<IWowBot> mLogin;
-	std::unique_ptr<IWowBot> mCharacterSelector;
-	std::unique_ptr<IWowBot> mGameAgent;
+	std::unique_ptr<ABenAgent> mLogin;
+	std::unique_ptr<ABenAgent> mCharacterSelector;
+	std::unique_ptr<ABenAgent> mGameAgent;
 };

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "game/WowVector3f.h"
+#include "game/world/WowVector3f.h"
 
 class BoundingBox {
 public:

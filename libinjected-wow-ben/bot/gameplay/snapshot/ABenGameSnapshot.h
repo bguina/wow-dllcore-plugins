@@ -1,8 +1,8 @@
 #pragma once
 
-#include "IBenGameSnapshot.h"
+#include "IBenWowGameSnapshot.h"
 
-class ABenGameSnapshot : public IBenGameSnapshot {
+class ABenGameSnapshot : public IBenWowGameSnapshot {
 public:
 	ABenGameSnapshot(const WowGame& game);
 	virtual ~ABenGameSnapshot();
@@ -12,6 +12,7 @@ public:
 
 protected:
 	Timestamp mTimestamp;
+	Timestamp mGameTimestamp;
 	std::unique_ptr<WowPlayerObject> mSelf;
 	std::vector<std::shared_ptr<WowUnitObject>> mHostileUnitsByThreat;
 };

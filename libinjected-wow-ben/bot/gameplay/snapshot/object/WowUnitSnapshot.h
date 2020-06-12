@@ -1,7 +1,7 @@
 #pragma once
 
 #include "WowObjectSnapshot.h"
-#include "game/object/WowUnitObject.h"
+#include "game/world/object/WowUnitObject.h"
 
 class WowUnitSnapshot : public WowObjectSnapshot
 {
@@ -22,6 +22,7 @@ public:
 	bool isLootable() const;
 	bool isTappedByOther() const;
 	bool isTappedByMe() const;
+	bool isTappedByAllThreatList() const;
 	WowGuid128 getSummonedBy() const;
 	WowGuid128 getTargetGuid() const;
 	
@@ -35,8 +36,9 @@ protected:
 	long mMaxEnergy;
 	bool mIsInCombat;
 	bool mLootable;
-	bool mTappedByOther;
+	bool mTappedByOthers;
 	bool mTappedByMe;
+	bool mTappedByAllThreatList;
 	WowGuid128 mSummonedBy;
 	WowGuid128 mTarget;
 };

@@ -33,9 +33,6 @@
     <ClInclude Include="bot\type\champion\hunter\BenHunterChampion.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="bot\type\dumb\BenIdleAgent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="bot\type\economy\fish\IBenFisher.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -51,16 +48,7 @@
     <ClInclude Include="bot\gameplay\model\BoundingBox.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="bot\gameplay\model\IThreat.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="bot\gameplay\model\RadiusThreatZone.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="bot\gameplay\model\RadiusZone.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="bot\gameplay\model\Threat.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="bot\gameplay\snapshot\object\WowUnitSnapshot.h">
@@ -70,9 +58,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="bot\gameplay\snapshot\BenGameSnapshot.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="bot\gameplay\snapshot\IBenGameSnapshot.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="bot\gameplay\Percent.h">
@@ -96,12 +81,6 @@
     <ClInclude Include="bot\type\champion\base\ABenChampion.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="bot\type\champion\attitude\IBenChampionAttitude.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="bot\type\champion\attitude\BenChampionDominantAttitude.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="bot\type\patrol\base\ABenPatroller.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -114,34 +93,91 @@
     <ClInclude Include="bot\type\patrol\path\BenPathPatroller.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="bot\type\base\evaluator\extrapolator\ABenGameExtrapolator.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="bot\type\base\evaluator\extrapolator\BenGameLinearExtrapolator.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="bot\type\base\evaluator\extrapolator\IBenGameExtrapolator.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="bot\gameplay\IBenGameRecord.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="bot\gameplay\ABenGameRecord.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="bot\gameplay\BenGameRecord.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="bot\type\base\evaluator\ABenWowGameEvaluator.h">
+    <ClInclude Include="bot\type\dumb\BenDebugAgent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bot\gameplay\model\threat\RadiusThreatZone.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bot\gameplay\model\threat\IThreat.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bot\gameplay\model\threat\Threat.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bot\gameplay\model\spell\ISpellRotation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bot\gameplay\model\spell\static\StaticSpellRanks.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bot\gameplay\model\spell\static\hunter\ArcaneShot.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bot\gameplay\model\spell\static\mage\Fireball.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bot\gameplay\model\spell\static\hunter\ConcussiveShot.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bot\gameplay\model\spell\static\hunter\SerpentSting.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bot\gameplay\model\spell\static\hunter\RaptorStrike.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bot\gameplay\model\spell\static\hunter\HuntersMark.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bot\gameplay\model\spell\static\hunter\AHunterRotation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bot\gameplay\model\spell\static\LinearSpellRotation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bot\gameplay\model\spell\static\hunter\FeedPet.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bot\gameplay\snapshot\IBenWowGameSnapshot.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="bot\type\base\evaluator\BenWowGameEvaluator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="bot\type\base\evaluator\EvaluatedWowInstant.h">
+    <ClInclude Include="bot\type\base\evaluator\IBenEvaluator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="bot\type\base\evaluator\IBenEvaluator.h">
+    <ClInclude Include="bot\type\base\evaluator\IBenWowGameEvaluator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bot\type\champion\base\aura\IBenAuraSelector.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bot\type\base\evaluator\WowBaseEvaluation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bot\type\base\evaluator\WowGameBasicEvaluator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bot\type\base\extrapolator\ABenGameExtrapolator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bot\type\base\extrapolator\BenGameLinearExtrapolator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bot\type\base\extrapolator\IBenGameExtrapolator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bot\gameplay\AWowGameRecord.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bot\gameplay\IWowGameRecord.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bot\gameplay\ISubjectRecord.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -155,9 +191,6 @@
     <ClCompile Include="bot\type\base\BenLoginAgent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="bot\type\dumb\BenIdleAgent.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="bot\type\poly\BenPolyAgent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -168,9 +201,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="bot\gameplay\model\RadiusZone.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="bot\gameplay\model\Threat.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="bot\gameplay\snapshot\object\WowUnitSnapshot.cpp">
@@ -203,9 +233,6 @@
     <ClCompile Include="bot\type\champion\base\ABenChampion.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="bot\type\champion\attitude\BenChampionDominantAttitude.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="bot\type\patrol\base\ABenPatroller.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -218,16 +245,22 @@
     <ClCompile Include="bot\type\patrol\path\BenPathPatroller.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="bot\type\base\evaluator\extrapolator\ABenGameExtrapolator.cpp">
+    <ClCompile Include="bot\type\dumb\BenDebugAgent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="bot\type\base\evaluator\extrapolator\BenGameLinearExtrapolator.cpp">
+    <ClCompile Include="bot\gameplay\model\threat\Threat.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="bot\type\base\evaluator\ABenWowGameEvaluator.cpp">
+    <ClCompile Include="bot\gameplay\model\spell\static\LinearSpellRotation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="bot\type\base\evaluator\BenWowGameEvaluator.cpp">
+    <ClCompile Include="bot\type\base\evaluator\WowGameBasicEvaluator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="bot\type\base\extrapolator\ABenGameExtrapolator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="bot\type\base\extrapolator\BenGameLinearExtrapolator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

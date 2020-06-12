@@ -1,5 +1,5 @@
 #include "WowUnitSnapshot.h"
-#include "game/object/WowUnitObject.h"
+#include "game/world/object/WowUnitObject.h"
 
 WowUnitSnapshot::WowUnitSnapshot(const WowUnitObject& obj) :
 	WowObjectSnapshot(obj),
@@ -12,10 +12,11 @@ WowUnitSnapshot::WowUnitSnapshot(const WowUnitObject& obj) :
 	mMaxEnergy(obj.getMaxEnergy()),
 	mIsInCombat(obj.isInCombat()),
 	mLootable(obj.isLootable()),
-	mTappedByOther(obj.isTappedByOther()),
+	mTappedByOthers(obj.isTappedByOthers()),
 	mTappedByMe(obj.isTappedByMe()),
+	mTappedByAllThreatList(obj.isTappedByAllThreatList()),
 	mSummonedBy(obj.getSummonedBy().upper(), obj.getSummonedBy().lower()),
-	mTarget(obj.getTargetGuid().upper(), obj.getTargetGuid().lower())
+	mTarget(obj.getTargetGuid()->upper(), obj.getTargetGuid()->lower())
 {
 }
 
@@ -73,7 +74,12 @@ bool WowUnitSnapshot::isLootable() const
 
 bool WowUnitSnapshot::isTappedByOther() const
 {
-	return mTappedByOther;
+	return mTappedByOthers;
+}
+
+bool WowUnitSnapshot::isTappedByAllThreatList() const
+{
+	return mTappedByAllThreatList;
 }
 
 bool WowUnitSnapshot::isTappedByMe() const

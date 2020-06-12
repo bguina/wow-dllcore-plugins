@@ -1,22 +1,22 @@
-#include "BenWowGameEvaluator.h"
+#include "WowGameBasicEvaluator.h"
 
 #include <algorithm>
 
 #include "IBenEvaluator.h"
-#include "../../../gameplay/IBenGameRecord.h"
+#include "../../../gameplay/IWowGameRecord.h"
 
-BenWowGameEvaluator::BenWowGameEvaluator(IBenGameRecord* record) :
-	ABenWowGameEvaluator(),
-	mDbg("BenWowGameEvaluator"),
+WowGameBasicEvaluator::WowGameBasicEvaluator(BenWowGameBackBuffer* record) :
+	IBenWowGameEvaluator(),
+	mDbg("WowGameBasicEvaluator"),
 	mLengthyRecord(record),
 	mLastEvalTimestamp(0),
 	mInstant()
 {
 }
 
-BenWowGameEvaluator::~BenWowGameEvaluator() = default;
+WowGameBasicEvaluator::~WowGameBasicEvaluator() = default;
 
-bool BenWowGameEvaluator::read(const WowGame & game)
+bool WowGameBasicEvaluator::read(const WowGame & game)
 {
 	FileLogger dbg(mDbg, "extractInfo");
 
@@ -35,7 +35,7 @@ bool BenWowGameEvaluator::read(const WowGame & game)
 	return true;
 }
 
-bool BenWowGameEvaluator::evaluate()
+bool WowGameBasicEvaluator::evaluate()
 {
 	FileLogger dbg(mDbg, "evaluate");
 	const auto backSnapshot = mInstantRecord.back();
@@ -68,12 +68,12 @@ bool BenWowGameEvaluator::evaluate()
 
 		//dbg << dbg.w() << "evaluate" << backSnapshot->getTimestamp() << dbg.endl();
 
-		auto prevEnemies = backSnapshot->getHostileList();
-		auto enemies = frontSnapshot->getHostileList();
+		auto prevEnemies = backSnapshot->getUnitList(IBenWowGameSnapshot::Faction::FactionHostile);
+		auto enemies = frontSnapshot->getUnitList(IBenWowGameSnapshot::Faction::FactionHostile);
 
 		{
-			IBenGameSnapshot::UnitList oldAggroList;
-			auto selfGuid(self->getGuid());
+			IBenWowGameSnapshot::UnitList oldAggroList;
+			auto selfGuid(*self->getGuid());
 			auto predicate = [&selfGuid](const std::shared_ptr<const WowUnitSnapshot>& v)->bool {
 				return v->getTargetGuid() == selfGuid;
 			};
@@ -86,7 +86,7 @@ bool BenWowGameEvaluator::evaluate()
 			{
 				const auto liveAggroUnit = frontSnapshot->getUnitByGuid((*it)->getGuid());
 
-				if (nullptr == liveAggroUnit || liveAggroUnit->getTargetGuid() != self->getGuid())
+				if (nullptr == liveAggroUnit || liveAggroUnit->getTargetGuid() != *self->getGuid())
 				{
 					dbg << dbg.w() << " onUnitAggroLost ts " << backSnapshot->getTimestamp() << dbg.endl();
 					onUnitAggroLost(liveAggroUnit->getGuid());
@@ -98,11 +98,11 @@ bool BenWowGameEvaluator::evaluate()
 			{
 				const auto& liveAggroUnit(*it);
 
-				if (liveAggroUnit->getTargetGuid() == self->getGuid())
+				if (liveAggroUnit->getTargetGuid() == *self->getGuid())
 				{
 					auto oldVersion(backSnapshot->getUnitByGuid(liveAggroUnit->getGuid()));
 
-					if (nullptr == oldVersion || oldVersion->getTargetGuid() != self->getGuid())
+					if (nullptr == oldVersion || oldVersion->getTargetGuid() != *self->getGuid())
 					{
 						dbg << dbg.w() << " onUnitAggro ts " << backSnapshot->getTimestamp() << dbg.endl();
 						onUnitAggro(liveAggroUnit->getGuid());
@@ -148,48 +148,48 @@ bool BenWowGameEvaluator::evaluate()
 	return true;
 }
 
-const EvaluatedWowInstant& BenWowGameEvaluator::getResult() const
+const WowBaseEvaluation& WowGameBasicEvaluator::getResult() const
 {
 	return mInstant;
 }
 
-void BenWowGameEvaluator::onUnitAppear(WowGuid128 guid)
+void WowGameBasicEvaluator::onUnitAppear(WowGuid128 guid)
 {
-	mInstant.appearList.push_back(guid);
+	mInstant.popList.push_back(guid);
 }
 
-void BenWowGameEvaluator::onUnitVanish(WowGuid128 guid)
+void WowGameBasicEvaluator::onUnitVanish(WowGuid128 guid)
 {
-	mInstant.vanishList.push_back(guid);
+	mInstant.depopList.push_back(guid);
 }
 
-void BenWowGameEvaluator::onUnitAggro(WowGuid128 guid)
+void WowGameBasicEvaluator::onUnitAggro(WowGuid128 guid)
 {
 	mInstant.aggroList.push_back(guid);
 }
 
-void BenWowGameEvaluator::onUnitAggroLost(WowGuid128 guid)
+void WowGameBasicEvaluator::onUnitAggroLost(WowGuid128 guid)
 {
 	mInstant.aggroLostList.push_back(guid);
 }
 
-void BenWowGameEvaluator::onUnitDeath(WowGuid128 guid)
+void WowGameBasicEvaluator::onUnitDeath(WowGuid128 guid)
 {
 	mInstant.deathList.push_back(guid);
 }
 
-bool BenWowGameEvaluator::evaluateIsAttacked(IBenGameSnapshot::Timestamp time, const WowUnitObject& unit) const
+bool WowGameBasicEvaluator::evaluateIsAttacked(IBenWowGameSnapshot::Timestamp time, const WowUnitObject& unit) const
 {
 	return false;
 }
 
-float BenWowGameEvaluator::evaluateUnitThreat(IBenGameSnapshot::Timestamp time, const WowUnitObject& unit) const
+float WowGameBasicEvaluator::evaluateUnitThreat(IBenWowGameSnapshot::Timestamp time, const WowUnitObject& unit) const
 {
 	/*auto* threat = new Threat(0);*/
 	return 0;// new Threat(0);
 }
 
-float BenWowGameEvaluator::evaluatePositionThreat(IBenGameSnapshot::Timestamp time, const WowVector3f& position) const
+float WowGameBasicEvaluator::evaluatePositionThreat(IBenWowGameSnapshot::Timestamp time, const WowVector3f& position) const
 {
 	//auto* threat = new Threat();
 	return 0;// new Threat(0);

@@ -1,20 +1,23 @@
 #pragma once
 
-#include "ABenGameRecord.h"
+#include "AWowGameRecord.h"
 #include "snapshot/BenGameSnapshot.h"
 
 template<unsigned int DurationMs, unsigned int PeriodMs>
-class BenGameRecord : public ABenGameRecord<DurationMs, PeriodMs>
+class BenGameRecord : public AWowGameRecord<DurationMs, PeriodMs>
 {
 public:
-	BenGameRecord() : ABenGameRecord<DurationMs, PeriodMs>()
+	
+	BenGameRecord() : AWowGameRecord<DurationMs, PeriodMs>()
 	{
 	}
 
 	virtual ~BenGameRecord() = default;
 
-	std::shared_ptr<IBenGameSnapshot> makeSnapshot(const WowGame& game) override
+	std::shared_ptr<IBenWowGameSnapshot> makeSnapshot(const WowGame& game) override
 	{
 		return std::make_shared<BenGameSnapshot>(game);
 	}
 };
+
+using BenWowGameBackBuffer = BenGameRecord<2, 1>;

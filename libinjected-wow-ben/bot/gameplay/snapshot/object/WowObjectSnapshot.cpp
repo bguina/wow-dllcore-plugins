@@ -1,9 +1,10 @@
 #include "WowObjectSnapshot.h"
 
-#include "game/object/WowObject.h"
+#include "game/world/object/WowGameObjectObject.h"
+#include "game/world/object/WowObject.h"
 
 WowObjectSnapshot::WowObjectSnapshot(const WowObject& obj) :
-	mGuid(obj.getGuid().upper(), obj.getGuid().lower()),
+	mGuid(obj.getGuid()->upper(), obj.getGuid()->lower()),
 	mPosition(obj.getPosition()),
 	mFacing(0)
 {

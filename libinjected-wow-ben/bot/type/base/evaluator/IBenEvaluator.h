@@ -2,7 +2,7 @@
 
 #include "game/WowGame.h"
 
-class IBenGameRecord;
+class IBenWowGameRecord;
 
 template<typename Evaluated, typename Source>
 class IBenEvaluator {

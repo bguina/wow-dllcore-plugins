@@ -8,6 +8,11 @@ BenGameSnapshot::BenGameSnapshot(const WowGame& game) :
 	mInGame(nullptr != game.getObjectManager().getActivePlayer()),
 	mInCombat(mInGame&& game.getObjectManager().getActivePlayer()->isInCombat())
 {
+	// Make sure we push every faction to prevent mUnitLists.at(<MissingFaction>) crash
+	mUnitLists[Faction::FactionHostile];
+	mUnitLists[Faction::FactionNeutral];
+	mUnitLists[Faction::FactionFriendly];
+	
 	const auto self(game.getObjectManager().getActivePlayer());
 
 	if (nullptr != self) {
@@ -16,9 +21,14 @@ BenGameSnapshot::BenGameSnapshot(const WowGame& game) :
 		for (auto it = allUnits.begin(); it != allUnits.end(); ++it)
 		{
 			const auto& unit(**it);
-			auto& factionList(/*self->isFriendly(game, unit) ? mNonHostileUnits :*/ mHostileUnits);
 
-			factionList.push_back(std::make_unique<WowUnitSnapshot>(**it));
+			// filter out critters and such
+
+			auto* faction(getUnitFactionList(*self, unit));
+			if (nullptr != faction)
+			{
+				faction->push_back(std::make_unique<WowUnitSnapshot>(**it));
+			}
 		}
 	}
 }
@@ -40,29 +50,35 @@ bool BenGameSnapshot::isInCombat() const
 	return mInCombat;
 }
 
-const IBenGameSnapshot::UnitList& BenGameSnapshot::getHostileList() const
+const IBenWowGameSnapshot::UnitList& BenGameSnapshot::getUnitList(const Faction faction) const
 {
-	return mHostileUnits;
-}
-
-const IBenGameSnapshot::UnitList& BenGameSnapshot::getNonHostileList() const
-{
-	return mNonHostileUnits;
+	return mUnitLists.at(faction);
 }
 
 std::shared_ptr<const WowUnitSnapshot> BenGameSnapshot::getUnitByGuid(WowGuid128 guid) const
 {
-	const auto itHostile(std::find_if(mHostileUnits.begin(), mHostileUnits.end(), [&guid](const auto& v) { return v->getGuid() == guid; }));
-
-	if (mHostileUnits.end() == itHostile)
+	for (auto itList = mUnitLists.begin(); itList != mUnitLists.end(); ++itList)
 	{
-		const auto itFriend(std::find_if(mNonHostileUnits.begin(), mNonHostileUnits.end(), [&guid](const auto& v) { return v->getGuid() == guid; }));
+		const auto itUnitFound(std::find_if((*itList).second.begin(), (*itList).second.end(), [&guid](const auto& v) { return v->getGuid() == guid; }));
 
-		if (mNonHostileUnits.end() == itFriend)
-		{
-			return nullptr;
-		}
-		return *itFriend;
+		if (itList->second.end() != itUnitFound)
+			return *itUnitFound;
 	}
-	return *itHostile;
+
+	return nullptr;
+}
+
+IBenWowGameSnapshot::UnitList* BenGameSnapshot::getUnitFactionList(const WowActivePlayerObject& player, const WowUnitObject& obj)
+{
+	if (player.isFriendly(obj))
+	{
+		return &mUnitLists[Faction::FactionFriendly];
+	}
+	
+	if (player.canAttack(obj))
+	{
+		return &mUnitLists[Faction::FactionHostile];
+	}
+	
+	return nullptr;
 }

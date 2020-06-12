@@ -1,9 +1,9 @@
 #pragma once
 
 #include <vector>
-#include "game/object/WowUnitObject.h"
+#include "game/world/object/WowUnitObject.h"
 
-class EvaluatedWowInstant
+class WowBaseEvaluation
 {
 public:
 	using UnitList = std::vector<WowGuid128>;
@@ -11,20 +11,22 @@ public:
 	bool gameLeft;
 	bool combatEntered;
 	bool combatLeft;
-	UnitList appearList;
-	UnitList vanishList;
+	UnitList popList;
+	UnitList depopList;
 	UnitList deathList;
 	UnitList aggroList;
 	UnitList aggroLostList;
-
+	UnitList tappedList;
+	UnitList untappedList;
+	
 	void reset()
 	{
 		gameEntered = false;
 		gameLeft = false;
 		combatEntered = false;
 		combatLeft = false;
-		appearList.clear();
-		vanishList.clear();
+		popList.clear();
+		depopList.clear();
 		deathList.clear();
 		aggroList.clear();
 		aggroLostList.clear();

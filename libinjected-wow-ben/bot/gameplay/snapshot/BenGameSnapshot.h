@@ -1,9 +1,12 @@
 #pragma once
 
+#include <map>
+
 #include "ABenGameSnapshot.h"
 
 class BenGameSnapshot final : public ABenGameSnapshot  {
 public:
+
 	
 	BenGameSnapshot(const WowGame& game);
 	virtual ~BenGameSnapshot();
@@ -11,17 +14,16 @@ public:
 	long getNetworkLatencyMs() const override;
 	bool isInGame() const override;
 	bool isInCombat() const override;
-	const UnitList& getHostileList() const override;
-	const UnitList& getNonHostileList() const override;
+
+	const UnitList& getUnitList(Faction faction) const override;
 
 	std::shared_ptr<const WowUnitSnapshot> getUnitByGuid(WowGuid128 guid) const override;
 
 protected:
-	/**
-	 *  https://www.bfilipek.com/2014/05/vector-of-objects-vs-vector-of-pointers.html
-	 */
+	UnitList* getUnitFactionList(const WowActivePlayerObject& player, const WowUnitObject& obj);
+
 	bool mInGame;
 	bool mInCombat;
-	UnitList mHostileUnits;
-	UnitList mNonHostileUnits;
+
+	std::map<Faction, UnitList> mUnitLists;
 };

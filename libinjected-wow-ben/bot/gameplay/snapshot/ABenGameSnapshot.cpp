@@ -4,7 +4,8 @@
 #include "object/WowPlayerSnapshot.h"
 
 ABenGameSnapshot::ABenGameSnapshot(const WowGame& game) :
-	mTimestamp(game.getTime()),
+	mTimestamp(GetTickCount64()),
+	mGameTimestamp(game.getTime()),
 	mSelf(nullptr)
 {
 	const auto self(game.getObjectManager().getActivePlayer());
@@ -18,7 +19,7 @@ const WowPlayerObject* ABenGameSnapshot::getSelf() const
 	return mSelf.get();
 }
 
-IBenGameSnapshot::Timestamp ABenGameSnapshot::getTimestamp() const
+IBenWowGameSnapshot::Timestamp ABenGameSnapshot::getTimestamp() const
 {
 	return mTimestamp;
 }

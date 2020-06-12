@@ -7,9 +7,9 @@
 
 class BenPathPatroller : public ABenWaypointsPatroller {
 public:
-	BenPathPatroller(ABenWowGameEvaluator* gameplay, ABenChampion* combatBot);
-	BenPathPatroller(ABenWowGameEvaluator* gameplay, const std::string& tag, ABenChampion* combatBot);
-	BenPathPatroller(ABenWowGameEvaluator* gameplay, const std::string& tag, ABenTraveler* travelBot, ABenChampion* combatBot);
+	BenPathPatroller(const std::shared_ptr<IBenWowGameEvaluator<WowBaseEvaluation>>& gameplay, ABenChampion* combatBot);
+	BenPathPatroller(const std::shared_ptr<IBenWowGameEvaluator<WowBaseEvaluation>>& gameplay, const std::string& tag, ABenChampion* combatBot);
+	BenPathPatroller(const std::shared_ptr<IBenWowGameEvaluator<WowBaseEvaluation>>& gameplay, const std::string& tag, ABenTraveler* travelBot, ABenChampion* combatBot);
 	virtual ~BenPathPatroller();
 
 	void onPathFound() override;
@@ -17,6 +17,6 @@ public:
 	
 protected:
 	bool patrolShouldAttack(const WowUnitObject& unit) const override;
-	float evaluatePatrolRelativeThreat(const WowUnitObject& unit) override;
+	float evaluatePatrolRelativeThreat(const Vector3f& nextWaypoint, const WowUnitObject& unit) override;
 
 };

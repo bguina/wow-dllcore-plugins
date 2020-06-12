@@ -6,17 +6,20 @@
 
 class ABenPatroller : public ABenAgent {
 public:
-	ABenPatroller(ABenWowGameEvaluator* gameplay, const std::string& tag, ABenChampion* combatBot);
-	ABenPatroller(ABenWowGameEvaluator* gameplay, const std::string& tag, ABenTraveler* travelBot, ABenChampion* combatBot);
+	ABenPatroller(const std::shared_ptr<IBenWowGameEvaluator<WowBaseEvaluation>>& gameplay, const std::string& tag, ABenChampion* combatBot);
+	ABenPatroller(const std::shared_ptr<IBenWowGameEvaluator<WowBaseEvaluation>>& gameplay, const std::string& tag, ABenTraveler* travelBot, ABenChampion* combatBot);
 	virtual ~ABenPatroller();
 
+	void setCombatBot(ABenChampion* agent);
+
+protected:
 	virtual void onPathFound() = 0;
 	virtual void onPathLost() = 0;
 	
-protected:
 	bool onEvaluatedIdle() override;
-	
-	virtual float evaluatePatrolRelativeThreat(const WowUnitObject& unit) = 0;
+
+	/* Threat indice between -1 (haven) and 1 (hardcore danger)*/
+	virtual float evaluatePatrolRelativeThreat(const Vector3f& nextWaypoint, const WowUnitObject& unit) = 0;
 	virtual bool patrolShouldAttack(const WowUnitObject& unit) const = 0;
 
 	std::unique_ptr<ABenTraveler> mTraveler;
@@ -24,6 +27,6 @@ protected:
 	
 	virtual IPathFinder& getPathFinder() = 0;
 
-	IBenGameSnapshot::UnitList mBlackList;
-	IBenGameSnapshot::UnitList mDangerList;
+	IBenWowGameSnapshot::UnitList mBlackList;
+	IBenWowGameSnapshot::UnitList mDangerList;
 };

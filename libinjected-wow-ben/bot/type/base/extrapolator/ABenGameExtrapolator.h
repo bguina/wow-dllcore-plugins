@@ -8,5 +8,5 @@ public:
 	virtual ~ABenGameExtrapolator();
 
 protected:
-	std::vector<IBenGameSnapshot*> mHistory;
+	std::vector<IBenWowGameSnapshot*> mHistory;
 };

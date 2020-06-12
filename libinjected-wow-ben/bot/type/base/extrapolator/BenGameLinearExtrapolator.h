@@ -7,5 +7,5 @@ public:
 	BenGameLinearExtrapolator();
 	virtual ~BenGameLinearExtrapolator();
 
-	virtual IBenGameSnapshot* extrapolate(const WowGame& game, long ms) override;
+	virtual IBenWowGameSnapshot* extrapolate(const WowGame& game, long ms) override;
 };

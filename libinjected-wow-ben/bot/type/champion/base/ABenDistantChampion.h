@@ -5,20 +5,21 @@
 
 #include "ABenChampion.h"
 
-class ABenWowGameEvaluator;
+template<typename Evaluation> class IBenWowGameEvaluator;
 class IBenGameEvaluator;
 
 class ABenDistantChampion : public ABenChampion {
 public:
-	ABenDistantChampion(ABenWowGameEvaluator* gameplay, const std::string& tag, ABenAgent* runagate);
+	ABenDistantChampion(const std::shared_ptr<IBenWowGameEvaluator<WowBaseEvaluation>>& gameplay, const std::string& tag);
 	virtual ~ABenDistantChampion();
 
+protected:
 	void onUnitTap(const std::shared_ptr<const WowUnitObject>& object) override;
 	void onUnitAggro(const std::shared_ptr<const WowUnitObject>& object) override;
 	void onUnitDeath(const std::shared_ptr<const WowUnitObject>& object) override;
 
-protected:
-	bool onEvaluatedInFight() override;
+	bool onEvaluatedAsChampion() final override;
+	virtual bool onEvaluatedAsDistantChampion() = 0;
 
 	std::list<WowUnitObject> mKillList;
 };

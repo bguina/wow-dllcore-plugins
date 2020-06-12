@@ -1,31 +1,37 @@
 
 #include "WowPlugin.h"
-#include "FileLogger.h"
 #include "BenAgents.h"
 #include "bot/gameplay/BenGameRecord.h"
-#include "bot/type/base/evaluator/BenWowGameEvaluator.h"
+#include "bot/type/base/evaluator/WowGameBasicEvaluator.h"
 
 WowPlugin* gContainedPlugin = nullptr;
 
 extern "C" int __declspec(dllexport) __stdcall DllPlugin_OnLoad() {
-	FileLogger dbg("ben_dllmain");
-
-	dbg << "DllPlugin_OknLoad" << std::endl;
-	auto* idle = new BenIdleAgent();
-	//auto* gameplay = new BenWowGameEvaluator(new BenGameRecord<10000, 200>());
-	//auto* patroller = new BenPathPatroller(gameplay, "BenPathPatroller", nullptr, new BenHunterChampion(gameplay));
-	//auto* root = new BenPolyAgent(nullptr, nullptr, patroller);
-
 	gContainedPlugin = new WowPlugin();
-	gContainedPlugin->attachBot(idle);
+	const auto baseGameplay = std::make_shared<WowGameBasicEvaluator>(new BenGameRecord<2, 1>());
+	const auto debug(true);
+
+	if (debug)
+	{
+		auto* bot = new BenDebugAgent(baseGameplay);
+		auto* patroller = new BenPathPatroller(baseGameplay, "BenPathPatroller", nullptr, bot);
+		gContainedPlugin->attachBot(patroller);
+	}
+	else
+	{
+		//auto* root = new BenPolyAgent(nullptr, nullptr, patroller);
+		auto* bot = new BenHunterChampion(baseGameplay);
+		auto* patroller = new BenPathPatroller(baseGameplay, "BenPathPatroller", nullptr, bot);
+		gContainedPlugin->attachBot(patroller);
+	}
+	
 	return 0;
 }
 
 extern "C" int __declspec(dllexport) __stdcall DllPlugin_OnUnload() {
-	FileLogger dbg("ben_dllmain");
 
-	dbg << "DllPlugin_OnUnload" << std::endl;
-	if (gContainedPlugin) {
+	if (gContainedPlugin) 
+	{
 		delete gContainedPlugin;
 		gContainedPlugin = nullptr;
 	}
@@ -33,11 +39,9 @@ extern "C" int __declspec(dllexport) __stdcall DllPlugin_OnUnload() {
 }
 
 extern "C" int __declspec(dllexport) __stdcall DllPlugin_OnD3dRender() {
-	FileLogger dbg("ben_dllmain");
-	
-	dbg << "DllPlugin_OnD3dRender" << std::endl;
-	if (!gContainedPlugin->onD3dRender()) {
-		dbg << "DllPlugin_OnD3dRender stop signal!" << std::endl;
+
+	if (!gContainedPlugin->onD3dRender()) 
+	{
 		return -1;
 	}
 	return 0;

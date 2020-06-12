@@ -1,7 +1,7 @@
 #pragma once
 
 #include "WowUnitSnapshot.h"
-#include "game/object/WowPlayerObject.h"
+#include "game/world/object/WowPlayerObject.h"
 
 class WowPlayerSnapshot : public WowUnitSnapshot
 {

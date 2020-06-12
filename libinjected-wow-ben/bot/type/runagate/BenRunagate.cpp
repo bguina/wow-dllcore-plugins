@@ -1,19 +1,24 @@
 
 #include "BenRunagate.h"
 #include "../../gameplay/BenGameRecord.h"
-#include "../base/evaluator/BenWowGameEvaluator.h"
+#include "../base/evaluator/WowGameBasicEvaluator.h"
 
 const std::string TAG = "BenIdleAgent";
 
 BenRunagate::BenRunagate() :
-	ABenChampion(new BenWowGameEvaluator(new BenGameRecord<20000, 500>()), TAG, nullptr)
+	BenRunagate(std::make_shared<WowGameBasicEvaluator>(new BenGameRecord<2, 1>()))
+{
+}
+
+BenRunagate::BenRunagate(const std::shared_ptr<IBenWowGameEvaluator<WowBaseEvaluation>>& gameplay) :
+	ABenChampion(gameplay, TAG)
 {
 }
 
 BenRunagate::~BenRunagate() = default;
 
-bool BenRunagate::onEvaluatedInFight() {
-	FileLogger dbg(mDbg, "onEvaluatedIdle");
+bool BenRunagate::onEvaluatedAsChampion() {
+	FileLogger dbg(mLog, "onEvaluatedIdle");
 
 	dbg << "implement me! I want to run away" << std::endl;
 	return true;

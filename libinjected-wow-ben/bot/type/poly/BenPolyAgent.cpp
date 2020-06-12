@@ -2,7 +2,7 @@
 
 #include "../base/BenLoginAgent.h"
 
-BenPolyAgent::BenPolyAgent(BenLoginAgent* login, ABenAgent* characterSelector, IWowBot* gameAgent) :
+BenPolyAgent::BenPolyAgent(BenLoginAgent* login, ABenAgent* characterSelector, ABenAgent* gameAgent) :
 	ABenAgent(nullptr, "BenPolyAgent"),
 	mLogin(login),
 	mCharacterSelector(characterSelector),
@@ -17,7 +17,7 @@ BenPolyAgent::~BenPolyAgent() = default;
 
 bool BenPolyAgent::onEvaluatedIdle()
 {
-	FileLogger dbg(mDbg, "onEvaluate");
+	FileLogger dbg(mLog, "onEvaluate");
 	IWowBot* bot = nullptr;
 
 	if (nullptr != mGameAgent) 
@@ -56,7 +56,7 @@ bool BenPolyAgent::onEvaluatedIdle()
 	return false;
 }
 
-void BenPolyAgent::assignTask(IWowBot* task)
+void BenPolyAgent::assignTask(ABenAgent* task)
 {
 	mGameAgent.reset(task);
 }

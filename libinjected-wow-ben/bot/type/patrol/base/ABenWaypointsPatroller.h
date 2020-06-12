@@ -7,8 +7,8 @@
 
 class ABenWaypointsPatroller : public ABenPatroller {
 public:
-	ABenWaypointsPatroller(ABenWowGameEvaluator* gameplay, const std::string& tag, ABenChampion* combatBot);
-	ABenWaypointsPatroller(ABenWowGameEvaluator* gameplay, const std::string& tag, ABenTraveler* travelBot, ABenChampion* combatBot);
+	ABenWaypointsPatroller(const std::shared_ptr<IBenWowGameEvaluator<WowBaseEvaluation>>& gameplay, const std::string& tag, ABenChampion* combatBot);
+	ABenWaypointsPatroller(const std::shared_ptr<IBenWowGameEvaluator<WowBaseEvaluation>>& gameplay, const std::string& tag, ABenTraveler* travelBot, ABenChampion* combatBot);
 	virtual ~ABenWaypointsPatroller();
 
 	bool handleWowMessage(ServerWowMessage& serverMessage) override;

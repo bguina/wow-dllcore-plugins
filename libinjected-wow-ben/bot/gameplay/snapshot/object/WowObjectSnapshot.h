@@ -1,8 +1,10 @@
 #pragma once
 
-#include "game/WowVector3f.h"
-#include "game/object/WowGuid128.h"
-#include "game/object/WowObject.h"
+#include "game/world/WowVector3f.h"
+#include "game/world/object/WowGuid128.h"
+#include "game/world/object/WowObject.h"
+
+class WowGameObjectObject;
 
 class WowObjectSnapshot
 {
@@ -15,7 +17,7 @@ public:
 	WowObjectType getType() const ;
 	std::string getTypeLabel() const ;
 
-	const WowVector3f& getPosition() const ;
+	const WowVector3f& getPosition() const;
 	float getX() const ;
 	float getY() const ;
 	float getZ() const ;

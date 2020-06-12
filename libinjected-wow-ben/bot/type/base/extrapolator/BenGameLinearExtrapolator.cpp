@@ -8,7 +8,7 @@ BenGameLinearExtrapolator::~BenGameLinearExtrapolator() {
 
 }
 
-IBenGameSnapshot* BenGameLinearExtrapolator::extrapolate(const WowGame& game, long ms)
+IBenWowGameSnapshot* BenGameLinearExtrapolator::extrapolate(const WowGame& game, long ms)
 {
 	return nullptr;
 }
